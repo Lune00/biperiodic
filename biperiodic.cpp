@@ -4,7 +4,37 @@
 #include<fstream>
 #include<vector>
 
+class Tensor2x2;
+class Vecteur;
+class Cell;
+class Particle;
+
 using namespace std;
+
+
+
+class Vecteur{
+	private:
+		double x_;
+		double y_;
+	public:
+		Vecteur(): x_(0.), y_(0.){};
+		Vecteur(double x, double y): x_(x), y_(y){};
+		~Vecteur(){};
+
+		Vecteur productTensor(Tensor2x2&);
+		void print(){cout<<x_<<" "<<y_<<endl;}
+		void update(double x,double y){ x_=x; y_=y;}
+		void add(double dx, double dy) { x_ += dx ; y_ += dy;}
+
+		//Accessors:
+		double getNorme() const {return sqrt( x_*x_ + y_ * y_);}
+		double getx() const {return x_;}
+		double gety() const {return y_;}
+		//Mutators:
+		void setx(double x) {x_ = x;}
+		void sety(double y) {y_ = y;}
+};
 
 class Tensor2x2{
 	private:
@@ -12,6 +42,12 @@ class Tensor2x2{
 		double xy_;
 		double yx_;
 		double yy_;
+		//Valeurs propres:
+		double l1_;
+		double l2_;
+		//Vecteurs propres:
+		Vecteur u1_;
+		Vecteur u2_;
 	public:
 		Tensor2x2(): xx_(0.0), xy_(0.0),yx_(0.0), yy_(0.0){};
 		Tensor2x2(double xx, double xy, double yx, double yy): xx_(xx), xy_(xy), yx_(yx), yy_(yy){};
@@ -28,6 +64,10 @@ class Tensor2x2{
 		double getxy() const { return xy_;} 
 		double getyx() const { return yx_;} 
 		double getyy() const { return yy_;} 
+
+		void eigenValues();
+		void eigenVectors();
+		void write(ofstream&);
 
 		Tensor2x2 operator * (Tensor2x2 a){
 			Tensor2x2 p;
@@ -57,6 +97,53 @@ class Tensor2x2{
 		}
 };
 
+
+void Tensor2x2::eigenValues(){
+	double b= -yy_ - xx_;
+	double c=-xy_*yx_+xx_*yy_;
+	double d=b*b-4*c;
+	l1_=(-b-sqrt(d))/2.;
+	l2_=(-b+sqrt(d))/2.;
+}
+
+void Tensor2x2::eigenVectors(){
+
+	eigenValues();
+
+	double norme;
+	double epsilon=0.0001;
+	double vx1_,vy1_,vx2_,vy2_;
+
+	if (abs(l1_)<epsilon && abs(l2_)<epsilon) 
+	{
+		return;
+	}
+	else
+	{
+	vx1_=xy_ / ( - xx_+ l1_);
+	vy1_=1.;
+	norme=sqrt(vx1_*vx1_ + vy1_*vy1_);
+	vx1_/=norme;
+	vy1_/=norme;
+	
+	vx2_=xy_/( - xx_ + l2_);
+	vy2_=1.;
+	norme=sqrt(vx2_*vx2_ + vy2_*vy2_);
+	vx2_/=norme;
+	vy2_/=norme;
+
+	cout<<vx1_<<" "<<vy1_<<endl;
+	u1_.setx(vx1_);
+	u1_.sety(vy1_);
+	u2_.setx(vx2_);
+	u2_.sety(vy2_);
+	}
+}
+
+void Tensor2x2::write(ofstream& of){
+	of<<"0. 0. "<<u1_.getx()<<" "<<u1_.gety()<<" "<<u2_.getx()<<" "<<u2_.gety()<<endl;
+}
+
 void Tensor2x2::set(double xx, double xy, double yx, double yy){
 	xx_ = xx;
 	xy_ = xy;
@@ -80,28 +167,6 @@ Tensor2x2 Tensor2x2::getInverse(){
 }
 
 
-class Vecteur{
-	private:
-		double x_;
-		double y_;
-	public:
-		Vecteur(): x_(0.), y_(0.){};
-		Vecteur(double x, double y): x_(x), y_(y){};
-		~Vecteur(){};
-
-		Vecteur productTensor(Tensor2x2&);
-		void print(){cout<<x_<<" "<<y_<<endl;}
-		void update(double x,double y){ x_=x; y_=y;}
-		void add(double dx, double dy) { x_ += dx ; y_ += dy;}
-
-		//Accessors:
-		double getNorme() const {return sqrt( x_*x_ + y_ * y_);}
-		double getx() const {return x_;}
-		double gety() const {return y_;}
-		//Mutators:
-		void setx(double x) {x_ = x;}
-		void sety(double y) {y_ = y;}
-};
 
 Vecteur Vecteur::productTensor(Tensor2x2& T){
 	Vecteur r;
@@ -166,6 +231,13 @@ class Cell{
 		//Metrics: collective degrees of freedom
 		Tensor2x2 h_;
 		Tensor2x2 hd_;
+
+		//Strain rate tensor (BC), on applique ca plutot que hd_ (utilisateur)
+		Tensor2x2 sd_;
+		//Strain tensor: cumulative (time measure of the essai)
+		Tensor2x2 s_;
+		//Velocity gradient tensor (a voir plus tard, mais BC plus generale possible)
+		Tensor2x2 Ld_;
 		//Imposed boundary conditions: garde en memoire ce qui est controle et libre
 		//On impose soit une vitesse hdd, soit une contrainte stress_ext
 		//Il faut que la partie antisymetrique de Ldot soit nulle, equiv a h(hdot) symetrique impose
@@ -187,7 +259,7 @@ class Cell{
 		//Met a jours la periodicite 
 		void PeriodicBoundaries(Particle&);
 		double getVolume();
-		void write(ofstream&,double);
+		void write(ofstream&,ofstream&,double);
 		//Acces
 		double getMasse() const { return mh_;}
 		double getL() const { return L_;}
@@ -202,10 +274,11 @@ Cell::Cell(){
 	L_ = 1. ;
 	xc_ = 0.5 * L_ ;
 	yc_ = 0.5 * L_ ;
+	initAffine();
 }
 
 //Construit la cellule
-void Cell::write(ofstream& of,double T){
+void Cell::write(ofstream& of,ofstream& of2,double T){
 
 	double ux=h_.getxx();
 	double uy=h_.getxy();
@@ -215,15 +288,38 @@ void Cell::write(ofstream& of,double T){
 	of<<T<<" "<<xc_+vx<<" "<<yc_+vy<<" "<<ux<<" "<<uy<<endl;
 	of<<T<<" "<<xc_<<" "<<yc_<<" "<<vx<<" "<<vy<<endl;
 	of<<T<<" "<<xc_+ux<<" "<<yc_+uy<<" "<<vx<<" "<<vy<<endl;
+
+	//of<<T<<" 0 "<<" "<<"0"<<" "<<ux<<" "<<uy<<endl;
+	//of<<T<<" "<<vx<<" "<<vy<<" "<<ux<<" "<<uy<<endl;
+	//of<<T<<" 0 "<<" "<<"0"<<" "<<vx<<" "<<vy<<endl;
+	//of<<T<<" "<<ux<<" "<<uy<<" "<<vx<<" "<<vy<<endl;
+	hd_.eigenVectors();
+	hd_.write(of2);
 }
 
 //Init h et hdot
 void Cell::initAffine(){
-	mh_ = 2.;
+
 	//Geometrie initiale:
 	h_.set(L_,0.,0.,L_);
+
+	//Utilisateur
+	//Pour l'instant shearsimple, tout est controle en cinematique (hd)
+	double shearrate=1.;
+	//On impose plutot un tenseur de gradient de vitesse (en eliminant la rotation) 
+	Ld_.set(0.,0.,shearrate,0.);
+
+	//Cinematique:
+
 	//Vitesse de deformation de la cellue:
-	hd_.set(0.,0.,1.,0.);
+	//+tension,-compression
+	hd_=Ld_*h_;
+
+	//On transforme ca en impose Ld et hd
+	//hd_.set(0.,0.,1.,0.);
+
+	//Dynamique:
+	mh_ = 2.;
 	//Acceleration/Stress ext
 	stress_ext.set(0.,0.,0.,0.);
 }
@@ -290,7 +386,6 @@ void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 
 	//Calcul de hdd au debut du pas, hdd0
 	Tensor2x2 hinv = h.getInverse();
-	cout<<"V "<<V0<<endl;
 	//Eq (24)
 	hdd0=hinv*(V0/mh)*(stressint+stressext);
 	//Calcul position(h) avec hdd0 a la fin du pas de temps
@@ -304,37 +399,53 @@ void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 	hd=hd+(hdd0+hdd1)*dt*0.5;
 	//Update Cell:on fait remonter h,hd
 	cell.update(h,hd);
-	cell.affiche();
+//	cell.affiche();
 }
 
 int main(){
 
-	//Initialisation:
+	//Parametres:
 	double const L = 1.;
-	double dt = .05 ;
-	double T = 0.;
+	double dt = .01 ;
+	double T = 1.;
+
 	vector<Particle> sample;
 	Cell cell(L);
 
+	//Initialise coordonnees reduites, absolues, vitesse fluctuante
 	Vecteur r0(L/3,L/3);
 	Vecteur v0(0.,0.);
-	//Initialise coordonnees reduites, absolues, vitesse fluctuante
 	Particle p(r0,L,v0);
 	sample.push_back(p);
 
 	ofstream tmp("particle.txt");
 	ofstream tmp2("cell.txt");
-	//Kinetics Time integration
-	for(int t = 0; t < 10; t++){
+	ofstream tmp3("strainrateTensor.txt");
+
+	double t=0.;
+	int k=0;
+
+	do{
 		//Check for boundary:
 		cell.PeriodicBoundaries(p);
 		//Update position:
 		verletalgo_particles(cell,sample,dt);
 		verletalgo_space(cell,sample,dt);
-		T+=dt;
-		p.write(tmp);
-		cell.write(tmp2,T);
-	}
+
+		//outputs:
+		if( k%1 == 0 ){
+			cell.write(tmp2,tmp3,T);
+			p.write(tmp);
+		}
+
+		t+=dt;
+		k++;
+	}while(t<T);
+
 	tmp.close();
+	tmp2.close();
+	tmp3.close();
+
+	return 0;
 }
 
