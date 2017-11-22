@@ -219,6 +219,32 @@ void Particle::updateSimple(double dt){
 	r_.update(x,y);
 }
 
+//Permet de definir l'essai mecanique:Conditions aux limites (force/vitesse), mais aussi les parametres cellule etc...
+class Config{
+	private:
+		//Tableau de 4 parametres de controle (chaque direction) "v" -> vitesse "f"-> force
+		 char BCU[4];
+		 //Controle en vitesse:
+		 Tensor2x2 LdUser_;
+		 //Controle en force:
+		 Tensor2x2 StressUser_;
+	public:
+		 Config();
+		 ~Config(){};
+		 Tensor2x2 returnLd() const { return LdUser_;}
+		 Tensor2x2 returnStress() const { return StressUser_;}
+};
+//Essai mecanique: 2 fichiers input parametres pour Config, echantillon initial (xmin,xmax...)
+//Prendra input eventuellement dans un fichier
+Config::Config(){
+	//Pour le moment tout en vitesse (cinematique)
+	for(int i=0;i<4;i++){
+		BCU[i] = 'v';
+	}
+	LdUser_.set(0.,0.,1.,0.);
+	StressUser_.set(0.,0.,0.,0.);
+}
+
 //Cellule periodique
 class Cell{
 
@@ -228,6 +254,7 @@ class Cell{
 		//Coordonnees centre:
 		double xc_;
 		double yc_;
+
 		//Metrics: collective degrees of freedom
 		Tensor2x2 h_;
 		Tensor2x2 hd_;
@@ -248,18 +275,21 @@ class Cell{
 		//Cell mass:(a ajuster plus tard)
 		double mh_;
 	public:
-		Cell();
+		Cell(Config&);
 		//A l'avenir constructeur prend en argument un truc qui init/garde en memoire  les DOF controles
-		Cell(double L): L_(L),xc_(L/2.),yc_(L/2.){initAffine();}
+		Cell(double L,Config& config): L_(L),xc_(L/2.),yc_(L/2.){initAffine(config);}
 		~Cell(){};
 
-		void initAffine();
+		//Init les parametres BC et de la grille par utilisateur
+		void initAffine(Config&);
 		void update(Tensor2x2,Tensor2x2);
-		void affiche(){cout<<xc_<<" "<<yc_<<" "<<getVolume()<<endl;}
-		//Met a jours la periodicite 
+		void computeStrainTensor();
+
+		//Met a jours la periodicite des particules
 		void PeriodicBoundaries(Particle&);
 		double getVolume();
 		void write(ofstream&,ofstream&,double);
+
 		//Acces
 		double getMasse() const { return mh_;}
 		double getL() const { return L_;}
@@ -268,13 +298,17 @@ class Cell{
 		Tensor2x2 gethd() const { return hd_;}
 		Tensor2x2 getStressInt() const { return stress_int;}
 		Tensor2x2 getStressExt() const { return stress_ext;}
+
+		//Debug & track:
+		void affiche(){cout<<xc_<<" "<<yc_<<" "<<getVolume()<<endl;}
+
 };
 
-Cell::Cell(){
+Cell::Cell(Config& config){
 	L_ = 1. ;
 	xc_ = 0.5 * L_ ;
 	yc_ = 0.5 * L_ ;
-	initAffine();
+	initAffine(config);
 }
 
 //Construit la cellule
@@ -298,30 +332,35 @@ void Cell::write(ofstream& of,ofstream& of2,double T){
 }
 
 //Init h et hdot
-void Cell::initAffine(){
+void Cell::initAffine(Config& config){
 
 	//Geometrie initiale:
 	h_.set(L_,0.,0.,L_);
 
 	//Utilisateur
-	//Pour l'instant shearsimple, tout est controle en cinematique (hd)
-	double shearrate=1.;
+	//On initialise les tenseurs Ld et StressExt avec ceux de config
+	mh_ = 2.;
+	//Cinematique:
+	Ld_ = config.returnLd();
+	//Dynamique:
+	stress_ext = config.returnStress();
+
 	//On impose plutot un tenseur de gradient de vitesse (en eliminant la rotation) 
-	Ld_.set(0.,0.,shearrate,0.);
+	//Ld_.set(0.,0.,shearrate,0.);
 
 	//Cinematique:
 
+	//Transformation pour le calcul des BC:
 	//Vitesse de deformation de la cellue:
 	//+tension,-compression
 	hd_=Ld_*h_;
+	hd_.affiche();
 
 	//On transforme ca en impose Ld et hd
 	//hd_.set(0.,0.,1.,0.);
 
-	//Dynamique:
-	mh_ = 2.;
 	//Acceleration/Stress ext
-	stress_ext.set(0.,0.,0.,0.);
+	//stress_ext.set(0.,0.,0.,0.);
 }
 
 //Le volume est donné par det(h) (deux vecteurs de base de la cellule)
@@ -342,6 +381,12 @@ void Cell::PeriodicBoundaries(Particle& p){
 	p.getR().add( - getL() *  floor( p.getR().getx()/ getL()) ,0. );
 	p.getR().add(0., - getL() * floor( p.getR().gety()/ getL()) );
 }
+
+
+void Cell::computeStrainTensor(){
+
+}
+	
 
 //Update h et hd de la cellule
 void Cell::update(Tensor2x2 h, Tensor2x2 hd){
@@ -387,16 +432,30 @@ void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 	//Calcul de hdd au debut du pas, hdd0
 	Tensor2x2 hinv = h.getInverse();
 	//Eq (24)
+	//Impose BC() en force: si une direction est controlee en vitesse, on impose hdd0 nulle dans cette dir
+	//Et on calcule le tenseur de contrainte internes a partir de l'equation ac terme de droite nul
+	//Cad que stressext=-stressint dans cette direction
 	hdd0=hinv*(V0/mh)*(stressint+stressext);
+
 	//Calcul position(h) avec hdd0 a la fin du pas de temps
 	h = h + hd*dt + hdd0*0.5*dt*dt;
 	//Volume fin du pas de temps
 	double V1=h.getDet();
 	//Calcul hdd fin du pas, hdd1
 	hinv=h.getInverse();
+
+	//Acceleration fin du pas: pareil que pour hdd0, on ompose hdd1 nul dans direction controle en vitesse
 	hdd1=hinv*(V1/mh)*(stressint+stressext);
+
 	//Calcul de hd fin du pas de temps
+	//Alors la vitesse ds dir controle en vitesse est bien constante (hdd0+hdd1=0)
 	hd=hd+(hdd0+hdd1)*dt*0.5;
+
+	//Impose BC(): on maintient les BC imposees en appliquant les coordonees de L_ imposee par utilisateur
+	//Du coup c'est redondant, je n'ai pas besoin de maintenir les BC en vitesse elles le seront automatiquement avec
+	//le traitement en force du dessus
+	//imposeBC(hd);
+
 	//Update Cell:on fait remonter h,hd
 	cell.update(h,hd);
 //	cell.affiche();
@@ -410,7 +469,8 @@ int main(){
 	double T = 1.;
 
 	vector<Particle> sample;
-	Cell cell(L);
+	Config config;
+	Cell cell(L,config);
 
 	//Initialise coordonnees reduites, absolues, vitesse fluctuante
 	Vecteur r0(L/3,L/3);
