@@ -430,6 +430,7 @@ void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 	double mh=cell.getMasse();
 
 	//Calcul de hdd au debut du pas, hdd0
+	//
 	Tensor2x2 hinv = h.getInverse();
 	//Eq (24)
 	//Impose BC() en force: si une direction est controlee en vitesse, on impose hdd0 nulle dans cette dir
