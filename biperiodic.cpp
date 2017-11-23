@@ -65,6 +65,9 @@ class Tensor2x2{
 		double getyx() const { return yx_;} 
 		double getyy() const { return yy_;} 
 
+		//Renvoie la composante i du tenseur:
+		//0->xx 1->xy 2->yx 3->yy
+
 		void eigenValues();
 		void eigenVectors();
 		void write(ofstream&);
@@ -223,6 +226,7 @@ void Particle::updateSimple(double dt){
 class Config{
 	private:
 		//Tableau de 4 parametres de controle (chaque direction) "v" -> vitesse "f"-> force
+		//0 xx 1 xy 2 yx 3 yy
 		 char BCU[4];
 		 //Controle en vitesse:
 		 Tensor2x2 LdUser_;
@@ -233,16 +237,24 @@ class Config{
 		 ~Config(){};
 		 Tensor2x2 returnLd() const { return LdUser_;}
 		 Tensor2x2 returnStress() const { return StressUser_;}
+
+		 char getBCxx() const { return BCU[0];}
+		 char getBCxy() const { return BCU[1];}
+		 char getBCyx() const { return BCU[2];}
+		 char getBCyy() const { return BCU[3];}
+		 char getBCU(int i) const { return BCU[i];}
 };
 //Essai mecanique: 2 fichiers input parametres pour Config, echantillon initial (xmin,xmax...)
 //Prendra input eventuellement dans un fichier
 Config::Config(){
 	//Pour le moment tout en vitesse (cinematique)
-	for(int i=0;i<4;i++){
+	for(int i=0;i<3;i++){
 		BCU[i] = 'v';
 	}
+	BCU[3]='f';
+	//Par souci de convention, les DL non controles sont init a 0
 	LdUser_.set(0.,0.,1.,0.);
-	StressUser_.set(0.,0.,0.,0.);
+	StressUser_.set(0.,0.,0.,-5.);
 }
 
 //Cellule periodique
@@ -268,6 +280,7 @@ class Cell{
 		//Imposed boundary conditions: garde en memoire ce qui est controle et libre
 		//On impose soit une vitesse hdd, soit une contrainte stress_ext
 		//Il faut que la partie antisymetrique de Ldot soit nulle, equiv a h(hdot) symetrique impose
+		char Control_[4];
 
 		//Stress: int et ext
 		Tensor2x2 stress_ext;
@@ -283,6 +296,7 @@ class Cell{
 		//Init les parametres BC et de la grille par utilisateur
 		void initAffine(Config&);
 		void update(Tensor2x2,Tensor2x2);
+		void computeStressExt();
 		void computeStrainTensor();
 
 		//Met a jours la periodicite des particules
@@ -311,28 +325,14 @@ Cell::Cell(Config& config){
 	initAffine(config);
 }
 
-//Construit la cellule
-void Cell::write(ofstream& of,ofstream& of2,double T){
-
-	double ux=h_.getxx();
-	double uy=h_.getxy();
-	double vx=h_.getyx();
-	double vy=h_.getyy();
-	of<<T<<" "<<xc_<<" "<<yc_<<" "<<ux<<" "<<uy<<endl;
-	of<<T<<" "<<xc_+vx<<" "<<yc_+vy<<" "<<ux<<" "<<uy<<endl;
-	of<<T<<" "<<xc_<<" "<<yc_<<" "<<vx<<" "<<vy<<endl;
-	of<<T<<" "<<xc_+ux<<" "<<yc_+uy<<" "<<vx<<" "<<vy<<endl;
-
-	//of<<T<<" 0 "<<" "<<"0"<<" "<<ux<<" "<<uy<<endl;
-	//of<<T<<" "<<vx<<" "<<vy<<" "<<ux<<" "<<uy<<endl;
-	//of<<T<<" 0 "<<" "<<"0"<<" "<<vx<<" "<<vy<<endl;
-	//of<<T<<" "<<ux<<" "<<uy<<" "<<vx<<" "<<vy<<endl;
-	hd_.eigenVectors();
-	hd_.write(of2);
-}
 
 //Init h et hdot
 void Cell::initAffine(Config& config){
+
+	//Imposed BC by user:
+	for(int i=0;i<4;i++){
+		Control_[i] = config.getBCU(i);
+	}
 
 	//Geometrie initiale:
 	h_.set(L_,0.,0.,L_);
@@ -368,6 +368,25 @@ double Cell::getVolume(){
 	return h_.getDet();
 }
 
+//Construit la cellule
+void Cell::write(ofstream& of,ofstream& of2,double T){
+
+	double ux=h_.getxx();
+	double uy=h_.getxy();
+	double vx=h_.getyx();
+	double vy=h_.getyy();
+	of<<T<<" "<<xc_<<" "<<yc_<<" "<<ux<<" "<<uy<<endl;
+	of<<T<<" "<<xc_+vx<<" "<<yc_+vy<<" "<<ux<<" "<<uy<<endl;
+	of<<T<<" "<<xc_<<" "<<yc_<<" "<<vx<<" "<<vy<<endl;
+	of<<T<<" "<<xc_+ux<<" "<<yc_+uy<<" "<<vx<<" "<<vy<<endl;
+
+	//of<<T<<" 0 "<<" "<<"0"<<" "<<ux<<" "<<uy<<endl;
+	//of<<T<<" "<<vx<<" "<<vy<<" "<<ux<<" "<<uy<<endl;
+	//of<<T<<" 0 "<<" "<<"0"<<" "<<vx<<" "<<vy<<endl;
+	//of<<T<<" "<<ux<<" "<<uy<<" "<<vx<<" "<<vy<<endl;
+	hd_.eigenVectors();
+	hd_.write(of2);
+}
 //PeriodicBoundary Conditions
 void Cell::PeriodicBoundaries(Particle& p){
 
@@ -394,6 +413,51 @@ void Cell::update(Tensor2x2 h, Tensor2x2 hd){
 	hd_ = hd;
 }
 
+//Suppose d'avoir stressInt au temps t
+//Defaut: test a chaque fois ce qui est controle ou non, alors qu'on le sait depuis le début...
+void Cell::computeStressExt(){
+
+	//TEMPORAIRE:
+	stress_int.set(0.,0.,0.,4.);
+
+	double xx, xy, yx, yy;
+	//Composante xx:
+	if(Control_[0] == 'v' ) {
+		xx = -stress_int.getxx();
+	}
+	//Sinon elle reste egale a elle meme (imposee depuis le debut)
+	else{
+		xx = stress_ext.getxx();
+	}
+	//Composante xy:
+	if(Control_[1] == 'v' ) {
+		xy = -stress_int.getxy();
+	}
+	//Sinon elle reste egale a elle meme (imposee depuis le debut)
+	else{
+		xy = stress_ext.getxy();
+	}
+	//Composante yx:
+	if(Control_[2] == 'v' ) {
+		yx = -stress_int.getyx();
+	}
+	//Sinon elle reste egale a elle meme (imposee depuis le debut)
+	else{
+		yx = stress_ext.getyx();
+	}
+	//Composante yy:
+	if(Control_[3] == 'v' ) {
+		yy = -stress_int.getyy();
+	}
+	//Sinon elle reste egale a elle meme (imposee depuis le debut)
+	else{
+		yy = stress_ext.getyy();
+	}
+	//Mise a jour tenseur contraintes:
+	stress_ext.set(xx,xy,yx,yy);
+}
+
+
 //Le couplage passe par le tenseur de contrainte entre cellule et particules
 
 //Update particules, calcul tenseur contrainte interne, update cellule
@@ -417,26 +481,34 @@ void verletalgo_particles(Cell& cell,std::vector<Particle>& ps,double dt){
 //On recupere le tenseur de contraintes internes calcule par verletalgo_particles
 void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 
-	//Les resultantddes du tenseur de contrainte ou de hd peuvent être imposees (a voir)
 	Tensor2x2 h = cell.geth();
 	Tensor2x2 hd = cell.gethd();
+
+	Tensor2x2 hinv = h.getInverse();
 
 	Tensor2x2 hdd0;
 	Tensor2x2 hdd1 = hdd0;
 
+	//Impose BC() en force: si une direction est controlee en vitesse, on impose hdd0 nulle dans cette dir
+	//Et on calcule le tenseur de contrainte internes a partir de l'equation ac terme de droite nul
+	//Cad que stressext=-stressint dans cette direction
+
+	//Si dir controle en vitesse, stressext dans cette dir = stress int
+	//On calcule les composantes de stressext dans cette direction
+	//Apres on fait le produit matriciel
+	cell.computeStressExt();
+
 	Tensor2x2 stressint = cell.getStressInt();
 	Tensor2x2 stressext = cell.getStressExt();
+
+
 	double V0=cell.getVolume();
 	double mh=cell.getMasse();
 
 	//Calcul de hdd au debut du pas, hdd0
-	//
-	Tensor2x2 hinv = h.getInverse();
 	//Eq (24)
-	//Impose BC() en force: si une direction est controlee en vitesse, on impose hdd0 nulle dans cette dir
-	//Et on calcule le tenseur de contrainte internes a partir de l'equation ac terme de droite nul
-	//Cad que stressext=-stressint dans cette direction
 	hdd0=hinv*(V0/mh)*(stressint+stressext);
+	hdd0.affiche();
 
 	//Calcul position(h) avec hdd0 a la fin du pas de temps
 	h = h + hd*dt + hdd0*0.5*dt*dt;
@@ -455,7 +527,6 @@ void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 	//Impose BC(): on maintient les BC imposees en appliquant les coordonees de L_ imposee par utilisateur
 	//Du coup c'est redondant, je n'ai pas besoin de maintenir les BC en vitesse elles le seront automatiquement avec
 	//le traitement en force du dessus
-	//imposeBC(hd);
 
 	//Update Cell:on fait remonter h,hd
 	cell.update(h,hd);
@@ -467,7 +538,7 @@ int main(){
 	//Parametres:
 	double const L = 1.;
 	double dt = .01 ;
-	double T = 1.;
+	double T = 0.2;
 
 	vector<Particle> sample;
 	Config config;
