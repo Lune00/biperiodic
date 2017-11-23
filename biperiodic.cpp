@@ -57,8 +57,8 @@ class Tensor2x2{
 		double getDet(){ return (xx_*yy_ - xy_*yx_) ;}
 		Tensor2x2 getInverse();
 		Tensor2x2 getTranspose();
-		void affiche(){cout<<xx_<<" "<<xy_<<endl;
-			cout<<yx_<<" "<<yy_<<endl;}
+		void affiche(){cout<<endl;cout<<xx_<<" "<<xy_<<endl;
+			cout<<yx_<<" "<<yy_<<endl;cout<<endl;}
 
 		//Accesseurs:
 		double getxx() const { return xx_;} 
@@ -72,6 +72,7 @@ class Tensor2x2{
 		void eigenValues();
 		void eigenVectors();
 		void write(ofstream&);
+		void writeEigenVectors(ofstream&);
 
 		Tensor2x2 operator * (Tensor2x2 a){
 			Tensor2x2 p;
@@ -108,6 +109,9 @@ void Tensor2x2::eigenValues(){
 	double d=b*b-4*c;
 	l1_=(-b-sqrt(d))/2.;
 	l2_=(-b+sqrt(d))/2.;
+	double tmp=max(l1_,l2_);
+	l2_=min(l1_,l2_);
+	l1_=tmp;
 }
 
 void Tensor2x2::eigenVectors(){
@@ -136,7 +140,6 @@ void Tensor2x2::eigenVectors(){
 	vx2_/=norme;
 	vy2_/=norme;
 
-	cout<<vx1_<<" "<<vy1_<<endl;
 	u1_.setx(vx1_);
 	u1_.sety(vy1_);
 	u2_.setx(vx2_);
@@ -144,8 +147,15 @@ void Tensor2x2::eigenVectors(){
 	}
 }
 
-void Tensor2x2::write(ofstream& of){
+void Tensor2x2::writeEigenVectors(ofstream& of){
 	of<<"0. 0. "<<u1_.getx()<<" "<<u1_.gety()<<" "<<u2_.getx()<<" "<<u2_.gety()<<endl;
+}
+
+void Tensor2x2::write(ofstream& of){
+	eigenValues();
+	double spherique=l1_+l2_;
+	double deviatorique=l1_-l2_;
+	of<<xx_<<" "<<xy_<<" "<<yx_<<" "<<yy_<<" "<<spherique<<" "<<deviatorique<<" "<<l1_<<" "<<l2_<<xx_+yy_<<endl;
 }
 
 void Tensor2x2::set(double xx, double xy, double yx, double yy){
@@ -255,8 +265,10 @@ Config::Config(){
 	for(int i=0;i<4;i++){
 		BCU[i] = 'v';
 	}
+	//BCU[3]='f';
 	//Par souci de convention, les DL non controles sont init a 0
-	LdUser_.set(0.,0.,1.,0.);
+	//Par definition, le taux de cisaillement pur est egale a la moitie de LdUser.yx(ou xy)
+	LdUser_.set(0.,1.,0.,0.);
 	StressUser_.set(0.,0.,0.,0.);
 }
 
@@ -279,6 +291,8 @@ class Cell{
 
 		//Metrics: collective degrees of freedom
 		Tensor2x2 h_;
+		//Garde en memoire la forme originelle cellule pour calcul d'engeniring strain (L(t)-L0/LO))
+		Tensor2x2 h0_;
 		Tensor2x2 hd_;
 		//Strain tensor: cumulative (time measure of the essai)
 		Tensor2x2 s_;
@@ -299,7 +313,7 @@ class Cell{
 		//Controle force/vitesse
 		void ApplyBC();
 		//Maj de h,hdd,Ld,s apres a la fin du pas de temps
-		void update(Tensor2x2,Tensor2x2);
+		void update(Tensor2x2,Tensor2x2,double);
 
 		//Met a jours la periodicite des particules
 		void PeriodicBoundaries(Particle&);
@@ -339,6 +353,7 @@ void Cell::initCell(Config& config){
 
 	//Geometrie initiale:
 	h_.set(L_,0.,0.,L_);
+	h0_ = h_;
 
 	//Utilisateur
 	//On initialise les tenseurs Ld et StressExt avec ceux de config
@@ -373,9 +388,10 @@ double Cell::getVolume(){
 void Cell::write(ofstream& of,ofstream& of2,double T){
 
 	double ux=h_.getxx();
-	double uy=h_.getxy();
-	double vx=h_.getyx();
+	double uy=h_.getyx();
+	double vx=h_.getxy();
 	double vy=h_.getyy();
+
 	of<<T<<" "<<xc_<<" "<<yc_<<" "<<ux<<" "<<uy<<endl;
 	of<<T<<" "<<xc_+vx<<" "<<yc_+vy<<" "<<ux<<" "<<uy<<endl;
 	of<<T<<" "<<xc_<<" "<<yc_<<" "<<vx<<" "<<vy<<endl;
@@ -385,8 +401,8 @@ void Cell::write(ofstream& of,ofstream& of2,double T){
 	//of<<T<<" "<<vx<<" "<<vy<<" "<<ux<<" "<<uy<<endl;
 	//of<<T<<" 0 "<<" "<<"0"<<" "<<vx<<" "<<vy<<endl;
 	//of<<T<<" "<<ux<<" "<<uy<<" "<<vx<<" "<<vy<<endl;
-	hd_.eigenVectors();
-	hd_.write(of2);
+	s_.eigenVectors();
+	s_.write(of2);
 }
 //PeriodicBoundary Conditions
 void Cell::PeriodicBoundaries(Particle& p){
@@ -406,16 +422,33 @@ void Cell::PeriodicBoundaries(Particle& p){
 //On peut meme updater Ld, car par construction le control en vitesse se fait par le controle en force
 //Normalement si on change Ld ca ne changera pas le Ld initial
 //A partir de la maj de Ld on peut facilement calculer le tenseur de deformations
-void Cell::update(Tensor2x2 h, Tensor2x2 hd){
+//UP
+void Cell::update(Tensor2x2 h, Tensor2x2 hd, double dt){
 
 	h_ = h;
 	hd_ = hd;
+
+	hd_.affiche();
 	Tensor2x2 hinv = h_.getInverse();
 
 	Ld_ = hd_*hinv;
 	Tensor2x2 LdT = Ld_.getTranspose();
-	//Calcul du tenseur de deformation de maniere generale:
-	s_ = (Ld_ + LdT) * 0.5;
+//	Ld_.affiche();
+	//Calcul du tenseur de deformation de maniere generale cumule
+	//s_ = s_ +  (Ld_ + LdT) * dt;
+
+	//Provisoire, test:
+	double Lx0= h0_.getxx();
+	double Ly0= h0_.getyy();
+	double Lxt= h_.getxx();
+	double Lyt= h_.getyy();
+
+	double sxx = (Lxt-Lx0)/Lx0;
+	double syy = (Lyt-Ly0)/Ly0;
+	double sxy = (h_.getxy() - h0_.getxy())/Ly0;
+	double syx = (h_.getyx() - h0_.getyx())/Lx0; 
+
+	s_.set(sxx,sxy,syx,syy);
 }
 
 //Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration
@@ -424,7 +457,7 @@ void Cell::update(Tensor2x2 h, Tensor2x2 hd){
 void Cell::ApplyBC(){
 
 	//TEMPORAIRE:
-	stress_int.set(0.,0.,0.,4.);
+//	stress_int.set(0.,0.,0.,4.);
 
 	double xx, xy, yx, yy;
 	//Composante xx:
@@ -507,6 +540,7 @@ void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 	Tensor2x2 stressint = cell.getStressInt();
 	Tensor2x2 stressext = cell.getStressExt();
 
+	stressext.affiche();
 
 	double V0=cell.getVolume();
 	double mh=cell.getMasse();
@@ -514,7 +548,6 @@ void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 	//Calcul de hdd au debut du pas, hdd0
 	//Eq (24)
 	hdd0=hinv*(V0/mh)*(stressint+stressext);
-	hdd0.affiche();
 
 	//Calcul position(h) avec hdd0 a la fin du pas de temps
 	h = h + hd*dt + hdd0*0.5*dt*dt;
@@ -535,7 +568,7 @@ void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 	//le traitement en force du dessus
 
 	//Update Cell:on fait remonter h,hd
-	cell.update(h,hd);
+	cell.update(h,hd,dt);
 //	cell.affiche();
 }
 
@@ -543,8 +576,8 @@ int main(){
 
 	//Parametres:
 	double const L = 1.;
-	double dt = .01 ;
-	double T = 0.2;
+	double dt = .001 ;
+	double T = 1.;
 
 	vector<Particle> sample;
 	Config config;
@@ -558,7 +591,7 @@ int main(){
 
 	ofstream tmp("particle.txt");
 	ofstream tmp2("cell.txt");
-	ofstream tmp3("strainrateTensor.txt");
+	ofstream tmp3("strain.txt");
 
 	double t=0.;
 	int k=0;
@@ -571,9 +604,10 @@ int main(){
 		verletalgo_space(cell,sample,dt);
 
 		//outputs:
-		if( k%1 == 0 ){
-			cell.write(tmp2,tmp3,T);
+		if( k% 10 == 0 ){
+			cell.write(tmp2,tmp3,t);
 			p.write(tmp);
+			cout<<t<<" "<<cell.getVolume()<<endl;
 		}
 
 		t+=dt;
