@@ -56,6 +56,7 @@ class Tensor2x2{
 		void set(double xx, double xy, double yx, double yy);
 		double getDet(){ return (xx_*yy_ - xy_*yx_) ;}
 		Tensor2x2 getInverse();
+		Tensor2x2 getTranspose();
 		void affiche(){cout<<xx_<<" "<<xy_<<endl;
 			cout<<yx_<<" "<<yy_<<endl;}
 
@@ -169,7 +170,10 @@ Tensor2x2 Tensor2x2::getInverse(){
 	}
 }
 
-
+Tensor2x2 Tensor2x2::getTranspose(){
+	Tensor2x2 Transpose(xx_,yx_,xy_,yy_);
+	return Transpose;
+}
 
 Vecteur Vecteur::productTensor(Tensor2x2& T){
 	Vecteur r;
@@ -248,13 +252,12 @@ class Config{
 //Prendra input eventuellement dans un fichier
 Config::Config(){
 	//Pour le moment tout en vitesse (cinematique)
-	for(int i=0;i<3;i++){
+	for(int i=0;i<4;i++){
 		BCU[i] = 'v';
 	}
-	BCU[3]='f';
 	//Par souci de convention, les DL non controles sont init a 0
 	LdUser_.set(0.,0.,1.,0.);
-	StressUser_.set(0.,0.,0.,-5.);
+	StressUser_.set(0.,0.,0.,0.);
 }
 
 //Cellule periodique
@@ -266,45 +269,45 @@ class Cell{
 		//Coordonnees centre:
 		double xc_;
 		double yc_;
+		//Cell mass:(a ajuster plus tard)
+		double mh_;
 
-		//Metrics: collective degrees of freedom
-		Tensor2x2 h_;
-		Tensor2x2 hd_;
-
-		//Strain rate tensor (BC), on applique ca plutot que hd_ (utilisateur)
-		Tensor2x2 sd_;
-		//Strain tensor: cumulative (time measure of the essai)
-		Tensor2x2 s_;
-		//Velocity gradient tensor (a voir plus tard, mais BC plus generale possible)
-		Tensor2x2 Ld_;
 		//Imposed boundary conditions: garde en memoire ce qui est controle et libre
 		//On impose soit une vitesse hdd, soit une contrainte stress_ext
 		//Il faut que la partie antisymetrique de Ldot soit nulle, equiv a h(hdot) symetrique impose
 		char Control_[4];
 
+		//Metrics: collective degrees of freedom
+		Tensor2x2 h_;
+		Tensor2x2 hd_;
+		//Strain tensor: cumulative (time measure of the essai)
+		Tensor2x2 s_;
+		//Velocity gradient tensor (a voir plus tard, mais BC plus generale possible)
+		Tensor2x2 Ld_;
 		//Stress: int et ext
 		Tensor2x2 stress_ext;
+		//Maj par particules
 		Tensor2x2 stress_int;
-		//Cell mass:(a ajuster plus tard)
-		double mh_;
 	public:
 		Cell(Config&);
 		//A l'avenir constructeur prend en argument un truc qui init/garde en memoire  les DOF controles
-		Cell(double L,Config& config): L_(L),xc_(L/2.),yc_(L/2.){initAffine(config);}
+		Cell(double L,Config& config): L_(L),xc_(L/2.),yc_(L/2.){initCell(config);}
 		~Cell(){};
 
 		//Init les parametres BC et de la grille par utilisateur
-		void initAffine(Config&);
+		void initCell(Config&);
+		//Controle force/vitesse
+		void ApplyBC();
+		//Maj de h,hdd,Ld,s apres a la fin du pas de temps
 		void update(Tensor2x2,Tensor2x2);
-		void computeStressExt();
-		void computeStrainTensor();
 
 		//Met a jours la periodicite des particules
 		void PeriodicBoundaries(Particle&);
-		double getVolume();
+
 		void write(ofstream&,ofstream&,double);
 
 		//Acces
+		double getVolume();
 		double getMasse() const { return mh_;}
 		double getL() const { return L_;}
 		double getL2() const { return L_/2.;}
@@ -322,12 +325,12 @@ Cell::Cell(Config& config){
 	L_ = 1. ;
 	xc_ = 0.5 * L_ ;
 	yc_ = 0.5 * L_ ;
-	initAffine(config);
+	initCell(config);
 }
 
 
 //Init h et hdot
-void Cell::initAffine(Config& config){
+void Cell::initCell(Config& config){
 
 	//Imposed BC by user:
 	for(int i=0;i<4;i++){
@@ -354,8 +357,6 @@ void Cell::initAffine(Config& config){
 	//Vitesse de deformation de la cellue:
 	//+tension,-compression
 	hd_=Ld_*h_;
-	hd_.affiche();
-
 	//On transforme ca en impose Ld et hd
 	//hd_.set(0.,0.,1.,0.);
 
@@ -401,21 +402,26 @@ void Cell::PeriodicBoundaries(Particle& p){
 	p.getR().add(0., - getL() * floor( p.getR().gety()/ getL()) );
 }
 
-
-void Cell::computeStrainTensor(){
-
-}
-	
-
-//Update h et hd de la cellule
+//Update h et hd de la cellule, ainsi que L et strain tensor
+//On peut meme updater Ld, car par construction le control en vitesse se fait par le controle en force
+//Normalement si on change Ld ca ne changera pas le Ld initial
+//A partir de la maj de Ld on peut facilement calculer le tenseur de deformations
 void Cell::update(Tensor2x2 h, Tensor2x2 hd){
+
 	h_ = h;
 	hd_ = hd;
+	Tensor2x2 hinv = h_.getInverse();
+
+	Ld_ = hd_*hinv;
+	Tensor2x2 LdT = Ld_.getTranspose();
+	//Calcul du tenseur de deformation de maniere generale:
+	s_ = (Ld_ + LdT) * 0.5;
 }
 
+//Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration
 //Suppose d'avoir stressInt au temps t
 //Defaut: test a chaque fois ce qui est controle ou non, alors qu'on le sait depuis le début...
-void Cell::computeStressExt(){
+void Cell::ApplyBC(){
 
 	//TEMPORAIRE:
 	stress_int.set(0.,0.,0.,4.);
@@ -496,7 +502,7 @@ void verletalgo_space(Cell& cell,std::vector<Particle>& ps, double dt){
 	//Si dir controle en vitesse, stressext dans cette dir = stress int
 	//On calcule les composantes de stressext dans cette direction
 	//Apres on fait le produit matriciel
-	cell.computeStressExt();
+	cell.ApplyBC();
 
 	Tensor2x2 stressint = cell.getStressInt();
 	Tensor2x2 stressext = cell.getStressExt();
