@@ -12,9 +12,9 @@ class Algo{
 		double dt_;
 
 	public:
-		Algo(){};
+		Algo(double dt): dt_(dt) {};
 		~Algo(){};
-		void verletalgo(Cell&,std::vector<Particle>&,double);
+		void verletalgo(Cell&,std::vector<Particle>&);
 
 };
 

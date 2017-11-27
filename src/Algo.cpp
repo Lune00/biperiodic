@@ -13,8 +13,9 @@ using namespace std;
 //Integre la dynamique de l'espace, de la cellule au temps t, a besoin tenseur contraintes
 //Il y a couplage entre debut et fin du pas de temps
 //Il faut integrer les deux en meme temps
-void verletalgo(Cell& cell,std::vector<Particle>& ps, double dt){
+void Algo::verletalgo(Cell& cell,std::vector<Particle>& ps){
 
+	cout<<"Hello"<<endl;
 	//Attention: variable globale algo hinv, stress ext et int
 	//Init:
 	Tensor2x2 h = cell.geth();
@@ -49,7 +50,7 @@ void verletalgo(Cell& cell,std::vector<Particle>& ps, double dt){
 	hdd0=hinv*(V0/mh)*(TotalStress);
 
 	//Calcul position(h) avec hdd0 a la fin du pas de temps
-	h = h + hd*dt + hdd0*0.5*dt*dt;
+	h = h + hd*dt_ + hdd0*0.5*dt_*dt_;
 
 	//Calcul des positions particules fin du pas de temps
 
@@ -68,7 +69,7 @@ void verletalgo(Cell& cell,std::vector<Particle>& ps, double dt){
 		tmp = tmp * (V0/mh);
 		//a0 a stocker
 		Vecteur a0 = F * (1./m) + tmp; 
-		r = r + v * dt + a0 * dt * dt * 0.5;
+		r = r + v * dt_ + a0 * dt_ * dt_ * 0.5;
 		//update position et acceleration debut pas temps
 		it->setR(r,a0);
 	}
@@ -111,7 +112,7 @@ void verletalgo(Cell& cell,std::vector<Particle>& ps, double dt){
 		tmp = tmp * (V1/mh);
 		Vecteur a1 = F * (1./m) + tmp; 
 		a1.print();
-		Vecteur v = it->getV() + (a1 + a0) * dt * 0.5 ;
+		Vecteur v = it->getV() + (a1 + a0) * dt_ * 0.5 ;
 		v.print();
 		cout<<"vitesse:";
 		//update vitesse
@@ -127,8 +128,8 @@ void verletalgo(Cell& cell,std::vector<Particle>& ps, double dt){
 
 	//Calcul de hd fin du pas de temps
 	//Alors la vitesse ds dir controle en vitesse est bien constante (hdd0+hdd1=0)
-	hd=hd+(hdd0+hdd1)*dt*0.5;
+	hd=hd+(hdd0+hdd1)*dt_*0.5;
 
 	//Update Cell:on fait remonter h,hd
-	cell.update(h,hd,dt);
+	cell.update(h,hd,dt_);
 }

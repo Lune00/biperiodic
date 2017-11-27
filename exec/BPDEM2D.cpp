@@ -4,10 +4,12 @@
 #include<fstream>
 #include<vector>
 
-class Tensor2x2;
-class Vecteur;
-class Cell;
-class Particle;
+#include"Particle.hpp"
+#include"Cell.hpp"
+#include"Config.hpp"
+#include"Algo.hpp"
+
+using namespace std;
 
 //Appartient a Sample
 void write(std::vector<Particle> sp,ofstream& of,double t){
@@ -27,6 +29,7 @@ int main(){
 	vector<Particle> sample;
 	Config config;
 	Cell cell(L,config);
+	Algo algo(dt);
 
 	//Initialise coordonnees reduites, absolues, vitesse fluctuante
 	Vecteur r0(L/3,L/3);
@@ -45,7 +48,7 @@ int main(){
 		//Check for boundary:
 		cell.PeriodicBoundaries(p);
 		//Update :
-		verletalgo(cell,sample,dt);
+		algo.verletalgo(cell,sample);
 
 		//outputs:
 		if( k% 1 == 0 ){
