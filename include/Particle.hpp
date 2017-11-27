@@ -2,6 +2,8 @@
 #define Particle_hpp
 
 #include"Vecteur.hpp" 
+#include<vector>
+#include<fstream>
 
 class Particle{
 	private:
@@ -31,7 +33,7 @@ class Particle{
 		Particle(Vecteur r, double L, Vecteur v) {r_ = r; v_ = v; init(L);}
 		~Particle(){};
 
-		void write(ofstream&);
+		void write(std::ofstream&);
 		void init(double L);
 		void affiche();
 

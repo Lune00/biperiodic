@@ -1,7 +1,7 @@
 #ifndef Config_hpp
 #define Config_hpp
 
-#include"Tenseur.pp"
+#include"Tenseur.hpp"
 
 //Permet de definir l'essai mecanique:Conditions aux limites (force/vitesse), mais aussi les parametres cellule etc...
 class Config{

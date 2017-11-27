@@ -1,8 +1,10 @@
 #ifndef Tensor_hpp
 #define Tensor_hpp
-#include<cmath>
 
-class Vecteur;
+#include<fstream>
+#include<iostream>
+
+#include"Vecteur.hpp"
 
 class Tensor2x2{
 	private:
@@ -25,8 +27,8 @@ class Tensor2x2{
 		double getDet(){ return (xx_*yy_ - xy_*yx_) ;}
 		Tensor2x2 getInverse();
 		Tensor2x2 getTranspose();
-		void affiche(){cout<<endl;cout<<xx_<<" "<<xy_<<endl;
-			cout<<yx_<<" "<<yy_<<endl;cout<<endl;}
+		void affiche(){std::cout<<std::endl;std::cout<<xx_<<" "<<xy_<<std::endl;
+			std::cout<<yx_<<" "<<yy_<<std::endl;std::cout<<std::endl;}
 
 		//Accesseurs:
 		double getxx() const { return xx_;} 
@@ -39,8 +41,8 @@ class Tensor2x2{
 
 		void eigenValues();
 		void eigenVectors();
-		void write(ofstream&);
-		void writeEigenVectors(ofstream&);
+		void write(std::ofstream&);
+		void writeEigenVectors(std::ofstream&);
 
 		Tensor2x2 operator * (Tensor2x2 a){
 			Tensor2x2 p;

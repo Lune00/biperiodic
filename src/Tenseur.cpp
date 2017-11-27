@@ -1,5 +1,4 @@
 #include"Tenseur.hpp"
-#include"Vecteur.cpp"
 
 using namespace std;
 

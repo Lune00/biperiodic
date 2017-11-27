@@ -2,6 +2,9 @@
 #define Cell_hpp
 
 #include"Config.hpp"
+#include"Particle.hpp"
+#include<iostream>
+#include<fstream>
 
 //Cellule periodique
 class Cell{
@@ -49,7 +52,7 @@ class Cell{
 		//Met a jours la periodicite des particules
 		void PeriodicBoundaries(Particle&);
 
-		void write(ofstream&,ofstream&,double);
+		void write(std::ofstream&,std::ofstream&,double);
 
 		//Acces
 		double getVolume();
@@ -62,7 +65,7 @@ class Cell{
 		Tensor2x2 getStressExt() const { return stress_ext;}
 
 		//Debug & track:
-		void affiche(){cout<<xc_<<" "<<yc_<<" "<<getVolume()<<endl;}
+		void affiche(){std::cout<<xc_<<" "<<yc_<<" "<<getVolume()<<std::endl;}
 
 };
 

@@ -1,5 +1,8 @@
 #ifndef Algo_hpp
 #define Algo_hpp
+#include<vector>
+#include<iostream>
+
 
 class Cell;
 class Particle;

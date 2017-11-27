@@ -1,8 +1,8 @@
 #ifndef Vecteur_hpp
 #define Vecteur_hpp
-#include<cmath>
 
-class Tenseur2x2;
+#include<iostream>
+#include<cmath>
 
 class Vecteur{
 	private:
@@ -13,7 +13,7 @@ class Vecteur{
 		Vecteur(double x, double y): x_(x), y_(y){};
 		~Vecteur(){};
 
-		void print(){cout<<x_<<" "<<y_<<endl;}
+		void print(){std::cout<<x_<<" "<<y_<<std::endl;}
 		void set(double x,double y){ x_=x; y_=y;}
 		void add(double dx, double dy) { x_ += dx ; y_ += dy;}
 
@@ -24,8 +24,6 @@ class Vecteur{
 		//Mutators:
 		void setx(double x) {x_ = x;}
 		void sety(double y) {y_ = y;}
-
-		Vecteur productTensor(Tensor2x2&);
 
 		//Surcharge operator:
 		//Scalar product:
