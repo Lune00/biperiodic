@@ -29,6 +29,7 @@ class Cell{
 		//Garde en memoire la forme originelle cellule pour calcul d'engeniring strain (L(t)-L0/LO))
 		Tensor2x2 h0_;
 		Tensor2x2 hd_;
+		Tensor2x2 hdd_;
 		//Strain tensor: cumulative (time measure of the essai)
 		Tensor2x2 s_;
 		//Velocity gradient tensor (a voir plus tard, mais BC plus generale possible)
@@ -64,6 +65,7 @@ class Cell{
 		Tensor2x2 gethd() const { return hd_;}
 		Tensor2x2 getStressInt() const { return stress_int;}
 		Tensor2x2 getStressExt() const { return stress_ext;}
+		Tensor2x2 gethdd() const { return hdd_;}
 
 		//Debug & track:
 		void affiche(){std::cout<<xc_<<" "<<yc_<<" "<<getVolume()<<std::endl;}

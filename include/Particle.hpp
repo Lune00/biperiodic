@@ -9,14 +9,20 @@ class Particle{
 	private:
 		//Position absolue
 		Vecteur r_;
-		//Reduced coordinate
-		Vecteur s_;
 		//Vitesse:
 		Vecteur v_;
+
+		//TEMPORAIRE
+		//Reduced coordinate
+		Vecteur s_;
 		//Acceleration debut pas de temps:
 		Vecteur a0_;
 		//Forces:
 		Vecteur f_;
+		//END TEMMPORAIRE
+
+		//Vecteur acc:
+		Vecteur a_;
 		//Torque:
 		double t_;
 		//Vrot:
@@ -29,7 +35,7 @@ class Particle{
 		double R_;
 		
 	public:
-		Particle(): r_(), v_(), s_(), a0_(), f_(), t_(0.), vrot_(0.), rot_(0.), m_(1.), R_(1.) {}; 
+		Particle(): r_(), v_(), s_(),a_(), a0_(), f_(), t_(0.), vrot_(0.), rot_(0.), m_(1.), R_(1.) {}; 
 		Particle(Vecteur r, double L, Vecteur v) {r_ = r; v_ = v; init(L);}
 		~Particle(){};
 
@@ -45,8 +51,10 @@ class Particle{
 		Vecteur getV() const { return v_;}
 		Vecteur getForce() const { return f_;}
 		Vecteur geta0() const {return a0_;}
+		Vecteur geta() const {return a_;}
 		void setV(Vecteur v) { v_=v;}
 		void setR(Vecteur r, Vecteur a0) { r_ = r; a0_=a0;}
+		void setRV(Vecteur r, Vecteur v) { r_ = r ; v_ = v }
 		
 };
 

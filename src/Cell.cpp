@@ -41,6 +41,7 @@ void Cell::initCell(Config& config){
 	hd_=Ld_*h_;
 	//On transforme ca en impose Ld et hd
 	//hd_.set(0.,0.,1.,0.);
+	hdd_ = stress_ext * (1./mh_);
 
 	//Acceleration/Stress ext
 	//stress_ext.set(0.,0.,0.,0.);

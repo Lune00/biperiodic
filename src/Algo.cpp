@@ -133,3 +133,94 @@ void Algo::verletalgo(Cell& cell,std::vector<Particle>& ps){
 	//Update Cell:on fait remonter h,hd
 	cell.update(h,hd,dt_);
 }
+
+//Pour l'instant on l'implemente de maniere naive
+//et non optimale (ecriture condensee a l'aide tenseurs/vecteurs)
+//On verra apres comment rendre ca plus compacte
+void Algo::verletalgo2(Cell& cell,std::vector<Particle>& ps){
+
+  double dt2_2 = 0.5 * dt_ * dt_ ;
+  double dt_2 = 0.5 * dt_ ;
+  //Integre mvt particules:
+  for(std::vector<Particle>::iterator it = ps.begin(); it != ps.end(); it++){
+
+    Vecteur a = it->geta();
+    Vecteur r = it->getR();
+    Vecteur v = it->getV();
+    //Rotations, to add
+    r = r + v * dt_ + a * dt2_2;
+    v = v + a * dt_2
+      //update position et acceleration debut pas temps
+      it->setRV(r,v);
+  }
+
+  //Periodicite en position des particules
+  //Construire images si particules sortent de la cellule
+
+  //Integration du mvt de la cellule:
+	Tensor2x2 h = cell.geth();
+	Tensor2x2 hd = cell.gethd();
+	Tensor2x2 hdd = cell.gethdd();
+
+	//h = h + hd * dt_ + hdd * dt2_2 ;
+	//Controle en force ou controle en vitesse
+	//Temporaire:
+	double hxx, hxy , hyx , hyy ;
+	double hdxx, hdxy , hdyx , hdyy ;
+
+	if(Control_[0] == 'f' ) {
+	  hxx = h.getxx() + hd_.getxx() * dt_ + hdd_.getxx() * dt2_2 ;
+	  hdxx = hd.getxx() + hdd.getxx() * dt_2 ;
+	}
+	else{
+	  //Vitesse imposee reste la meme (hdd, definit par Ld_ au debut)
+	  //hdd par definition nulle si control en vitesse sur hdd
+	  hxx = h.getxx() + hd.getxx() * dt_ ; 
+	  hdxx = hd.getxx();
+	}
+
+	if(Control_[1] == 'f' ) {
+	  hxy = h.getxy() + hd_.getxy() * dt_  + hdd_.getxy() * dt2_2 ;
+	  hdxy = hd.getxy() + hdd.getxy() * dt_2 ;
+	}
+	else{
+	  hxy = h.getxy() + hd.getxy() * dt_ ; 
+	  hdxy = hd.getxy();
+	}
+
+	if(Control_[2] == 'f' ) {
+	  hyx = h.getyx() + hd_.getyx() * dt_  + hdd_.getyx() * dt2_2 ;
+	  hdyx = hd.getyx() + hdd.getyx() * dt_2 ;
+	}
+	else{
+	  hyx = h.getyx() + hd.getyx() * dt_ ; 
+	  hdyx = hd.getyx();
+	}
+
+	if(Control_[3] == 'f' ) {
+	  hyy = h.getyy() + hd_.getyy() * dt_  + hdd_.getyy() * dt2_2 ;
+	  hdyy = hd.getyy() + hdd.getyy() * dt_2 ;
+	}
+	else{
+	  hyy = h.getyy() + hd.getyy() * dt_ ; 
+	  hdyy = hd.getyy();
+	}
+	
+	//Set new h
+	h.set(hxx,hxy,hyx,hyy);
+	hd.set(hdxx,hdxy,hdyx,hdyy);
+	cell.update(h,hd,dt_);
+
+
+	//Calcul des forces entre particules a la nouvelle position fin du pas de temps
+
+
+	//Calcul du tenseur de contraintes internes: sigma_int
+
+
+	//Etape imcomprise: acceleration(i) = hinverse(t+dt) * acceleration(i)
+
+
+	//Calcul des vitesses a la fin du pas de temps:
+
+}
