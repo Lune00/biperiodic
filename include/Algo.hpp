@@ -15,6 +15,7 @@ class Algo{
 		Algo(double dt): dt_(dt) {};
 		~Algo(){};
 		void verletalgo(Cell&,std::vector<Particle>&);
+		void verletalgo2(Cell&,std::vector<Particle>&);
 
 };
 

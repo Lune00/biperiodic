@@ -4,14 +4,19 @@ using namespace std;
 
 Cell::Cell(Config& config){
 	L_ = 1. ;
-	xc_ = 0.5 * L_ ;
-	yc_ = 0.5 * L_ ;
+	//xc_ = 0.5 * L_ ;
+	//yc_ = 0.5 * L_ ;
 	initCell(config);
+	xc_ = 0.;
+	yc_ = 0.;
 }
 
 
 //Init h et hdot
 void Cell::initCell(Config& config){
+
+	//Doit scaler avec masse echantillon
+	mh_ = 2.;
 
 	//Imposed BC by user:
 	for(int i=0;i<4;i++){
@@ -24,27 +29,19 @@ void Cell::initCell(Config& config){
 
 	//Utilisateur
 	//On initialise les tenseurs Ld et StressExt avec ceux de config
-	mh_ = 2.;
 	//Cinematique:
 	Ld_ = config.returnLd();
 	//Dynamique:
 	stress_ext = config.returnStress();
-
+	hdd_ = stress_ext * (1./mh_);
 	//On impose plutot un tenseur de gradient de vitesse (en eliminant la rotation) 
 	//Ld_.set(0.,0.,shearrate,0.);
-
 	//Cinematique:
-
 	//Transformation pour le calcul des BC:
 	//Vitesse de deformation de la cellue:
 	//+tension,-compression
 	hd_=Ld_*h_;
-	//On transforme ca en impose Ld et hd
-	//hd_.set(0.,0.,1.,0.);
-	hdd_ = stress_ext * (1./mh_);
 
-	//Acceleration/Stress ext
-	//stress_ext.set(0.,0.,0.,0.);
 }
 
 //Le volume est donné par det(h) (deux vecteurs de base de la cellule)
@@ -60,50 +57,48 @@ void Cell::write(ofstream& of,ofstream& of2,double T){
 	double vx=h_.getxy();
 	double vy=h_.getyy();
 
-	of<<T<<" "<<xc_<<" "<<yc_<<" "<<ux<<" "<<uy<<endl;
-	of<<T<<" "<<xc_+vx<<" "<<yc_+vy<<" "<<ux<<" "<<uy<<endl;
-	of<<T<<" "<<xc_<<" "<<yc_<<" "<<vx<<" "<<vy<<endl;
-	of<<T<<" "<<xc_+ux<<" "<<yc_+uy<<" "<<vx<<" "<<vy<<endl;
+	of<<T<<" "<<xc_- L_/2.<<" "<<yc_ - L_/2<<" "<<ux<<" "<<uy<<endl;
+	of<<T<<" "<<xc_- L_/2.+vx<<" "<<yc_- L_/2.+vy<<" "<<ux<<" "<<uy<<endl;
+	of<<T<<" "<<xc_- L_/2.<<" "<<yc_- L_/2.<<" "<<vx<<" "<<vy<<endl;
+	of<<T<<" "<<xc_- L_/2.+ux<<" "<<yc_- L_/2.+uy<<" "<<vx<<" "<<vy<<endl;
 
-	//of<<T<<" 0 "<<" "<<"0"<<" "<<ux<<" "<<uy<<endl;
-	//of<<T<<" "<<vx<<" "<<vy<<" "<<ux<<" "<<uy<<endl;
-	//of<<T<<" 0 "<<" "<<"0"<<" "<<vx<<" "<<vy<<endl;
-	//of<<T<<" "<<ux<<" "<<uy<<" "<<vx<<" "<<vy<<endl;
-	s_.eigenVectors();
-	s_.write(of2);
 }
 //PeriodicBoundary Conditions
-void Cell::PeriodicBoundaries(Particle& p){
+void Cell::PeriodicBoundaries(std::vector<Particle>& sp){
+	for(std::vector<Particle>::iterator it = sp.begin() ; it != sp.end(); it++){
+		double dx = 0.;
+		double dy = 0.;
+		if( it->getR().getx() > getL2() )  dx = -1.;
+		if( it->getR().getx() < -getL2() ) dx = 1.;
+		if( it->getR().gety() < -getL2() ) dy = 1.;
+		if( it->getR().gety() > getL2() )  dy = -1.;
+		it->Periodize(dx,dy);
 
-	//Periodic position
-	//if( p.getR().getx() > getL2() ) p.getR().add(-getL(),0.);
-	//if( p.getR().getx() < -getL2() ) p.getR().add(getL(),0.);
-	//if( p.getR().gety() < -getL2() ) p.getR().add(0.,getL());
-	//if( p.getR().gety() > getL2() ) p.getR().add(0.,-getL());
-
-	//Other method without IF
-	p.getR().add( - getL() *  floor( p.getR().getx()/ getL()) ,0. );
-	p.getR().add(0., - getL() * floor( p.getR().gety()/ getL()) );
+		//Other method without IF
+		//Bug quand centre en 0,0 je comprends pas pourquoi
+		//it->Periodize( - getL() *  floor( it->getR().getx()/ getL2()) ,0. );
+		//it->Periodize(0., - getL() * floor( it->getR().gety()/ getL2()) );
+	}
 }
 
-//Update h et hd de la cellule, ainsi que L et strain tensor
-//On peut meme updater Ld, car par construction le control en vitesse se fait par le controle en force
 //Normalement si on change Ld ca ne changera pas le Ld initial
 //A partir de la maj de Ld on peut facilement calculer le tenseur de deformations, oui mais ca marche pas... ????
-//UP
-void Cell::update(Tensor2x2 h, Tensor2x2 hd, double dt){
+void Cell::update(Tensor2x2 h, Tensor2x2 hd){
 
 	h_ = h;
 	hd_ = hd;
-	Tensor2x2 hinv = h_.getInverse();
-
-	Ld_ = hd_*hinv;
-	Tensor2x2 LdT = Ld_.getTranspose();
-//	Ld_.affiche();
+	//	Tensor2x2 hinv = h_.getInverse();
+	//
+	//	Ld_ = hd_*hinv;
+	//	Tensor2x2 LdT = Ld_.getTranspose();
+	//	Ld_.affiche();
 	//Calcul du tenseur de deformation de maniere generale cumule
 	//s_ = s_ +  (Ld_ + LdT) * dt;
 
-	//Provisoire:
+}
+
+void Cell::CalculStrainTensor(){
+
 	double Lx0= h0_.getxx();
 	double Ly0= h0_.getyy();
 	double Lxt= h_.getxx();
@@ -115,6 +110,9 @@ void Cell::update(Tensor2x2 h, Tensor2x2 hd, double dt){
 	double syx = (h_.getyx() - h0_.getyx())/Lx0; 
 
 	s_.set(sxx,sxy,syx,syy);
+	s_.eigenVectors();
+	//Ecrire tenseur deformartion
+	//s_.write(of2);
 }
 
 //Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration
@@ -123,7 +121,7 @@ void Cell::update(Tensor2x2 h, Tensor2x2 hd, double dt){
 void Cell::ApplyBC(){
 
 	//TEMPORAIRE:
-//	stress_int.set(0.,0.,0.,4.);
+	//	stress_int.set(0.,0.,0.,4.);
 
 	double xx, xy, yx, yy;
 	//Composante xx:

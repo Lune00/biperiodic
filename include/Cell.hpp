@@ -7,6 +7,9 @@
 #include<iostream>
 #include<fstream>
 
+#define FORCE_DRIVEN 0
+#define VITESSE_DRIVEN 1
+
 //Cellule periodique
 class Cell{
 
@@ -41,7 +44,7 @@ class Cell{
 	public:
 		Cell(Config&);
 		//A l'avenir constructeur prend en argument un truc qui init/garde en memoire  les DOF controles
-		Cell(double L,Config& config): L_(L),xc_(L/2.),yc_(L/2.){initCell(config);}
+		Cell(double L,Config& config): L_(L),xc_(0.),yc_(0.){initCell(config);}
 		~Cell(){};
 
 		//Init les parametres BC et de la grille par utilisateur
@@ -49,18 +52,25 @@ class Cell{
 		//Controle force/vitesse
 		void ApplyBC();
 		//Maj de h,hdd,Ld,s apres a la fin du pas de temps
-		void update(Tensor2x2,Tensor2x2,double);
+		void update(Tensor2x2,Tensor2x2);
+		void updatehd(Tensor2x2 hd) { hd_ = hd;}
 
-		//Met a jours la periodicite des particules
-		void PeriodicBoundaries(Particle&);
-
+		//Met a jours la periodicite des particules en position
+		void PeriodicBoundaries(std::vector<Particle>&);
 		void write(std::ofstream&,std::ofstream&,double);
+		void CalculStrainTensor();
 
 		//Acces
+		char getControlxx() const {return Control_[0];}
+		char getControlxy() const {return Control_[1];}
+		char getControlyx() const {return Control_[2];}
+		char getControlyy() const {return Control_[3];}
+
 		double getVolume();
 		double getMasse() const { return mh_;}
 		double getL() const { return L_;}
 		double getL2() const { return L_/2.;}
+
 		Tensor2x2 geth() const { return h_;}
 		Tensor2x2 gethd() const { return hd_;}
 		Tensor2x2 getStressInt() const { return stress_int;}

@@ -18,23 +18,39 @@ void write(std::vector<Particle> sp,ofstream& of,double t){
 		it->write(of);
 	}
 }
+//Temporaire
+//Ecrit coordonnees absolues:
+void write(std::vector<Particle> sp,Cell& cell,ofstream& of,double t){
+	Tensor2x2 h = cell.geth();
+	of<<t<<" ";
+	for(std::vector<Particle>::iterator it = sp.begin(); it != sp.end(); it++){
+		it->affiche();
+		Vecteur r = it->getR();
+		r = h * r ;
+		of<<r.getx()<<" "<<r.gety()<<endl;
+	}
+
+}
 
 int main(){
 
+	cout<<"BPDEM2D"<<endl;
+
 	//Parametres:
 	double const L = 1.;
-	double dt = .001 ;
-	double T = 1.;
+	double dt = .01 ;
+	double T = 2.;
 
 	vector<Particle> sample;
 	Config config;
 	Cell cell(L,config);
 	Algo algo(dt);
 
-	//Initialise coordonnees reduites, absolues, vitesse fluctuante
-	Vecteur r0(L/3,L/3);
-	Vecteur v0(0.,0.);
-	Particle p(r0,L,v0);
+	//Initialise coordonnees(pos & vit) reduites
+	Vecteur r0(0.,0.);
+	Vecteur v0(0.4,0.);
+
+	Particle p(r0,v0);
 	sample.push_back(p);
 
 	ofstream tmp("particle.txt");
@@ -46,14 +62,15 @@ int main(){
 
 	do{
 		//Check for boundary:
-		cell.PeriodicBoundaries(p);
+		cell.PeriodicBoundaries(sample);
 		//Update :
-		algo.verletalgo(cell,sample);
+		algo.verletalgo2(cell,sample);
 
 		//outputs:
 		if( k% 1 == 0 ){
 			cell.write(tmp2,tmp3,t);
-			write(sample,tmp,t);
+			//write(sample,tmp,t);
+			write(sample,cell,tmp,t);
 			//cout<<t<<" "<<cell.getVolume()<<endl;
 		}
 
