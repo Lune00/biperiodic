@@ -9,7 +9,7 @@ Sample::Sample(){
 Sample::~Sample(){
 }
 
-void Sample::load(ifstream& is){
+void Sample::load(istream& is){
 
 }
 

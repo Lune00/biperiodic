@@ -8,14 +8,14 @@
 
 //Lit un fichier préalablement genere
 //Coordonnees reduites
-//id r sx sy 
+//id r sx sy sdx sdy 
 
 class Sample{
 
 	public:
 		Sample();
 		~Sample();
-		void load(std::ifstream&);
+		void load(std::istream&);
 		void write(std::ofstream&);
 		void attributeMass(double density);
 
