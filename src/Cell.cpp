@@ -7,8 +7,8 @@ Cell::Cell(Config& config){
 	//xc_ = 0.5 * L_ ;
 	//yc_ = 0.5 * L_ ;
 	initCell(config);
-	xc_ = 0.;
-	yc_ = 0.;
+	xc_ = 0.5;
+	yc_ = 0.5;
 }
 
 
@@ -41,7 +41,6 @@ void Cell::initCell(Config& config){
 	//Vitesse de deformation de la cellue:
 	//+tension,-compression
 	hd_=Ld_*h_;
-
 }
 
 //Le volume est donné par det(h) (deux vecteurs de base de la cellule)
@@ -64,6 +63,7 @@ void Cell::write(ofstream& of,ofstream& of2,double T){
 
 }
 //PeriodicBoundary Conditions
+//?????
 void Cell::PeriodicBoundaries(std::vector<Particle>& sp){
 	for(std::vector<Particle>::iterator it = sp.begin() ; it != sp.end(); it++){
 		double dx = 0.;
@@ -81,6 +81,22 @@ void Cell::PeriodicBoundaries(std::vector<Particle>& sp){
 	}
 }
 
+void Cell::PeriodicBoundaries2(std::vector<Particle>& sp){
+	Vecteur a1(h_.getxx(),h_.getyx());
+	Vecteur a2(h_.getxy(),h_.getyy());
+
+	double Cx = a1.getNorme() * 0.5 ;
+	double Cy = a2.getNorme() * 0.5 ;
+
+	for(std::vector<Particle>::iterator it = sp.begin() ; it != sp.end(); it++){
+		double dx = 0.;
+		double dy = 0.;
+		if( it->getR().getx() > Cx) dx = - a1.getNorme();
+		if( it->getR().getx() < -Cx) dx =  a1.getNorme();
+		it->Periodize(dx,dy);
+
+	}
+}
 //Normalement si on change Ld ca ne changera pas le Ld initial
 //A partir de la maj de Ld on peut facilement calculer le tenseur de deformations, oui mais ca marche pas... ????
 void Cell::update(Tensor2x2 h, Tensor2x2 hd){

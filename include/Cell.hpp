@@ -44,7 +44,7 @@ class Cell{
 	public:
 		Cell(Config&);
 		//A l'avenir constructeur prend en argument un truc qui init/garde en memoire  les DOF controles
-		Cell(double L,Config& config): L_(L),xc_(0.),yc_(0.){initCell(config);}
+		Cell(double L,Config& config): L_(L),xc_(L_/2.),yc_(L_/2.){initCell(config);}
 		~Cell(){};
 
 		//Init les parametres BC et de la grille par utilisateur
@@ -57,6 +57,7 @@ class Cell{
 
 		//Met a jours la periodicite des particules en position
 		void PeriodicBoundaries(std::vector<Particle>&);
+		void PeriodicBoundaries2(std::vector<Particle>&);
 		void write(std::ofstream&,std::ofstream&,double);
 		void CalculStrainTensor();
 

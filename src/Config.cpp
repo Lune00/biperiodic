@@ -12,6 +12,6 @@ Config::Config(){
 	//BCU[3]='f';
 	//Par souci de convention, les DL non controles sont init a 0
 	//Par definition, le taux de cisaillement pur est egale a la moitie de LdUser.yx(ou xy)
-	LdUser_.set(1.,0.,0.,0.);
+	LdUser_.set(0.,1.,0.,0.);
 	StressUser_.set(0.,0.,0.,0.);
 }

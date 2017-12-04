@@ -24,7 +24,8 @@ void write(std::vector<Particle> sp,Cell& cell,ofstream& of,double t){
 	Tensor2x2 h = cell.geth();
 	of<<t<<" ";
 	for(std::vector<Particle>::iterator it = sp.begin(); it != sp.end(); it++){
-		it->affiche();
+		//it->affiche();
+		h.affiche();
 		Vecteur r = it->getR();
 		r = h * r ;
 		of<<r.getx()<<" "<<r.gety()<<endl;
@@ -39,7 +40,7 @@ int main(){
 	//Parametres:
 	double const L = 1.;
 	double dt = .01 ;
-	double T = 2.;
+	double T = 1.;
 
 	vector<Particle> sample;
 	Config config;
@@ -47,8 +48,8 @@ int main(){
 	Algo algo(dt);
 
 	//Initialise coordonnees(pos & vit) reduites
-	Vecteur r0(0.,0.);
-	Vecteur v0(0.4,0.);
+	Vecteur r0(0.5,0.5);
+	Vecteur v0(0.5,0.);
 
 	Particle p(r0,v0);
 	sample.push_back(p);
@@ -62,7 +63,7 @@ int main(){
 
 	do{
 		//Check for boundary:
-		cell.PeriodicBoundaries(sample);
+		cell.PeriodicBoundaries2(sample);
 		//Update :
 		algo.verletalgo2(cell,sample);
 
