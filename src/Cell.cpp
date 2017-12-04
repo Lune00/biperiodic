@@ -62,38 +62,28 @@ void Cell::write(ofstream& of,ofstream& of2,double T){
 	of<<T<<" "<<xc_- L_/2.+ux<<" "<<yc_- L_/2.+uy<<" "<<vx<<" "<<vy<<endl;
 
 }
-//PeriodicBoundary Conditions
-//?????
-void Cell::PeriodicBoundaries(std::vector<Particle>& sp){
-	for(std::vector<Particle>::iterator it = sp.begin() ; it != sp.end(); it++){
-		double dx = 0.;
-		double dy = 0.;
-		if( it->getR().getx() > getL2() )  dx = -1.;
-		if( it->getR().getx() < -getL2() ) dx = 1.;
-		if( it->getR().gety() < -getL2() ) dy = 1.;
-		if( it->getR().gety() > getL2() )  dy = -1.;
-		it->Periodize(dx,dy);
 
-		//Other method without IF
-		//Bug quand centre en 0,0 je comprends pas pourquoi
-		//it->Periodize( - getL() *  floor( it->getR().getx()/ getL2()) ,0. );
-		//it->Periodize(0., - getL() * floor( it->getR().gety()/ getL2()) );
-	}
-}
-
+//On travaille sur les coordonnees reduites
+//Si elles sont plus petites que 0 ou plus grandes que 1 on periodise
 void Cell::PeriodicBoundaries2(std::vector<Particle>& sp){
-	Vecteur a1(h_.getxx(),h_.getyx());
-	Vecteur a2(h_.getxy(),h_.getyy());
+	//Vecteur a1(h_.getxx(),h_.getyx());
+	//Vecteur a2(h_.getxy(),h_.getyy());
 
-	double Cx = a1.getNorme() * 0.5 ;
-	double Cy = a2.getNorme() * 0.5 ;
+	//double Cx = a1.getNorme()  ;
+	//double Cy = a2.getNorme()  ;
 
 	for(std::vector<Particle>::iterator it = sp.begin() ; it != sp.end(); it++){
 		double dx = 0.;
 		double dy = 0.;
-		if( it->getR().getx() > Cx) dx = - a1.getNorme();
-		if( it->getR().getx() < -Cx) dx =  a1.getNorme();
+		if(it->getR().getx() > 1.) dx = -1.;
+		if(it->getR().getx() < 0.) dx =  1.;
+		if(it->getR().gety() > 1.) dy = -1.;
+		if(it->getR().gety() < 0.) dy =  1.;
 		it->Periodize(dx,dy);
+		//if( it->getR().getx() > Cx) dx = - a1.getNorme();
+		//if( it->getR().getx() < -Cx) dx =  a1.getNorme();
+		//if( it->getR().gety() > Cy) dy = - a2.getNorme();
+		//if( it->getR().gety() < -Cy) dy =  a2.getNorme();
 
 	}
 }

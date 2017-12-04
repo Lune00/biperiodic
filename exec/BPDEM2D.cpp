@@ -25,7 +25,7 @@ void write(std::vector<Particle> sp,Cell& cell,ofstream& of,double t){
 	of<<t<<" ";
 	for(std::vector<Particle>::iterator it = sp.begin(); it != sp.end(); it++){
 		//it->affiche();
-		h.affiche();
+		//h.affiche();
 		Vecteur r = it->getR();
 		r = h * r ;
 		of<<r.getx()<<" "<<r.gety()<<endl;
@@ -40,7 +40,7 @@ int main(){
 	//Parametres:
 	double const L = 1.;
 	double dt = .01 ;
-	double T = 1.;
+	double T = 2.;
 
 	vector<Particle> sample;
 	Config config;
@@ -49,7 +49,7 @@ int main(){
 
 	//Initialise coordonnees(pos & vit) reduites
 	Vecteur r0(0.5,0.5);
-	Vecteur v0(0.5,0.);
+	Vecteur v0(0.,0.);
 
 	Particle p(r0,v0);
 	sample.push_back(p);
