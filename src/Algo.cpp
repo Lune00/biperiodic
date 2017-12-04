@@ -169,18 +169,18 @@ void Algo::verletalgo2(Cell& cell,std::vector<Particle>& ps){
 	double hdxx, hdxy , hdyx , hdyy ;
 
 	if(Control_[0] == 'f' ) {
-	  hxx = h.getxx() + hd_.getxx() * dt_ + hdd_.getxx() * dt2_2 ;
+	  hxx = h.getxx() + hd.getxx() * dt_ + hdd.getxx() * dt2_2 ;
 	  hdxx = hd.getxx() + hdd.getxx() * dt_2 ;
 	}
 	else{
-	  //Vitesse imposee reste la meme (hdd, definit par Ld_ au debut)
+	  //Vitesse imposee reste la meme (hdd, definit par Ld au debut)
 	  //hdd par definition nulle si control en vitesse sur hdd
 	  hxx = h.getxx() + hd.getxx() * dt_ ; 
 	  hdxx = hd.getxx();
 	}
 
 	if(Control_[1] == 'f' ) {
-	  hxy = h.getxy() + hd_.getxy() * dt_  + hdd_.getxy() * dt2_2 ;
+	  hxy = h.getxy() + hd.getxy() * dt_  + hdd.getxy() * dt2_2 ;
 	  hdxy = hd.getxy() + hdd.getxy() * dt_2 ;
 	}
 	else{
@@ -189,7 +189,7 @@ void Algo::verletalgo2(Cell& cell,std::vector<Particle>& ps){
 	}
 
 	if(Control_[2] == 'f' ) {
-	  hyx = h.getyx() + hd_.getyx() * dt_  + hdd_.getyx() * dt2_2 ;
+	  hyx = h.getyx() + hd.getyx() * dt_  + hdd.getyx() * dt2_2 ;
 	  hdyx = hd.getyx() + hdd.getyx() * dt_2 ;
 	}
 	else{
@@ -198,7 +198,7 @@ void Algo::verletalgo2(Cell& cell,std::vector<Particle>& ps){
 	}
 
 	if(Control_[3] == 'f' ) {
-	  hyy = h.getyy() + hd_.getyy() * dt_  + hdd_.getyy() * dt2_2 ;
+	  hyy = h.getyy() + hd.getyy() * dt_  + hdd.getyy() * dt2_2 ;
 	  hdyy = hd.getyy() + hdd.getyy() * dt_2 ;
 	}
 	else{
@@ -222,5 +222,10 @@ void Algo::verletalgo2(Cell& cell,std::vector<Particle>& ps){
 
 
 	//Calcul des vitesses a la fin du pas de temps:
+	//Apply stress_ext
+	ApplyBC();
 
+
+	Tensor2x2 TotalStress = cell.getStressInt() + cell.getStressExt();
+	hdd0=hinv*(V0/mh)*(TotalStress);
 }
