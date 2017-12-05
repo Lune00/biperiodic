@@ -5,6 +5,7 @@ using namespace std;
 //Essai mecanique: 2 fichiers input parametres pour Config, echantillon initial (xmin,xmax...)
 //Prendra input eventuellement dans un fichier
 Config::Config(){
+	//A lire dans un fichier a terme
 	//Pour le moment tout en vitesse (cinematique)
 	for(int i=0;i<4;i++){
 		BCU[i] = 'v';
@@ -14,4 +15,13 @@ Config::Config(){
 	//Par definition, le taux de cisaillement pur est egale a la moitie de LdUser.yx(ou xy)
 	LdUser_.set(0.,1.,0.,0.);
 	StressUser_.set(0.,0.,0.,0.);
+}
+
+Config::~Config(){
+}
+
+void Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
+
+
+
 }

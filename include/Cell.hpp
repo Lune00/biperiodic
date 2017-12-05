@@ -1,14 +1,11 @@
 #ifndef Cell_hpp
 #define Cell_hpp
 
-#include"Config.hpp"
 #include"Particle.hpp"
+#include"Tenseur.hpp"
 
 #include<iostream>
 #include<fstream>
-
-#define FORCE_DRIVEN 0
-#define VITESSE_DRIVEN 1
 
 //Cellule periodique
 class Cell{
@@ -42,13 +39,12 @@ class Cell{
 		//Maj par particules
 		Tensor2x2 stress_int;
 	public:
-		Cell(Config&);
+		Cell();
+		void init(std::ifstream&);
 		//A l'avenir constructeur prend en argument un truc qui init/garde en memoire  les DOF controles
-		Cell(double L,Config& config): L_(L),xc_(L_/2.),yc_(L_/2.){initCell(config);}
+		//Cell(double L,Config& config): L_(L),xc_(L_/2.),yc_(L_/2.){initCell(config);}
 		~Cell(){};
 
-		//Init les parametres BC et de la grille par utilisateur
-		void initCell(Config&);
 		//Controle force/vitesse
 		void ApplyBC();
 		//Maj de h,hdd,Ld,s apres a la fin du pas de temps
@@ -56,7 +52,6 @@ class Cell{
 		void updatehd(Tensor2x2 hd) { hd_ = hd;}
 
 		//Met a jours la periodicite des particules en position
-		void PeriodicBoundaries(std::vector<Particle>&);
 		void PeriodicBoundaries2(std::vector<Particle>&);
 		void write(std::ofstream&,std::ofstream&,double);
 		void CalculStrainTensor();

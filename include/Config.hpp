@@ -1,9 +1,14 @@
 #ifndef Config_hpp
 #define Config_hpp
 
+#include<fstream>
+#include<iostream>
+
+#include"Algo.hpp"
+#include"Cell.hpp"
+#include"Sample.hpp"
 #include"Tenseur.hpp"
 
-//Permet de definir l'essai mecanique:Conditions aux limites (force/vitesse), mais aussi les parametres cellule etc...
 class Config{
 	private:
 		//Tableau de 4 parametres de controle (chaque direction) "v" -> vitesse "f"-> force
@@ -13,9 +18,10 @@ class Config{
 		 Tensor2x2 LdUser_;
 		 //Controle en force:
 		 Tensor2x2 StressUser_;
+		 double rho_;
 	public:
 		 Config();
-		 ~Config(){};
+		 ~Config();
 		 Tensor2x2 returnLd() const { return LdUser_;}
 		 Tensor2x2 returnStress() const { return StressUser_;}
 
@@ -24,6 +30,9 @@ class Config{
 		 char getBCyx() const { return BCU[2];}
 		 char getBCyy() const { return BCU[3];}
 		 char getBCU(int i) const { return BCU[i];}
+
+		 //Interface d'initialistion
+		 void init(std::ifstream&,Algo&,Cell&,Sample&);
 };
 
 #endif

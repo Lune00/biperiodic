@@ -42,46 +42,46 @@ int main(){
 	double dt = .01 ;
 	double T = 2.;
 
-	vector<Particle> sample;
-	Config config;
-	Cell cell(L,config);
-	Algo algo(dt);
-
-	//Initialise coordonnees(pos & vit) reduites
-	Vecteur r0(0.5,0.5);
-	Vecteur v0(0.,0.);
-
-	Particle p(r0,v0);
-	sample.push_back(p);
-
-	ofstream tmp("particle.txt");
-	ofstream tmp2("cell.txt");
-	ofstream tmp3("strain.txt");
-
-	double t=0.;
-	int k=0;
-
-	do{
-		//Check for boundary:
-		cell.PeriodicBoundaries2(sample);
-		//Update :
-		algo.verletalgo2(cell,sample);
-
-		//outputs:
-		if( k% 1 == 0 ){
-			cell.write(tmp2,tmp3,t);
-			//write(sample,tmp,t);
-			write(sample,cell,tmp,t);
-			//cout<<t<<" "<<cell.getVolume()<<endl;
-		}
-
-		t+=dt;
-		k++;
-	}while(t<T);
-
-	tmp.close();
-	tmp2.close();
-	tmp3.close();
+//	vector<Particle> sample;
+//	Config config;
+//	Cell cell(L,config);
+//	Algo algo(dt);
+//
+//	//Initialise coordonnees(pos & vit) reduites
+//	Vecteur r0(0.5,0.5);
+//	Vecteur v0(0.,0.);
+//
+//	Particle p(r0,v0);
+//	sample.push_back(p);
+//
+//	ofstream tmp("particle.txt");
+//	ofstream tmp2("cell.txt");
+//	ofstream tmp3("strain.txt");
+//
+//	double t=0.;
+//	int k=0;
+//
+//	do{
+//		//Check for boundary:
+//		cell.PeriodicBoundaries2(sample);
+//		//Update :
+//		algo.verletalgo2(cell,sample);
+//
+//		//outputs:
+//		if( k% 1 == 0 ){
+//			cell.write(tmp2,tmp3,t);
+//			//write(sample,tmp,t);
+//			write(sample,cell,tmp,t);
+//			//cout<<t<<" "<<cell.getVolume()<<endl;
+//		}
+//
+//		t+=dt;
+//		k++;
+//	}while(t<T);
+//
+//	tmp.close();
+//	tmp2.close();
+//	tmp3.close();
 
 	return 0;
 }

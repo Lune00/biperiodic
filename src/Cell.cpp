@@ -2,46 +2,52 @@
 
 using namespace std;
 
-Cell::Cell(Config& config){
+
+Cell::Cell(){
 	L_ = 1. ;
-	//xc_ = 0.5 * L_ ;
-	//yc_ = 0.5 * L_ ;
-	initCell(config);
-	xc_ = 0.5;
-	yc_ = 0.5;
+	xc_ = 0.5 ;
+	yc_ = 0.5 ;
+	h_.set(L_,0.,0.,L_);
+	h0_ = h_;
+	//Stress_ext et hd egal a 0 par construction par defaut
+}
+//Initialisation a partir du fichier de configuration
+void Cell::init(ifstream& is){
+
+
 }
 
 
 //Init h et hdot
-void Cell::initCell(Config& config){
-
-	//Doit scaler avec masse echantillon
-	mh_ = 2.;
-
-	//Imposed BC by user:
-	for(int i=0;i<4;i++){
-		Control_[i] = config.getBCU(i);
-	}
-
-	//Geometrie initiale:
-	h_.set(L_,0.,0.,L_);
-	h0_ = h_;
-
-	//Utilisateur
-	//On initialise les tenseurs Ld et StressExt avec ceux de config
-	//Cinematique:
-	Ld_ = config.returnLd();
-	//Dynamique:
-	stress_ext = config.returnStress();
-	hdd_ = stress_ext * (1./mh_);
-	//On impose plutot un tenseur de gradient de vitesse (en eliminant la rotation) 
-	//Ld_.set(0.,0.,shearrate,0.);
-	//Cinematique:
-	//Transformation pour le calcul des BC:
-	//Vitesse de deformation de la cellue:
-	//+tension,-compression
-	hd_=Ld_*h_;
-}
+//void Cell::initCell(Config& config){
+//
+//	//Doit scaler avec masse echantillon
+//	mh_ = 2.;
+//
+//	//Imposed BC by user:
+//	for(int i=0;i<4;i++){
+//		Control_[i] = config.getBCU(i);
+//	}
+//
+//	//Geometrie initiale:
+//	h_.set(L_,0.,0.,L_);
+//	h0_ = h_;
+//
+//	//Utilisateur
+//	//On initialise les tenseurs Ld et StressExt avec ceux de config
+//	//Cinematique:
+//	Ld_ = config.returnLd();
+//	//Dynamique:
+//	stress_ext = config.returnStress();
+//	hdd_ = stress_ext * (1./mh_);
+//	//On impose plutot un tenseur de gradient de vitesse (en eliminant la rotation) 
+//	//Ld_.set(0.,0.,shearrate,0.);
+//	//Cinematique:
+//	//Transformation pour le calcul des BC:
+//	//Vitesse de deformation de la cellue:
+//	//+tension,-compression
+//	hd_=Ld_*h_;
+//}
 
 //Le volume est donné par det(h) (deux vecteurs de base de la cellule)
 double Cell::getVolume(){

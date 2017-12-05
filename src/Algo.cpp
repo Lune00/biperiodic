@@ -5,6 +5,11 @@
 using namespace std;
 
 
+void Algo::run(){
+
+
+}
+
 //Le couplage passe par le tenseur de contrainte entre cellule et particules
 
 //Update particules, calcul tenseur contrainte interne, update cellule
