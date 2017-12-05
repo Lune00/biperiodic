@@ -10,14 +10,12 @@
 #include"Algo.hpp"
 #include"Sample.hpp"
 
-
 using namespace std;
 
 int main (int argc,char **argv)
 {
 
-	cout<<"DEM arena."<<endl;
-
+	cout<<"DEM arena test."<<endl;
 	//Config est interface pour init tout
 	//a partir fichier configuration
 	Config config;
@@ -27,11 +25,10 @@ int main (int argc,char **argv)
 
 	//Initialisation simulation
 	ifstream is(argv[1]);
-	int init = config.init(is,algo,cell,spl);
-	if(init!=0) return 0;
+	int init_status = config.init(is,algo,cell,spl);
+	if(init_status != 0) return 0;
 
 	//Lancement simulation
-	cout<<"Lancement."<<endl;
 	algo.run();
 
 	return 0;

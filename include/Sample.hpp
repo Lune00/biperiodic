@@ -11,6 +11,7 @@ class Sample{
 	private:
 		std::vector<Particle> spl_;
 		std::string fichsample_;
+		std::string folder_;
 
 		double xmin_;
 		double xmax_;
@@ -39,6 +40,7 @@ class Sample{
 		void setminmax();
 		bool initcheck();
 		bool isEmptySampleFile(std::ifstream&);
+		void initfolder(std::string folder) { folder_ = folder;}
 
 };
 

@@ -82,8 +82,24 @@ void Sample::attributeMass(){
 	}
 }
 
+//Calcul rmin,rmax,xmin,xmax,ymin,ymax de l'echantillon
+//Sert a initialiser geometrie cellule au debut simulation
 void Sample::setminmax(){
 
+	if(!sampleIsLoaded_){
+		cerr<<"Sample::setminmax() Charger l'echantillon avant."<<endl;
+	}
+	double xmin = spl_[0].getx();
+	double xmax = spl_[0].getx();
+	double ymin = spl_[0].gety();
+	double ymax = spl_[0].gety();
+	double rmin = spl_[0].getRadius();
+	double rmax = spl_[0].getRadius();
+
+	for(spit it= spl_.begin(); it != spl_.end(); it++){
+		rmax = max(rmax, it->getRadius());
+		rmin = min(rmin, it->getRadius());
+	}
 
 }
 

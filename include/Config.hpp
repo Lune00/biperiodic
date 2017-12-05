@@ -3,6 +3,7 @@
 
 #include<fstream>
 #include<iostream>
+#include<string>
 
 #include"Algo.hpp"
 #include"Cell.hpp"
@@ -11,28 +12,21 @@
 
 class Config{
 	private:
-		//Tableau de 4 parametres de controle (chaque direction) "v" -> vitesse "f"-> force
-		//0 xx 1 xy 2 yx 3 yy
-		 char BCU[4];
-		 //Controle en vitesse:
-		 Tensor2x2 LdUser_;
-		 //Controle en force:
-		 Tensor2x2 StressUser_;
-		 double rho_;
+
+		std::string folder_spl_;
+		std::string folder_cell_;
+		std::string folder_analyse_;
+
+		Sample* sample_;
+		Algo* algo_;
+		Cell* cell_;
+
 	public:
 		 Config();
 		 ~Config();
-		 Tensor2x2 returnLd() const { return LdUser_;}
-		 Tensor2x2 returnStress() const { return StressUser_;}
-
-		 char getBCxx() const { return BCU[0];}
-		 char getBCxy() const { return BCU[1];}
-		 char getBCyx() const { return BCU[2];}
-		 char getBCyy() const { return BCU[3];}
-		 char getBCU(int i) const { return BCU[i];}
-
 		 //Interface d'initialistion
 		 //Return 1 pb, return 0 ok
+		 void plug(Algo&,Cell&,Sample&);
 		 int init(std::ifstream&,Algo&,Cell&,Sample&);
 };
 

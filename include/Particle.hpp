@@ -55,6 +55,8 @@ class Particle{
 		void Periodize( double lx, double ly) { r_.add(lx,ly)  ;}
 		void setMasse(double m) { m_ = m ;}
 		void setInertia(double I) {I_ = I ;}
+		double getx() const { return r_.getx() ; }
+		double gety() const { return r_.gety() ; }
 		
 };
 
