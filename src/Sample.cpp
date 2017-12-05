@@ -31,6 +31,7 @@ void Sample::init(ifstream& is){
 
 	loadSample();
 	attributeMass();
+	setminmax();
 }
 
 void Sample::loadSample(){
@@ -47,12 +48,15 @@ void Sample::loadSample(){
 		}
 		else
 		{
+			//Pb pour la derniere lecture...
 			string token;
 			while(is){
+				if(is.eof()) break;
 				Particle P(is);
 				spl_.push_back(P);
-				is >> token;
 			}
+			//Solution provisoire:
+			spl_.pop_back();
 
 			cout<<"Nombre de particules: "<<spl_.size()<<endl;
 			sampleIsLoaded_ = true ;
@@ -86,20 +90,32 @@ void Sample::attributeMass(){
 //Sert a initialiser geometrie cellule au debut simulation
 void Sample::setminmax(){
 
-	if(!sampleIsLoaded_){
+	if(!sampleIsLoaded_ || spl_.size() == 0){
 		cerr<<"Sample::setminmax() Charger l'echantillon avant."<<endl;
+		return;
 	}
-	double xmin = spl_[0].getx();
-	double xmax = spl_[0].getx();
-	double ymin = spl_[0].gety();
-	double ymax = spl_[0].gety();
-	double rmin = spl_[0].getRadius();
-	double rmax = spl_[0].getRadius();
+
+	xmin_ = spl_[0].getx() - spl_[0].getRadius();
+	xmax_ = spl_[0].getx() + spl_[0].getRadius();
+	ymin_ = spl_[0].gety() - spl_[0].getRadius();
+	ymax_ = spl_[0].gety() + spl_[0].getRadius();
+
+	rmin_ = spl_[0].getRadius();
+	rmax_ = spl_[0].getRadius();
 
 	for(spit it= spl_.begin(); it != spl_.end(); it++){
-		rmax = max(rmax, it->getRadius());
-		rmin = min(rmin, it->getRadius());
+		cout<<it->getx()<<" "<<it->gety()<<" "<<it->getRadius()<<endl;
+		rmax_ = max(rmax_, it->getRadius());
+		rmin_ = min(rmin_, it->getRadius());
+		xmin_ = min(xmin_, it->getx() - it->getRadius());
+		xmax_ = min(xmax_, it->getx() + it->getRadius());
+		ymin_ = min(ymin_, it->gety() - it->getRadius());
+		ymax_ = max(ymax_, it->gety() + it->getRadius());
 	}
+	cout<<"xmin = "<<xmin_<<endl;
+	cout<<"xmax = "<<xmax_<<endl;
+	cout<<"ymin = "<<ymin_<<endl;
+	cout<<"ymax = "<<ymax_<<endl;
 
 }
 

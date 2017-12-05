@@ -9,6 +9,7 @@ Particle::Particle(ifstream& is){
 	double vx = 0. ;
 	double vy = 0. ;
 	is >> id_ >> R_ >> x >> y >> vx >> vy >> rot_ >> vrot_; 
+	cout<<"read "<<id_<<" "<<R_<<" "<<x<<" "<<y<<endl;
 	Vecteur r(x,y);
 	Vecteur v(vx,vy);
 	setRV(r,v);
