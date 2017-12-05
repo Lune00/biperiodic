@@ -5,6 +5,19 @@
 using namespace std;
 
 
+void Algo::init(ifstream& is){
+	cout<<"Algo initialisation..."<<endl;
+	string token;
+	is >> token;
+	while(is){
+		if(token=="dt") is >> dt_;
+		if(token=="ns") is >> ns_;
+		if(token=="}") break;
+		is >> token;
+	}
+}
+
+
 void Algo::run(){
 
 

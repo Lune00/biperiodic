@@ -9,7 +9,19 @@ Sample::Sample(){
 Sample::~Sample(){
 }
 
-void Sample::load(istream& is){
+
+void Sample::init(ifstream& is){
+
+	string token;
+	is >> token;
+	while(is){
+		if(token=="includeFile") is >> fichsample_;
+		if(token=="rho") is >> rho_;
+		is >> token ;
+	}
+}
+
+void Sample::loadSample(ifstream& is){
 
 }
 
@@ -17,7 +29,14 @@ void Sample::write(ofstream& os){
 
 }
 
-void Sample::attributeMass(double density){
+//Fill particles with mass and inertia
+void Sample::attributeMass(){
+
+
+}
+
+void Sample::setminmax(){
+
 
 
 }

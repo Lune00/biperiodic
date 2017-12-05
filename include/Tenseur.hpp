@@ -24,9 +24,10 @@ class Tensor2x2{
 		~Tensor2x2(){};
 		
 		void set(double xx, double xy, double yx, double yy);
-		double getDet(){ return (xx_*yy_ - xy_*yx_) ;}
+
 		Tensor2x2 getInverse();
 		Tensor2x2 getTranspose();
+
 		void affiche(){std::cout<<std::endl;std::cout<<xx_<<" "<<xy_<<std::endl;
 			std::cout<<yx_<<" "<<yy_<<std::endl;std::cout<<std::endl;}
 
@@ -36,8 +37,12 @@ class Tensor2x2{
 		double getyx() const { return yx_;} 
 		double getyy() const { return yy_;} 
 
-		//Renvoie la composante i du tenseur:
-		//0->xx 1->xy 2->yx 3->yy
+		double getDet(){ return (xx_*yy_ - xy_*yx_) ;}
+
+		void setxx(double xx) { xx_ = xx;}
+		void setxy(double xy) { xy_ = xy;}
+		void setyx(double yx) { yx_ = yx;}
+		void setyy(double yy) { yy_ = yy;}
 
 		void eigenValues();
 		void eigenVectors();

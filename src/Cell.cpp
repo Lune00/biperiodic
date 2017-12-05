@@ -14,7 +14,80 @@ Cell::Cell(){
 //Initialisation a partir du fichier de configuration
 void Cell::init(ifstream& is){
 
+	//Check si tout est initialise
+	bool ixx,ixy,iyx,iyy;
+	ixx=ixy=iyx=iyy=false;
+	double xx,xy,yx,yy;
+	xx=xy=yx=yy=0.;
 
+	string token;
+	is >> token;
+
+	while(is){
+		//Automatise ensuite avec prop du sample
+		if(token=="L") is >> L_;
+		if(token=="m") is >> mh_;
+
+		if(token=="xx"){
+			cout<<"xx"<<endl;
+			is >> Control_[0];
+			is >>xx; 
+			ixx = true ;
+		}
+		if(token=="xy") {
+			is >> Control_[1];
+			is >>xy; 
+			ixy = true ;
+		}
+		if(token=="yx") {
+			is >> Control_[2];
+			is >>yx; 
+			iyx = true;
+		}
+		if(token=="yy") {
+			is >> Control_[3];
+			is >>yy; 
+			iyy = true;
+		}
+		if(token=="}") break;
+
+		is >> token ;
+	}
+
+	if(ixx && ixy && iyx && iyy){
+		cout<<"Initialisation coordonnees generalisees...ok"<<endl;
+	}
+
+	//Géometrie initiale
+	h_.set(L_,0.,0.,L_);
+	h0_ = h_ ;
+	//Definir masse a partir de l'échantillon
+
+	//Definir tenseur contraintes ext / hd (qu'on peut trans en L)
+	if(Control_[0] == 'v'){
+		hd_.setxx(xx);
+	}
+	else{
+		stress_ext.setxx(xx);
+	}
+	if(Control_[1] == 'v'){
+		hd_.setxy(xy);
+	}
+	else{
+		stress_ext.setxy(xy);
+	}
+	if(Control_[2] == 'v'){
+		hd_.setyx(yx);
+	}
+	else{
+		stress_ext.setyx(yx);
+	}
+	if(Control_[3] == 'v'){
+		hd_.setyy(yy);
+	}
+	else{
+		stress_ext.setyy(yy);
+	}
 }
 
 

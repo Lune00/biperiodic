@@ -22,6 +22,27 @@ Config::~Config(){
 
 void Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
 
+	if(!is){
+		cerr<< "Config::init : cannot open file."<<endl;
+		return;
+	}
+	string token;
+	is >> token;
 
-
+	while(is){
+		if(token=="Algo{")
+		{
+			algo.init(is);
+		}
+		if(token=="Cell{")
+		{
+			cell.init(is);
+		}
+		if(token=="Sample{")
+		{
+			spl.init(is);
+		}
+		is >> token;
+	}
 }
+

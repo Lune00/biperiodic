@@ -12,15 +12,29 @@
 
 class Sample{
 
+	private:
+		std::vector<Particle> spl_;
+		std::string fichsample_;
+
+		double xmin_;
+		double xmax_;
+		double ymin_;
+		double ymax_;
+		double rmin_;
+		double rmax_;
+
+		//Masse volumique particules:
+		double rho_;
+
 	public:
 		Sample();
 		~Sample();
-		void load(std::istream&);
+		void init(std::ifstream&);
+		void loadSample(std::ifstream&);
 		void write(std::ofstream&);
-		void attributeMass(double density);
+		void attributeMass();
+		void setminmax();
 
-	private:
-		std::vector<Particle> spl_;
 };
 
 
