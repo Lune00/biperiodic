@@ -1,5 +1,8 @@
 #include"Sample.hpp"
 
+
+typedef std::vector<Particle>::iterator spit;
+
 using namespace std;
 
 Sample::Sample(){
@@ -59,7 +62,9 @@ void Sample::loadSample(){
 }
 
 void Sample::write(ofstream& os){
-
+	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
+		it->write(os);
+	}
 }
 
 //Fill particles with mass and inertia

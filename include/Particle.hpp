@@ -37,9 +37,9 @@ class Particle{
 
 		Particle(std::ifstream&);
 
-		void write(std::ofstream&);
+		void write(std::ofstream&) const;
 		void init();
-		void affiche();
+		void affiche() const;
 
 		double getMasse() const {return m_;}
 		double getRadius() const { return R_;}

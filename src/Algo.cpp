@@ -17,6 +17,12 @@ void Algo::init(ifstream& is){
 	}
 }
 
+//A adapter comme on souhaite en terme de tests
+bool Algo::initcheck(){
+	if (dt_ < 1. && ns_ != 0 ) return true;
+	return false;
+}
+
 
 void Algo::run(){
 

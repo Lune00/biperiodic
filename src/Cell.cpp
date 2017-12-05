@@ -9,6 +9,7 @@ Cell::Cell(){
 	yc_ = 0.5 ;
 	h_.set(L_,0.,0.,L_);
 	h0_ = h_;
+	initCG_ = false ;
 	//Stress_ext et hd egal a 0 par construction par defaut
 }
 //Initialisation a partir du fichier de configuration
@@ -53,9 +54,6 @@ void Cell::init(ifstream& is){
 		is >> token ;
 	}
 
-	if(ixx && ixy && iyx && iyy){
-		cout<<"Initialisation coordonnees generalisees...ok"<<endl;
-	}
 
 	//Géometrie initiale
 	h_.set(L_,0.,0.,L_);
@@ -87,8 +85,18 @@ void Cell::init(ifstream& is){
 	else{
 		stress_ext.setyy(yy);
 	}
+
+	//Valide initialisation
+	if(ixx && ixy && iyx && iyy){
+		initCG_ = true ;
+	}
 }
 
+
+bool Cell::initcheck(){
+
+	return initCG_;
+}
 
 //Le volume est donné par det(h) (deux vecteurs de base de la cellule)
 double Cell::getVolume(){

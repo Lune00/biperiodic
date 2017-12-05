@@ -25,6 +25,7 @@ class Algo{
 		//void verletalgo(Cell&,std::vector<Particle>&);
 		void verletalgo2(Cell&,std::vector<Particle>&);
 		void init(std::ifstream&);
+		bool initcheck();
 		void run();
 };
 

@@ -20,11 +20,11 @@ Config::Config(){
 Config::~Config(){
 }
 
-void Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
+int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
 
 	if(!is){
 		cerr<< "Config::init : cannot open file."<<endl;
-		return;
+		return 1;
 	}
 	string token;
 	is >> token;
@@ -44,5 +44,26 @@ void Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
 		}
 		is >> token;
 	}
+
+	//Global check:
+	bool checkSample = spl.initcheck();
+	bool checkAlgo = algo.initcheck();
+	bool checkCell = cell.initcheck();
+
+	if(!checkSample){
+		cerr<<" Sample::initcheck() problem."<<endl;
+		return 1;
+	}
+	if(!checkAlgo){
+		cerr<<" Algo::initcheck() problem."<<endl;
+		return 1;
+	}
+	if(!checkCell){
+		cerr<<" Cell::initcheck() problem."<<endl;
+		return 1;
+	}
+
+	return 0;
+
 }
 

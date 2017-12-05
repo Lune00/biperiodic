@@ -27,7 +27,8 @@ int main (int argc,char **argv)
 
 	//Initialisation simulation
 	ifstream is(argv[1]);
-	config.init(is,algo,cell,spl);
+	int init = config.init(is,algo,cell,spl);
+	if(init!=0) return 0;
 
 	//Lancement simulation
 	cout<<"Lancement."<<endl;

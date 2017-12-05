@@ -38,6 +38,10 @@ class Cell{
 		Tensor2x2 stress_ext;
 		//Maj par particules
 		Tensor2x2 stress_int;
+
+
+		//Check:
+		bool initCG_;
 	public:
 		Cell();
 		void init(std::ifstream&);
@@ -75,6 +79,7 @@ class Cell{
 
 		//Debug & track:
 		void affiche(){std::cout<<xc_<<" "<<yc_<<" "<<getVolume()<<std::endl;}
+		bool initcheck();
 
 };
 

@@ -32,7 +32,8 @@ class Config{
 		 char getBCU(int i) const { return BCU[i];}
 
 		 //Interface d'initialistion
-		 void init(std::ifstream&,Algo&,Cell&,Sample&);
+		 //Return 1 pb, return 0 ok
+		 int init(std::ifstream&,Algo&,Cell&,Sample&);
 };
 
 #endif

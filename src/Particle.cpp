@@ -23,11 +23,11 @@ void Particle::init(){
 	t_=0.;
 }
 
-void Particle::write(ofstream& of){
-	of<< r_.getx()<<" "<<r_.gety()<<" "<<v_.getx()<<" "<<v_.gety()<<endl;
+void Particle::write(ofstream& of) const{
+	of<<id_<<" "<< r_.getx()<<" "<<r_.gety()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<rot_<<" "<<vrot_<<endl;
 }
 
-void Particle::affiche(){
+void Particle::affiche() const{
 	cout<<"Coordonnees reduites: "<<r_.getx()<<" "<<r_.gety()<<endl;
 	cout<<"Vitesses reduites: "<<v_.getx()<<" "<<v_.gety()<<endl;
 }	
