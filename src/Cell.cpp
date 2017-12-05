@@ -29,7 +29,6 @@ void Cell::init(ifstream& is){
 		if(token=="m") is >> mh_;
 
 		if(token=="xx"){
-			cout<<"xx"<<endl;
 			is >> Control_[0];
 			is >>xx; 
 			ixx = true ;
@@ -91,37 +90,6 @@ void Cell::init(ifstream& is){
 }
 
 
-//Init h et hdot
-//void Cell::initCell(Config& config){
-//
-//	//Doit scaler avec masse echantillon
-//	mh_ = 2.;
-//
-//	//Imposed BC by user:
-//	for(int i=0;i<4;i++){
-//		Control_[i] = config.getBCU(i);
-//	}
-//
-//	//Geometrie initiale:
-//	h_.set(L_,0.,0.,L_);
-//	h0_ = h_;
-//
-//	//Utilisateur
-//	//On initialise les tenseurs Ld et StressExt avec ceux de config
-//	//Cinematique:
-//	Ld_ = config.returnLd();
-//	//Dynamique:
-//	stress_ext = config.returnStress();
-//	hdd_ = stress_ext * (1./mh_);
-//	//On impose plutot un tenseur de gradient de vitesse (en eliminant la rotation) 
-//	//Ld_.set(0.,0.,shearrate,0.);
-//	//Cinematique:
-//	//Transformation pour le calcul des BC:
-//	//Vitesse de deformation de la cellue:
-//	//+tension,-compression
-//	hd_=Ld_*h_;
-//}
-
 //Le volume est donné par det(h) (deux vecteurs de base de la cellule)
 double Cell::getVolume(){
 	return h_.getDet();
@@ -166,7 +134,6 @@ void Cell::PeriodicBoundaries2(std::vector<Particle>& sp){
 
 	}
 }
-//Normalement si on change Ld ca ne changera pas le Ld initial
 //A partir de la maj de Ld on peut facilement calculer le tenseur de deformations, oui mais ca marche pas... ????
 void Cell::update(Tensor2x2 h, Tensor2x2 hd){
 

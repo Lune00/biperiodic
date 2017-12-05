@@ -6,10 +6,6 @@
 #include<fstream>
 #include<iostream>
 
-//Lit un fichier préalablement genere
-//Coordonnees reduites
-//id r sx sy sdx sdy 
-
 class Sample{
 
 	private:
@@ -26,14 +22,23 @@ class Sample{
 		//Masse volumique particules:
 		double rho_;
 
+		//Check:
+		bool sampleIsLoaded_;
+		bool sampleIsFilled_;
+		//Assure utilisateur defini rho
+		bool rhodefined_;
+
 	public:
 		Sample();
 		~Sample();
 		void init(std::ifstream&);
-		void loadSample(std::ifstream&);
+		//Return 0 si ok, 1 sinon
+		void loadSample();
 		void write(std::ofstream&);
 		void attributeMass();
 		void setminmax();
+		bool initcheck();
+		bool isEmptySampleFile(std::ifstream&);
 
 };
 

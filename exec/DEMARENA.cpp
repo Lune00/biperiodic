@@ -30,6 +30,7 @@ int main (int argc,char **argv)
 	config.init(is,algo,cell,spl);
 
 	//Lancement simulation
+	cout<<"Lancement."<<endl;
 	algo.run();
 
 	return 0;
