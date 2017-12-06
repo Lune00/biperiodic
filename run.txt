@@ -1,0 +1,1 @@
+./build.sh && rm test/DEMARENA && cp exec/DEMARENA test/ && cd test ; ./DEMARENA config.cfg && cd ..

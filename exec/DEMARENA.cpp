@@ -9,6 +9,7 @@
 #include"Config.hpp"
 #include"Algo.hpp"
 #include"Sample.hpp"
+#include"Interactions.hpp"
 
 using namespace std;
 

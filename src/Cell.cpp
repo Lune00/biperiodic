@@ -159,6 +159,7 @@ void Cell::write(ofstream& of,double t){
 
 //On travaille sur les coordonnees reduites
 //Si elles sont plus petites que 0 ou plus grandes que 1 on periodise
+//A bouger dans Sample peut etre
 void Cell::PeriodicBoundaries2(std::vector<Particle>* sp){
 	//Vecteur a1(h_.getxx(),h_.getyx());
 	//Vecteur a2(h_.getxy(),h_.getyy());
@@ -206,6 +207,8 @@ void Cell::update(Tensor2x2 h, Tensor2x2 hd){
 
 }
 
+
+//Ici toujours un probelem pour le calcul
 void Cell::CalculStrainTensor(){
 
 	double Lx0= h0_.getxx();
@@ -218,10 +221,19 @@ void Cell::CalculStrainTensor(){
 	double sxy = (h_.getxy() - h0_.getxy())/Ly0;
 	double syx = (h_.getyx() - h0_.getyx())/Lx0; 
 
+	//Si train doit etre calcule comme ca:
+	//double syx = sxy ;
+
 	s_.set(sxx,sxy,syx,syy);
 	s_.eigenVectors();
 	//Ecrire tenseur deformartion
 	//s_.write(of2);
+}
+
+void Cell::writeStrainTensor(ofstream& os, double t){
+	os<<t<<" ";
+	s_.write(os);
+	s_.eigenVectors();
 }
 
 //Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration

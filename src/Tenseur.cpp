@@ -54,7 +54,7 @@ void Tensor2x2::write(ofstream& of){
 	eigenValues();
 	double spherique=l1_+l2_;
 	double deviatorique=l1_-l2_;
-	of<<xx_<<" "<<xy_<<" "<<yx_<<" "<<yy_<<" "<<spherique<<" "<<deviatorique<<" "<<l1_<<" "<<l2_<<xx_+yy_<<endl;
+	of<<xx_<<" "<<xy_<<" "<<yx_<<" "<<yy_<<" "<<spherique<<" "<<deviatorique<<" "<<l1_<<" "<<l2_<<endl;
 }
 
 void Tensor2x2::set(double xx, double xy, double yx, double yy){

@@ -36,7 +36,7 @@ class Cell{
 		//Strain tensor: cumulative (time measure of the essai)
 		Tensor2x2 s_;
 		//Velocity gradient tensor (a voir plus tard, mais BC plus generale possible)
-		Tensor2x2 Ld_;
+		//Tensor2x2 Ld_;
 		//Stress: int et ext
 		Tensor2x2 stress_ext;
 		//Maj par particules
@@ -70,6 +70,7 @@ class Cell{
 		//Met a jours la periodicite des particules en position
 		void PeriodicBoundaries2(std::vector<Particle>*);
 		void write(std::ofstream&,double);
+		void writeStrainTensor(std::ofstream&,double);
 		void CalculStrainTensor();
 
 		//Acces
