@@ -8,11 +8,14 @@
 #include<fstream>
 
 //Cellule periodique
+class Sample;
+
 class Cell{
 
 	private:
-		//Dimension:
-		double L_;
+		//Dimensions:
+		double Lx_;
+		double Ly_;
 		//Coordonnees centre:
 		double xc_;
 		double yc_;
@@ -42,9 +45,15 @@ class Cell{
 
 		//Check:
 		bool initCG_;
+		bool L_auto_;
+		bool mh_auto_;
 	public:
 		Cell();
+		//Init User control
 		void init(std::ifstream&);
+		//Init Starting Geometry and mass from sample
+		void initFromSample(Sample&);
+		bool needSample();
 		//A l'avenir constructeur prend en argument un truc qui init/garde en memoire  les DOF controles
 		//Cell(double L,Config& config): L_(L),xc_(L_/2.),yc_(L_/2.){initCell(config);}
 		~Cell(){};
@@ -68,14 +77,14 @@ class Cell{
 
 		double getVolume();
 		double getMasse() const { return mh_;}
-		double getL() const { return L_;}
-		double getL2() const { return L_/2.;}
+		double getLx() const { return Lx_;}
+		double getLx2() const { return Lx_/2.;}
 
 		Tensor2x2 geth() const { return h_;}
 		Tensor2x2 gethd() const { return hd_;}
+		Tensor2x2 gethdd() const { return hdd_;}
 		Tensor2x2 getStressInt() const { return stress_int;}
 		Tensor2x2 getStressExt() const { return stress_ext;}
-		Tensor2x2 gethdd() const { return hdd_;}
 
 		//Debug & track:
 		void affiche(){std::cout<<xc_<<" "<<yc_<<" "<<getVolume()<<std::endl;}

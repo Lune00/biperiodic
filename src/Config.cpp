@@ -35,21 +35,25 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
 		{
 			algo.init(is);
 		}
-		if(token=="Cell{")
-		{
-			cell.init(is);
-		}
 		if(token=="Sample{")
 		{
 			spl.init(is);
 		}
+		if(token=="Cell{")
+		{
+			cell.init(is);
+		}
 		is >> token;
 	}
 
+
 	//Global check:
 	bool checkSample = spl.initcheck();
-	bool checkAlgo = algo.initcheck();
+	//Initialise Cell avec sample:
+	if(checkSample && cell.needSample()) cell.initFromSample(spl);
+
 	bool checkCell = cell.initcheck();
+	bool checkAlgo = algo.initcheck();
 
 	if(!checkSample){
 		cerr<<" Sample::initcheck() problem."<<endl;

@@ -1,16 +1,21 @@
 #include"Cell.hpp"
+#include"Sample.hpp"
 
 using namespace std;
 
 
 Cell::Cell(){
-	L_ = 1. ;
+	//Stress_ext et hd egal a 0 par construction par defaut
+	Lx_ = 1. ;
+	Ly_ = 1. ;
 	xc_ = 0.5 ;
 	yc_ = 0.5 ;
-	h_.set(L_,0.,0.,L_);
+	h_.set(Lx_,0.,0.,Ly_);
 	h0_ = h_;
 	initCG_ = false ;
-	//Stress_ext et hd egal a 0 par construction par defaut
+	mh_ = 1.;
+	mh_auto_ = false;
+	L_auto_ = false;
 }
 //Initialisation a partir du fichier de configuration
 void Cell::init(ifstream& is){
@@ -25,9 +30,15 @@ void Cell::init(ifstream& is){
 	is >> token;
 
 	while(is){
-		//Automatise ensuite avec prop du sample
-		if(token=="L") is >> L_;
+		//Manuellement on construit la geometrie de la cellule
+		if(token=="Lx") is >> Lx_;
+		if(token=="Ly") is >> Ly_;
+		//Auto: defini a partir du sample initial
+		if(token=="L_auto") {
+			L_auto_ = true ;
+		}
 		if(token=="m") is >> mh_;
+		if(token=="m_auto") mh_auto_ = true;
 
 		if(token=="xx"){
 			is >> Control_[0];
@@ -55,10 +66,6 @@ void Cell::init(ifstream& is){
 	}
 
 
-	//Géometrie initiale
-	h_.set(L_,0.,0.,L_);
-	h0_ = h_ ;
-	//Definir masse a partir de l'échantillon
 
 	//Definir tenseur contraintes ext / hd (qu'on peut trans en L)
 	if(Control_[0] == 'v'){
@@ -90,12 +97,29 @@ void Cell::init(ifstream& is){
 	if(ixx && ixy && iyx && iyy){
 		initCG_ = true ;
 	}
+
+	if(!L_auto_){
+	//Géometrie rectangle initiale definie manuellement
+	h_.set(Lx_,0.,0.,Ly_);
+	h0_ = h_ ;
+	}
+}
+
+void Cell::initFromSample(Sample& spl){
+
+
+
 }
 
 
 bool Cell::initcheck(){
-
 	return initCG_;
+}
+
+//Renvoie vrai si on a besoin du sample pour initialiser cellule
+bool Cell::needSample(){
+	if( L_auto_ || mh_auto_) return true;
+	else return false;
 }
 
 //Le volume est donné par det(h) (deux vecteurs de base de la cellule)
@@ -111,10 +135,10 @@ void Cell::write(ofstream& of,ofstream& of2,double T){
 	double vx=h_.getxy();
 	double vy=h_.getyy();
 
-	of<<T<<" "<<xc_- L_/2.<<" "<<yc_ - L_/2<<" "<<ux<<" "<<uy<<endl;
-	of<<T<<" "<<xc_- L_/2.+vx<<" "<<yc_- L_/2.+vy<<" "<<ux<<" "<<uy<<endl;
-	of<<T<<" "<<xc_- L_/2.<<" "<<yc_- L_/2.<<" "<<vx<<" "<<vy<<endl;
-	of<<T<<" "<<xc_- L_/2.+ux<<" "<<yc_- L_/2.+uy<<" "<<vx<<" "<<vy<<endl;
+	of<<T<<" "<<xc_- Lx_/2.<<" "<<yc_ - Ly_/2<<" "<<ux<<" "<<uy<<endl;
+	of<<T<<" "<<xc_- Lx_/2.+vx<<" "<<yc_- Ly_/2.+vy<<" "<<ux<<" "<<uy<<endl;
+	of<<T<<" "<<xc_- Lx_/2.<<" "<<yc_- Ly_/2.<<" "<<vx<<" "<<vy<<endl;
+	of<<T<<" "<<xc_- Lx_/2.+ux<<" "<<yc_- Ly_/2.+uy<<" "<<vx<<" "<<vy<<endl;
 
 }
 
