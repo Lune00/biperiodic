@@ -14,8 +14,9 @@ class Vecteur{
 		~Vecteur(){};
 
 		void print(){std::cout<<x_<<" "<<y_<<std::endl;}
-		void set(double x,double y){ x_=x; y_=y;}
 		void add(double dx, double dy) { x_ += dx ; y_ += dy;}
+		void addx(double dx) { x_ += dx;}
+		void addy(double dy) { y_ += dy;}
 
 		//Accessors:
 		double getNorme() const {return sqrt( x_*x_ + y_ * y_);}
@@ -24,6 +25,7 @@ class Vecteur{
 		//Mutators:
 		void setx(double x) {x_ = x;}
 		void sety(double y) {y_ = y;}
+		void set(double x,double y){ x_=x; y_=y;}
 
 		//Surcharge operator:
 		//Scalar product:

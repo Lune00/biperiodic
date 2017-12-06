@@ -13,6 +13,8 @@ Cell::Cell(){
 	h_.set(Lx_,0.,0.,Ly_);
 	h0_ = h_;
 	initCG_ = false ;
+	initGeometry_ = false;
+	initMass_ = false;
 	mh_ = 1.;
 	mh_auto_ = false;
 	L_auto_ = false;
@@ -37,7 +39,10 @@ void Cell::init(ifstream& is){
 		if(token=="L_auto") {
 			L_auto_ = true ;
 		}
-		if(token=="m") is >> mh_;
+		if(token=="m"){
+			is >> mh_;
+			initMass_ = true;
+		}
 		if(token=="m_auto") mh_auto_ = true;
 
 		if(token=="xx"){
@@ -102,18 +107,29 @@ void Cell::init(ifstream& is){
 	//Géometrie rectangle initiale definie manuellement
 	h_.set(Lx_,0.,0.,Ly_);
 	h0_ = h_ ;
+	xc_ = 0.5 * Lx_;
+	yc_ = 0.5 * Ly_;
+	initGeometry_ = true;
 	}
 }
 
 void Cell::initFromSample(Sample& spl){
-
-
-
+	//Initial Cell Geometry
+	Lx_ = spl.getxmax() - spl.getxmin();
+	Ly_ = spl.getymax() - spl.getymin();
+	h_.set(Lx_,0.,0.,Ly_);
+	h0_ = h_ ;
+	xc_ = 0.5 * Lx_;
+	yc_ = 0.5 * Ly_;
+	initGeometry_ = true;
+	//Mass: double sample mass for inertia
+	mh_ = 2. * spl.getMass();
+	initMass_ = true;
 }
 
 
 bool Cell::initcheck(){
-	return initCG_;
+	return (initCG_ && initGeometry_ && initMass_);
 }
 
 //Renvoie vrai si on a besoin du sample pour initialiser cellule
@@ -128,41 +144,50 @@ double Cell::getVolume(){
 }
 
 //Construit la cellule
-void Cell::write(ofstream& of,ofstream& of2,double T){
+void Cell::write(ofstream& of,double t){
 
 	double ux=h_.getxx();
 	double uy=h_.getyx();
 	double vx=h_.getxy();
 	double vy=h_.getyy();
-
-	of<<T<<" "<<xc_- Lx_/2.<<" "<<yc_ - Ly_/2<<" "<<ux<<" "<<uy<<endl;
-	of<<T<<" "<<xc_- Lx_/2.+vx<<" "<<yc_- Ly_/2.+vy<<" "<<ux<<" "<<uy<<endl;
-	of<<T<<" "<<xc_- Lx_/2.<<" "<<yc_- Ly_/2.<<" "<<vx<<" "<<vy<<endl;
-	of<<T<<" "<<xc_- Lx_/2.+ux<<" "<<yc_- Ly_/2.+uy<<" "<<vx<<" "<<vy<<endl;
+	of<<t<<" "<<xc_- Lx_/2.<<" "<<yc_ - Ly_/2<<" "<<ux<<" "<<uy<<endl;
+	of<<t<<" "<<xc_- Lx_/2.+vx<<" "<<yc_- Ly_/2.+vy<<" "<<ux<<" "<<uy<<endl;
+	of<<t<<" "<<xc_- Lx_/2.<<" "<<yc_- Ly_/2.<<" "<<vx<<" "<<vy<<endl;
+	of<<t<<" "<<xc_- Lx_/2.+ux<<" "<<yc_- Ly_/2.+uy<<" "<<vx<<" "<<vy<<endl;
 
 }
 
 //On travaille sur les coordonnees reduites
 //Si elles sont plus petites que 0 ou plus grandes que 1 on periodise
-void Cell::PeriodicBoundaries2(std::vector<Particle>& sp){
+void Cell::PeriodicBoundaries2(std::vector<Particle>* sp){
 	//Vecteur a1(h_.getxx(),h_.getyx());
 	//Vecteur a2(h_.getxy(),h_.getyy());
 
 	//double Cx = a1.getNorme()  ;
 	//double Cy = a2.getNorme()  ;
+	double Lx2 = getLx() * 0.5 ;
+	double Ly2 = getLy() * 0.5 ;
 
-	for(std::vector<Particle>::iterator it = sp.begin() ; it != sp.end(); it++){
+	for(std::vector<Particle>::iterator it = sp->begin() ; it != sp->end(); it++){
 		double dx = 0.;
 		double dy = 0.;
-		if(it->getR().getx() > 1.) dx = -1.;
-		if(it->getR().getx() < 0.) dx =  1.;
-		if(it->getR().gety() > 1.) dy = -1.;
-		if(it->getR().gety() < 0.) dy =  1.;
-		it->Periodize(dx,dy);
-		//if( it->getR().getx() > Cx) dx = - a1.getNorme();
-		//if( it->getR().getx() < -Cx) dx =  a1.getNorme();
-		//if( it->getR().gety() > Cy) dy = - a2.getNorme();
-		//if( it->getR().gety() < -Cy) dy =  a2.getNorme();
+
+		while(it->getx() > 1.){
+			it->addrx(-1.);
+		}
+		while(it->gety() > 1.){
+			it->addry(-1.);
+		}
+		while(it->gety() < 0.){
+			it->addry(1.);
+		}
+		while(it->getx() < 0.){
+			it->addrx(1.);
+		}
+		//if(it->getR().getx() < 0.) dx +=  1.;
+		//if(it->getR().gety() > 1.) dy += -1.;
+		//if(it->getR().gety() < 0.) dy +=  1.;
+		//it->Periodize(dx,dy);
 
 	}
 }

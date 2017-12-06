@@ -51,8 +51,10 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
 	bool checkSample = spl.initcheck();
 	//Initialise Cell avec sample:
 	if(checkSample && cell.needSample()) cell.initFromSample(spl);
-
 	bool checkCell = cell.initcheck();
+	//Compute reduced coordinates from cell geometry
+	if(checkCell) spl.initReducedCoordinates(cell);
+
 	bool checkAlgo = algo.initcheck();
 
 	if(!checkSample){
@@ -69,9 +71,17 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
 	}
 
 	plug(algo,cell,spl);
+	spl.plugtoCell(cell);
 
 	//La où sera ecrit les fichiers des particules
 	sample_->initfolder(folder_spl_);
+
+	//Tests:
+	ofstream s("reduced.txt");
+	ofstream r("absolute.txt");
+	sample_->write(s);
+	sample_->writeAbsolute(r);
+	
 
 	return 0;
 

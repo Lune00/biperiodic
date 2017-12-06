@@ -1,6 +1,7 @@
 #include"Algo.hpp"
 #include"Cell.hpp"
 #include"Particle.hpp"
+#include"Sample.hpp"
 
 using namespace std;
 
@@ -24,8 +25,29 @@ bool Algo::initcheck(){
 }
 
 
-void Algo::run(){
+void Algo::run(Cell& cell, Sample& spl){
 
+	double tfinal = ns_ * dt_ ;
+	double t=0.;
+
+	ofstream test("samplet.txt");
+	ofstream testcell("cellt.txt");
+	cout<<"Simulation:"<<endl;
+	cout<<"dt = "<<dt_<<endl;
+	cout<<"ns = "<<ns_<<endl;
+	cout<<"tfinal = "<<tfinal<<endl;
+	while(t<tfinal){
+
+		//Time step:
+		verletalgo2(cell,spl);
+
+		//Analyse, ecriture:
+		spl.writeAbsolute(test);
+		cell.write(testcell,t);
+
+		t+=dt_;
+	}
+	test.close();
 
 }
 
@@ -161,12 +183,14 @@ void Algo::run(){
 //Pour l'instant on l'implemente de maniere naive
 //et non optimale (ecriture condensee a l'aide tenseurs/vecteurs)
 //On verra apres comment rendre ca plus compacte
-void Algo::verletalgo2(Cell& cell,std::vector<Particle>& ps){
+void Algo::verletalgo2(Cell& cell,Sample& spl){
 
   double dt2_2 = 0.5 * dt_ * dt_ ;
   double dt_2 = 0.5 * dt_ ;
-  //Integre mvt particules:
-  for(std::vector<Particle>::iterator it = ps.begin(); it != ps.end(); it++){
+
+  vector<Particle>* ps = spl.getSample();
+
+  for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
 
 	  Vecteur a = it->geta();
 	  Vecteur r = it->getR();
@@ -176,10 +200,11 @@ void Algo::verletalgo2(Cell& cell,std::vector<Particle>& ps){
 	  v = v + a * dt_2;
 	  //update position et acceleration debut pas temps
 	  it->setRV(r,v);
+
   }
 
   //Periodicite en position des particules
-  //Construire images si particules sortent de la cellule
+  cell.PeriodicBoundaries2(ps);
 
   //Integration du mvt de la cellule:
   Tensor2x2 h = cell.geth();
@@ -247,13 +272,14 @@ void Algo::verletalgo2(Cell& cell,std::vector<Particle>& ps){
   //Fin pas de temps vitesse
   //On retransforme la vitesse en coordonnee reduite
   Tensor2x2 hinv = h.getInverse();
-  for(std::vector<Particle>::iterator it = ps.begin(); it != ps.end(); it++){
+  for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
 
 	  Vecteur a = it->geta();
 	  Vecteur v = it->getV();
 	  a = hinv * a ;
 	  v = v + a * dt_2 ;
 	  it->setV(v);
+	  if(it->getId() == 0) it->affiche();
   }
 
   //Apply stress_ext: si controle en force

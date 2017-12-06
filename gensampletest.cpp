@@ -127,8 +127,10 @@ int main(){
   //Ecrture du fichier packing0.spl
 
   ofstream myFile ("packing0.spl",ios::out);
+  int n = 0 ;
   for(std::vector<Particule>::iterator it = sample.begin() ; it!= sample.end(); it++){
-	  myFile<<it->getgroup()<<" "<<it->getr()<<" "<<it->getx()<<" "<<it->gety()<<" "<<" "<<it->getvx()<<" "<<it->getvy()<<" "<<it->getrot()<<" "<<it->getvrot()<<endl;
+	  myFile<<n<<" "<<it->getr()<<" "<<it->getx()<<" "<<it->gety()<<" "<<it->getvx()<<" "<<it->getvy()<<" "<<it->getrot()<<" "<<it->getvrot()<<endl;
+	  n++;
   }
   myFile.close();
 

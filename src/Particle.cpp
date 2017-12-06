@@ -9,7 +9,7 @@ Particle::Particle(ifstream& is){
 	double vx = 0. ;
 	double vy = 0. ;
 	is >> id_ >> R_ >> x >> y >> vx >> vy >> rot_ >> vrot_; 
-	cout<<"read "<<id_<<" "<<R_<<" "<<x<<" "<<y<<endl;
+	//cout<<"read "<<id_<<" "<<R_<<" "<<x<<" "<<y<<endl;
 	Vecteur r(x,y);
 	Vecteur v(vx,vy);
 	setRV(r,v);
@@ -25,7 +25,12 @@ void Particle::init(){
 }
 
 void Particle::write(ofstream& of) const{
-	of<<id_<<" "<< r_.getx()<<" "<<r_.gety()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<rot_<<" "<<vrot_<<endl;
+	of<<id_<<" "<<R_<<" "<< r_.getx()<<" "<<r_.gety()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<rot_<<" "<<vrot_<<endl;
+}
+
+void Particle::write(ofstream& of,Tensor2x2& h) const{
+	Vecteur rabs = h * r_ ;
+	of<<id_<<" "<<R_<<" "<<rabs.getx()<<" "<<rabs.gety()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<rot_<<" "<<vrot_<<endl;
 }
 
 void Particle::affiche() const{

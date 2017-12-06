@@ -6,6 +6,9 @@
 #include<fstream>
 #include<iostream>
 
+
+class Cell;
+
 class Sample{
 
 	private:
@@ -22,6 +25,8 @@ class Sample{
 
 		//Masse volumique particules:
 		double rho_;
+		//Sample total mass
+		double M_;
 
 		//Check:
 		bool sampleIsLoaded_;
@@ -29,18 +34,36 @@ class Sample{
 		//Assure utilisateur defini rho
 		bool rhodefined_;
 
+		Cell* cell_;
+
 	public:
 		Sample();
 		~Sample();
+
 		void init(std::ifstream&);
-		//Return 0 si ok, 1 sinon
 		void loadSample();
+		void initReducedCoordinates(Cell&);
+		void plugtoCell(Cell&);
 		void write(std::ofstream&);
+		void writeAbsolute(std::ofstream&);
 		void attributeMass();
 		void setminmax();
+		void initfolder(std::string folder) { folder_ = folder;}
+
 		bool initcheck();
 		bool isEmptySampleFile(std::ifstream&);
-		void initfolder(std::string folder) { folder_ = folder;}
+
+
+		double getxmin() const { return xmin_;}
+		double getxmax() const { return xmax_;}
+		double getymin() const { return ymin_;}
+		double getymax() const { return ymax_;}
+		double getMass() const { return M_;}
+
+		unsigned int getsize() const { return spl_.size();}
+		//Reflechir a ne pas briser l'encapsulation plus tard...
+		//Ca me plait moyen de donner mon vecteur de particules...
+		std::vector<Particle>* getSample() { return &spl_;}
 
 };
 

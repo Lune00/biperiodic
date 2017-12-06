@@ -7,6 +7,7 @@
 
 class Cell;
 class Particle;
+class Sample;
 
 class Algo{
 	private:
@@ -23,10 +24,10 @@ class Algo{
 		Algo() { dt_ = 1. ; ns_ = 0 ;}
 		~Algo(){};
 		//void verletalgo(Cell&,std::vector<Particle>&);
-		void verletalgo2(Cell&,std::vector<Particle>&);
+		void verletalgo2(Cell&,Sample&);
 		void init(std::ifstream&);
 		bool initcheck();
-		void run();
+		void run(Cell&,Sample&);
 };
 
 #endif

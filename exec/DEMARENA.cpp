@@ -29,7 +29,7 @@ int main (int argc,char **argv)
 	if(init_status != 0) return 0;
 
 	//Lancement simulation
-	algo.run();
+	algo.run(cell,spl);
 
 	return 0;
 

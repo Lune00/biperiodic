@@ -42,11 +42,14 @@ class Cell{
 		//Maj par particules
 		Tensor2x2 stress_int;
 
+		//Defined by initial sample
+		bool L_auto_;
+		bool mh_auto_;
 
 		//Check:
 		bool initCG_;
-		bool L_auto_;
-		bool mh_auto_;
+		bool initGeometry_;
+		bool initMass_;
 	public:
 		Cell();
 		//Init User control
@@ -65,8 +68,8 @@ class Cell{
 		void updatehd(Tensor2x2 hd) { hd_ = hd;}
 
 		//Met a jours la periodicite des particules en position
-		void PeriodicBoundaries2(std::vector<Particle>&);
-		void write(std::ofstream&,std::ofstream&,double);
+		void PeriodicBoundaries2(std::vector<Particle>*);
+		void write(std::ofstream&,double);
 		void CalculStrainTensor();
 
 		//Acces
@@ -78,7 +81,7 @@ class Cell{
 		double getVolume();
 		double getMasse() const { return mh_;}
 		double getLx() const { return Lx_;}
-		double getLx2() const { return Lx_/2.;}
+		double getLy() const { return Ly_;}
 
 		Tensor2x2 geth() const { return h_;}
 		Tensor2x2 gethd() const { return hd_;}
