@@ -65,6 +65,8 @@ class Sample{
 		//Ca me plait moyen de donner mon vecteur de particules...
 		std::vector<Particle>* getSample() { return &spl_;}
 
+		Cell * getCell() const { return cell_;}
+
 };
 
 

@@ -48,7 +48,7 @@ void Algo::run(){
 	while(t<tfinal){
 
 		//Update verlet list
-		if(tic % Int_->getnv() == 0) Int_->updatevlist();
+		Int_->updateverlet(tic);
 
 		//Time step: integration & periodicity
 		verletalgo2();

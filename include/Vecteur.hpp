@@ -40,6 +40,13 @@ class Vecteur{
 			return p;
 		}
 
+		Vecteur operator - (Vecteur a){
+			Vecteur p;
+			p.x_ = x_ - a.x_;
+			p.y_ = y_ - a.y_;
+			return p;
+		}
+
 		Vecteur operator * (double a){
 			Vecteur p;
 			p.x_ = a*x_ ;

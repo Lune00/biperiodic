@@ -25,6 +25,7 @@
 //Liste de verlet et superListe de verlet (pour améliorer le temps)
 
 class Sample;
+class Cell;
 
 class Interactions{
 
@@ -57,7 +58,9 @@ class Interactions{
 	public:
 		Interactions();
 		~Interactions();
+		void updateverlet(const int);
 		void updatevlist();
+		void updatesvlist();
 		int getnv() const { return nv_ ;}
 		int getnsv() const {return nsv_;}
 		void plug(Sample&);
