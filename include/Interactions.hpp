@@ -58,9 +58,12 @@ class Interactions{
 		Sample * spl_;
 
 
-		//Check:
+		//Global check at initialisation:
 		bool checkInteractions_;
-		bool initDistances_;
+		//Locals check at initialisation:
+		bool initScale_;
+		bool initdv_;
+		bool initdsv_;
 
 
 	public:

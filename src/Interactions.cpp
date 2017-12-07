@@ -8,13 +8,15 @@ using namespace std;
 Interactions::Interactions(){
 	//Temp
 	//Distances a mettre en Rmax
-	dv_ = 2. ;
-	dsv_ = 3. ;
-	nv_ = 1 ;
-	nsv_ = 1;
+	dv_ = 0. ;
+	dsv_ = 0. ;
+	nv_ = 0 ;
+	nsv_ = 0;
 	scale_=string();
+	initScale_ = false;
+	initdv_ = false;
+	initdsv_ = false;
 	checkInteractions_ = false;
-	initDistances_ = false;
 }
 
 Interactions::~Interactions(){
@@ -25,6 +27,25 @@ Interactions::~Interactions(){
 void Interactions::init(ifstream& is){
 
 
+	string token;
+	is >> token;
+	while(is){
+
+		if(token=="setUnit") is >> scale_;
+
+		if(token=="dv"){
+			is >> dv_;
+			initdv_ = true;
+		}
+		if(token=="dsv"){
+			is >> dsv_;
+			initdsv_ = true;
+		}
+		if(token=="niterv")  is >> nv_;
+		if(token=="nitersv") is >> nsv_;
+		if(token=="}") break;
+		is >> token;
+	}
 
 
 }
@@ -33,6 +54,7 @@ void Interactions::init(ifstream& is){
 void Interactions::initScale(){
 
 	double scale;
+	double epsilon=0.00001;
 
 	if(scale_ == "Rmax" ) {
 		scale = spl_->getrmax();
@@ -45,10 +67,19 @@ void Interactions::initScale(){
 		return ;
 	}
 
+	//Check if dv et dsv have been initialised "correctly"
+	if(dv_ < epsilon || dsv_ < epsilon)
+	{
+		initScale_ = false;
+		cerr<<"Interactions::initScale() : distances are not well set! Too small or zero."<<endl;
+		return;
+	}
+
 	dv_ *= scale;
 	dsv_ *= scale;
-	initDistances_ = true ;
+	initScale_ = true ;
 
+	return ;
 }
 
 void Interactions::plug(Sample& spl){
@@ -56,6 +87,18 @@ void Interactions::plug(Sample& spl){
 	initScale();
 }
 
+
+bool Interactions::initcheck(){
+	bool initNiter = false;
+	if( nv_ != 0 && nsv_ != 0 ) initNiter = true; 
+	checkInteractions_ = initNiter && initScale_ && initdv_ && initdsv_;
+
+
+	cout<<"d verlet (scale)  = "<<dv_<<endl;
+	cout<<"d sverlet (scale)  = "<<dsv_<<endl;
+	return checkInteractions_;
+}
+	
 
 void Interactions::updateverlet(const int tic){
 	if( tic % nsv_ == 0 ) updatesvlist();

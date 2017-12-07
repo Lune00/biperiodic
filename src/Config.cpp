@@ -81,19 +81,19 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	spl.initfolder(folder_spl_);
 
 	if(!checkSample){
-		cerr<<" Sample::initcheck() problem."<<endl;
+		cerr<<"Sample::initcheck() problem."<<endl;
 		return 1;
 	}
 	if(!checkAlgo){
-		cerr<<" Algo::initcheck() problem."<<endl;
+		cerr<<"Algo::initcheck() problem."<<endl;
 		return 1;
 	}
 	if(!checkCell){
-		cerr<<" Cell::initcheck() problem."<<endl;
+		cerr<<"Cell::initcheck() problem."<<endl;
 		return 1;
 	}
 	if(!checkInteractions){
-		cerr<<" Interactions::initcheck() problem."<<endl;
+		cerr<<"Interactions::initcheck() problem."<<endl;
 		return 1;
 	}
 
