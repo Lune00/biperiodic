@@ -1,4 +1,9 @@
 #include"Config.hpp"
+#include"Cell.hpp"
+#include"Algo.hpp"
+#include"Sample.hpp"
+#include"Tenseur.hpp"
+#include"Interactions.hpp"
 
 using namespace std;
 
@@ -6,22 +11,22 @@ Config::Config(){
 	folder_spl_ = "spl" ;
 	folder_analyse_ = "analyse";
 	folder_cell_ = "cell" ;
-	sample_ = NULL;
-	algo_ = NULL;
-	cell_ = NULL;
+//	sample_ = NULL;
+//	algo_ = NULL;
+//	cell_ = NULL;
 }
 
 Config::~Config(){
 }
 
 //Pourra etre utile plus tard
-void Config::plug(Algo& algo, Cell& cell, Sample& spl){
-	sample_ = &spl;
-	algo_ = &algo;
-	cell_ = &cell;
-}
+//void Config::plug(Algo& algo, Cell& cell, Sample& spl){
+//	sample_ = &spl;
+//	algo_ = &algo;
+//	cell_ = &cell;
+//}
 
-int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
+int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int){
 
 	if(!is){
 		cerr<< "Config::init : cannot open file."<<endl;
@@ -70,17 +75,19 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl){
 		return 1;
 	}
 
-	plug(algo,cell,spl);
+	//Plugs:
 	spl.plugtoCell(cell);
+	Int.plug(spl);
+	algo.plug(cell,spl,Int);
 
-	//La où sera ecrit les fichiers des particules
-	sample_->initfolder(folder_spl_);
+	//Writing paths:
+	spl.initfolder(folder_spl_);
 
-	//Tests:
-	ofstream s("reduced.txt");
-	ofstream r("absolute.txt");
-	sample_->write(s);
-	sample_->writeAbsolute(r);
+	////Tests:
+	//ofstream s("reduced.txt");
+	//ofstream r("absolute.txt");
+	//sample_->write(s);
+	//sample_->writeAbsolute(r);
 	
 
 	return 0;

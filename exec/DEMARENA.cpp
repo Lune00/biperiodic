@@ -17,20 +17,22 @@ int main (int argc,char **argv)
 {
 
 	cout<<"DEM arena test."<<endl;
+
 	//Config est interface pour init tout
 	//a partir fichier configuration
 	Config config;
 	Algo algo;
 	Cell cell;
 	Sample spl;
+	Interactions Int;
 
 	//Initialisation simulation
 	ifstream is(argv[1]);
-	int init_status = config.init(is,algo,cell,spl);
+	int init_status = config.init(is,algo,cell,spl,Int);
 	if(init_status != 0) return 0;
 
 	//Lancement simulation
-	algo.run(cell,spl);
+	algo.run();
 
 	return 0;
 

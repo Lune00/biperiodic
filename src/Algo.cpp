@@ -1,7 +1,7 @@
 #include"Algo.hpp"
 #include"Cell.hpp"
-#include"Particle.hpp"
 #include"Sample.hpp"
+#include"Interactions.hpp"
 
 using namespace std;
 
@@ -23,30 +23,43 @@ bool Algo::initcheck(){
 	return false;
 }
 
+void Algo::plug(Cell& cell, Sample& spl, Interactions& Int){
+	Int_ = &Int;
+	cell_ = &cell;
+	spl_ = &spl;
+}
 
-void Algo::run(Cell& cell, Sample& spl){
+
+void Algo::run(){
 
 	double tfinal = ns_ * dt_ ;
 	double t=0.;
+	int tic=0;
 
 	ofstream test("samplet.txt");
 	ofstream testcell("cellt.txt");
 	ofstream strain("strain.txt");
+
 	cout<<"Simulation:"<<endl;
 	cout<<"dt = "<<dt_<<endl;
 	cout<<"ns = "<<ns_<<endl;
 	cout<<"tfinal = "<<tfinal<<endl;
+
 	while(t<tfinal){
 
-		//Time step:
-		verletalgo2(cell,spl);
+		//Update verlet list
+		if(tic % Int_->getnv() == 0) Int_->updatevlist();
 
-		//Analyse, ecriture:
-		spl.writeAbsolute(test);
-		cell.write(testcell,t);
-		cell.writeStrainTensor(strain,t);
+		//Time step: integration & periodicity
+		verletalgo2();
+
+		//Temp: Analyse, writing:
+		spl_->writeAbsolute(test);
+		cell_->write(testcell,t);
+		cell_->writeStrainTensor(strain,t);
 
 		t+=dt_;
+		tic++;
 	}
 	test.close();
 
@@ -56,12 +69,12 @@ void Algo::run(Cell& cell, Sample& spl){
 //Pour l'instant on l'implemente de maniere naive
 //et non optimale (ecriture condensee a l'aide tenseurs/vecteurs)
 //On verra apres comment rendre ca plus compacte
-void Algo::verletalgo2(Cell& cell,Sample& spl){
+void Algo::verletalgo2(){
 
   double dt2_2 = 0.5 * dt_ * dt_ ;
   double dt_2 = 0.5 * dt_ ;
 
-  vector<Particle>* ps = spl.getSample();
+  vector<Particle>* ps = spl_->getSample();
 
   for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
 
@@ -79,12 +92,12 @@ void Algo::verletalgo2(Cell& cell,Sample& spl){
   //Periodicite en position des particules
   //Peut etre a bouger dans Sample plutot
   //Ca me parait plus etre un taff de sample de modifier les positions
-  cell.PeriodicBoundaries2(ps);
+  cell_->PeriodicBoundaries2(ps);
 
   //Integration du mvt de la cellule:
-  Tensor2x2 h = cell.geth();
-  Tensor2x2 hd = cell.gethd();
-  Tensor2x2 hdd = cell.gethdd();
+  Tensor2x2 h = cell_->geth();
+  Tensor2x2 hd = cell_->gethd();
+  Tensor2x2 hdd = cell_->gethdd();
 
   //h = h + hd * dt_ + hdd * dt2_2 ;
   //Controle en force ou controle en vitesse
@@ -92,7 +105,7 @@ void Algo::verletalgo2(Cell& cell,Sample& spl){
   double hxx, hxy , hyx , hyy ;
   double hdxx, hdxy , hdyx , hdyy ;
 
-  if(cell.getControlxx() == 'f' ) {
+  if(cell_->getControlxx() == 'f' ) {
 	  hxx = h.getxx() + hd.getxx() * dt_ + hdd.getxx() * dt2_2 ;
 	  hdxx = hd.getxx() + hdd.getxx() * dt_2 ;
   }
@@ -103,7 +116,7 @@ void Algo::verletalgo2(Cell& cell,Sample& spl){
 	  hdxx = hd.getxx();
   }
 
-  if(cell.getControlxy() == 'f' ) {
+  if(cell_->getControlxy() == 'f' ) {
 	  hxy = h.getxy() + hd.getxy() * dt_  + hdd.getxy() * dt2_2 ;
 	  hdxy = hd.getxy() + hdd.getxy() * dt_2 ;
   }
@@ -112,7 +125,7 @@ void Algo::verletalgo2(Cell& cell,Sample& spl){
 	  hdxy = hd.getxy();
   }
 
-  if(cell.getControlyx() == 'f' ) {
+  if(cell_->getControlyx() == 'f' ) {
 	  hyx = h.getyx() + hd.getyx() * dt_  + hdd.getyx() * dt2_2 ;
 	  hdyx = hd.getyx() + hdd.getyx() * dt_2 ;
   }
@@ -121,7 +134,7 @@ void Algo::verletalgo2(Cell& cell,Sample& spl){
 	  hdyx = hd.getyx();
   }
 
-  if(cell.getControlyy() == 'f' ) {
+  if(cell_->getControlyy() == 'f' ) {
 	  hyy = h.getyy() + hd.getyy() * dt_  + hdd.getyy() * dt2_2 ;
 	  hdyy = hd.getyy() + hdd.getyy() * dt_2 ;
   }
@@ -133,7 +146,7 @@ void Algo::verletalgo2(Cell& cell,Sample& spl){
   //Set new h
   h.set(hxx,hxy,hyx,hyy);
   hd.set(hdxx,hdxy,hdyx,hdyy);
-  cell.update(h,hd);
+  cell_->update(h,hd);
 
 
   //Calcul des forces entre particules a la nouvelle position fin du pas de temps
@@ -143,7 +156,6 @@ void Algo::verletalgo2(Cell& cell,Sample& spl){
 
   //Calcul des vitesses a la fin du pas de temps:
 
-  //Etape imcomprise: acceleration(i) = hinverse(t+dt) * acceleration(i)
   //Fin pas de temps vitesse
   //On retransforme la vitesse en coordonnee reduite
   Tensor2x2 hinv = h.getInverse();
@@ -160,15 +172,15 @@ void Algo::verletalgo2(Cell& cell,Sample& spl){
   //Apply stress_ext: si controle en force
   //stress ext est egal a celui impose
   //Sinon il est egal a -stressint et acc nulle
-  cell.ApplyBC();
-  double V = cell.getVolume();
-  double mh = cell.getMasse();
-  Tensor2x2 TotalStress = cell.getStressInt() + cell.getStressExt();
+  cell_->ApplyBC();
+  double V = cell_->getVolume();
+  double mh = cell_->getMasse();
+  Tensor2x2 TotalStress = cell_->getStressInt() + cell_->getStressExt();
   hdd = hinv * (V/mh) * (TotalStress);
   //On a l'accleration en fin de pas, on peut integrer l'espace en vitesse a la fin du pas
   hd = hd + hdd * dt_2 ;
-  cell.updatehd(hd);
+  cell_->updatehd(hd);
 
   //Cell deformation
-  cell.CalculStrainTensor();
+  cell_->CalculStrainTensor();
 }

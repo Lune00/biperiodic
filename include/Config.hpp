@@ -5,10 +5,11 @@
 #include<iostream>
 #include<string>
 
-#include"Algo.hpp"
-#include"Cell.hpp"
-#include"Sample.hpp"
-#include"Tenseur.hpp"
+
+class Cell;
+class Algo;
+class Sample;
+class Interactions;
 
 class Config{
 	private:
@@ -17,17 +18,17 @@ class Config{
 		std::string folder_cell_;
 		std::string folder_analyse_;
 
-		Sample* sample_;
-		Algo* algo_;
-		Cell* cell_;
+		//Sample* sample_;
+		//Algo* algo_;
+		//Cell* cell_;
 
 	public:
 		 Config();
 		 ~Config();
 		 //Interface d'initialistion
 		 //Return 1 pb, return 0 ok
-		 void plug(Algo&,Cell&,Sample&);
-		 int init(std::ifstream&,Algo&,Cell&,Sample&);
+		 //void plug(Algo&,Cell&,Sample&);
+		 int init(std::ifstream&,Algo&,Cell&,Sample&,Interactions&);
 };
 
 #endif
