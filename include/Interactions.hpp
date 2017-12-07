@@ -32,6 +32,8 @@ class Interactions{
 
 	private:
 
+		//const Particle * i (svlist do not change particle)
+		//but vlist need svlist and allow to change particle state
 		struct particle_pair{
 			Particle * i;
 			Particle * j;
@@ -50,7 +52,7 @@ class Interactions{
 		//Verlet list
 		std::vector<Contact> vlist_;
 		//Super Verlet list
-		std::vector<Contact> svlist_;
+		std::vector<particle_pair> svlist_;
 		//Active contact list: id de vlist
 		std::vector<int> clist_;
 

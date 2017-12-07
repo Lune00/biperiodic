@@ -105,6 +105,9 @@ void Interactions::updateverlet(const int tic){
 	if( tic % nv_ == 0 ) updatevlist();
 }
 
+
+//On pourrait stocker la distance interbranche dans la liste de superverlet
+//au lieu de la recalculer, et dans verlet tester la distance au cut off plus court, optimisation legere...
 void Interactions::updatesvlist(){
 
 	svlist_.clear();
@@ -117,13 +120,19 @@ void Interactions::updatesvlist(){
 	//Get h:
 	Tensor2x2 h = spl_->getCell()->geth();
 
-	for(std::vector<Particle>::const_iterator iti = ps->begin(); iti!=ps->end();iti++){
-		for(std::vector<Particle>::const_iterator itj = iti+1; itj!=ps->end();itj++){
+	//Const iterator? But how, after we need these pointers to modify
+	//Particles properties... 
+	for(std::vector<Particle>::iterator iti = ps->begin(); iti!=ps->end();iti++){
+		for(std::vector<Particle>::iterator itj = iti+1; itj!=ps->end();itj++){
 			if( near( *(iti), *(itj), h , dsv_) ) {
 				cout<<"Near!"<<endl;
+				particle_pair O__O = { &(*iti), &(*itj) };
+				svlist_.push_back(O__O);
 			}
 		}
 	}
+
+	cout<<"Super verlet list size: "<<svlist_.size()<<endl;
 }
 
 //True if distance between "surface" of particle i and j are lower than d
@@ -146,7 +155,22 @@ bool Interactions::near(const Particle& i, const Particle& j,const Tensor2x2& h,
 
 void Interactions::updatevlist(){
 
+	vlist_.clear();
 
+	Tensor2x2 h = spl_->getCell()->geth();
+
+	for(vector<particle_pair>::iterator it = svlist_.begin(); it != svlist_.end(); it++){
+		//if near dverlet
+		if( near(*(it->i),*(it->j),h,dv_) )
+		{
+		//Create a Contact
+		Contact c(it->i,it->j);	
+		//Push contact to vlist_;
+		vlist_.push_back(c);
+		}
+	}
+
+	cout<<"Verlet list size: "<<vlist_.size()<<endl;
 }
 
 
