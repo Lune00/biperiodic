@@ -53,16 +53,19 @@ class Sample{
 		bool initcheck();
 		bool isEmptySampleFile(std::ifstream&);
 
-
 		double getxmin() const { return xmin_;}
 		double getxmax() const { return xmax_;}
 		double getymin() const { return ymin_;}
 		double getymax() const { return ymax_;}
+		double getrmax() const { return rmax_;}
+		double getrmin() const { return rmin_;}
 		double getMass() const { return M_;}
 
 		unsigned int getsize() const { return spl_.size();}
 		//Reflechir a ne pas briser l'encapsulation plus tard...
 		//Ca me plait moyen de donner mon vecteur de particules...
+		//For flexibility ok but break encapsulation...
+		//Better idea needed... Someone else will touch sample
 		std::vector<Particle>* getSample() { return &spl_;}
 
 		Cell * getCell() const { return cell_;}

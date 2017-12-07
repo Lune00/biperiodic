@@ -25,10 +25,10 @@ class Tensor2x2{
 		
 		void set(double xx, double xy, double yx, double yy);
 
-		Tensor2x2 getInverse();
-		Tensor2x2 getTranspose();
+		Tensor2x2 getInverse() const;
+		Tensor2x2 getTranspose() const;
 
-		void affiche(){std::cout<<std::endl;std::cout<<xx_<<" "<<xy_<<std::endl;
+		void affiche() const{std::cout<<std::endl;std::cout<<xx_<<" "<<xy_<<std::endl;
 			std::cout<<yx_<<" "<<yy_<<std::endl;std::cout<<std::endl;}
 
 		//Accesseurs:
@@ -37,7 +37,7 @@ class Tensor2x2{
 		double getyx() const { return yx_;} 
 		double getyy() const { return yy_;} 
 
-		double getDet(){ return (xx_*yy_ - xy_*yx_) ;}
+		double getDet() const{ return (xx_*yy_ - xy_*yx_) ;}
 
 		void setxx(double xx) { xx_ = xx;}
 		void setxy(double xy) { xy_ = xy;}
@@ -49,6 +49,7 @@ class Tensor2x2{
 		void write(std::ofstream&);
 		void writeEigenVectors(std::ofstream&);
 
+		//Il faudrait mettre des const partout enfait...
 		Tensor2x2 operator * (Tensor2x2 a){
 			Tensor2x2 p;
 			p.xx_ = xx_*a.xx_ + xy_*a.yx_;
@@ -83,6 +84,15 @@ class Tensor2x2{
 			p.set(x,y);
 			return p;
 		}
+
+		Vecteur operator * (Vecteur a) const{
+			Vecteur p;
+			double x = xx_*a.getx()+ xy_*a.gety();
+			double y = yx_*a.getx() + yy_*a.gety();
+			p.set(x,y);
+			return p;
+		}
+
 };
 
 #endif

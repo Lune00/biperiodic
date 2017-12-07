@@ -48,19 +48,37 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 		{
 			cell.init(is);
 		}
+		if(token=="Interactions{")
+		{
+			Int.init(is);
+		}
 		is >> token;
 	}
 
 
 	//Global check:
+
+
+	//Check sample parameters:
 	bool checkSample = spl.initcheck();
-	//Initialise Cell avec sample:
+	//Initialise Cell with sample:
 	if(checkSample && cell.needSample()) cell.initFromSample(spl);
+	//Check cell parameters:
 	bool checkCell = cell.initcheck();
 	//Compute reduced coordinates from cell geometry
 	if(checkCell) spl.initReducedCoordinates(cell);
-
+	//Check algo parameters:
 	bool checkAlgo = algo.initcheck();
+	//Plugs:
+	spl.plugtoCell(cell);
+	//Rescale verlet distances according to user choice
+	Int.plug(spl);
+	algo.plug(cell,spl,Int);
+	//Check interactions parameters:
+	bool checkInteractions = Int.initcheck();
+
+	//Writing paths initialisation:
+	spl.initfolder(folder_spl_);
 
 	if(!checkSample){
 		cerr<<" Sample::initcheck() problem."<<endl;
@@ -74,14 +92,11 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 		cerr<<" Cell::initcheck() problem."<<endl;
 		return 1;
 	}
+	if(!checkInteractions){
+		cerr<<" Interactions::initcheck() problem."<<endl;
+		return 1;
+	}
 
-	//Plugs:
-	spl.plugtoCell(cell);
-	Int.plug(spl);
-	algo.plug(cell,spl,Int);
-
-	//Writing paths:
-	spl.initfolder(folder_spl_);
 
 	////Tests:
 	//ofstream s("reduced.txt");

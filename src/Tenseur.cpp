@@ -64,7 +64,7 @@ void Tensor2x2::set(double xx, double xy, double yx, double yy){
 	yy_ = yy;
 }
 
-Tensor2x2 Tensor2x2::getInverse(){
+Tensor2x2 Tensor2x2::getInverse() const{
 	double epsilon=0.00001;
 	//Matrice nulle par defaut
 	Tensor2x2 Inverse;
@@ -79,7 +79,7 @@ Tensor2x2 Tensor2x2::getInverse(){
 	}
 }
 
-Tensor2x2 Tensor2x2::getTranspose(){
+Tensor2x2 Tensor2x2::getTranspose() const{
 	Tensor2x2 Transpose(xx_,yx_,xy_,yy_);
 	return Transpose;
 }

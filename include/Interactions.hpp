@@ -3,6 +3,7 @@
 
 #include<vector>
 #include<iostream>
+#include<string>
 
 #include"Contact.hpp"
 #include"Particle.hpp"
@@ -42,7 +43,9 @@ class Interactions{
 		unsigned int nv_;
 		unsigned int nsv_;
 
-		double Rmax_;
+		//factor for dv_ and dsv_ for list construction
+		//User defined: Rmin, Rmax
+		std::string scale_;
 
 		//Verlet list
 		std::vector<Contact> vlist_;
@@ -55,6 +58,11 @@ class Interactions{
 		Sample * spl_;
 
 
+		//Check:
+		bool checkInteractions_;
+		bool initDistances_;
+
+
 	public:
 		Interactions();
 		~Interactions();
@@ -63,7 +71,11 @@ class Interactions{
 		void updatesvlist();
 		int getnv() const { return nv_ ;}
 		int getnsv() const {return nsv_;}
+		void init(std::ifstream&);
+		void initScale();
+		bool initcheck();
 		void plug(Sample&);
+		bool near(const Particle&,const Particle&,const Tensor2x2&,const double) const;
 
 
 
