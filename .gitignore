@@ -1,3 +1,13 @@
 a.out
 lib/
 src/*.o
+src/Algo.o
+src/Cell.o
+src/Config.o
+src/Contact.o
+src/globalfunctions.o
+src/Interactions.o
+src/Particle.o
+src/Sample.o
+src/Tenseur.o
+src/Vecteur.o
