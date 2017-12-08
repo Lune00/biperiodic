@@ -82,8 +82,10 @@ void Interactions::initScale(){
 	return ;
 }
 
-void Interactions::plug(Sample& spl){
+void Interactions::plug(Sample& spl,Cell& cell){
 	spl_ = & spl;
+	//Allow accessing h at any time for force computations
+	cell_ = &cell;
 	initScale();
 }
 
@@ -176,14 +178,22 @@ void Interactions::updatevlist(){
 //Build contact list (activated interactions)
 void Interactions::detectContacts(){
 
+	cout<<"Contact detection..."<<endl;
 	clist_.clear();
+	Tensor2x2 h = cell_->geth();
 
 	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
-		it->Frame();
+		it->Frame(h);
 		int k = distance( vlist_.begin(), it);
 		cout<<k<<endl;
 		if(it->isActif()) clist_.push_back(k);
 	}
+
+
+}
+
+void Interactions::computeForces(){
+
 
 
 }

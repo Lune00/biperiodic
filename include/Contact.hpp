@@ -5,6 +5,7 @@
 #include"Vecteur.hpp"
 
 class Particle;
+class Tensor2x2;
 
 class Contact{
 
@@ -31,7 +32,7 @@ class Contact{
 
 		bool isActif() const { return isActif_;}
 		void activate() { isActif_ = true;}
-		void Frame();
+		void Frame(Tensor2x2&);
 };
 
 

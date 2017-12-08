@@ -48,6 +48,7 @@ void Algo::run(){
 	while(t<tfinal){
 
 		//Update verlet list
+		cout<<"Update verlet"<<endl;
 		Int_->updateverlet(tic);
 
 		//Time step: integration & periodicity
@@ -71,6 +72,7 @@ void Algo::run(){
 //On verra apres comment rendre ca plus compacte
 void Algo::verletalgo2(){
 
+  cout<<"integrate"<<endl;
   double dt2_2 = 0.5 * dt_ * dt_ ;
   double dt_2 = 0.5 * dt_ ;
 

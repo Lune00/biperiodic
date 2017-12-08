@@ -58,6 +58,7 @@ class Interactions{
 
 		//plug:
 		Sample * spl_;
+		Cell * cell_;
 
 
 		//Global check at initialisation:
@@ -75,7 +76,7 @@ class Interactions{
 		void init(std::ifstream&);
 		void initScale();
 		bool initcheck();
-		void plug(Sample&);
+		void plug(Sample&,Cell&);
 		//Call updatevlist & updatsvlist
 		void updateverlet(const int);
 		//Build superverlet

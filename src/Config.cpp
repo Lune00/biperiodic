@@ -72,7 +72,7 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	//Plugs:
 	spl.plugtoCell(cell);
 	//Rescale verlet distances according to user choice
-	Int.plug(spl);
+	Int.plug(spl,cell);
 	algo.plug(cell,spl,Int);
 	//Check interactions parameters:
 	bool checkInteractions = Int.initcheck();
