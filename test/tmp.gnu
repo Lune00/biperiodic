@@ -16,7 +16,7 @@ Ly = 6
 trans_p = 0.1
 
 filep="sample/00003absolute.txt"
-filec="network/00003inter.txt"
+fc
 
 plot  filep u 3:4:2 w circle lc rgb "#4CB3FF" fs transparent solid 1. noborder  notitle,\
       filep u ($3+Lx):4:2 w circle lc rgb "#00003b" fs transparent solid  trans_p notitle,\

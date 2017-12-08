@@ -43,6 +43,7 @@ void Algo::run(){
 	//Be precautious, restart clock for a new run:
 	t_ = 0. ;
 	tic_ = 0;
+	ticw_ = 0 ;
 
 	while(t_<tfinal){
 		//Update verlet list
@@ -186,8 +187,9 @@ void Algo::verletalgo2(){
 
 void Algo::write(){
 	cout<<"Write outputs"<<endl;
-	spl_->writeAbsolute(tic_);
-	Int_->writeContacts(tic_);
+	spl_->writeAbsolute(ticw_);
+	Int_->writeContacts(ticw_);
 	//cell_->write(testcell,t);
 	//cell_->writeStrainTensor(strain,t);
+	ticw_++;
 }
