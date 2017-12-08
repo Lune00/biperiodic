@@ -12,6 +12,7 @@ void Algo::init(ifstream& is){
 	while(is){
 		if(token=="dt") is >> dt_;
 		if(token=="ns") is >> ns_;
+		if(token=="nrecord") is >> nrecord_;
 		if(token=="}") break;
 		is >> token;
 	}
@@ -19,7 +20,7 @@ void Algo::init(ifstream& is){
 
 //A adapter comme on souhaite en terme de tests
 bool Algo::initcheck(){
-	if (dt_ < 1. && ns_ != 0 ) return true;
+	if (dt_ < 1. && ns_ != 0 && nrecord_ != 0 ) return true;
 	return false;
 }
 
@@ -37,9 +38,6 @@ void Algo::run(){
 	int tic=0;
 
 	ofstream test("samplet.txt");
-	ofstream testcell("cellt.txt");
-	ofstream strain("strain.txt");
-	ofstream contacts("contacts.txt");
 
 	cout<<"Simulation:"<<endl;
 	cout<<"dt = "<<dt_<<endl;
@@ -57,11 +55,13 @@ void Algo::run(){
 		verletalgo2();
 
 		//Temp: Analyse, writing:
+		if( tic % nrecord_ == 0){
 		cout<<"Write outputs"<<endl;
-		spl_->writeAbsolute(test);
-		cell_->write(testcell,t);
-		cell_->writeStrainTensor(strain,t);
-		Int_->writeContacts(contacts);
+		spl_->writeAbsolute(tic);
+		//cell_->write(testcell,t);
+		//cell_->writeStrainTensor(strain,t);
+		//Int_->writeContacts(contacts);
+		}
 
 		t+=dt_;
 		tic++;
@@ -76,7 +76,6 @@ void Algo::run(){
 //On verra apres comment rendre ca plus compacte
 void Algo::verletalgo2(){
 
-  cout<<"integrate"<<endl;
   double dt2_2 = 0.5 * dt_ * dt_ ;
   double dt_2 = 0.5 * dt_ ;
 

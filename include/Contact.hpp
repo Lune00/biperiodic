@@ -24,9 +24,12 @@ class Contact{
 		double dt_;
 
 		bool isActif_;
+		//Avoid truncature errors
+		//Used by frame for threshold for interpenetration
+		static const double tolerance_;
 
 	public:
-		Contact(){ i_ = NULL; j_ =NULL ; isActif_ = false;}
+		Contact(){ i_ = NULL; j_ =NULL ; isActif_ = false; }
 		Contact(Particle* i, Particle* j);
 		~Contact(){};
 

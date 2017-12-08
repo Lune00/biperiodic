@@ -18,6 +18,9 @@ Cell::Cell(){
 	mh_ = 1.;
 	mh_auto_ = false;
 	L_auto_ = false;
+
+	folder_ = string();
+	fcell_ = "cell.txt";
 }
 //Initialisation a partir du fichier de configuration
 void Cell::init(ifstream& is){
@@ -115,6 +118,7 @@ void Cell::init(ifstream& is){
 
 void Cell::initFromSample(Sample& spl){
 	//Initial Cell Geometry
+	if(L_auto_){
 	Lx_ = spl.getxmax() - spl.getxmin();
 	Ly_ = spl.getymax() - spl.getymin();
 	h_.set(Lx_,0.,0.,Ly_);
@@ -122,9 +126,13 @@ void Cell::initFromSample(Sample& spl){
 	xc_ = 0.5 * Lx_;
 	yc_ = 0.5 * Ly_;
 	initGeometry_ = true;
+	}
+
+	if(mh_auto_){
 	//Mass: double sample mass for inertia
 	mh_ = 2. * spl.getMass();
 	initMass_ = true;
+	}
 }
 
 
@@ -133,6 +141,7 @@ bool Cell::initcheck(){
 }
 
 //Renvoie vrai si on a besoin du sample pour initialiser cellule
+
 bool Cell::needSample(){
 	if( L_auto_ || mh_auto_) return true;
 	else return false;

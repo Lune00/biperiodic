@@ -50,6 +50,10 @@ class Cell{
 		bool initCG_;
 		bool initGeometry_;
 		bool initMass_;
+
+		//Folder where outpus are written:
+		std::string folder_;
+		std::string fcell_;
 	public:
 		Cell();
 		//Init User control
@@ -69,8 +73,6 @@ class Cell{
 
 		//Met a jours la periodicite des particules en position
 		void PeriodicBoundaries2(std::vector<Particle>*);
-		void write(std::ofstream&,double);
-		void writeStrainTensor(std::ofstream&,double);
 		void CalculStrainTensor();
 
 		//Acces
@@ -89,6 +91,11 @@ class Cell{
 		Tensor2x2 gethdd() const { return hdd_;}
 		Tensor2x2 getStressInt() const { return stress_int;}
 		Tensor2x2 getStressExt() const { return stress_ext;}
+
+		//Writins outputs:
+		void initfolder(std::string folder) { folder_ = folder;}
+		void write(std::ofstream&,double);
+		void writeStrainTensor(std::ofstream&,double);
 
 		//Debug & track:
 		void affiche(){std::cout<<xc_<<" "<<yc_<<" "<<getVolume()<<std::endl;}

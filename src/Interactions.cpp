@@ -17,6 +17,8 @@ Interactions::Interactions(){
 	initdv_ = false;
 	initdsv_ = false;
 	checkInteractions_ = false;
+	folder_ = string();
+	fInteractions_ = "inter.txt";
 }
 
 Interactions::~Interactions(){
@@ -188,7 +190,7 @@ void Interactions::detectContacts(){
 
 		//WIP
 		//TEMPORAIRE!!! TEST SUR LISTEVERLET
-		clist_.push_back(k);
+		//clist_.push_back(k);
 
 		if(it->isActif()){
 			cout<<"Le contact "<<k<<" est actif."<<endl;

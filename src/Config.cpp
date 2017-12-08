@@ -8,23 +8,14 @@
 using namespace std;
 
 Config::Config(){
-	folder_spl_ = "spl" ;
+	folder_spl_ = "sample" ;
 	folder_analyse_ = "analyse";
 	folder_cell_ = "cell" ;
-//	sample_ = NULL;
-//	algo_ = NULL;
-//	cell_ = NULL;
+	folder_Interactions_ = "network";
 }
 
 Config::~Config(){
 }
-
-//Pourra etre utile plus tard
-//void Config::plug(Algo& algo, Cell& cell, Sample& spl){
-//	sample_ = &spl;
-//	algo_ = &algo;
-//	cell_ = &cell;
-//}
 
 int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int){
 
@@ -58,7 +49,6 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 
 	//Global check:
 
-
 	//Check sample parameters:
 	bool checkSample = spl.initcheck();
 	//Initialise Cell with sample:
@@ -79,6 +69,8 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 
 	//Writing paths initialisation:
 	spl.initfolder(folder_spl_);
+	cell.initfolder(folder_cell_);
+	Int.initfolder(folder_Interactions_);
 
 	if(!checkSample){
 		cerr<<"Sample::initcheck() problem."<<endl;

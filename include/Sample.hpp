@@ -1,10 +1,11 @@
 #ifndef SAMPLE_HPP
 #define SAMPLE_HPP
 
-#include"Particle.hpp"
 #include<vector>
 #include<fstream>
 #include<iostream>
+#include"Particle.hpp"
+#include"globalfunctions.hpp"
 
 
 class Cell;
@@ -13,8 +14,15 @@ class Sample{
 
 	private:
 		std::vector<Particle> spl_;
-		std::string fichsample_;
+		//Input sample initial:
+		std::string fsampleIni_;
+
+		//outputs:
 		std::string folder_;
+		//Reduced coordinates
+		std::string fsample_;
+		//Absolute coordinates
+		std::string fsampleA_;
 
 		double xmin_;
 		double xmax_;
@@ -44,12 +52,8 @@ class Sample{
 		void loadSample();
 		void initReducedCoordinates(Cell&);
 		void plugtoCell(Cell&);
-		void write(std::ofstream&);
-		void writeAbsolute(std::ofstream&);
 		void attributeMass();
 		void setminmax();
-		void initfolder(std::string folder) { folder_ = folder;}
-
 		bool initcheck();
 		bool isEmptySampleFile(std::ifstream&);
 
@@ -62,13 +66,20 @@ class Sample{
 		double getMass() const { return M_;}
 
 		unsigned int getsize() const { return spl_.size();}
+
 		//Reflechir a ne pas briser l'encapsulation plus tard...
 		//Ca me plait moyen de donner mon vecteur de particules...
-		//For flexibility ok but break encapsulation...
+		//For flexibility ok but breaks encapsulation...
 		//Better idea needed... Someone else will touch sample
 		std::vector<Particle>* getSample() { return &spl_;}
 
 		Cell * getCell() const { return cell_;}
+
+		//Writing outputs:
+		void write(int) const;
+		void writeAbsolute(int) const;
+		void initfolder(std::string folder); 
+
 
 };
 

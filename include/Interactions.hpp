@@ -68,6 +68,8 @@ class Interactions{
 		bool initdv_;
 		bool initdsv_;
 
+		std::string folder_;
+		std::string fInteractions_;
 
 	public:
 		Interactions();
@@ -88,6 +90,8 @@ class Interactions{
 		//Compute forces at contacts (end of 1st step verlet algo)
 		void computeForces();
 
+		//Writing outputs:
+		void initfolder(std::string folder) { folder_ = folder;}
 		void writeContacts(std::ofstream&) const;
 
 		int getnv() const { return nv_ ;}

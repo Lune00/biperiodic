@@ -14,13 +14,11 @@ class Interactions;
 class Config{
 	private:
 
+		//Paths to write outputs:
 		std::string folder_spl_;
 		std::string folder_cell_;
+		std::string folder_Interactions_;
 		std::string folder_analyse_;
-
-		//Sample* sample_;
-		//Algo* algo_;
-		//Cell* cell_;
 
 	public:
 		 Config();

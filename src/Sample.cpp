@@ -6,12 +6,19 @@ typedef std::vector<Particle>::iterator spit;
 using namespace std;
 
 Sample::Sample(){
-
 	sampleIsLoaded_ = false ;
 	sampleIsFilled_ = false ;
 	rhodefined_ = false ;
 	M_ = 0.;
 	cell_ = NULL;
+	fsampleIni_ = string();
+	folder_ = string();
+
+	//Un interet d'avoir absolu mis a part representation???
+	//Avec reduced et h on peut recreer absolu quand on veut
+	//A voir
+	fsample_ = "reduced.txt";
+	fsampleA_ = "absolute.txt";
 }
 
 Sample::~Sample(){
@@ -27,7 +34,7 @@ void Sample::init(ifstream& is){
 	string token;
 	is >> token;
 	while(is){
-		if(token=="includeFile") is >> fichsample_;
+		if(token=="includeFile") is >> fsampleIni_;
 		if(token=="rho") {
 			rhodefined_= true;
 			is >> rho_;
@@ -42,14 +49,14 @@ void Sample::init(ifstream& is){
 
 void Sample::loadSample(){
 
-	ifstream is(fichsample_.c_str());
+	ifstream is(fsampleIni_.c_str());
 	if(!is){
 		cerr<<"Sample::loadSample() : can not open file."<<endl;
 		return;
 	}
 	else{
 		if(isEmptySampleFile(is)) {
-			cerr<<fichsample_<<" est vide!"<<endl;
+			cerr<<fsampleIni_<<" est vide!"<<endl;
 			return ;
 		}
 		else
@@ -71,18 +78,32 @@ void Sample::loadSample(){
 	}
 }
 
+
+void Sample::initfolder(string folder){
+	folder_ = folder ;
+	fsample_ = folder + "/" ;
+}
+
 //Coordonnees reduites
-void Sample::write(ofstream& os){
+void Sample::write(int k) const{
+
+	string filename = formatfile( fsample_, k );
+	ofstream file(filename.c_str());
+
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		it->write(os);
+		it->write(file);
 	}
 }
 
 //Coordonnees absolues
-void Sample::writeAbsolute(ofstream& os){
+void Sample::writeAbsolute(int k) const{
 	Tensor2x2 h = cell_->geth();
+
+	string filename = formatfile( fsampleA_, k );
+	ofstream file(filename.c_str());
+
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		it->write(os,h);
+		it->write(file,h);
 	}
 }
 

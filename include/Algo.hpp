@@ -13,6 +13,8 @@ class Algo{
 	private:
 		double dt_;
 		int ns_;
+		//Frequency recording sample+network
+		int nrecord_;
 
 		//Parametres DEM
 		double Param_[10];
@@ -23,7 +25,7 @@ class Algo{
 		Sample * spl_;
 
 	public:
-		Algo() { dt_ = 1. ; ns_ = 0 ;}
+		Algo() { dt_ = 1. ; ns_ = 0 ; nrecord_ = 0;}
 		~Algo(){};
 		//void verletalgo(Cell&,std::vector<Particle>&);
 		void verletalgo2();
