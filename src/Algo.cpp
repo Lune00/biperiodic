@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 void Algo::init(ifstream& is){
 	string token;
 	is >> token;
@@ -20,8 +19,9 @@ void Algo::init(ifstream& is){
 
 //A adapter comme on souhaite en terme de tests
 bool Algo::initcheck(){
+	if( t_ > 0. ) return false;
 	if (dt_ < 1. && ns_ != 0 && nrecord_ != 0 ) return true;
-	return false;
+	else return false;
 }
 
 void Algo::plug(Cell& cell, Sample& spl, Interactions& Int){
@@ -34,40 +34,29 @@ void Algo::plug(Cell& cell, Sample& spl, Interactions& Int){
 void Algo::run(){
 
 	double tfinal = ns_ * dt_ ;
-	double t=0.;
-	int tic=0;
-
-	ofstream test("samplet.txt");
 
 	cout<<"Simulation:"<<endl;
 	cout<<"dt = "<<dt_<<endl;
 	cout<<"ns = "<<ns_<<endl;
 	cout<<"tfinal = "<<tfinal<<endl;
 
-	while(t<tfinal){
+	//Be precautious, restart clock for a new run:
+	t_ = 0. ;
+	tic_ = 0;
 
+	while(t_<tfinal){
 		//Update verlet list
-		cout<<"Update verlet"<<endl;
-		Int_->updateverlet(tic);
+		Int_->updateverlet(tic_);
 
 		//Time step: integration & periodicity
-		cout<<"Integration"<<endl;
 		verletalgo2();
 
 		//Temp: Analyse, writing:
-		if( tic % nrecord_ == 0){
-		cout<<"Write outputs"<<endl;
-		spl_->writeAbsolute(tic);
-		//cell_->write(testcell,t);
-		//cell_->writeStrainTensor(strain,t);
-		//Int_->writeContacts(contacts);
-		}
+		if( tic_ % nrecord_ == 0) write();
 
-		t+=dt_;
-		tic++;
+		t_+=dt_;
+		tic_++;
 	}
-	test.close();
-
 }
 
 
@@ -192,4 +181,13 @@ void Algo::verletalgo2(){
 
   //Cell deformation
   cell_->CalculStrainTensor();
+}
+
+
+void Algo::write(){
+	cout<<"Write outputs"<<endl;
+	spl_->writeAbsolute(tic_);
+	Int_->writeContacts(tic_);
+	//cell_->write(testcell,t);
+	//cell_->writeStrainTensor(strain,t);
 }

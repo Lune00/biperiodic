@@ -8,7 +8,7 @@
 static const int wi = 5 ;
 
 //Concatenete a string and a const for file output formating
-std::string formatfile(const std::string file, const int k);
+std::string formatfile(const std::string folder, const std::string file, const int k);
 
 
 #endif

@@ -6,6 +6,7 @@
 
 #include<iostream>
 #include<fstream>
+#include<cstdlib>
 
 //Cellule periodique
 class Sample;

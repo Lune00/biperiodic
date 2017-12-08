@@ -12,11 +12,14 @@ Ly = 6
 
 trans_p = 0.1
 
-plot 'samplet.txt' u 3:4:2 w circle lc rgb "#4CB3FF" fs transparent solid 1. noborder  notitle,\
-     'samplet.txt' u ($3+Lx):4:2 w circle lc rgb "#00003b" fs transparent solid  trans_p notitle,\
-      'samplet.txt' u ($3-Lx):4:2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
-      'samplet.txt' u ($3):($4+Ly):2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
-      'samplet.txt' u ($3):($4-Ly):2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
-      'samplet.txt' u ($3-Lx):($4-Ly):2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
-      'samplet.txt' u ($3+Lx):($4-Ly):2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
-      'contacts.txt' u 1:2:3:4 w vectors lw 2 lc rgb "yellow" notitle
+filep="sample/00000absolute.txt"
+fcont="network/00000inter.txt"
+
+plot filep u 3:4:2 w circle lc rgb "#4CB3FF" fs transparent solid 1. noborder  notitle,\
+     filep u ($3+Lx):4:2 w circle lc rgb "#00003b" fs transparent solid  trans_p notitle,\
+      filep u ($3-Lx):4:2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
+      filep u ($3):($4+Ly):2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
+      filep u ($3):($4-Ly):2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
+      filep u ($3-Lx):($4-Ly):2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
+      filep u ($3+Lx):($4-Ly):2 w circle lc rgb "#00003b" fs transparent solid trans_p notitle,\
+      fcont u 1:2:3:4 w vectors lw 2 lc rgb "yellow" notitle

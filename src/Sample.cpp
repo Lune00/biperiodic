@@ -81,13 +81,12 @@ void Sample::loadSample(){
 
 void Sample::initfolder(string folder){
 	folder_ = folder ;
-	fsample_ = folder + "/" ;
 }
 
 //Coordonnees reduites
 void Sample::write(int k) const{
 
-	string filename = formatfile( fsample_, k );
+	string filename = formatfile( folder_, fsample_, k );
 	ofstream file(filename.c_str());
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
@@ -99,7 +98,7 @@ void Sample::write(int k) const{
 void Sample::writeAbsolute(int k) const{
 	Tensor2x2 h = cell_->geth();
 
-	string filename = formatfile( fsampleA_, k );
+	string filename = formatfile( folder_, fsampleA_, k );
 	ofstream file(filename.c_str());
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){

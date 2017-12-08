@@ -92,7 +92,7 @@ class Interactions{
 
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
-		void writeContacts(std::ofstream&) const;
+		void writeContacts(int) const;
 
 		int getnv() const { return nv_ ;}
 		int getnsv() const {return nsv_;}

@@ -212,11 +212,14 @@ void Interactions::computeForces(){
 }
 
 
-void Interactions::writeContacts(ofstream& os) const {
+void Interactions::writeContacts(int k) const {
+
+	string filename = formatfile(folder_, fInteractions_, k);
+	ofstream file(filename.c_str());
 
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
 
-		vlist_[*it].write(os);
+		vlist_[*it].write(file);
 
 	}
 }
