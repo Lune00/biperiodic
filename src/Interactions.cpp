@@ -173,4 +173,17 @@ void Interactions::updatevlist(){
 	cout<<"Verlet list size: "<<vlist_.size()<<endl;
 }
 
+//Build contact list (activated interactions)
+void Interactions::detectContacts(){
 
+	clist_.clear();
+
+	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
+		it->Frame();
+		int k = distance( vlist_.begin(), it);
+		cout<<k<<endl;
+		if(it->isActif()) clist_.push_back(k);
+	}
+
+
+}

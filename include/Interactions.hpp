@@ -71,15 +71,25 @@ class Interactions{
 	public:
 		Interactions();
 		~Interactions();
-		void updateverlet(const int);
-		void updatevlist();
-		void updatesvlist();
-		int getnv() const { return nv_ ;}
-		int getnsv() const {return nsv_;}
+		//Initialisations:
 		void init(std::ifstream&);
 		void initScale();
 		bool initcheck();
 		void plug(Sample&);
+		//Call updatevlist & updatsvlist
+		void updateverlet(const int);
+		//Build superverlet
+		void updatevlist();
+		//Build verlet
+		void updatesvlist();
+		//Build contact list
+		void detectContacts();
+		//Compute forces at contacts (end of 1st step verlet algo)
+		void computeForces();
+
+		int getnv() const { return nv_ ;}
+		int getnsv() const {return nsv_;}
+
 		bool near(const Particle&,const Particle&,const Tensor2x2&,const double) const;
 
 

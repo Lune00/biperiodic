@@ -76,6 +76,8 @@ void Algo::verletalgo2(){
 
   vector<Particle>* ps = spl_->getSample();
 
+  // ------------- FIRST STEP VERLET ALGO STARTS HERE
+
   for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
 
 	  Vecteur a = it->geta();
@@ -149,24 +151,26 @@ void Algo::verletalgo2(){
   cell_->update(h,hd);
 
 
-  //Calcul des forces entre particules a la nouvelle position fin du pas de temps
+  // ------------- FIRST STEP VERLET ALGO END HERE
 
+  Int_->detectContacts();
+
+  //Calcul des forces entre particules a la nouvelle position fin du pas de temps
+  Int_->computeForces();
 
   //Calcul du tenseur de contraintes internes: sigma_int
 
+  //------------- SECOND STEP VERLET ALGO STARTS HERE
   //Calcul des vitesses a la fin du pas de temps:
 
-  //Fin pas de temps vitesse
   //On retransforme la vitesse en coordonnee reduite
   Tensor2x2 hinv = h.getInverse();
   for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
-
 	  Vecteur a = it->geta();
 	  Vecteur v = it->getV();
 	  a = hinv * a ;
 	  v = v + a * dt_2 ;
 	  it->setV(v);
-	  //if(it->getId() == 0) it->affiche();
   }
 
   //Apply stress_ext: si controle en force

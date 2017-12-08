@@ -2,6 +2,7 @@
 #define hpp_CONTACT_hpp
 
 #include<iostream>
+#include"Vecteur.hpp"
 
 class Particle;
 
@@ -12,11 +13,25 @@ class Contact{
 		Particle * i_;
 		Particle * j_;
 
+		Vecteur r_;
+		Vecteur n_;
+		Vecteur t_;
+		Vecteur f_;
+
+		//Interpenetration:
+		double dn_;
+		double dt_;
+
+		bool isActif_;
+
 	public:
-		Contact(){};
-		Contact(Particle* i, Particle* j){ i_ = i ; j_ = j;}
+		Contact(){ i_ = NULL; j_ =NULL ; isActif_ = false;}
+		Contact(Particle* i, Particle* j);
 		~Contact(){};
 
+		bool isActif() const { return isActif_;}
+		void activate() { isActif_ = true;}
+		void Frame();
 };
 
 
