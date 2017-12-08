@@ -39,6 +39,7 @@ void Algo::run(){
 	ofstream test("samplet.txt");
 	ofstream testcell("cellt.txt");
 	ofstream strain("strain.txt");
+	ofstream contacts("contacts.txt");
 
 	cout<<"Simulation:"<<endl;
 	cout<<"dt = "<<dt_<<endl;
@@ -52,12 +53,15 @@ void Algo::run(){
 		Int_->updateverlet(tic);
 
 		//Time step: integration & periodicity
+		cout<<"Integration"<<endl;
 		verletalgo2();
 
 		//Temp: Analyse, writing:
+		cout<<"Write outputs"<<endl;
 		spl_->writeAbsolute(test);
 		cell_->write(testcell,t);
 		cell_->writeStrainTensor(strain,t);
+		Int_->writeContacts(contacts);
 
 		t+=dt_;
 		tic++;

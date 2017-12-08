@@ -185,8 +185,19 @@ void Interactions::detectContacts(){
 	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
 		it->Frame(h);
 		int k = distance( vlist_.begin(), it);
-		cout<<k<<endl;
-		if(it->isActif()) clist_.push_back(k);
+
+		//WIP
+		//TEMPORAIRE!!! TEST SUR LISTEVERLET
+		clist_.push_back(k);
+
+		if(it->isActif()){
+			cout<<"Le contact "<<k<<" est actif."<<endl;
+			clist_.push_back(k);
+		}
+		//TEMP
+		else{
+			cout<<"Le contact "<<k<<" est inactif."<<endl;
+		}
 	}
 
 
@@ -196,4 +207,14 @@ void Interactions::computeForces(){
 
 
 
+}
+
+
+void Interactions::writeContacts(ofstream& os) const {
+
+	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
+
+		vlist_[*it].write(os);
+
+	}
 }

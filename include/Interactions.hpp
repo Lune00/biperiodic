@@ -88,6 +88,8 @@ class Interactions{
 		//Compute forces at contacts (end of 1st step verlet algo)
 		void computeForces();
 
+		void writeContacts(std::ofstream&) const;
+
 		int getnv() const { return nv_ ;}
 		int getnsv() const {return nsv_;}
 

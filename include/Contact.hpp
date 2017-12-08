@@ -33,6 +33,7 @@ class Contact{
 		bool isActif() const { return isActif_;}
 		void activate() { isActif_ = true;}
 		void Frame(Tensor2x2&);
+		void write(std::ofstream&) const;
 };
 
 
