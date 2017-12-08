@@ -11,3 +11,5 @@ src/Particle.o
 src/Sample.o
 src/Tenseur.o
 src/Vecteur.o
+exec/BPDEM2D.o
+exec/DEMARENA.o
