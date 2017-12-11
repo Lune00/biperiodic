@@ -39,7 +39,7 @@ class Particle{
 		Particle(std::ifstream&);
 
 		void write(std::ofstream&) const;
-		void write(std::ofstream&,Tensor2x2&) const;
+		void write(std::ofstream&,const Tensor2x2&) const;
 		void init();
 		void affiche() const;
 		void Periodize( double lx, double ly) { r_.add(lx,ly)  ;}

@@ -4,8 +4,10 @@
 #include<vector>
 #include<fstream>
 
+
 class Sample;
 class Cell;
+class Particle;
 
 
 //Ensuite faire une app aussi qui fait l'analyse en relecture
@@ -23,10 +25,12 @@ class Analyse{
 	public:
 		Analyse();
 		~Analyse();
-		void printSample();
+		void printSample(int);
 		void plug(Sample&,Cell&);
 		void initfolder(std::string folder) {folder_ = folder;}
 		void init(std::ifstream&);
+		void analyse(int,double);
+		void writePS(const std::string,const std::vector<Particle>&);
 
 };
 

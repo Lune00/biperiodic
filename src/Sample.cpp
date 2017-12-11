@@ -106,6 +106,83 @@ void Sample::writeAbsolute(int k) const{
 	}
 }
 
+//Coordonnees absolues: ecrit egalemement les particules periodiques dans une epaisseur e (distance en diametre max aux bords)a autour de la cellule
+//Comment distinguer les particules periodiques des non periodiques sur l'image?
+//on ecrit une autre fonction write Particule qui met a la fin un indice pour discriminer les deux
+vector<Particle> Sample::getimages(double e) const{
+
+	vector<Particle> images;
+
+	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hinv = h.getInverse();
+
+	e *= getrmax();
+	//Surely a clever way to do it...
+	//Tmp: build imaginary particules at the center of each boundary 
+	Vecteur right(1.,0.5);
+	Vecteur left(0.,0.5);
+	Vecteur top(0.5,1.);
+	Vecteur bottom(0.5,0.);
+
+	//Turn into absolute coordinates:
+	left = h * left;
+	right = h * right;
+	top = h * top;
+	bottom = h * bottom;
+
+	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
+		cout<<"Particule "<<it->getId()<<endl;
+		Vecteur rabs = h * it->getR() ;
+		//Distances to imaginary particules on the boundary
+		//By definition should never be negative
+		double dxleft = (rabs.getx() - left.getx() );
+		double dxright = (right.getx() - rabs.getx() );
+		double dytop = (top.gety() - rabs.gety() );
+		double dybottom = (rabs.gety() -bottom.gety() );
+
+		bool nearleftB =  dxleft < e;
+		bool nearrightB =  dxright < e;
+		bool neartopB =  dytop < e;
+		bool nearbottomB = dybottom < e;
+
+		cout<<"to right: "<<dxright<<" "<<e<<endl;
+		cout<<"to left: "<<dxleft<<" "<<e<<endl;
+		if( nearleftB){
+			cout<<"Left"<<endl;
+			Particle a = *(it);
+			Vecteur dr(dxleft,0.); 
+			dr = hinv * dr ;
+			a.setrx(dr.getx()-1.);
+			images.push_back(a);
+		}
+		if ( nearrightB){
+			cout<<"Right"<<endl;
+			Particle a = *(it);
+			Vecteur dr(dxright,0.); 
+			dr = hinv * dr ;
+			a.setrx(1.-dr.getx());
+			images.push_back(a);
+		}
+		if (neartopB){
+			cout<<"Top"<<endl;
+			Particle a = *(it);
+			Vecteur dr(0.,dytop); 
+			dr = hinv * dr ;
+			a.setry(1. - dr.gety());
+			images.push_back(a);
+		}
+		if (nearbottomB){
+			cout<<"Bottom"<<endl;
+			Particle a = *(it);
+			Vecteur dr(0.,dybottom); 
+			dr = hinv * dr ;
+			a.setry(dr.gety()-1.);
+			images.push_back(a);
+		}
+	}
+	return images;
+
+}
 
 //Fill particles with mass and inertia
 void Sample::attributeMass(){

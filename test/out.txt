@@ -1,0 +1,46 @@
+DEM arena test.
+Nombre de particules: 4
+Lx = 6
+Ly = 6
+d verlet (scale)  = 0.83
+d sverlet (scale)  = 3
+Simulation:
+dt = 0.01
+ns = 2
+tfinal = 0.02
+Near!
+Near!
+Near!
+Near!
+Near!
+Near!
+Super verlet list size: 6
+Verlet list size: 4
+Contact detection...
+Le contact 0 est inactif.
+-1.25757
+Le contact 1 est actif.
+Le contact 2 est inactif.
+-0.312398
+Le contact 3 est actif.
+Write outputs
+tic = 0 - analyse...
+analyse/00000frame
+Near!
+Near!
+Near!
+Near!
+Near!
+Near!
+Super verlet list size: 6
+Verlet list size: 4
+Contact detection...
+Le contact 0 est inactif.
+-1.01268
+Le contact 1 est actif.
+Le contact 2 est inactif.
+-0.424564
+Le contact 3 est actif.
+Write outputs
+tic = 1 - analyse...
+analyse/00001frame

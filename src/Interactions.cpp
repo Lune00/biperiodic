@@ -129,7 +129,7 @@ void Interactions::updatesvlist(){
 	for(std::vector<Particle>::iterator iti = ps->begin(); iti!=ps->end();iti++){
 		for(std::vector<Particle>::iterator itj = iti+1; itj!=ps->end();itj++){
 			if( near( *(iti), *(itj), h , dsv_) ) {
-				cout<<"Near!"<<endl;
+				//cout<<"Near!"<<endl;
 				particle_pair O__O = { &(*iti), &(*itj) };
 				svlist_.push_back(O__O);
 			}
@@ -193,12 +193,12 @@ void Interactions::detectContacts(){
 		//clist_.push_back(k);
 
 		if(it->isActif()){
-			cout<<"Le contact "<<k<<" est actif."<<endl;
+			//cout<<"Le contact "<<k<<" est actif."<<endl;
 			clist_.push_back(k);
 		}
 		//TEMP
 		else{
-			cout<<"Le contact "<<k<<" est inactif."<<endl;
+			//cout<<"Le contact "<<k<<" est inactif."<<endl;
 		}
 	}
 

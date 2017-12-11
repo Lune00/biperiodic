@@ -2,6 +2,7 @@
 #include"Cell.hpp"
 #include"Sample.hpp"
 #include"Interactions.hpp"
+#include"Analyse.hpp"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ void Algo::init(ifstream& is){
 	while(is){
 		if(token=="dt") is >> dt_;
 		if(token=="ns") is >> ns_;
+		if(token=="nana") is >> nana_;
 		if(token=="nrecord") is >> nrecord_;
 		if(token=="}") break;
 		is >> token;
@@ -55,6 +57,8 @@ void Algo::run(){
 
 		//Temp: Analyse, writing:
 		if( tic_ % nrecord_ == 0) write();
+
+		if( tic_ % nana_ == 0 ) ana_->analyse(tic_,t_);
 
 		t_+=dt_;
 		tic_++;

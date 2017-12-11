@@ -20,6 +20,8 @@ class Algo{
 		int ns_;
 		//Frequency recording sample+network
 		int nrecord_;
+		//Frequency analyse during simulation
+		int nana_;
 
 		//Parametres DEM
 		double Param_[10];
@@ -31,7 +33,7 @@ class Algo{
 		Analyse * ana_;
 
 	public:
-		Algo() { dt_ = 1. ; ns_ = 0 ; nrecord_ = 0; tic_= 0; t_=0.; ticw_ = 0;}
+		Algo() { dt_ = 1. ; ns_ = 0 ; nrecord_ = 0; tic_= 0; t_=0.; ticw_ = 0; nana_ = 0 ;}
 		~Algo(){};
 		//void verletalgo(Cell&,std::vector<Particle>&);
 		void verletalgo2();

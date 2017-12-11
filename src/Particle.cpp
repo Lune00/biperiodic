@@ -28,7 +28,7 @@ void Particle::write(ofstream& of) const{
 	of<<id_<<" "<<R_<<" "<< r_.getx()<<" "<<r_.gety()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<rot_<<" "<<vrot_<<endl;
 }
 
-void Particle::write(ofstream& of,Tensor2x2& h) const{
+void Particle::write(ofstream& of, const Tensor2x2& h) const{
 	Vecteur rabs = h * r_ ;
 	of<<id_<<" "<<R_<<" "<<rabs.getx()<<" "<<rabs.gety()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<rot_<<" "<<vrot_<<endl;
 }

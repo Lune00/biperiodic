@@ -76,9 +76,10 @@ class Sample{
 		Cell * getCell() const { return cell_;}
 
 		//Writing outputs:
+		void initfolder(std::string folder); 
 		void write(int) const;
 		void writeAbsolute(int) const;
-		void initfolder(std::string folder); 
+		std::vector<Particle> getimages(double e) const;
 
 
 };
