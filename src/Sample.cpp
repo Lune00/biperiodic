@@ -107,8 +107,6 @@ void Sample::writeAbsolute(int k) const{
 }
 
 //Coordonnees absolues: ecrit egalemement les particules periodiques dans une epaisseur e (distance en diametre max aux bords)a autour de la cellule
-//Comment distinguer les particules periodiques des non periodiques sur l'image?
-//on ecrit une autre fonction write Particule qui met a la fin un indice pour discriminer les deux
 vector<Particle> Sample::getimages(double e) const{
 
 	vector<Particle> images;
@@ -124,8 +122,8 @@ vector<Particle> Sample::getimages(double e) const{
 		//Tmp: build imaginary particules at each boundary 
 		Vecteur right(1.,it->gety());
 		Vecteur left(0.,it->gety());
-		Vecteur top(0.5,1.);
-		Vecteur bottom(0.5,0.);
+		Vecteur top(it->getx(),1.);
+		Vecteur bottom(it->getx(),0.);
 
 		//Turn into absolute coordinates:
 		left = h * left;
@@ -133,7 +131,7 @@ vector<Particle> Sample::getimages(double e) const{
 		top = h * top;
 		bottom = h * bottom;
 
-		cout<<"Particule "<<it->getId()<<endl;
+		//cout<<"Particule "<<it->getId()<<endl;
 		Vecteur rabs = h * it->getR() ;
 		//Distances to imaginary particules on the boundary
 		//By definition should never be negative
@@ -147,10 +145,9 @@ vector<Particle> Sample::getimages(double e) const{
 		bool neartopB =  dytop < e;
 		bool nearbottomB = dybottom < e;
 
-		cout<<"to right: "<<dxright<<" "<<e<<endl;
-		cout<<"to left: "<<dxleft<<" "<<e<<endl;
+		//cout<<"to right: "<<dxright<<" "<<e<<endl;
+		//cout<<"to left: "<<dxleft<<" "<<e<<endl;
 		if( nearleftB){
-			cout<<"Left"<<endl;
 			Particle a = *(it);
 			//Vecteur dr(dxleft,0.); 
 			//dr = hinv * dr ;
@@ -158,19 +155,16 @@ vector<Particle> Sample::getimages(double e) const{
 			images.push_back(a);
 		}
 		if ( nearrightB){
-			cout<<"Right"<<endl;
 			Particle a = *(it);
 			a.addrx(-1);
 			images.push_back(a);
 		}
 		if (neartopB){
-			cout<<"Top"<<endl;
 			Particle a = *(it);
 			a.addry(-1.);
 			images.push_back(a);
 		}
 		if (nearbottomB){
-			cout<<"Bottom"<<endl;
 			Particle a = *(it);
 			a.addry(1.);
 			images.push_back(a);

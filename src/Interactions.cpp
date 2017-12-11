@@ -207,7 +207,11 @@ void Interactions::detectContacts(){
 
 void Interactions::computeForces(){
 
-
+	for(vector<int>::iterator it = clist_.begin(); it != clist_.end();it++){
+		vlist_[*it].updateRelativeVelocities();
+		vlist_[*it].computeForce();
+		vlist_[*it].updateAccelerations();
+	}
 
 }
 
@@ -218,8 +222,6 @@ void Interactions::writeContacts(int k) const {
 	ofstream file(filename.c_str());
 
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
-
 		vlist_[*it].write(file);
-
 	}
 }

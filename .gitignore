@@ -16,3 +16,6 @@ exec/DEMARENA.o
 src/*.swp
 include/*.swp
 exec/*.swp
+test/sample/*
+test/network/*
+test/analyse/*

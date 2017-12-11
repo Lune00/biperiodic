@@ -13,10 +13,15 @@ class Contact{
 		//Should be Particle * const i_/j_
 		Particle * i_;
 		Particle * j_;
-
+		//Contact position
 		Vecteur r_;
+		//Relative velocity at contact
+		Vecteur v_;
+		//Normal to the contact
 		Vecteur n_;
+		//Tangent to the contact
 		Vecteur t_;
+		//Force at the contact
 		Vecteur f_;
 
 		//Interpenetration:
@@ -37,6 +42,9 @@ class Contact{
 		void activate() { isActif_ = true;}
 		void Frame(Tensor2x2&);
 		void write(std::ofstream&) const;
+		void updateRelativeVelocities();
+		void computeForce();
+		void updateAccelerations();
 };
 
 

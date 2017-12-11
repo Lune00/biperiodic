@@ -60,3 +60,24 @@ void Contact::Frame(Tensor2x2& h){
 void Contact::write(ofstream& os) const{
 	os<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<endl;
 }
+
+
+void Contact::updateRelativeVelocities(){
+
+
+
+	return ;
+}
+
+void Contact::computeForce(){
+
+
+	return ;
+}
+
+void Contact::updateAccelerations(){
+
+
+	return;
+}
+
