@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Analyse::Analyse(){ e_ = 1.1;}
+Analyse::Analyse(){ e_ = 4.1;}
 
 
 Analyse::~Analyse(){}
@@ -68,6 +68,9 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	double width = xmax-xmin;
 	double height = ymax - ymin;
 
+	double xc = xmin + width * 0.5 - spl_->getrmax() ;
+	double yc = ymin + height * 0.5 ;
+
 	ps<<"%!PS-Adobe-3.0 EPSF-3.0"<<endl;
 	ps<<"%%BoundingBox:"<<" "<<xmin<<" "<<ymin<<" "<<width<<" "<<height<<endl;
 	ps<<"%%Pages:1"<<endl;
@@ -80,8 +83,8 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	for(vector<Particle>::const_iterator it = spl_->inspectSample().begin(); it != spl_->inspectSample().end(); it++){
 
 		Vecteur rabs = h * it->getR();
-		double x = rabs.getx();
-		double y = rabs.gety();
+		double x = xc + rabs.getx();
+		double y = yc + rabs.gety();
 		double r = it->getRadius();
 		double theta = it->getRot();
 		double xrcostheta = x + r * cos(theta) * 0.8 ;
@@ -99,8 +102,8 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	//Draw image particles
 	for(vector<Particle>::const_iterator it = images.begin(); it != images.end(); it++){
 		Vecteur rabs = h * it->getR();
-		double x = rabs.getx();
-		double y = rabs.gety();
+		double x = xc + rabs.getx();
+		double y = yc + rabs.gety();
 		double r = it->getRadius();
 		double theta = it->getRot();
 		double xrcostheta = x + r * cos(theta) * 0.8 ;
@@ -116,6 +119,29 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	}
 
 	//Draw periodic cell
+
+	double ux=h.getxx();
+	double uy=h.getyx();
+	double vx=h.getxy();
+	double vy=h.getyy();
+
+	double lw = 0.1 * spl_->getrmax();
+
+	//a1 base vector
+	ps<<"newpath"<<endl;
+	ps<<xc<<" "<<yc<<" moveto " <<endl;
+	ps<<ux<<" "<<uy<<" rlineto"<<endl;
+	ps<<vx<<" "<<vy<<" rlineto"<<endl;
+	ps<<-ux<<" "<<-uy<<" rlineto"<<endl;
+	ps<<-vx<<" "<<-vy<<" rlineto"<<endl;
+	ps<<"closepath"<<endl;
+	//yellow 1, 0.937, 0.078
+	//light gray 0.819 0.819 0.8191
+	//green 0.435, 1, 0.078
+	//darker gray 0.549, 0.549, 0.549
+	ps<<"0.549 0.549 0.549 setrgbcolor"<<endl;
+	ps<<lw<<" setlinewidth "<<endl;
+	ps<<"stroke"<<endl;
 
 
 	return ;
