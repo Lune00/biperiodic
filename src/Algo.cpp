@@ -24,10 +24,11 @@ bool Algo::initcheck(){
 	else return false;
 }
 
-void Algo::plug(Cell& cell, Sample& spl, Interactions& Int){
+void Algo::plug(Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
 	Int_ = &Int;
 	cell_ = &cell;
 	spl_ = &spl;
+	ana_ = &ana;
 }
 
 

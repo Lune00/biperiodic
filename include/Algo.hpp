@@ -8,6 +8,7 @@
 class Cell;
 class Sample;
 class Interactions;
+class Analyse;
 
 class Algo{
 	private:
@@ -27,6 +28,7 @@ class Algo{
 		Interactions * Int_;
 		Cell * cell_;
 		Sample * spl_;
+		Analyse * ana_;
 
 	public:
 		Algo() { dt_ = 1. ; ns_ = 0 ; nrecord_ = 0; tic_= 0; t_=0.; ticw_ = 0;}
@@ -36,7 +38,7 @@ class Algo{
 		void init(std::ifstream&);
 		bool initcheck();
 		void run();
-		void plug(Cell&,Sample&,Interactions&);
+		void plug(Cell&,Sample&,Interactions&,Analyse&);
 		void write();
 };
 

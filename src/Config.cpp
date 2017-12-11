@@ -4,6 +4,7 @@
 #include"Sample.hpp"
 #include"Tenseur.hpp"
 #include"Interactions.hpp"
+#include"Analyse.hpp"
 
 
 using namespace std;
@@ -28,7 +29,7 @@ Config::Config(){
 Config::~Config(){
 }
 
-int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int){
+int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
 
 	if(!is){
 		cerr<< "Config::init : cannot open file."<<endl;
@@ -54,6 +55,10 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 		{
 			Int.init(is);
 		}
+		if(token=="Analyse{")
+		{
+			ana.init(is);
+		}
 		is >> token;
 	}
 
@@ -74,7 +79,7 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	spl.plugtoCell(cell);
 	//Rescale verlet distances according to user choice
 	Int.plug(spl,cell);
-	algo.plug(cell,spl,Int);
+	algo.plug(cell,spl,Int,ana);
 	//Check interactions parameters:
 	bool checkInteractions = Int.initcheck();
 
@@ -82,6 +87,7 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	spl.initfolder(folder_spl_);
 	cell.initfolder(folder_cell_);
 	Int.initfolder(folder_Interactions_);
+	ana.initfolder(folder_analyse_);
 
 	if(!checkSample){
 		cerr<<"Sample::initcheck() problem."<<endl;
@@ -100,6 +106,7 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 		return 1;
 	}
 
+	//Checks for Analyse?
 
 	////Tests:
 	//ofstream s("reduced.txt");

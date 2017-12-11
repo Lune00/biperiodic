@@ -10,6 +10,7 @@ class Cell;
 class Algo;
 class Sample;
 class Interactions;
+class Analyse;
 
 class Config{
 	private:
@@ -21,12 +22,11 @@ class Config{
 		std::string folder_analyse_;
 
 	public:
-		 Config();
-		 ~Config();
-		 //Interface d'initialistion
-		 //Return 1 pb, return 0 ok
-		 //void plug(Algo&,Cell&,Sample&);
-		 int init(std::ifstream&,Algo&,Cell&,Sample&,Interactions&);
+		Config();
+		~Config();
+		//Interface d'initialistion
+		//Return 1 pb, return 0 ok
+		int init(std::ifstream&,Algo&,Cell&,Sample&,Interactions&,Analyse&);
 };
 
 #endif

@@ -10,6 +10,7 @@
 #include"Algo.hpp"
 #include"Sample.hpp"
 #include"Interactions.hpp"
+#include"Analyse.hpp"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ int main (int argc,char **argv)
 	//Config est interface pour init tout
 	//a partir fichier configuration
 	Config config;
+	Analyse analyse;
 	Algo algo;
 	Cell cell;
 	Sample spl;
@@ -28,7 +30,7 @@ int main (int argc,char **argv)
 
 	//Initialisation simulation
 	ifstream is(argv[1]);
-	int init_status = config.init(is,algo,cell,spl,Int);
+	int init_status = config.init(is,algo,cell,spl,Int,analyse);
 	if(init_status != 0) return 0;
 
 	//Lancement simulation
