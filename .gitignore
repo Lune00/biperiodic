@@ -13,3 +13,6 @@ src/Tenseur.o
 src/Vecteur.o
 exec/BPDEM2D.o
 exec/DEMARENA.o
+src/*.swp
+include/*.swp
+exec/*.swp
