@@ -21,6 +21,9 @@ class Analyse{
 		Sample* spl_;
 		Cell* cell_;
 		std::string folder_;
+		//Thickness (in Rmax) of periodic band around
+		//sample visualisation
+		double e_;
 
 	public:
 		Analyse();

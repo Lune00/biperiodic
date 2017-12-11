@@ -62,6 +62,7 @@ class Particle{
 		double getMasse() const {return m_;}
 		double getRadius() const { return R_;}
 		double getTorque() const {return t_;}
+		double getRot() const { return rot_;}
 		int getId() const { return id_;}
 
 		Vecteur getR() const { return r_;}

@@ -148,12 +148,13 @@ bool Cell::needSample(){
 }
 
 //Le volume est donné par det(h) (deux vecteurs de base de la cellule)
-double Cell::getVolume(){
+double Cell::getVolume() const{
 	return h_.getDet();
 }
 
+
 //Construit la cellule
-void Cell::write(ofstream& of,double t){
+void Cell::write(ofstream& of,double t) const{
 
 	double ux=h_.getxx();
 	double uy=h_.getyx();

@@ -199,6 +199,7 @@ void Sample::attributeMass(){
 
 //Calcul rmin,rmax,xmin,xmax,ymin,ymax de l'echantillon
 //Sert a initialiser geometrie cellule au debut simulation
+//Penser a recalculer ca au cours de la deformation?...
 void Sample::setminmax(){
 
 	if(!sampleIsLoaded_ || spl_.size() == 0){

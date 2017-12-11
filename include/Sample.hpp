@@ -72,6 +72,7 @@ class Sample{
 		//For flexibility ok but breaks encapsulation...
 		//Better idea needed... Someone else will touch sample
 		std::vector<Particle>* getSample() { return &spl_;}
+		const std::vector<Particle>& inspectSample() const {return spl_;}
 
 		Cell * getCell() const { return cell_;}
 

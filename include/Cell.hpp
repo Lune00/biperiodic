@@ -82,7 +82,7 @@ class Cell{
 		char getControlyx() const {return Control_[2];}
 		char getControlyy() const {return Control_[3];}
 
-		double getVolume();
+		double getVolume() const ;
 		double getMasse() const { return mh_;}
 		double getLx() const { return Lx_;}
 		double getLy() const { return Ly_;}
@@ -95,7 +95,7 @@ class Cell{
 
 		//Writins outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
-		void write(std::ofstream&,double);
+		void write(std::ofstream&,double) const;
 		void writeStrainTensor(std::ofstream&,double);
 
 		//Debug & track:
