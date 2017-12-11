@@ -71,6 +71,23 @@ class Interactions{
 		std::string folder_;
 		std::string fInteractions_;
 
+		//Parametres DEM:
+
+		//Mettre en place check sur les
+		//bornes acceptables des valeurs des parametres
+		//a comparer avec dt
+		//Etudier un peu ca...
+
+		//Normal and tangential stifness
+		double kn_;
+		double kt_;
+		//Normal and tangential viscosities
+		double gn_;
+		double gt_;
+		//Interparticle friction
+		//Later will depend on particle Id TODO
+		double mus_;
+
 	public:
 		Interactions();
 		~Interactions();

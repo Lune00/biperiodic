@@ -90,6 +90,7 @@ class Cell{
 		Tensor2x2 geth() const { return h_;}
 		Tensor2x2 gethd() const { return hd_;}
 		Tensor2x2 gethdd() const { return hdd_;}
+
 		Tensor2x2 getStressInt() const { return stress_int;}
 		Tensor2x2 getStressExt() const { return stress_ext;}
 

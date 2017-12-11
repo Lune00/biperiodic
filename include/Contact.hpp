@@ -6,6 +6,7 @@
 
 class Particle;
 class Tensor2x2;
+class Cell;
 
 class Contact{
 
@@ -15,12 +16,16 @@ class Contact{
 		Particle * j_;
 		//Contact position
 		Vecteur r_;
-		//Relative velocity at contact
+		//Relative velocity at contact (normal,tangent) in the
+		//contact frame
 		Vecteur v_;
+
+		//Contact frame:
 		//Normal to the contact
 		Vecteur n_;
 		//Tangent to the contact
 		Vecteur t_;
+
 		//Force at the contact
 		Vecteur f_;
 
@@ -28,23 +33,30 @@ class Contact{
 		double dn_;
 		double dt_;
 
+		//Relative rate of rotation at contact
+		double rvrot_;
+
+		//Pointer on the cell (to access h and hd)
+		Cell * cell_;
+
 		bool isActif_;
 		//Avoid truncature errors
 		//Used by frame for threshold for interpenetration
 		static const double tolerance_;
 
 	public:
-		Contact(){ i_ = NULL; j_ =NULL ; isActif_ = false; }
-		Contact(Particle* i, Particle* j);
+		Contact(){ i_ = NULL; j_ =NULL, cell_=NULL ; isActif_ = false; }
+		Contact(Particle* i, Particle* j, Cell&);
 		~Contact(){};
 
 		bool isActif() const { return isActif_;}
 		void activate() { isActif_ = true;}
-		void Frame(Tensor2x2&);
+		void Frame();
 		void write(std::ofstream&) const;
-		void updateRelativeVelocities();
-		void computeForce();
+		void updateRelativeVelocity();
+		void computeForce(const double,const double,const double,const double, const double);
 		void updateAccelerations();
+		double sign(double x){if(x<0.) return -1.;else return 1.;}
 };
 
 

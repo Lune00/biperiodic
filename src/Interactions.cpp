@@ -168,7 +168,7 @@ void Interactions::updatevlist(){
 		if( near(*(it->i),*(it->j),h,dv_) )
 		{
 		//Create a Contact
-		Contact c(it->i,it->j);	
+		Contact c(it->i,it->j,*cell_);	
 		//Push contact to vlist_;
 		vlist_.push_back(c);
 		}
@@ -182,10 +182,9 @@ void Interactions::detectContacts(){
 
 	cout<<"Contact detection..."<<endl;
 	clist_.clear();
-	Tensor2x2 h = cell_->geth();
 
 	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
-		it->Frame(h);
+		it->Frame();
 		int k = distance( vlist_.begin(), it);
 
 		//WIP
@@ -208,8 +207,8 @@ void Interactions::detectContacts(){
 void Interactions::computeForces(){
 
 	for(vector<int>::iterator it = clist_.begin(); it != clist_.end();it++){
-		vlist_[*it].updateRelativeVelocities();
-		vlist_[*it].computeForce();
+		vlist_[*it].updateRelativeVelocity();
+		vlist_[*it].computeForce(kn_,kt_,gn_,gt_,mus_);
 		vlist_[*it].updateAccelerations();
 	}
 
