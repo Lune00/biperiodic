@@ -44,14 +44,14 @@ class Particle{
 		Particle(std::ifstream&);
 
 		void write(std::ofstream&) const;
-		void write(std::ofstream&,const Tensor2x2&) const;
+		void write(std::ofstream&,const Tensor2x2&,const Tensor2x2&) const;
 		void init();
+		void load(std::ifstream&);
 		void affiche() const;
 		void Periodize( double lx, double ly) { r_.add(lx,ly)  ;}
 
 		void setr(double sx, double sy) { r_.set(sx,sy) ;}
-		void setMasse(double m) { m_ = m ;}
-		void setInertia(double I) {I_ = I ;}
+		void setInertia(const double m);
 
 		void setrx(double x) { r_.setx(x);}
 		void setry(double y) { r_.sety(y);}
@@ -65,6 +65,7 @@ class Particle{
 		void updateV(const double dt);
 		void updateVrot(const double dt);
 		void updateRot(const double dt);
+		void resetA() { a_ = 0. ;}
 
 		double getx() const { return r_.getx() ; }
 		double gety() const { return r_.gety() ; }

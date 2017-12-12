@@ -21,6 +21,8 @@ class Vecteur{
 
 		//Accessors:
 		double getNorme() const {return sqrt( x_*x_ + y_ * y_);}
+		double getNorme2() const {return  x_*x_ + y_ * y_;}
+
 		double getx() const {return x_;}
 		double gety() const {return y_;}
 		//Mutators:
@@ -78,6 +80,13 @@ class Vecteur{
 			p.y_ = - y_;
 			return p;
 		}
+		Vecteur operator = (double a) {
+			Vecteur p;
+			p.x_ = a;
+			p.y_ = a;
+			return p;
+		}
+
 };
 
 #endif

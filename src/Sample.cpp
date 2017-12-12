@@ -97,15 +97,55 @@ void Sample::write(int k) const{
 //Coordonnees absolues
 void Sample::writeAbsolute(int k) const{
 	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hd = cell_->gethd();
 
 	string filename = formatfile( folder_, fsampleA_, k );
 	ofstream file(filename.c_str());
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		it->write(file,h);
+		it->write(file,h,hd);
 	}
 }
 
+
+Vecteur Sample::returnrabs(const Particle& P) const{
+	return cell_->geth() * P.getR() ;
+}
+Vecteur Sample::returnvabs(const Particle& P) const{
+	return (cell_->geth() * P.getV() + cell_->gethd() * P.getR() );
+}
+
+double Sample::getTotalKineticEnergy() const{
+
+	double Ec = 0.;
+
+	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
+		Vecteur v = returnvabs(*it);
+		cerr<<"m="<<it->getMasse()<<" v = "<<v.getNorme2()<<endl;
+		Ec += 0.5 * it->getMasse() * v.getNorme2();
+	}
+
+	return Ec;
+
+}
+
+//Tmp function: only for debug
+void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
+
+	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hd = cell_->gethd();
+	//Compute total kinetic energy
+	double Ec = getTotalKineticEnergy();
+	//Momentum
+	file2<<tic<<" "<<Ec<<endl;
+
+	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
+		it->write(file,h,hd);
+	}
+}
+
+
+//Return image particles within a const band width e around the cell in the lab frame. Band width is expressed in maximum radius of the sample
 //Coordonnees absolues: ecrit egalemement les particules periodiques dans une epaisseur e (distance en diametre max aux bords)a autour de la cellule
 vector<Particle> Sample::getimages(double e) const{
 
@@ -205,7 +245,7 @@ void Sample::attributeMass(){
 		for(std::vector<Particle>::iterator it = spl_.begin(); it!= spl_.end(); it++){
 			double s = it->getR() * it->getR() * M_PI;
 			double m = s * rho_ ;
-			it->setMasse(m);
+			it->setInertia(m);
 			M_ += m;
 		}
 		sampleIsFilled_ = true ;

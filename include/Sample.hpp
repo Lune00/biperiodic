@@ -80,7 +80,12 @@ class Sample{
 		void initfolder(std::string folder); 
 		void write(int) const;
 		void writeAbsolute(int) const;
+		//TMP: debug writing
+		void writeDebug(std::ofstream&,std::ofstream&,int) const;
 		std::vector<Particle> getimages(double e) const;
+		double getTotalKineticEnergy() const;
+		Vecteur returnrabs(const Particle&) const;
+		Vecteur returnvabs(const Particle&) const;
 
 
 };

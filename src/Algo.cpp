@@ -48,6 +48,10 @@ void Algo::run(){
 	tic_ = 0;
 	ticw_ = 0 ;
 
+	//Tmp for debug:
+	ofstream file("follow.txt");
+	ofstream file2("macro.txt");
+
 	while(t_<tfinal){
 		//Update verlet list
 		Int_->updateverlet(tic_);
@@ -55,14 +59,19 @@ void Algo::run(){
 		//Time step: integration & periodicity
 		verletalgo2();
 
-		//Temp: Analyse, writing:
-		if( tic_ % nrecord_ == 0) write();
+		if( tic_ % nrecord_ == 0){
+			write();
+			//Debuging:
+			spl_->writeDebug(file,file2,tic_);
+		}
 
 		if( tic_ % nana_ == 0 ) ana_->analyse(tic_,t_);
+
 
 		t_+=dt_;
 		tic_++;
 	}
+	file.close();
 }
 
 
@@ -71,120 +80,122 @@ void Algo::run(){
 //On verra apres comment rendre ca plus compacte
 void Algo::verletalgo2(){
 
-  double dt2_2 = 0.5 * dt_ * dt_ ;
-  double dt_2 = 0.5 * dt_ ;
+	double dt2_2 = 0.5 * dt_ * dt_ ;
+	double dt_2 = 0.5 * dt_ ;
 
-  vector<Particle>* ps = spl_->getSample();
+	vector<Particle>* ps = spl_->getSample();
 
-  // ------------- FIRST STEP VERLET ALGO STARTS HERE
+	// ------------- FIRST STEP VERLET ALGO STARTS HERE
 
-  for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
-	  //Positions
-	  it->updateR(dt_);
-	  it->updateRot(dt_);
-	  //First step vitesse: integrate over half step
-	  it->updateV(dt_2);
-	  it->updateVrot(dt_2);
-  }
+	for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
+		//Positions
+		it->updateR(dt_);
+		it->updateRot(dt_);
+		//First step vitesse: integrate over half step
+		it->updateV(dt_2);
+		it->updateVrot(dt_2);
+		//Set accelerations to 0 for second step:
+		it->resetA();
+	}
 
-  //Periodicite en position des particules
-  //Peut etre a bouger dans Sample plutot
-  //Ca me parait plus etre un taff de sample de modifier les positions
-  cell_->PeriodicBoundaries2(ps);
+	//Periodicite en position des particules
+	//Peut etre a bouger dans Sample plutot
+	//Ca me parait plus etre un taff de sample de modifier les positions
+	cell_->PeriodicBoundaries2(ps);
 
-  //Integration du mvt de la cellule:
-  Tensor2x2 h = cell_->geth();
-  Tensor2x2 hd = cell_->gethd();
-  Tensor2x2 hdd = cell_->gethdd();
+	//Integration du mvt de la cellule:
+	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hd = cell_->gethd();
+	Tensor2x2 hdd = cell_->gethdd();
 
-  //h = h + hd * dt_ + hdd * dt2_2 ;
-  //Controle en force ou controle en vitesse
-  //Temporaire:
-  double hxx, hxy , hyx , hyy ;
-  double hdxx, hdxy , hdyx , hdyy ;
+	//h = h + hd * dt_ + hdd * dt2_2 ;
+	//Controle en force ou controle en vitesse
+	//Temporaire:
+	double hxx, hxy , hyx , hyy ;
+	double hdxx, hdxy , hdyx , hdyy ;
 
-  if(cell_->getControlxx() == 'f' ) {
-	  hxx = h.getxx() + hd.getxx() * dt_ + hdd.getxx() * dt2_2 ;
-	  hdxx = hd.getxx() + hdd.getxx() * dt_2 ;
-  }
-  else{
-	  //Vitesse imposee reste la meme (hdd, definit par Ld au debut)
-	  //hdd par definition nulle si control en vitesse sur hdd
-	  hxx = h.getxx() + hd.getxx() * dt_ ; 
-	  hdxx = hd.getxx();
-  }
+	if(cell_->getControlxx() == 'f' ) {
+		hxx = h.getxx() + hd.getxx() * dt_ + hdd.getxx() * dt2_2 ;
+		hdxx = hd.getxx() + hdd.getxx() * dt_2 ;
+	}
+	else{
+		//Vitesse imposee reste la meme (hdd, definit par Ld au debut)
+		//hdd par definition nulle si control en vitesse sur hdd
+		hxx = h.getxx() + hd.getxx() * dt_ ; 
+		hdxx = hd.getxx();
+	}
 
-  if(cell_->getControlxy() == 'f' ) {
-	  hxy = h.getxy() + hd.getxy() * dt_  + hdd.getxy() * dt2_2 ;
-	  hdxy = hd.getxy() + hdd.getxy() * dt_2 ;
-  }
-  else{
-	  hxy = h.getxy() + hd.getxy() * dt_ ; 
-	  hdxy = hd.getxy();
-  }
+	if(cell_->getControlxy() == 'f' ) {
+		hxy = h.getxy() + hd.getxy() * dt_  + hdd.getxy() * dt2_2 ;
+		hdxy = hd.getxy() + hdd.getxy() * dt_2 ;
+	}
+	else{
+		hxy = h.getxy() + hd.getxy() * dt_ ; 
+		hdxy = hd.getxy();
+	}
 
-  if(cell_->getControlyx() == 'f' ) {
-	  hyx = h.getyx() + hd.getyx() * dt_  + hdd.getyx() * dt2_2 ;
-	  hdyx = hd.getyx() + hdd.getyx() * dt_2 ;
-  }
-  else{
-	  hyx = h.getyx() + hd.getyx() * dt_ ; 
-	  hdyx = hd.getyx();
-  }
+	if(cell_->getControlyx() == 'f' ) {
+		hyx = h.getyx() + hd.getyx() * dt_  + hdd.getyx() * dt2_2 ;
+		hdyx = hd.getyx() + hdd.getyx() * dt_2 ;
+	}
+	else{
+		hyx = h.getyx() + hd.getyx() * dt_ ; 
+		hdyx = hd.getyx();
+	}
 
-  if(cell_->getControlyy() == 'f' ) {
-	  hyy = h.getyy() + hd.getyy() * dt_  + hdd.getyy() * dt2_2 ;
-	  hdyy = hd.getyy() + hdd.getyy() * dt_2 ;
-  }
-  else{
-	  hyy = h.getyy() + hd.getyy() * dt_ ; 
-	  hdyy = hd.getyy();
-  }
+	if(cell_->getControlyy() == 'f' ) {
+		hyy = h.getyy() + hd.getyy() * dt_  + hdd.getyy() * dt2_2 ;
+		hdyy = hd.getyy() + hdd.getyy() * dt_2 ;
+	}
+	else{
+		hyy = h.getyy() + hd.getyy() * dt_ ; 
+		hdyy = hd.getyy();
+	}
 
-  //Set new h
-  h.set(hxx,hxy,hyx,hyy);
-  hd.set(hdxx,hdxy,hdyx,hdyy);
-  cell_->update(h,hd);
+	//Set new h
+	h.set(hxx,hxy,hyx,hyy);
+	hd.set(hdxx,hdxy,hdyx,hdyy);
+	cell_->update(h,hd);
 
 
-  // ------------- FIRST STEP VERLET ALGO END HERE
+	// ------------- FIRST STEP VERLET ALGO END HERE
 
-  Int_->detectContacts();
+	Int_->detectContacts();
 
-  //Calcul des forces entre particules a la nouvelle position fin du pas de temps
-  Int_->computeForces();
+	//Calcul des forces entre particules a la nouvelle position fin du pas de temps
+	Int_->computeForces();
 
-  //Calcul du tenseur de contraintes internes: sigma_int
+	//Calcul du tenseur de contraintes internes: sigma_int
 
-  //------------- SECOND STEP VERLET ALGO STARTS HERE
-  //Calcul des vitesses a la fin du pas de temps:
+	//------------- SECOND STEP VERLET ALGO STARTS HERE
+	//Calcul des vitesses a la fin du pas de temps:
 
-  Tensor2x2 hinv = h.getInverse();
-  for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
-	  //Vecteur a = it->getA();
-	  ////a turned in reduced coordinates
-	  //Vecteur v = it->getV();
-	  //a = hinv * a ;
-	  //v = v + a * dt_2 ;
-	  //it->setV(v);
-	  it->updateV(dt_2);
-	  it->updateVrot(dt_2);
-  }
+	Tensor2x2 hinv = h.getInverse();
+	for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
+		//Vecteur a = it->getA();
+		////a turned in reduced coordinates
+		//Vecteur v = it->getV();
+		//a = hinv * a ;
+		//v = v + a * dt_2 ;
+		//it->setV(v);
+		it->updateV(dt_2);
+		it->updateVrot(dt_2);
+	}
 
-  //Apply stress_ext: si controle en force
-  //stress ext est egal a celui impose
-  //Sinon il est egal a -stressint et acc nulle
-  cell_->ApplyBC();
-  double V = cell_->getVolume();
-  double mh = cell_->getMasse();
-  Tensor2x2 TotalStress = cell_->getStressInt() + cell_->getStressExt();
-  hdd = hinv * (V/mh) * (TotalStress);
-  //On a l'accleration en fin de pas, on peut integrer l'espace en vitesse a la fin du pas
-  hd = hd + hdd * dt_2 ;
-  cell_->updatehd(hd);
+	//Apply stress_ext: si controle en force
+	//stress ext est egal a celui impose
+	//Sinon il est egal a -stressint et acc nulle
+	cell_->ApplyBC();
+	double V = cell_->getVolume();
+	double mh = cell_->getMasse();
+	Tensor2x2 TotalStress = cell_->getStressInt() + cell_->getStressExt();
+	hdd = hinv * (V/mh) * (TotalStress);
+	//On a l'accleration en fin de pas, on peut integrer l'espace en vitesse a la fin du pas
+	hd = hd + hdd * dt_2 ;
+	cell_->updatehd(hd);
 
-  //Cell deformation
-  cell_->CalculStrainTensor();
+	//Cell deformation
+	cell_->CalculStrainTensor();
 }
 
 
@@ -194,5 +205,6 @@ void Algo::write(){
 	Int_->writeContacts(ticw_);
 	//cell_->write(testcell,t);
 	//cell_->writeStrainTensor(strain,t);
+
 	ticw_++;
 }

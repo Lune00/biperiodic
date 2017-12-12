@@ -1,13 +1,12 @@
 #include"Particle.hpp"
 
 using namespace std;
-//sx et sy doivent etre compris entre 0 et 1 (initialiement dans la cellule)
 //Read from file
 Particle::Particle(ifstream& is){
-	double x = 0. ;
-	double y = 0. ;
-	double vx = 0. ;
-	double vy = 0. ;
+	load(is);
+}
+//Would be better to have a load function independant of the constructor
+void Particle::load(ifstream& is){
 	is >> id_ >> R_ ;
 	r_.load(is);
 	v_.load(is);
@@ -19,14 +18,16 @@ Particle::Particle(ifstream& is){
 void Particle::init(){
 	//Les vecteurs appellent constructeur, tout egal a 0
 	m_=1.;
-	R_=0.1;
+	R_=1.;
 	I_ = 0.5 * m_ * R_ * R_;
 	arot_ = 0.;
 	vrot_=0.;
 	rot_=0.;
 }
-
-//To be re written for symetry to load
+void Particle::setInertia(const double m){
+	m_ = m ;
+	I_ = m_ * R_ * R_ * 0.5 ; 
+}
 
 //Reduced coordinates: read for simulations
 void Particle::write(ofstream& os) const{
@@ -39,11 +40,10 @@ void Particle::write(ofstream& os) const{
 
 //Only suitable for analysis(not used to load sample, or start
 //simuation)
-void Particle::write(ofstream& of, const Tensor2x2& h) const{
+void Particle::write(ofstream& of, const Tensor2x2& h, const Tensor2x2& hd) const{
 	Vecteur rabs = h * r_ ;
-	//TODO : bring hd here!
-	//Vecteur vabs = hd * r_ + h * v_;
-	of<<id_<<" "<<R_<<" "<<rabs.getx()<<" "<<rabs.gety()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<rot_<<" "<<vrot_<<endl;
+	Vecteur vabs = hd * r_ + h * v_;
+	of<<id_<<" "<<R_<<" "<<rabs.getx()<<" "<<rabs.gety()<<" "<<vabs.getx()<<" "<<vabs.gety()<<" "<<rot_<<" "<<vrot_<<endl;
 }
 
 void Particle::affiche() const{
