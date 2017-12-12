@@ -2,6 +2,7 @@
 #define Vecteur_hpp
 
 #include<iostream>
+#include<fstream>
 #include<cmath>
 
 class Vecteur{
@@ -26,6 +27,10 @@ class Vecteur{
 		void setx(double x) {x_ = x;}
 		void sety(double y) {y_ = y;}
 		void set(double x,double y){ x_=x; y_=y;}
+		//Read from ifstream
+		void load(std::ifstream& is);
+		//Write in ofstream
+		void write(std::ofstream& os) const;
 
 		//Surcharge operator:
 		//Scalar product:
@@ -51,6 +56,26 @@ class Vecteur{
 			Vecteur p;
 			p.x_ = a*x_ ;
 			p.y_ = a*y_ ;
+			return p;
+		}
+
+		Vecteur operator * (double a) const{
+			Vecteur p;
+			p.x_ = a*x_ ;
+			p.y_ = a*y_ ;
+			return p;
+		}
+
+		Vecteur operator / (double a){
+			Vecteur p;
+			p.x_ = x_ / a ;
+			p.y_ = y_ / a ;
+			return p;
+		}
+		Vecteur operator - () {
+			Vecteur p;
+			p.x_ = - x_;
+			p.y_ = - y_;
 			return p;
 		}
 };

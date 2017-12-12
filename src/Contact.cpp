@@ -83,14 +83,19 @@ void Contact::updateRelativeVelocity(){
 	return ;
 }
 
+//A checker:
+//Temp form for DEM parameters
 void Contact::computeForce(const double kn, const double kt, const double gn, const double gt, const double mus){
 	
 	double fn = - kn * dn_ - gn * v_.getx();
 	if(fn < 0.) fn = 0.;
 
 	double ft = - kt * dt_ - gt * v_.gety();
-	double ftmax = fabs( fn * mus);
-	if(ft > ftmax) ft = sign(ft) * ftmax;
+	const double ftmax = fabs( fn * mus);
+	if(ft > ftmax){
+		ft = sign(ft) * ftmax;
+		dt_ = ft /kt;
+	}
 	else dt_+= ft/kt;
 
 	f_.set(fn,ft);
@@ -98,9 +103,19 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	return ;
 }
 
+//Notice that f_.gety() refers here to ft_ (tangential force in contact frame)
+//Acclerations computed in the absolute sense (lab frame)
 void Contact::updateAccelerations(){
-
-
+	//Expression force vector in the lab frames:
+	Vecteur fxy = getfxy();
+	//Turns acceleration vector in reduced coordinates:
+	fxy = cell_->geth() * fxy;
+	//Update linear acceleration
+	j_->updateA(fxy);
+	i_->updateA(-fxy);
+	//Update rotational acceleration
+	j_->updateArot(-f_.gety() * j_->getRadius());
+	i_->updateArot(-f_.gety() * i_->getRadius());
 	return;
 }
 

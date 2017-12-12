@@ -79,16 +79,12 @@ void Algo::verletalgo2(){
   // ------------- FIRST STEP VERLET ALGO STARTS HERE
 
   for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
-
-	  Vecteur a = it->geta();
-	  Vecteur r = it->getR();
-	  Vecteur v = it->getV();
-	  //Rotations, to add
-	  r = r + v * dt_ + a * dt2_2;
-	  v = v + a * dt_2;
-	  //update position et acceleration debut pas temps
-	  it->setRV(r,v);
-
+	  //Positions
+	  it->updateR(dt_);
+	  it->updateRot(dt_);
+	  //First step vitesse: integrate over half step
+	  it->updateV(dt_2);
+	  it->updateVrot(dt_2);
   }
 
   //Periodicite en position des particules
@@ -163,14 +159,16 @@ void Algo::verletalgo2(){
   //------------- SECOND STEP VERLET ALGO STARTS HERE
   //Calcul des vitesses a la fin du pas de temps:
 
-  //On retransforme la vitesse en coordonnee reduite
   Tensor2x2 hinv = h.getInverse();
   for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
-	  Vecteur a = it->geta();
-	  Vecteur v = it->getV();
-	  a = hinv * a ;
-	  v = v + a * dt_2 ;
-	  it->setV(v);
+	  //Vecteur a = it->getA();
+	  ////a turned in reduced coordinates
+	  //Vecteur v = it->getV();
+	  //a = hinv * a ;
+	  //v = v + a * dt_2 ;
+	  //it->setV(v);
+	  it->updateV(dt_2);
+	  it->updateVrot(dt_2);
   }
 
   //Apply stress_ext: si controle en force
