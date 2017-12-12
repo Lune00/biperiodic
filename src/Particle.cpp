@@ -28,7 +28,7 @@ void Particle::init(){
 
 //To be re written for symetry to load
 
-//Reduced coordinates:
+//Reduced coordinates: read for simulations
 void Particle::write(ofstream& os) const{
 	os<< id_<<" "<<R_<<" ";
 	r_.write(os);
@@ -37,8 +37,12 @@ void Particle::write(ofstream& os) const{
 	os << rot_<<" "<<vrot_<<" "<<arot_<<endl;
 }
 
+//Only suitable for analysis(not used to load sample, or start
+//simuation)
 void Particle::write(ofstream& of, const Tensor2x2& h) const{
 	Vecteur rabs = h * r_ ;
+	//TODO : bring hd here!
+	//Vecteur vabs = hd * r_ + h * v_;
 	of<<id_<<" "<<R_<<" "<<rabs.getx()<<" "<<rabs.gety()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<rot_<<" "<<vrot_<<endl;
 }
 
