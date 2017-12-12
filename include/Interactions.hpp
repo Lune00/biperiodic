@@ -110,6 +110,7 @@ class Interactions{
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
 		void writeContacts(int) const;
+		void askNumberOfContacts() const;
 
 		int getnv() const { return nv_ ;}
 		int getnsv() const {return nsv_;}

@@ -119,3 +119,16 @@ void Contact::updateAccelerations(){
 	return;
 }
 
+
+void Contact::print() const{
+
+
+	cerr<<"Contact entre la particule "<<i_->getId()<<" et "<<j_->getId()<<endl;
+	cerr<<"interpenetration = "<<dn_<<endl;
+	cerr<<"fn = "<<f_.getx()<<endl;
+	cerr<<"ft = "<<f_.gety()<<endl;
+	cerr<<"vx particule "<<i_->getId()<<" = "<<i_->getV().getx()<<endl;
+	cerr<<"vx partjcule "<<j_->getId()<<" = "<<j_->getV().getx()<<endl;
+
+
+}

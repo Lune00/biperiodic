@@ -221,12 +221,19 @@ void Interactions::computeForces(){
 }
 
 
+void Interactions::askNumberOfContacts() const{
+	if(clist_.size()==0) cerr<<"Aucun contact présent."<<endl;
+	else cerr<<"Il y a "<<clist_.size()<<" contact(s)."<<endl;
+}
+
 void Interactions::writeContacts(int k) const {
 
+	//if(clist_.size()==0) cerr<<"step "<<k<<" Il n'y a pas de contact"<<endl;
 	string filename = formatfile(folder_, fInteractions_, k);
 	ofstream file(filename.c_str());
 
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
 		vlist_[*it].write(file);
+		vlist_[*it].print();
 	}
 }

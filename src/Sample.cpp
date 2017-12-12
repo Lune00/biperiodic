@@ -115,13 +115,14 @@ Vecteur Sample::returnvabs(const Particle& P) const{
 	return (cell_->geth() * P.getV() + cell_->gethd() * P.getR() );
 }
 
+
 double Sample::getTotalKineticEnergy() const{
 
 	double Ec = 0.;
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		Vecteur v = returnvabs(*it);
-		cerr<<"m="<<it->getMasse()<<" v = "<<v.getNorme2()<<endl;
+		//cerr<<"Id = "<<it->getId()<<" m="<<it->getMasse()<<" v = "<<v.getNorme2()<<endl;
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
 	}
 
@@ -141,6 +142,14 @@ void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		it->write(file,h,hd);
+	}
+	//printSample();
+}
+
+void Sample::printSample() const{
+
+	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
+		it->print();
 	}
 }
 
@@ -242,13 +251,15 @@ vector<Particle> Sample::getimages(double e) const{
 //Fill particles with mass and inertia
 void Sample::attributeMass(){
 	if(rhodefined_) {
+		cout<<"Set inertia to particles...";
 		for(std::vector<Particle>::iterator it = spl_.begin(); it!= spl_.end(); it++){
-			double s = it->getR() * it->getR() * M_PI;
+			double s = it->getRadius() * it->getRadius() * M_PI;
 			double m = s * rho_ ;
 			it->setInertia(m);
 			M_ += m;
 		}
 		sampleIsFilled_ = true ;
+		cout<<"done."<<endl;
 	}
 }
 

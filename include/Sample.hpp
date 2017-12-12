@@ -82,6 +82,7 @@ class Sample{
 		void writeAbsolute(int) const;
 		//TMP: debug writing
 		void writeDebug(std::ofstream&,std::ofstream&,int) const;
+		void printSample() const;
 		std::vector<Particle> getimages(double e) const;
 		double getTotalKineticEnergy() const;
 		Vecteur returnrabs(const Particle&) const;

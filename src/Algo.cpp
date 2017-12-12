@@ -75,6 +75,16 @@ void Algo::run(){
 }
 
 
+void Algo::write(){
+	cout<<"Write outputs"<<endl;
+	spl_->writeAbsolute(ticw_);
+	Int_->writeContacts(ticw_);
+	//cell_->write(testcell,t);
+	//cell_->writeStrainTensor(strain,t);
+
+	ticw_++;
+}
+
 //Pour l'instant on l'implemente de maniere naive
 //et non optimale (ecriture condensee a l'aide tenseurs/vecteurs)
 //On verra apres comment rendre ca plus compacte
@@ -161,6 +171,8 @@ void Algo::verletalgo2(){
 	// ------------- FIRST STEP VERLET ALGO END HERE
 
 	Int_->detectContacts();
+	//Debug: ask if thera are contacts
+	Int_->askNumberOfContacts();
 
 	//Calcul des forces entre particules a la nouvelle position fin du pas de temps
 	Int_->computeForces();
@@ -199,12 +211,3 @@ void Algo::verletalgo2(){
 }
 
 
-void Algo::write(){
-	cout<<"Write outputs"<<endl;
-	spl_->writeAbsolute(ticw_);
-	Int_->writeContacts(ticw_);
-	//cell_->write(testcell,t);
-	//cell_->writeStrainTensor(strain,t);
-
-	ticw_++;
-}

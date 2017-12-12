@@ -46,9 +46,13 @@ void Particle::write(ofstream& of, const Tensor2x2& h, const Tensor2x2& hd) cons
 	of<<id_<<" "<<R_<<" "<<rabs.getx()<<" "<<rabs.gety()<<" "<<vabs.getx()<<" "<<vabs.gety()<<" "<<rot_<<" "<<vrot_<<endl;
 }
 
-void Particle::affiche() const{
-	cout<<"Coordonnees reduites: "<<r_.getx()<<" "<<r_.gety()<<endl;
-	cout<<"Vitesses reduites: "<<v_.getx()<<" "<<v_.gety()<<endl;
+void Particle::print() const{
+	cerr<<"------------------------------------"<<endl;
+	cerr<<"Particule "<<id_<<endl;
+	cerr<<"positions reduites: "<<r_.getx()<<" "<<r_.gety()<<endl;
+	cerr<<"vitesses reduites: "<<v_.getx()<<" "<<v_.gety()<<endl;
+	cerr<<"accelerations reduites: "<<a_.getx()<<" "<<a_.gety()<<endl;
+	cerr<<"------------------------------------"<<endl;
 }	
 
 void Particle::updateR(const double dt){
@@ -58,6 +62,8 @@ void Particle::updateR(const double dt){
 //Verlet algo: half each time
 void Particle::updateV(const double dt_2){
 	v_ = v_ + a_ * dt_2 ;
+	cerr<<"update vx = "<< (a_ * dt_2).getNorme()<<endl;
+	cerr<<"ax = "<<a_.getx()<<endl;
 	return;
 }
 
@@ -68,4 +74,9 @@ void Particle::updateRot(const double dt){
 
 void Particle::updateVrot(const double dt_2){
 	vrot_ = vrot_ + arot_ * dt_2 ;
+}
+
+void Particle::resetA() {
+	a_.set(0.,0.); 
+	cerr<<"reset acc : "<<a_.getx()<<" "<<a_.gety()<<endl;
 }

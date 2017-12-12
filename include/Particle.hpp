@@ -47,7 +47,7 @@ class Particle{
 		void write(std::ofstream&,const Tensor2x2&,const Tensor2x2&) const;
 		void init();
 		void load(std::ifstream&);
-		void affiche() const;
+		void print() const;
 		void Periodize( double lx, double ly) { r_.add(lx,ly)  ;}
 
 		void setr(double sx, double sy) { r_.set(sx,sy) ;}
@@ -65,7 +65,7 @@ class Particle{
 		void updateV(const double dt);
 		void updateVrot(const double dt);
 		void updateRot(const double dt);
-		void resetA() { a_ = 0. ;}
+		void resetA(); 
 
 		double getx() const { return r_.getx() ; }
 		double gety() const { return r_.gety() ; }
