@@ -58,26 +58,19 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	//Warning: the cell can get out of bounds
 
 	double scaledotradius = 0.05 ;
-	double margin = 2. * e_ ;
+	double margin = e_ * spl_->getrmax() ;
 	double zoom = 1. ;
 
-	double xmin = 0. ;
+	double xmin = 0. - margin ;
 	double xmax = cell_->getLx() + margin ;
-	double ymin = 0.  ;
-	double ymax = cell_->getLy() + margin;
+	double ymin = 0. - margin ;
+	double ymax = cell_->getLy() + margin ;
 
-
-//	double xc = xmin + width * 0.5 - spl_->getrmax() ;
-//	double yc = ymin + height * 0.5 ;
-	double xc = cell_->getxc();
-	double yc = cell_->getyc();
-
-	double width = 2. * (xmax - xc) - margin + spl_->getrmax();
-	double height = 2. * (ymax - yc) - margin;
-
+	double xc = 0.;
+	double yc = 0. ;
 
 	ps<<"%!PS-Adobe-3.0 EPSF-3.0"<<endl;
-	ps<<"%%BoundingBox:"<<" "<<xmin<<" "<<ymin<<" "<<width<<" "<<height<<endl;
+	ps<<"%%BoundingBox:"<<" "<<xmin<<" "<<ymin<<" "<<xmax<<" "<<ymax<<endl;
 	ps<<"%%Pages:1"<<endl;
 	ps<<"0.1 setlinewidth 0. setgray "<<endl;
 	ps <<"0. 0. .23 setrgbcolor clippath fill"<<endl;

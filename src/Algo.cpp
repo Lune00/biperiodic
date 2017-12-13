@@ -48,9 +48,12 @@ void Algo::run(){
 	tic_ = 0;
 	ticw_ = 0 ;
 
+	int tica = 0 ;
+
+
 	//Tmp for debug:
-	ofstream file("follow.txt");
-	ofstream file2("macro.txt");
+	ofstream file("follow0.txt");
+	ofstream file2("follow1.txt");
 
 	while(t_<tfinal){
 		//Update verlet list
@@ -60,16 +63,22 @@ void Algo::run(){
 		verletalgo2();
 
 		if( tic_ % nrecord_ == 0){
-			write();
+			//write();
 			//Debuging:
-			spl_->writeDebug(file,file2,tic_);
+			spl_->writeDebug(file,file2,ticw_);
+			ticw_++;
 		}
 
-		if( tic_ % nana_ == 0 ) ana_->analyse(tic_,t_);
+		if( tic_ % nana_ == 0 ) {
+			ana_->analyse(tica,t_);
+			tica++;
+		}
 
 
 		t_+=dt_;
 		tic_++;
+		//TODO
+		//Need to write a time.txt file which make the correspondance betwwen tics and time
 	}
 	file.close();
 }

@@ -142,7 +142,7 @@ void Interactions::updatesvlist(){
 		}
 	}
 
-	cout<<"Super verlet list size: "<<svlist_.size()<<endl;
+	//cout<<"Super verlet list size: "<<svlist_.size()<<endl;
 }
 
 //True if distance between "surface" of particle i and j are lower than d
@@ -180,13 +180,13 @@ void Interactions::updatevlist(){
 		}
 	}
 
-	cout<<"Verlet list size: "<<vlist_.size()<<endl;
+	//cout<<"Verlet list size: "<<vlist_.size()<<endl;
 }
 
 //Build contact list (activated interactions)
 void Interactions::detectContacts(){
 
-	cout<<"Contact detection..."<<endl;
+	//cout<<"Contact detection..."<<endl;
 	clist_.clear();
 
 	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
