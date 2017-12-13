@@ -1,7 +1,8 @@
 #!/bin/bash
 
-
+rm -R framespng
 mkdir -p framespng
+
 
 psfiles="analyse/frames/*.ps"
 #for file in "${folderps}/*.ps"
@@ -17,7 +18,8 @@ do
 #	filepng="${i}frame.png"
 #	echo "$fileps -> $filepng"
 	ps2pdf -dPDFSETTINGS=/prepress -dEPSCrop $file tmp.pdf
-	gs -sDEVICE=pngalpha -r500 -o $filepng tmp.pdf
+	gs -sDEVICE=pngalpha -r1000 -o $filepng tmp.pdf
 	mv $filepng framespng
 done
 
+rm tmp.pdf
