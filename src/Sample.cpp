@@ -116,15 +116,12 @@ Vecteur Sample::returnvabs(const Particle& P) const{
 }
 
 
+//Take reduced velocity to compute true kinetic energy
 double Sample::getTotalKineticEnergy() const{
 	double Ec = 0.;
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		//Vecteur v = returnvabs(*it);
-
 		Vecteur v = it->getV();
-		cout<<"reduced velocity : "; v.print(); cout<<endl;
-		v = returnrabs(*it);
-		cout<<"absolute vecocity : "; v.print(); cout<<endl;
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
 	}
 	return Ec;
@@ -137,13 +134,13 @@ void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 	Tensor2x2 hd = cell_->gethd();
 	//Compute total kinetic energy
 	double Ec = getTotalKineticEnergy();
-	//Momentum
-	file2<<tic<<" "<<Ec<<endl;
+
 	file<<tic<<" ";
+	file2<<tic<<" ";
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 	if(it->getId()==0)it->write(file,h,hd);
-//	if( it->getId()==1)it->write(file2,h,hd);
+	if( it->getId()==1)it->write(file2,h,hd);
 	}
 	//printSample();
 }

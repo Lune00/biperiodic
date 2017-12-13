@@ -52,10 +52,10 @@ void Interactions::init(ifstream& is){
 
 	//TMP:
 	kn_ = 1.e9 ;
-	kt_ = 1.e7 ;
+	kt_ = 1.e9 ;
 	gn_ = 0. ;
-	gt_ = 0. ;
-	mus_ = 0. ;
+	gt_ = 20. ;
+	mus_ = 0.5 ;
 }
 
 

@@ -80,6 +80,7 @@ void Contact::updateRelativeVelocity(){
 	 //Rotational contribution added to the relative tangential componant
 	 double vtr = -j_->getRadius() * j_->getVrot() -i_->getRadius() * i_->getVrot();
 	 v_.addy(vtr); 
+	 cout<<"vtr = "<<vtr<<endl;
 	return ;
 }
 
@@ -91,6 +92,11 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	if(fn < 0.) fn = 0.;
 
 	double ft = - kt * dt_ - gt * v_.gety();
+	cout<<"ft = "<<ft<<endl;
+	cout<<"ftmax = "<<mus * fn<<endl;
+	cout<<"vrel.n = "<<v_.getx()<<" vrel.t = "<<v_.gety()<<endl;
+	cout<<"gn * v_t = "<< gt * v_.gety()<<endl;
+	cout<<"dt_ = "<<dt_<<endl;
 	const double ftmax = fabs( fn * mus);
 	if(ft > ftmax){
 		ft = sign(ft) * ftmax;

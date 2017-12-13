@@ -53,8 +53,7 @@ void Algo::run(){
 
 	//Tmp for debug:
 	ofstream file("follow0.txt");
-	ofstream file2("energie.txt");
-	ofstream file3("elastic.txt");
+	ofstream file2("follow1.txt");
 
 	while(t_<tfinal){
 		//Update verlet list
@@ -67,7 +66,6 @@ void Algo::run(){
 			//write();
 			//Debuging:
 			spl_->writeDebug(file,file2,ticw_);
-			Int_->writeDebug(file3,ticw_);
 			ticw_++;
 		}
 
