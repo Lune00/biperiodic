@@ -1,31 +1,45 @@
 #include"Analyse.hpp"
 #include"Cell.hpp"
 #include"Sample.hpp"
-
+#include"Interactions.hpp"
 
 using namespace std;
 
-Analyse::Analyse(){ e_ = 4.1;}
+//TODO: path to analysis and choices
+Analyse::Analyse(){
+	e_ = 4.1;
+	ofstream energie("analyse/energy.txt");
+	energie.close();
+}
 
 
 Analyse::~Analyse(){}
 
-
+//TODO
 void Analyse::init(ifstream& is){
-
 
 
 }
 
-void Analyse::plug(Sample& spl, Cell& cell){
+void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 	spl_ = &spl;
 	cell_ = &cell;
+	Int_ = &Int;
 }
 
 //Call for different analyses asked by the user
 void Analyse::analyse(int tic, double t){
-	cout<<"tic = "<<tic<<" - analyse..."<<endl;
+
+	//cout<<"tic = "<<tic<<" - analyse..."<<endl;
 	printSample(tic);
+	computeEnergy(tic);
+}
+
+
+void Analyse::computeEnergy(const int tic) {
+	ofstream os("analyse/energy.txt",ios::app);
+	os <<tic<<" "<<spl_->getTotalKineticEnergy()<<" "<<Int_->getElasticEnergy()<<endl;
+	os.close();
 }
 
 //Print sample coordonées absolues avec une couche d'epaisseur e
@@ -39,7 +53,7 @@ void Analyse::printSample(int tic){
 	string frame = formatfile(localfolder,"frame.ps",tic);
 	//Get vector of image particles within the range e near boundaries
 	std::vector<Particle> images = spl_->getimages(e_);
-	cout<<"Nombre de particules images:"<<images.size()<<endl;
+//	cout<<"Nombre de particules images:"<<images.size()<<endl;
 	//Write PS file: particles + images
 	writePS(frame,images);
 
@@ -145,3 +159,4 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	return ;
 
 }
+

@@ -19,6 +19,7 @@ cd ..
 
 #Copie executable dans un dossier d'essai
 mkdir -p test
-cp exec/BPDEM2D test/BPDM2D
+#cp exec/BPDEM2D test/BPDM2D
+cp -f exec/DEMARENA test/DEMARENA
 
 echo "Compilation terminee."

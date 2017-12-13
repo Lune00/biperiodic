@@ -110,6 +110,9 @@ class Interactions{
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
 		void writeContacts(int) const;
+		void writeDebug(std::ofstream&,int) const;
+		//Compute energy stored in contact deflection
+		double getElasticEnergy() const;
 		void askNumberOfContacts() const;
 
 		int getnv() const { return nv_ ;}

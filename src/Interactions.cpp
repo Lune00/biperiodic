@@ -51,7 +51,7 @@ void Interactions::init(ifstream& is){
 
 
 	//TMP:
-	kn_ = 1.e7 ;
+	kn_ = 1.e9 ;
 	kt_ = 1.e7 ;
 	gn_ = 0. ;
 	gt_ = 0. ;
@@ -237,3 +237,27 @@ void Interactions::writeContacts(int k) const {
 		vlist_[*it].print();
 	}
 }
+
+void Interactions::writeDebug(ofstream& os, int k) const{
+
+	double E_el = getElasticEnergy();
+	os << k<< " "<<E_el<<endl;
+}
+
+double Interactions::getElasticEnergy() const {
+
+	double E = 0.;
+	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
+		//Compute "elastic energy stored in the contact"
+		double dn = vlist_[*it].getdn();
+		cout<<"dn entre "<<vlist_[*it].getj()->getId()<<" et "<<vlist_[*it].geti()->getId()<<" "<<dn<<endl;
+		cout<<"kn_ = "<<kn_<<endl;
+		double mj = vlist_[*it].getj()->getMasse();
+		double mi = vlist_[*it].geti()->getMasse();
+		E += 0.5 * (dn) * (dn) * kn_  ;
+		//E +=  0.5 *(dn)*(dn) * kn_ * 0.5 * (mi * mj)/(mi + mj);
+	}
+	return E;
+}
+
+

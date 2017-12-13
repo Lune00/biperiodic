@@ -58,8 +58,11 @@ class Contact{
 		void updateAccelerations();
 		double sign(double x){if(x<0.) return -1.;else return 1.;}
 		Vecteur getfxy() const { return (n_ *f_.getx() + t_ * f_.gety());} 
+		double getdn() const { return dn_;}
 		//Debug:
 		void print() const;
+		const Particle* getj() const { return j_;}
+		const Particle* geti() const { return i_;}
 };
 
 

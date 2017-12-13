@@ -82,7 +82,7 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	algo.plug(cell,spl,Int,ana);
 	//Check interactions parameters:
 	bool checkInteractions = Int.initcheck();
-	ana.plug(spl,cell);
+	ana.plug(spl,cell,Int);
 
 	//Writing paths initialisation:
 	spl.initfolder(folder_spl_);

@@ -8,7 +8,7 @@ using namespace std;
 //Tolerance for interpenetration
 //if fabs(dn_) > tolerance_, considered to be non zero
 //then check if negative or not
-const double Contact::tolerance_ = 1e-14 ;
+const double Contact::tolerance_ = 1e-18 ;
 
 Contact::Contact(Particle* i, Particle* j,Cell& cell){
 	i_ = i ;
@@ -61,7 +61,7 @@ void Contact::Frame(){
 }
 //Temporar: debug use
 void Contact::write(ofstream& os) const{
-	os<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<endl;
+	os<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<endl;
 }
 
 

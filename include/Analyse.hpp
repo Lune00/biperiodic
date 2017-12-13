@@ -8,6 +8,7 @@
 class Sample;
 class Cell;
 class Particle;
+class Interactions;
 
 
 //Ensuite faire une app aussi qui fait l'analyse en relecture
@@ -19,6 +20,7 @@ class Analyse{
 	private:
 
 		Sample* spl_;
+		Interactions* Int_;
 		Cell* cell_;
 		std::string folder_;
 		//Thickness (in Rmax) of periodic band around
@@ -28,12 +30,18 @@ class Analyse{
 	public:
 		Analyse();
 		~Analyse();
-		void printSample(int);
-		void plug(Sample&,Cell&);
+		//Init:
+		void plug(Sample&,Cell&,Interactions&);
 		void initfolder(std::string folder) {folder_ = folder;}
 		void init(std::ifstream&);
+
+		//Main: tic at wich analysis is carried
 		void analyse(int,double);
+
+		//Analyses:
+		void printSample(int);
 		void writePS(const std::string,const std::vector<Particle>&);
+		void computeEnergy(const int);
 
 };
 

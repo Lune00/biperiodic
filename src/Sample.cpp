@@ -117,20 +117,17 @@ Vecteur Sample::returnvabs(const Particle& P) const{
 
 
 double Sample::getTotalKineticEnergy() const{
-
 	double Ec = 0.;
-
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		Vecteur v = returnvabs(*it);
-		//cerr<<"Id = "<<it->getId()<<" m="<<it->getMasse()<<" v = "<<v.getNorme2()<<endl;
+		//Vecteur v = returnvabs(*it);
+
+		Vecteur v = it->getV();
+		cout<<"reduced velocity : "; v.print(); cout<<endl;
+		v = returnrabs(*it);
+		cout<<"absolute vecocity : "; v.print(); cout<<endl;
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
-		//cerr<<it->getId()<<" vabs :"<<v.getNorme()<<" - ";
-		Ec += v.getNorme();
 	}
-	cerr<<endl;
-
 	return Ec;
-
 }
 
 //Tmp function: only for debug
@@ -141,12 +138,12 @@ void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 	//Compute total kinetic energy
 	double Ec = getTotalKineticEnergy();
 	//Momentum
-	file2<<tic<<" ";
+	file2<<tic<<" "<<Ec<<endl;
 	file<<tic<<" ";
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 	if(it->getId()==0)it->write(file,h,hd);
-	if( it->getId()==1)it->write(file2,h,hd);
+//	if( it->getId()==1)it->write(file2,h,hd);
 	}
 	//printSample();
 }
