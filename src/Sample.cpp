@@ -124,7 +124,10 @@ double Sample::getTotalKineticEnergy() const{
 		Vecteur v = returnvabs(*it);
 		//cerr<<"Id = "<<it->getId()<<" m="<<it->getMasse()<<" v = "<<v.getNorme2()<<endl;
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
+		cerr<<it->getId()<<" vabs :"<<v.getNorme()<<" - ";
+		Ec += v.getNorme();
 	}
+	cerr<<endl;
 
 	return Ec;
 
@@ -139,6 +142,7 @@ void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 	double Ec = getTotalKineticEnergy();
 	//Momentum
 	file2<<tic<<" "<<Ec<<endl;
+	file<<tic<<" ";
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		it->write(file,h,hd);

@@ -62,8 +62,6 @@ void Particle::updateR(const double dt){
 //Verlet algo: half each time
 void Particle::updateV(const double dt_2){
 	v_ = v_ + a_ * dt_2 ;
-	cerr<<"update vx = "<< (a_ * dt_2).getNorme()<<endl;
-	cerr<<"ax = "<<a_.getx()<<endl;
 	return;
 }
 
@@ -78,5 +76,4 @@ void Particle::updateVrot(const double dt_2){
 
 void Particle::resetA() {
 	a_.set(0.,0.); 
-	cerr<<"reset acc : "<<a_.getx()<<" "<<a_.gety()<<endl;
 }

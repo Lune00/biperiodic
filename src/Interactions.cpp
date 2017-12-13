@@ -222,7 +222,7 @@ void Interactions::computeForces(){
 
 
 void Interactions::askNumberOfContacts() const{
-	if(clist_.size()==0) cerr<<"Aucun contact présent."<<endl;
+	if(clist_.size()==0){}// cerr<<"Aucun contact présent."<<endl;
 	else cerr<<"Il y a "<<clist_.size()<<" contact(s)."<<endl;
 }
 

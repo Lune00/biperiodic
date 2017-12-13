@@ -80,13 +80,6 @@ class Vecteur{
 			p.y_ = - y_;
 			return p;
 		}
-		Vecteur operator = (double a) {
-			Vecteur p;
-			p.x_ = a;
-			p.y_ = a;
-			return p;
-		}
-
 };
 
 #endif

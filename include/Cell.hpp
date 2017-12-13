@@ -87,6 +87,9 @@ class Cell{
 		double getLx() const { return Lx_;}
 		double getLy() const { return Ly_;}
 
+		double getxc() const { return xc_;}
+		double getyc() const { return yc_;}
+
 		Tensor2x2 geth() const { return h_;}
 		Tensor2x2 gethd() const { return hd_;}
 		Tensor2x2 gethdd() const { return hdd_;}
