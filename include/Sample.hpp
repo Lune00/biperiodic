@@ -84,7 +84,8 @@ class Sample{
 		void writeDebug(std::ofstream&,std::ofstream&,int) const;
 		void printSample() const;
 		std::vector<Particle> getimages(double e) const;
-		double getTotalKineticEnergy() const;
+		double getTKE() const;
+		double getRKE() const;
 		Vecteur returnrabs(const Particle&) const;
 		Vecteur returnvabs(const Particle&) const;
 

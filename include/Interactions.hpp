@@ -105,7 +105,7 @@ class Interactions{
 		//Build contact list
 		void detectContacts();
 		//Compute forces at contacts (end of 1st step verlet algo)
-		void computeForces();
+		void computeForces(const double);
 
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}

@@ -44,8 +44,9 @@ void Particle::write(ofstream& os) const{
 //simuation)
 void Particle::write(ofstream& of, const Tensor2x2& h, const Tensor2x2& hd) const{
 	Vecteur rabs = h * r_ ;
-	Vecteur vabs = hd * r_ + h * v_;
-	cout<<"vrot_ = "<<vrot_<<endl;
+	//Vecteur vabs = hd * r_ + h * v_;
+	Vecteur vabs = v_;
+//	cout<<"vrot_ = "<<vrot_<<endl;
 	of<<id_<<" "<<R_<<" "<<rabs.getx()<<" "<<rabs.gety()<<" "<<vabs.getx()<<" "<<vabs.gety()<<" "<<rot_<<" "<<vrot_<<endl;
 }
 

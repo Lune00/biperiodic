@@ -66,6 +66,7 @@ void Algo::run(){
 			//write();
 			//Debuging:
 			spl_->writeDebug(file,file2,ticw_);
+			ana_->printSample(ticw_);
 			ticw_++;
 		}
 
@@ -184,37 +185,41 @@ void Algo::verletalgo2(){
 	Int_->askNumberOfContacts();
 
 	//Calcul des forces entre particules a la nouvelle position fin du pas de temps
-	Int_->computeForces();
+	Int_->computeForces(dt_);
 
 	//Calcul du tenseur de contraintes internes: sigma_int
 
 	//------------- SECOND STEP VERLET ALGO STARTS HERE
 	//Calcul des vitesses a la fin du pas de temps:
 
-	Tensor2x2 hinv = h.getInverse();
+	Vecteur vmean;
 	for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
-		//Vecteur a = it->getA();
-		////a turned in reduced coordinates
-		//Vecteur v = it->getV();
-		//a = hinv * a ;
-		//v = v + a * dt_2 ;
-		//it->setV(v);
 		it->updateV(dt_2);
 		it->updateVrot(dt_2);
+		vmean = vmean + it->getV();
 	}
-
+	vmean = vmean / spl_->getsize();
+	//Set mean fluctuating velocities to zero
+	//The mean displacment is carried only by
+	//the cell deformation
+	for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
+		it->removevmean(vmean);
+	}
 	//Apply stress_ext: si controle en force
 	//stress ext est egal a celui impose
 	//Sinon il est egal a -stressint et acc nulle
-	cell_->ApplyBC();
+
+	Tensor2x2 hinv = h.getInverse();
 	double V = cell_->getVolume();
 	double mh = cell_->getMasse();
+
+	cell_->ApplyBC();
+
 	Tensor2x2 TotalStress = cell_->getStressInt() + cell_->getStressExt();
 	hdd = hinv * (V/mh) * (TotalStress);
 	//On a l'accleration en fin de pas, on peut integrer l'espace en vitesse a la fin du pas
 	hd = hd + hdd * dt_2 ;
 	cell_->updatehd(hd);
-
 	//Cell deformation
 	cell_->CalculStrainTensor();
 }

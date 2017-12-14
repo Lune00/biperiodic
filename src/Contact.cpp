@@ -8,7 +8,7 @@ using namespace std;
 //Tolerance for interpenetration
 //if fabs(dn_) > tolerance_, considered to be non zero
 //then check if negative or not
-const double Contact::tolerance_ = 1e-18 ;
+const double Contact::tolerance_ = 1e-20 ;
 
 Contact::Contact(Particle* i, Particle* j,Cell& cell){
 	i_ = i ;
@@ -80,29 +80,29 @@ void Contact::updateRelativeVelocity(){
 	 //Rotational contribution added to the relative tangential componant
 	 double vtr = -j_->getRadius() * j_->getVrot() -i_->getRadius() * i_->getVrot();
 	 v_.addy(vtr); 
-	 cout<<"vtr = "<<vtr<<endl;
 	return ;
 }
 
 //A checker:
 //Temp form for DEM parameters
-void Contact::computeForce(const double kn, const double kt, const double gn, const double gt, const double mus){
+void Contact::computeForce(const double kn, const double kt, const double gn, const double gt, const double mus, const double dt){
 	
 	double fn = - kn * dn_ - gn * v_.getx();
 	if(fn < 0.) fn = 0.;
 
 	double ft = - kt * dt_ - gt * v_.gety();
-	cout<<"ft = "<<ft<<endl;
-	cout<<"ftmax = "<<mus * fn<<endl;
-	cout<<"vrel.n = "<<v_.getx()<<" vrel.t = "<<v_.gety()<<endl;
-	cout<<"gn * v_t = "<< gt * v_.gety()<<endl;
-	cout<<"dt_ = "<<dt_<<endl;
+	//cout<<"vrel.n = "<<v_.getx()<<" vrel.t = "<<v_.gety()<<endl;
+	//cout<<"gn * v_t = "<< gt * v_.gety()<<endl;
 	const double ftmax = fabs( fn * mus);
-	if(ft > ftmax){
+	if(fabs(ft) > ftmax){
 		ft = sign(ft) * ftmax;
-		dt_ = ft /kt;
+		dt_= ft/kt;
 	}
-	else dt_+= ft/kt;
+	else dt_ += v_.gety() * dt ;
+	cout<<"ftmax = "<<mus * fn<<endl;
+	cout<<"dt_ = "<<dt_<<endl;
+	cout<<"ft = "<<ft<<" "<<"ft/kt="<<ft/kt<<endl;
+	cout<<"fn = "<<fn<<endl;
 
 	f_.set(fn,ft);
 

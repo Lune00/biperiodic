@@ -51,10 +51,11 @@ void Interactions::init(ifstream& is){
 
 
 	//TMP:
-	kn_ = 1.e9 ;
-	kt_ = 1.e9 ;
+	kn_ = 1.e7 ;
+	kt_ = 1.e7 ;
 	gn_ = 0. ;
-	gt_ = 20. ;
+	//Ca marche
+	gt_ = 2000. ;
 	mus_ = 0.5 ;
 }
 
@@ -210,11 +211,11 @@ void Interactions::detectContacts(){
 
 }
 
-void Interactions::computeForces(){
+void Interactions::computeForces(const double dt){
 
 	for(vector<int>::iterator it = clist_.begin(); it != clist_.end();it++){
 		vlist_[*it].updateRelativeVelocity();
-		vlist_[*it].computeForce(kn_,kt_,gn_,gt_,mus_);
+		vlist_[*it].computeForce(kn_,kt_,gn_,gt_,mus_,dt);
 		vlist_[*it].updateAccelerations();
 	}
 

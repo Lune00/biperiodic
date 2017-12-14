@@ -31,14 +31,18 @@ void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 void Analyse::analyse(int tic, double t){
 
 	//cout<<"tic = "<<tic<<" - analyse..."<<endl;
-	printSample(tic);
+	//printSample(tic);
 	computeEnergy(tic);
 }
 
 
 void Analyse::computeEnergy(const int tic) {
 	ofstream os("analyse/energy.txt",ios::app);
-	os <<tic<<" "<<spl_->getTotalKineticEnergy()<<" "<<Int_->getElasticEnergy()<<endl;
+	double TKE = spl_->getTKE();
+	double RKE = spl_->getRKE();
+	double Elastic = Int_->getElasticEnergy();
+	double TotalE = TKE + RKE + Elastic;
+	os <<tic<<" "<<TKE<<" "<<RKE<<" "<<Elastic<<" "<<TotalE<<endl;
 	os.close();
 }
 

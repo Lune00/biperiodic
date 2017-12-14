@@ -116,8 +116,9 @@ Vecteur Sample::returnvabs(const Particle& P) const{
 }
 
 
+//Translational kinetic energy
 //Take reduced velocity to compute true kinetic energy
-double Sample::getTotalKineticEnergy() const{
+double Sample::getTKE() const{
 	double Ec = 0.;
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		//Vecteur v = returnvabs(*it);
@@ -127,20 +128,28 @@ double Sample::getTotalKineticEnergy() const{
 	return Ec;
 }
 
+
+//Rotational kinetic energy
+double Sample::getRKE() const {
+	double Ecrot = 0.;
+	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
+		Ecrot += 0.5 * it->getI() * it->getVrot() * it->getVrot();
+	}
+	return Ecrot;
+}
+
 //Tmp function: only for debug
 void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 
 	Tensor2x2 h = cell_->geth();
 	Tensor2x2 hd = cell_->gethd();
-	//Compute total kinetic energy
-	double Ec = getTotalKineticEnergy();
 
 	file<<tic<<" ";
 	file2<<tic<<" ";
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-	if(it->getId()==0)it->write(file,h,hd);
-	if( it->getId()==1)it->write(file2,h,hd);
+	if(it->getId()==1)it->write(file,h,hd);
+	if(it->getId()==3)it->write(file2,h,hd);
 	}
 	//printSample();
 }

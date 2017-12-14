@@ -54,7 +54,7 @@ class Contact{
 		void Frame();
 		void write(std::ofstream&) const;
 		void updateRelativeVelocity();
-		void computeForce(const double,const double,const double,const double, const double);
+		void computeForce(const double,const double,const double,const double, const double, const double);
 		void updateAccelerations();
 		double sign(double x){if(x<0.) return -1.;else return 1.;}
 		Vecteur getfxy() const { return (n_ *f_.getx() + t_ * f_.gety());} 
