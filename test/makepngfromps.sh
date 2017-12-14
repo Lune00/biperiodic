@@ -3,7 +3,6 @@
 rm -R framespng
 mkdir -p framespng
 
-
 psfiles="analyse/frames/*.ps"
 #for file in "${folderps}/*.ps"
 for file in $psfiles

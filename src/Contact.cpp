@@ -17,22 +17,33 @@ Contact::Contact(Particle* i, Particle* j,Cell& cell){
 	cell_ = &cell;
 }
 
-//Appears twice in the code
-//Made this computation a value returned function of Interactions
-//But contact need a pointer to Interactions then
-//Or absolute postion a member of Particle... but i do not like the idea
-void Contact::Frame(){
-
+//BEFORE WAS IN FRAME
+//Return the shortest branch between the two particles in contact
+//The branch is the absolute distance betwwen center of particles
+//in the LAB frame
+Vecteur Contact::getbranch() const {
 	double sijx = j_->getx() - i_->getx();
 	double sijy = j_->gety() - i_->gety();
 	//Shortest branch through periodicity:
 	sijx -= floor(sijx + 0.5);
 	sijy -= floor(sijy + 0.5);
-
 	Vecteur sij(sijx,sijy);
 	//Absolute vector branch:
 	sij = cell_->geth() * sij ;
+	return sij;
+}
+
+void Contact::Frame(){
 	//Norm:
+	//double sijx = j_->getx() - i_->getx();
+	//double sijy = j_->gety() - i_->gety();
+	////Shortest branch through periodicity:
+	//sijx -= floor(sijx + 0.5);
+	//sijy -= floor(sijy + 0.5);
+	//Vecteur sij(sijx,sijy);
+	////Absolute vector branch:
+	//sij = cell_->geth() * sij ;
+	Vecteur sij = getbranch();
 	double l = sij.getNorme();
 	double invl = 1./l ;
 	//Build local frame:

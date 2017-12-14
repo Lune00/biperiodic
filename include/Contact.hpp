@@ -63,6 +63,7 @@ class Contact{
 		void print() const;
 		const Particle* getj() const { return j_;}
 		const Particle* geti() const { return i_;}
+		Vecteur getbranch() const;
 };
 
 

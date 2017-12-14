@@ -247,8 +247,7 @@ void Interactions::computeForces(const double dt){
 
 
 void Interactions::askNumberOfContacts() const{
-	if(clist_.size()==0){}// cerr<<"Aucun contact présent."<<endl;
-	else cerr<<"Il y a "<<clist_.size()<<" contact(s)."<<endl;
+	cerr<<"Nombre de contacts: "<<clist_.size()<<endl;
 }
 
 void Interactions::writeContacts(int k) const {
@@ -265,24 +264,68 @@ void Interactions::writeContacts(int k) const {
 
 void Interactions::writeDebug(ofstream& os, int k) const{
 
-	double E_el = getElasticEnergy();
-	os << k<< " "<<E_el<<endl;
 }
 
 double Interactions::getElasticEnergy() const {
 
 	double E = 0.;
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
-		//Compute "elastic energy stored in the contact"
 		double dn = vlist_[*it].getdn();
-		cout<<"dn entre "<<vlist_[*it].getj()->getId()<<" et "<<vlist_[*it].geti()->getId()<<" "<<dn<<endl;
-		cout<<"kn_ = "<<kn_<<endl;
 		double mj = vlist_[*it].getj()->getMasse();
 		double mi = vlist_[*it].geti()->getMasse();
 		E += 0.5 * (dn) * (dn) * kn_  ;
-		//E +=  0.5 *(dn)*(dn) * kn_ * 0.5 * (mi * mj)/(mi + mj);
 	}
 	return E;
+}
+
+//Compute static stress & kinetic stress
+//Add them to compute totalstress stress_
+void Interactions::computeInternalStress(){
+	//Static
+	double sxx_s = 0. ;
+	double sxy_s = 0. ;
+	double syx_s = 0. ;
+	double syy_s = 0. ;
+	//Kinetic:
+	double sxx_c = 0. ;
+	double sxy_c = 0. ;
+	double syy_c = 0. ;
+
+	ofstream os("debugstress.txt",ios::app);
+	//Need to recaculculate the branch vector
+	//Maybe store it in the contact
+
+	//Static stress : Loop over contacts:
+	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){ 
+		Vecteur branch = vlist_[*it].getbranch();
+		Vecteur force = vlist_[*it].getfxy();
+		sxx_s += branch.getx() * force.getx();
+		sxy_s += branch.gety() * force.getx();
+		syx_s += branch.getx() * force.gety();
+		syy_s += branch.gety() * force.gety();
+	}
+
+	//Kinetic stress : Loop over particles:
+	for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
+	{
+		Vecteur v = it->getV();
+		double m = it->getMasse();
+		sxx_c += m * v.getx() * v.getx();
+		sxy_c += m * v.getx() * v.gety();
+		syy_c += m * v.gety() * v.gety();
+	}
+
+	//Update:
+	stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
+	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
+	//Overload division by double for Tensor2x2
+	stress_s = stress_s * (1. / cell_->getVolume());
+	stress_c = stress_c * (1. / cell_->getVolume());
+	//Total stress:
+	stress_ = stress_c + stress_s ;
+	//DEBUG
+	os<<sxx_s<<" "<<sxy_s<<" "<<syx_s<<" "<<syy_s<<" "<<sxx_c<<" "<<sxy_c<<" "<<syy_c<<endl;
+	os.close();
 }
 
 

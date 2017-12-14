@@ -254,12 +254,14 @@ void Algo::verletalgo2(){
 
 	Int_->detectContacts();
 	//Debug: ask if thera are contacts
-	Int_->askNumberOfContacts();
+	//Int_->askNumberOfContacts();
 
 	//Calcul des forces entre particules a la nouvelle position fin du pas de temps
 	Int_->computeForces(dt_);
 
 	//Calcul du tenseur de contraintes internes: sigma_int
+	Int_->computeInternalStress();
+	//Give stress to cell:
 
 	//------------- SECOND STEP VERLET ALGO STARTS HERE
 	//Calcul des vitesses a la fin du pas de temps:
@@ -285,9 +287,9 @@ void Algo::verletalgo2(){
 	double V = cell_->getVolume();
 	double mh = cell_->getMasse();
 
-	cell_->ApplyBC();
+	cell_->ApplyBC(Int_->stress());
 
-	Tensor2x2 TotalStress = cell_->getStressInt() + cell_->getStressExt();
+	Tensor2x2 TotalStress = Int_->getStressInt() + cell_->getStressExt();
 	hdd = hinv * (V/mh) * (TotalStress);
 	//On a l'accleration en fin de pas, on peut integrer l'espace en vitesse a la fin du pas
 	hd = hd + hdd * dt_2 ;

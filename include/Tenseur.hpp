@@ -28,7 +28,7 @@ class Tensor2x2{
 		Tensor2x2 getInverse() const;
 		Tensor2x2 getTranspose() const;
 
-		void affiche() const{std::cout<<std::endl;std::cout<<xx_<<" "<<xy_<<std::endl;
+		void print() const{std::cout<<std::endl;std::cout<<xx_<<" "<<xy_<<std::endl;
 			std::cout<<yx_<<" "<<yy_<<std::endl;std::cout<<std::endl;}
 
 		//Accesseurs:

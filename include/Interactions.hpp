@@ -95,7 +95,13 @@ class Interactions{
 		double mus_;
 
 
-
+		//Interal stress tensor:
+		//static part
+		Tensor2x2 stress_s;
+		//Kinetic part
+		Tensor2x2 stress_c;
+		//TMP: total stress
+		Tensor2x2 stress_;
 
 	public:
 		Interactions();
@@ -116,6 +122,7 @@ class Interactions{
 		void detectContacts();
 		//Compute forces at contacts (end of 1st step verlet algo)
 		void computeForces(const double);
+		void computeInternalStress();
 
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
@@ -125,10 +132,13 @@ class Interactions{
 		double getElasticEnergy() const;
 		void askNumberOfContacts() const;
 
+		int getnc() const { return clist_.size();}
 		int getnv() const { return nv_ ;}
 		int getnsv() const {return nsv_;}
 		double getkn() const { return kn_;}
 		double getgn() const { return gn_;}
+		const Tensor2x2& stress() const { return stress_;}
+		Tensor2x2 getStressInt() const { return stress_;}
 
 		bool near(const Particle&,const Particle&,const Tensor2x2&,const double) const;
 

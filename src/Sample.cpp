@@ -148,8 +148,8 @@ void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 	file2<<tic<<" ";
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-	if(it->getId()==1)it->write(file,h,hd);
-	if(it->getId()==3)it->write(file2,h,hd);
+	if(it->getId()==0)it->write(file,h,hd);
+	if(it->getId()==1)it->write(file2,h,hd);
 	}
 	//printSample();
 }

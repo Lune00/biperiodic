@@ -41,7 +41,7 @@ class Cell{
 		//Stress: int et ext
 		Tensor2x2 stress_ext;
 		//Maj par particules
-		Tensor2x2 stress_int;
+		//Tensor2x2 stress_int;
 
 		//Defined by initial sample
 		bool L_auto_;
@@ -67,7 +67,7 @@ class Cell{
 		~Cell(){};
 
 		//Controle force/vitesse
-		void ApplyBC();
+		void ApplyBC(const Tensor2x2&);
 		//Maj de h,hdd,Ld,s apres a la fin du pas de temps
 		void update(Tensor2x2,Tensor2x2);
 		void updatehd(Tensor2x2 hd) { hd_ = hd;}
@@ -94,7 +94,6 @@ class Cell{
 		Tensor2x2 gethd() const { return hd_;}
 		Tensor2x2 gethdd() const { return hdd_;}
 
-		Tensor2x2 getStressInt() const { return stress_int;}
 		Tensor2x2 getStressExt() const { return stress_ext;}
 
 		//Writins outputs:

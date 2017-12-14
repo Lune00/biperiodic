@@ -249,7 +249,7 @@ void Cell::writeStrainTensor(ofstream& os, double t){
 //Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration
 //Suppose d'avoir stressInt au temps t
 //Defaut: test a chaque fois ce qui est controle ou non, alors qu'on le sait depuis le début...
-void Cell::ApplyBC(){
+void Cell::ApplyBC(const Tensor2x2& stress_int){
 
 	//TEMPORAIRE:
 	//	stress_int.set(0.,0.,0.,4.);
