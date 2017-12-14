@@ -6,19 +6,22 @@
 using namespace std;
 
 Interactions::Interactions(){
-	//Temp
-	//Distances a mettre en Rmax
 	dv_ = 0. ;
 	dsv_ = 0. ;
 	nv_ = 0 ;
 	nsv_ = 0;
 	scale_=string();
+	folder_ = string();
 	initScale_ = false;
+	fInteractions_ = "inter.txt";
 	initdv_ = false;
 	initdsv_ = false;
 	checkInteractions_ = false;
-	folder_ = string();
-	fInteractions_ = "inter.txt";
+	initkn_ = false;
+	initkt_ = false;
+	initgn_ = false;
+	initgt_ = false;
+	initmus_ = false;
 }
 
 Interactions::~Interactions(){
@@ -45,18 +48,36 @@ void Interactions::init(ifstream& is){
 		}
 		if(token=="niterv")  is >> nv_;
 		if(token=="nitersv") is >> nsv_;
+		if(token=="kn") {
+			is >> kn_;
+			initkn_ = true;
+		}
+		if(token=="kt"){
+			is >> kt_;
+			initkt_ = true;
+		}
+		if(token=="gn"){
+			is >> gn_;
+			initgn_ = true;
+		}
+		if(token=="gt"){
+			is >> gt_;
+			initgt_ = true;
+		}
+		if(token=="mu"){
+			is >> mus_;
+			initmus_ = true;
+		}
+
 		if(token=="}") break;
 		is >> token;
 	}
-
-
-	//TMP:
-	kn_ = 1.e7 ;
-	kt_ = 1.e7 ;
-	gn_ = 0. ;
-	//Ca marche
-	gt_ = 200. ;
-	mus_ = 0.3 ;
+	//Default:
+	//kn_ = 1.e7 ;
+	//kt_ = 1.e7 ;
+	//gn_ = 0. ;
+	//gt_ = 20. ;
+	//mus_ = 0.5 ;
 }
 
 
@@ -99,15 +120,18 @@ void Interactions::plug(Sample& spl,Cell& cell){
 }
 
 
-bool Interactions::initcheck(){
+bool Interactions::checkDEMparameters() const{
+	return (initkt_ && initkt_ && initgn_ && initgt_ && initmus_);
+}
+
+bool Interactions::initcheck() {
 	bool initNiter = false;
 	if( nv_ != 0 && nsv_ != 0 ) initNiter = true; 
-	checkInteractions_ = initNiter && initScale_ && initdv_ && initdsv_;
-
-
+	checkInteractions_ = initNiter && initScale_ && initdv_ && initdsv_ && checkDEMparameters();
 	cout<<"d verlet (scale)  = "<<dv_<<endl;
 	cout<<"d sverlet (scale)  = "<<dsv_<<endl;
-	return checkInteractions_;
+	if(!checkDEMparameters()) cout<<"Interactions::initcheck() : a DEM parameter is not initialised in config file. stop"<<endl;
+	return (checkInteractions_);
 }
 	
 

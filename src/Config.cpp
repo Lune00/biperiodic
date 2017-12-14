@@ -73,8 +73,6 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	bool checkCell = cell.initcheck();
 	//Compute reduced coordinates from cell geometry
 	if(checkCell) spl.initReducedCoordinates(cell);
-	//Check algo parameters:
-	bool checkAlgo = algo.initcheck();
 	//Plugs:
 	spl.plugtoCell(cell);
 	//Rescale verlet distances according to user choice
@@ -82,8 +80,10 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	algo.plug(cell,spl,Int,ana);
 	//Check interactions parameters:
 	bool checkInteractions = Int.initcheck();
-	ana.plug(spl,cell,Int);
+	//Check algo parameters using DEM interactions parameters
+	bool checkAlgo = algo.initcheck();
 
+	ana.plug(spl,cell,Int);
 	//Writing paths initialisation:
 	spl.initfolder(folder_spl_);
 	cell.initfolder(folder_cell_);

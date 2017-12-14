@@ -21,7 +21,10 @@ void Algo::init(ifstream& is){
 
 //A adapter comme on souhaite en terme de tests
 bool Algo::initcheck(){
+	computedtmax();
+	compute_gnmax_restitution();
 	if( t_ > 0. ) return false;
+	if( !checkSimulationParameters() ) return false;
 	if (dt_ < 1. && ns_ != 0 && nrecord_ != 0 ) return true;
 	else return false;
 }
@@ -31,6 +34,57 @@ void Algo::plug(Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
 	cell_ = &cell;
 	spl_ = &spl;
 	ana_ = &ana;
+}
+
+//Compute dtmax for the simulation (kn,m)
+void Algo::computedtmax(){
+	double const epsilon = 0.01;
+	double const rho = spl_->getrho();
+	double const kn = Int_->getkn();
+	double m = rho * M_PI * spl_->getrmin() * spl_->getrmin(); 
+	dtmax_ = epsilon * sqrt( m / kn ); 
+}
+
+
+//Compare dt to dtmax
+bool Algo::checktimestep()const{
+	cout<<"dtmax = "<<dtmax_<<endl;
+	if(dt_>dtmax_) {
+		cerr<<"Choose a lower dt."<<endl;
+		return false;
+	}
+	else return true;
+}
+
+//Compute gnmax and restitution coeffcient
+void Algo::compute_gnmax_restitution(){
+	const double gn = Int_->getgn();
+	double rho = spl_->getrho();
+	double m = rho * M_PI * spl_->getrmin() * spl_->getrmin(); 
+	double kn = Int_->getkn();
+	gnmax_ = 2. * sqrt(kn * m);
+	double ds = gn/gnmax_;
+	//Compute resitution coefficient:
+	e_ = exp(- M_PI * ds/(2.*sqrt(1.-ds*ds)) ) ;
+}
+
+bool Algo:: checkNormalViscosity()const{
+	cout<<"Max normal viscosity gnmax = "<<gnmax_<<endl;
+	cout<<"Restitution coefficient e = "<<e_<<endl;
+	if(Int_->getgn()>gnmax_){
+		cerr<<"Keeping all other parameters constants, choose a lower normal viscosity"<<endl;
+		return false;
+	}
+	else return true;
+}
+
+
+//Check, according DEM parameters, if dt is set correctly
+//Tangential viscosity check expression...???
+bool Algo::checkSimulationParameters(){
+	bool is_dt_ok = checktimestep();
+	bool is_gn_ok = checkNormalViscosity();
+	return (is_dt_ok && is_gn_ok);
 }
 
 
@@ -50,6 +104,7 @@ void Algo::run(){
 
 	int tica = 0 ;
 
+	writesetup();
 
 	//Tmp for debug:
 	ofstream file("follow0.txt");
@@ -85,13 +140,30 @@ void Algo::run(){
 }
 
 
+//Write setup of the simulation
+//Put here what matters to be remained later after forgeting things...
+void Algo::writesetup() const{
+
+	ofstream os(fsetup_.c_str());
+	os <<"#Simulation set-up"<<endl;
+	os <<"dt "<<dt_<<endl;
+	os <<"tfinal "<<ns_ * dt_ <<endl;
+	os <<"nrecord "<<nrecord_<<endl;
+	os <<"nana "<<nana_<<endl;
+	os <<"dtmax "<<dtmax_<<endl;
+	os <<"gnmax "<<gnmax_<<endl;
+	os <<"en "<<e_<<endl;
+	os <<"kn "<<Int_->getkn()<<endl;
+	os.close();
+}
+
+
 void Algo::write(){
 	cout<<"Write outputs"<<endl;
 	spl_->writeAbsolute(ticw_);
 	Int_->writeContacts(ticw_);
 	//cell_->write(testcell,t);
 	//cell_->writeStrainTensor(strain,t);
-
 	ticw_++;
 }
 

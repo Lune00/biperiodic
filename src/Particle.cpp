@@ -12,8 +12,8 @@ void Particle::load(ifstream& is){
 	v_.load(is);
 	a_.load(is);
 	is >> rot_ >> vrot_ >> arot_;
-	cout<<"Id = "<<id_<<" vx0="<<v_.getx()<<endl;
-	cout<<"vrot_ = "<<vrot_<<" arot_ ="<<arot_<<endl;
+	//cout<<"Id = "<<id_<<" vx0="<<v_.getx()<<endl;
+	//cout<<"vrot_ = "<<vrot_<<" arot_ ="<<arot_<<endl;
 }
 
 //Never used in practice, only for debugging
@@ -44,8 +44,8 @@ void Particle::write(ofstream& os) const{
 //simuation)
 void Particle::write(ofstream& of, const Tensor2x2& h, const Tensor2x2& hd) const{
 	Vecteur rabs = h * r_ ;
-	//Vecteur vabs = hd * r_ + h * v_;
-	Vecteur vabs = v_;
+	Vecteur vabs = hd * r_ + h * v_;
+	//Vecteur vabs = v_;
 //	cout<<"vrot_ = "<<vrot_<<endl;
 	of<<id_<<" "<<R_<<" "<<rabs.getx()<<" "<<rabs.gety()<<" "<<vabs.getx()<<" "<<vabs.gety()<<" "<<rot_<<" "<<vrot_<<endl;
 }

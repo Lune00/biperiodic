@@ -68,6 +68,12 @@ class Interactions{
 		bool initdv_;
 		bool initdsv_;
 
+		bool initkn_;
+		bool initkt_;
+		bool initgn_;
+		bool initgt_;
+		bool initmus_;
+
 		std::string folder_;
 		std::string fInteractions_;
 
@@ -88,6 +94,9 @@ class Interactions{
 		//Later will depend on particle Id TODO
 		double mus_;
 
+
+
+
 	public:
 		Interactions();
 		~Interactions();
@@ -95,6 +104,7 @@ class Interactions{
 		void init(std::ifstream&);
 		void initScale();
 		bool initcheck();
+		bool checkDEMparameters()const;
 		void plug(Sample&,Cell&);
 		//Call updatevlist & updatsvlist
 		void updateverlet(const int);
@@ -117,6 +127,8 @@ class Interactions{
 
 		int getnv() const { return nv_ ;}
 		int getnsv() const {return nsv_;}
+		double getkn() const { return kn_;}
+		double getgn() const { return gn_;}
 
 		bool near(const Particle&,const Particle&,const Tensor2x2&,const double) const;
 

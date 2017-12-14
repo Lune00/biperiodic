@@ -64,6 +64,7 @@ class Sample{
 		double getrmax() const { return rmax_;}
 		double getrmin() const { return rmin_;}
 		double getMass() const { return M_;}
+		double getrho() const { return rho_;}
 
 		unsigned int getsize() const { return spl_.size();}
 
