@@ -1,6 +1,6 @@
 #Simulation set-up
-dt 5.5e-07
-tfinal 0.0044
+dt 5.2e-06
+tfinal 0.026
 nrecord 100
 nana 1
 dtmax 5.60499e-06

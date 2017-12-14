@@ -290,3 +290,12 @@ void Cell::ApplyBC(const Tensor2x2& stress_int){
 	//Mise a jour tenseur contraintes:
 	stress_ext.set(xx,xy,yx,yy);
 }
+
+
+double Cell::getxc() const{
+	return ((h_.getxx() + h_.getxy()) * 0.5);
+}
+
+double Cell::getyc() const{
+	return ((h_.getyx() + h_.getyy()) * 0.5);
+}

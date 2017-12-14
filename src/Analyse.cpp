@@ -79,16 +79,17 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	double margin = e_ * spl_->getrmax() ;
 	double zoom = 1. ;
 
-	double xmin = 0. - margin ;
-	double xmax = cell_->getLx() + margin ;
-	double ymin = 0. - margin ;
-	double ymax = cell_->getLy() + margin ;
-
 	double xc = 0.;
 	double yc = 0. ;
 
+	double xcframe = cell_->getxc();
+	double ycframe = cell_->getxc();
+	double lx2 = cell_->getLx() * 0.5;
+	double ly2 = cell_->getLy() * 0.5;
+
 	ps<<"%!PS-Adobe-3.0 EPSF-3.0"<<endl;
-	ps<<"%%BoundingBox:"<<" "<<xmin<<" "<<ymin<<" "<<xmax<<" "<<ymax<<endl;
+	//ps<<"%%BoundingBox:"<<" "<<xmin<<" "<<ymin<<" "<<xmax<<" "<<ymax<<endl;
+	ps<<"%%BoundingBox:"<<" "<<xcframe-lx2-margin<<" "<<ycframe-ly2-margin<<" "<<xcframe + lx2+margin<<" "<<ycframe + ly2+margin<<endl;
 	ps<<"%%Pages:1"<<endl;
 	ps<<"0.1 setlinewidth 0. setgray "<<endl;
 	ps <<"0. 0. .23 setrgbcolor clippath fill"<<endl;
@@ -140,6 +141,7 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	double uy=h.getyx();
 	double vx=h.getxy();
 	double vy=h.getyy();
+
 
 	double lw = 0.1 * spl_->getrmax();
 

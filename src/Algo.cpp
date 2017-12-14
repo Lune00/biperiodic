@@ -259,9 +259,9 @@ void Algo::verletalgo2(){
 	//Calcul des forces entre particules a la nouvelle position fin du pas de temps
 	Int_->computeForces(dt_);
 
-	//Calcul du tenseur de contraintes internes: sigma_int
+	//Calcul du tenseur de contraintes internes: stress_
+	//Somme stress_c et stress_s
 	Int_->computeInternalStress();
-	//Give stress to cell:
 
 	//------------- SECOND STEP VERLET ALGO STARTS HERE
 	//Calcul des vitesses a la fin du pas de temps:
@@ -279,10 +279,10 @@ void Algo::verletalgo2(){
 	for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
 		it->removevmean(vmean);
 	}
+
 	//Apply stress_ext: si controle en force
 	//stress ext est egal a celui impose
 	//Sinon il est egal a -stressint et acc nulle
-
 	Tensor2x2 hinv = h.getInverse();
 	double V = cell_->getVolume();
 	double mh = cell_->getMasse();
