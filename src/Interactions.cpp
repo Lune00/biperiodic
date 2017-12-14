@@ -55,8 +55,8 @@ void Interactions::init(ifstream& is){
 	kt_ = 1.e7 ;
 	gn_ = 0. ;
 	//Ca marche
-	gt_ = 2000. ;
-	mus_ = 0.5 ;
+	gt_ = 200. ;
+	mus_ = 0.3 ;
 }
 
 

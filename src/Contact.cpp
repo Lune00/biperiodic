@@ -44,7 +44,6 @@ void Contact::Frame(){
 	//Interpenetration:
 	dn_ = l - (i_->getRadius() + j_->getRadius());
 
-	
 	//Erreurs d'arrondis (ordre 10e-16) peuvent apparaitre
 	//Preferer un test de tolerance a inferieur a < 0
 	//Si superieur a tolerance, non zero
@@ -99,10 +98,10 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 		dt_= ft/kt;
 	}
 	else dt_ += v_.gety() * dt ;
-	cout<<"ftmax = "<<mus * fn<<endl;
-	cout<<"dt_ = "<<dt_<<endl;
-	cout<<"ft = "<<ft<<" "<<"ft/kt="<<ft/kt<<endl;
-	cout<<"fn = "<<fn<<endl;
+//	cout<<"ftmax = "<<mus * fn<<endl;
+//	cout<<"dt_ = "<<dt_<<endl;
+//	cout<<"ft = "<<ft<<" "<<"ft/kt="<<ft/kt<<endl;
+//	cout<<"fn = "<<fn<<endl;
 
 	f_.set(fn,ft);
 
