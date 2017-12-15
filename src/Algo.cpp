@@ -120,15 +120,12 @@ void Algo::run(){
 		verletalgo2();
 
 		if( tic_ % nrecord_ == 0){
-			//write();
-			//Debuging:
-			cell_->write(ticw_);
-			ana_->printSample(ticw_);
+			write();
 			ticw_++;
 		}
 
 		if( tic_ % nana_ == 0 ) {
-			//ana_->analyse(tica,t_);
+			ana_->analyse(tica,t_);
 			tica++;
 		}
 		if( tic_ % nprint == 0) {

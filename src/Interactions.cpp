@@ -261,7 +261,7 @@ void Interactions::writeContacts(int k) const {
 
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
 		vlist_[*it].write(file);
-		vlist_[*it].print();
+		//vlist_[*it].print();
 	}
 }
 
