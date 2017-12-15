@@ -135,7 +135,7 @@ void Algo::run(){
 			cout<<"t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
 		}
 		//TMP
-		if( tic_ % 200 == 0 ){
+		if( tic_ % 500 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
 		}
