@@ -22,6 +22,9 @@ Interactions::Interactions(){
 	initgn_ = false;
 	initgt_ = false;
 	initmus_ = false;
+
+	ofstream debug("internalstress.txt");
+	debug.close();
 }
 
 Interactions::~Interactions(){
@@ -262,10 +265,6 @@ void Interactions::writeContacts(int k) const {
 	}
 }
 
-void Interactions::writeDebug(ofstream& os, int k) const{
-
-}
-
 double Interactions::getElasticEnergy() const {
 
 	double E = 0.;
@@ -291,7 +290,6 @@ void Interactions::computeInternalStress(){
 	double sxy_c = 0. ;
 	double syy_c = 0. ;
 
-	ofstream os("debugstress.txt",ios::app);
 	//Need to recaculculate the branch vector
 	//Maybe store it in the contact
 
@@ -319,13 +317,19 @@ void Interactions::computeInternalStress(){
 	stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
 	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
 	//Overload division by double for Tensor2x2
-	stress_s = stress_s * (1. / cell_->getVolume());
-	stress_c = stress_c * (1. / cell_->getVolume());
+	//stress_s = stress_s * (1. / cell_->getVolume());
+	//stress_c = stress_c * (1. / cell_->getVolume());
+	
 	//Total stress:
-	stress_ = stress_c + stress_s ;
-	//DEBUG
-	os<<sxx_s<<" "<<sxy_s<<" "<<syx_s<<" "<<syy_s<<" "<<sxx_c<<" "<<sxy_c<<" "<<syy_c<<endl;
-	os.close();
+	stress_ = stress_s + stress_c;
 }
 
+void Interactions::debug(const int k) const{
 
+	ofstream os("internalstress.txt",ios::app);
+	//DEBUG
+	os<<k<<" "<<stress_s.getxx()<<" "<<stress_s.getyy()<<endl;
+	os.close();
+
+
+}

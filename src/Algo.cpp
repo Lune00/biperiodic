@@ -50,6 +50,7 @@ void Algo::computedtmax(){
 bool Algo::checktimestep()const{
 	cout<<"dtmax = "<<dtmax_<<endl;
 	if(dt_>dtmax_) {
+		//TMP
 		cerr<<"Choose a lower dt."<<endl;
 		return false;
 	}
@@ -103,6 +104,7 @@ void Algo::run(){
 	ticw_ = 0 ;
 
 	int tica = 0 ;
+	int nprint = 1000;
 
 	writesetup();
 
@@ -120,16 +122,23 @@ void Algo::run(){
 		if( tic_ % nrecord_ == 0){
 			//write();
 			//Debuging:
-			spl_->writeDebug(file,file2,ticw_);
+			cell_->write(ticw_);
 			ana_->printSample(ticw_);
 			ticw_++;
 		}
 
 		if( tic_ % nana_ == 0 ) {
-			ana_->analyse(tica,t_);
+			//ana_->analyse(tica,t_);
 			tica++;
 		}
-
+		if( tic_ % nprint == 0) {
+			cout<<"t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
+		}
+		//TMP
+		if( tic_ % 200 == 0 ){
+			Int_->debug(tic_);
+			cell_->debug(tic_);
+		}
 
 		t_+=dt_;
 		tic_++;
@@ -162,8 +171,7 @@ void Algo::write(){
 	cout<<"Write outputs"<<endl;
 	spl_->writeAbsolute(ticw_);
 	Int_->writeContacts(ticw_);
-	//cell_->write(testcell,t);
-	//cell_->writeStrainTensor(strain,t);
+	cell_->write(ticw_);
 	ticw_++;
 }
 
@@ -195,60 +203,11 @@ void Algo::verletalgo2(){
 	//Ca me parait plus etre un taff de sample de modifier les positions
 	cell_->PeriodicBoundaries2(ps);
 
-	//Integration du mvt de la cellule:
-	Tensor2x2 h = cell_->geth();
-	Tensor2x2 hd = cell_->gethd();
-	Tensor2x2 hdd = cell_->gethdd();
-
 	//h = h + hd * dt_ + hdd * dt2_2 ;
 	//Controle en force ou controle en vitesse
 	//Temporaire:
-	double hxx, hxy , hyx , hyy ;
-	double hdxx, hdxy , hdyx , hdyy ;
-
-	if(cell_->getControlxx() == 'f' ) {
-		hxx = h.getxx() + hd.getxx() * dt_ + hdd.getxx() * dt2_2 ;
-		hdxx = hd.getxx() + hdd.getxx() * dt_2 ;
-	}
-	else{
-		//Vitesse imposee reste la meme (hdd, definit par Ld au debut)
-		//hdd par definition nulle si control en vitesse sur hdd
-		hxx = h.getxx() + hd.getxx() * dt_ ; 
-		hdxx = hd.getxx();
-	}
-
-	if(cell_->getControlxy() == 'f' ) {
-		hxy = h.getxy() + hd.getxy() * dt_  + hdd.getxy() * dt2_2 ;
-		hdxy = hd.getxy() + hdd.getxy() * dt_2 ;
-	}
-	else{
-		hxy = h.getxy() + hd.getxy() * dt_ ; 
-		hdxy = hd.getxy();
-	}
-
-	if(cell_->getControlyx() == 'f' ) {
-		hyx = h.getyx() + hd.getyx() * dt_  + hdd.getyx() * dt2_2 ;
-		hdyx = hd.getyx() + hdd.getyx() * dt_2 ;
-	}
-	else{
-		hyx = h.getyx() + hd.getyx() * dt_ ; 
-		hdyx = hd.getyx();
-	}
-
-	if(cell_->getControlyy() == 'f' ) {
-		hyy = h.getyy() + hd.getyy() * dt_  + hdd.getyy() * dt2_2 ;
-		hdyy = hd.getyy() + hdd.getyy() * dt_2 ;
-	}
-	else{
-		hyy = h.getyy() + hd.getyy() * dt_ ; 
-		hdyy = hd.getyy();
-	}
-
-	//Set new h
-	h.set(hxx,hxy,hyx,hyy);
-	hd.set(hdxx,hdxy,hdyx,hdyy);
-	cell_->update(h,hd);
-
+	//Integrate cell motion
+	cell_->firstStepVerlet(dt_);
 
 	// ------------- FIRST STEP VERLET ALGO END HERE
 
@@ -279,21 +238,12 @@ void Algo::verletalgo2(){
 	for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
 		it->removevmean(vmean);
 	}
-
 	//Apply stress_ext: si controle en force
 	//stress ext est egal a celui impose
 	//Sinon il est egal a -stressint et acc nulle
-	Tensor2x2 hinv = h.getInverse();
-	double V = cell_->getVolume();
-	double mh = cell_->getMasse();
-
-	cell_->ApplyBC(Int_->stress());
-
-	Tensor2x2 TotalStress = Int_->getStressInt() + cell_->getStressExt();
-	hdd = hinv * (V/mh) * (TotalStress);
-	//On a l'accleration en fin de pas, on peut integrer l'espace en vitesse a la fin du pas
-	hd = hd + hdd * dt_2 ;
-	cell_->updatehd(hd);
+	cell_->computeExternalStress(Int_->stress());
+	cell_->updatehdd(Int_->stress());
+	cell_->updatehd(dt_);
 	//Cell deformation
 	cell_->CalculStrainTensor();
 }

@@ -66,11 +66,11 @@ class Cell{
 		//Cell(double L,Config& config): L_(L),xc_(L_/2.),yc_(L_/2.){initCell(config);}
 		~Cell(){};
 
-		//Controle force/vitesse
-		void ApplyBC(const Tensor2x2&);
+		void computeExternalStress(const Tensor2x2&);
 		//Maj de h,hdd,Ld,s apres a la fin du pas de temps
-		void update(Tensor2x2,Tensor2x2);
-		void updatehd(Tensor2x2 hd) { hd_ = hd;}
+		void updatehdd(const Tensor2x2 stress_int);
+		void updatehd(const double dt);
+		void firstStepVerlet(const double dt);
 
 		//Met a jours la periodicite des particules en position
 		void PeriodicBoundaries2(std::vector<Particle>*);
@@ -98,12 +98,13 @@ class Cell{
 
 		//Writins outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
-		void write(std::ofstream&,double) const;
+		void write(const int) const;
 		void writeStrainTensor(std::ofstream&,double);
 
 		//Debug & track:
 		void affiche(){std::cout<<xc_<<" "<<yc_<<" "<<getVolume()<<std::endl;}
 		bool initcheck();
+		void debug(const int)const;
 
 };
 

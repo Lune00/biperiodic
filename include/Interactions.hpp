@@ -127,7 +127,6 @@ class Interactions{
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
 		void writeContacts(int) const;
-		void writeDebug(std::ofstream&,int) const;
 		//Compute energy stored in contact deflection
 		double getElasticEnergy() const;
 		void askNumberOfContacts() const;
@@ -141,6 +140,8 @@ class Interactions{
 		Tensor2x2 getStressInt() const { return stress_;}
 
 		bool near(const Particle&,const Particle&,const Tensor2x2&,const double) const;
+		//DEBUG
+		void debug(const int)const;
 
 
 

@@ -61,7 +61,7 @@ void Contact::Frame(){
 	//if(dn_ < 0. ){
 	//A test
 	if(fabs(dn_) > tolerance_ && dn_ < 0.){
-		cout<<dn_<<endl;
+		//cout<<dn_<<endl;
 		isActif_ = true;
 	}
 	else {

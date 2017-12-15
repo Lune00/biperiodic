@@ -21,6 +21,13 @@ Cell::Cell(){
 
 	folder_ = string();
 	fcell_ = "cell.txt";
+
+
+	//DEBUG
+	ofstream debug("stressext.txt");
+	debug.close();
+	ofstream debug2("hd.txt");
+	debug2.close();
 }
 //Initialisation a partir du fichier de configuration
 void Cell::init(ifstream& is){
@@ -114,6 +121,7 @@ void Cell::init(ifstream& is){
 	yc_ = 0.5 * Ly_;
 	initGeometry_ = true;
 	}
+
 }
 
 void Cell::initFromSample(Sample& spl){
@@ -130,7 +138,7 @@ void Cell::initFromSample(Sample& spl){
 
 	if(mh_auto_){
 	//Mass: double sample mass for inertia
-	mh_ = 2. * spl.getMass();
+	mh_ = 10. * spl.getMass();
 	initMass_ = true;
 	}
 }
@@ -154,16 +162,22 @@ double Cell::getVolume() const{
 
 
 //Construit la cellule
-void Cell::write(ofstream& of,double t) const{
+void Cell::write(const int k) const{
+
+	string filename = formatfile( folder_, fcell_, k );
+	ofstream file(filename.c_str());
+
 
 	double ux=h_.getxx();
 	double uy=h_.getyx();
 	double vx=h_.getxy();
 	double vy=h_.getyy();
-	of<<t<<" "<<xc_- Lx_/2.<<" "<<yc_ - Ly_/2<<" "<<ux<<" "<<uy<<endl;
-	of<<t<<" "<<xc_- Lx_/2.+vx<<" "<<yc_- Ly_/2.+vy<<" "<<ux<<" "<<uy<<endl;
-	of<<t<<" "<<xc_- Lx_/2.<<" "<<yc_- Ly_/2.<<" "<<vx<<" "<<vy<<endl;
-	of<<t<<" "<<xc_- Lx_/2.+ux<<" "<<yc_- Ly_/2.+uy<<" "<<vx<<" "<<vy<<endl;
+	file<<k<<" "<<xc_- Lx_/2.<<" "<<yc_ - Ly_/2<<" "<<ux<<" "<<uy<<endl;
+	file<<k<<" "<<xc_- Lx_/2.+vx<<" "<<yc_- Ly_/2.+vy<<" "<<ux<<" "<<uy<<endl;
+	file<<k<<" "<<xc_- Lx_/2.<<" "<<yc_- Ly_/2.<<" "<<vx<<" "<<vy<<endl;
+	file<<k<<" "<<xc_- Lx_/2.+ux<<" "<<yc_- Ly_/2.+uy<<" "<<vx<<" "<<vy<<endl;
+
+	file.close();
 
 }
 
@@ -202,21 +216,6 @@ void Cell::PeriodicBoundaries2(std::vector<Particle>* sp){
 
 	}
 }
-//A partir de la maj de Ld on peut facilement calculer le tenseur de deformations, oui mais ca marche pas... ????
-void Cell::update(Tensor2x2 h, Tensor2x2 hd){
-
-	h_ = h;
-	hd_ = hd;
-	//	Tensor2x2 hinv = h_.getInverse();
-	//
-	//	Ld_ = hd_*hinv;
-	//	Tensor2x2 LdT = Ld_.getTranspose();
-	//	Ld_.affiche();
-	//Calcul du tenseur de deformation de maniere generale cumule
-	//s_ = s_ +  (Ld_ + LdT) * dt;
-
-}
-
 
 //Ici toujours un probelem pour le calcul
 void Cell::CalculStrainTensor(){
@@ -249,46 +248,36 @@ void Cell::writeStrainTensor(ofstream& os, double t){
 //Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration
 //Suppose d'avoir stressInt au temps t
 //Defaut: test a chaque fois ce qui est controle ou non, alors qu'on le sait depuis le début...
-void Cell::ApplyBC(const Tensor2x2& stress_int){
+void Cell::computeExternalStress(const Tensor2x2& stress_int){
 
-	//TEMPORAIRE:
-	//	stress_int.set(0.,0.,0.,4.);
+	//cout<<"Stress ext:"<<endl;
+	//stress_ext.print();
 
+	//cout<<"Stress int:"<<endl;
+	//stress_int.print();
+
+	//Si controle en vitesse alors hdd 0 ds cette direction
 	double xx, xy, yx, yy;
 	//Composante xx:
+
+	//Voir s'il vaut mieux forcer a chaque fois
+	//ou si les erreurs de troncature foutent le bordel
+
 	if(Control_[0] == 'v' ) {
-		xx = -stress_int.getxx();
-	}
-	//Sinon elle reste egale a elle meme (imposee depuis le debut)
-	else{
-		xx = stress_ext.getxx();
+		stress_ext.setxx(-stress_int.getxx());
 	}
 	//Composante xy:
 	if(Control_[1] == 'v' ) {
-		xy = -stress_int.getxy();
-	}
-	//Sinon elle reste egale a elle meme (imposee depuis le debut)
-	else{
-		xy = stress_ext.getxy();
+		stress_ext.setxy(-stress_int.getxy());
 	}
 	//Composante yx:
 	if(Control_[2] == 'v' ) {
-		yx = -stress_int.getyx();
-	}
-	//Sinon elle reste egale a elle meme (imposee depuis le debut)
-	else{
-		yx = stress_ext.getyx();
+		stress_ext.setyx(-stress_int.getyx());
 	}
 	//Composante yy:
 	if(Control_[3] == 'v' ) {
-		yy = -stress_int.getyy();
+		stress_ext.setyy(-stress_int.getyy());
 	}
-	//Sinon elle reste egale a elle meme (imposee depuis le debut)
-	else{
-		yy = stress_ext.getyy();
-	}
-	//Mise a jour tenseur contraintes:
-	stress_ext.set(xx,xy,yx,yy);
 }
 
 
@@ -299,3 +288,80 @@ double Cell::getxc() const{
 double Cell::getyc() const{
 	return ((h_.getyx() + h_.getyy()) * 0.5);
 }
+
+//Integrate h and hd at the begining of the step
+void Cell::firstStepVerlet(const double dt) {
+
+	const double dt_2 = dt * 0.5 ;
+	const double dt2_2 = dt * dt * 0.5 ;
+
+	//WIP WIP WIP
+	if(getControlxx() == 'f' ) {
+		h_.setxx( h_.getxx() + hd_.getxx() * dt + hdd_.getxx() * dt2_2);
+		hd_.setxx( hd_.getxx() + hdd_.getxx() * dt_2);
+	}
+	else{
+		//Vitesse imposee reste la meme (hdd, definit par Ld au debut)
+		//hdd par definition nulle si control en vitesse sur hdd
+		//Normalement hd_ dans cette direction ne doit jamais etre modifie si c bien fait
+		h_.setxx( h_.getxx() + hd_.getxx() * dt) ; 
+	}
+
+	if(getControlxy() == 'f' ) {
+		h_.setxy( h_.getxy() + hd_.getxy() * dt  + hdd_.getxy() * dt2_2 ); 
+		hd_.setxy( hd_.getxy() + hdd_.getxy() * dt_2 ); 
+	}
+	else{
+		h_.setxy(h_.getxy() + hd_.getxy() * dt ); 
+	}
+
+	if(getControlyx() == 'f' ) {
+		h_.setyx(h_.getyx() + hd_.getyx() * dt  + hdd_.getyx() * dt2_2 );
+		hd_.setyx(hd_.getyx() + hdd_.getyx() * dt_2); 
+	}
+	else{
+		h_.setyx(h_.getyx() + hd_.getyx() * dt ); 
+	}
+
+	if(getControlyy() == 'f' ) {
+		h_.setyy(h_.getyy() + hd_.getyy() * dt  + hdd_.getyy() * dt2_2 );
+		hd_.setyy(hd_.getyy() + hdd_.getyy() * dt_2 );
+	}
+	else{
+		h_.setyy(h_.getyy() + hd_.getyy() * dt ); 
+	}
+}
+
+//Compute "acceleration" at the end of the time step
+//using stress_ext and stress_int at the end of the time step
+void Cell::updatehdd(const Tensor2x2 stress_int){
+	Tensor2x2 TotalStress = stress_int + stress_ext;
+	Tensor2x2 hinv = h_.getInverse();
+	//cout<<" "<<endl;
+	//cout<<"stress ext:"<<endl;
+	//stress_ext.print();
+	//cout<<"internal stress:"<<endl;
+	//stress_int.print();
+	//cout<<"total stress:"<<endl;
+	//TotalStress.print();
+	//cout<<" "<<endl;
+	double V = getVolume();
+	hdd_ = hinv * (V/mh_) * (TotalStress);
+}
+
+//Second verlet step in velocity
+//On a l'accleration en fin de pas, on peut integrer l'espace en vitesse a la fin du pas
+void Cell::updatehd(const double dt){
+	double dt_2 = dt * 0.5 ;
+	hd_ = hd_ + hdd_ * dt_2;
+}
+
+void Cell::debug(const int k)const{
+	ofstream debug("stressext.txt",ios::app);
+	ofstream debug2("hd.txt",ios::app);
+	debug<<stress_ext.getxx()<<" "<<stress_ext.getyy()<<endl;
+	debug2<<h_.getxx()<<" "<<hd_.getxx()<<" "<<h_.getyy()<<" "<<hd_.getyy()<<endl;
+	debug.close();
+	debug2.close();
+}
+
