@@ -23,7 +23,7 @@ Interactions::Interactions(){
 	initgt_ = false;
 	initmus_ = false;
 
-	ofstream debug("internalstress.txt");
+	ofstream debug("debugInteractions.txt");
 	debug.close();
 }
 
@@ -253,6 +253,8 @@ void Interactions::askNumberOfContacts() const{
 	cerr<<"Nombre de contacts: "<<clist_.size()<<endl;
 }
 
+
+//Write contact network
 void Interactions::writeContacts(int k) const {
 
 	//if(clist_.size()==0) cerr<<"step "<<k<<" Il n'y a pas de contact"<<endl;
@@ -326,9 +328,17 @@ void Interactions::computeInternalStress(){
 
 void Interactions::debug(const int k) const{
 
-	ofstream os("internalstress.txt",ios::app);
+	double dnaverage = 0. ;
+	double dnmax = 0. ;
+	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
+		dnaverage += fabs(vlist_[*it].getdn());
+		dnmax = max(fabs(vlist_[*it].getdn()),fabs(dnmax));
+	}
+	dnaverage /= (double)clist_.size();
+	ofstream os("debugInteractions.txt",ios::app);
 	//DEBUG
-	os<<k<<" "<<stress_s.getxx()<<" "<<stress_s.getyy()<<endl;
+	//os<<k<<" "<<stress_s.getxx()<<" "<<stress_s.getyy()<<endl;
+	os<<k<<" "<<dnaverage<<" "<<dnmax<<endl;
 	os.close();
 
 

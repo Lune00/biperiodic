@@ -1,8 +1,8 @@
 #Simulation set-up
-dt 1.5e-06
-tfinal 0.015
-nrecord 1000
-nana 100
+dt 1e-06
+tfinal 7
+nrecord 50000
+nana 50000
 dtmax 2.8025e-06
 gnmax 5604.99
 en 0.75215

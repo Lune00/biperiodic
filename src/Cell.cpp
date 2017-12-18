@@ -32,11 +32,15 @@ Cell::Cell(){
 //Initialisation a partir du fichier de configuration
 void Cell::init(ifstream& is){
 
-	//Check si tout est initialise
-	bool ixx,ixy,iyx,iyy;
-	ixx=ixy=iyx=iyy=false;
-	double xx,xy,yx,yy;
-	xx=xy=yx=yy=0.;
+	//Check if every direction is initialised
+
+	//The mode (v vitesse f stress) is stored in Control_ array
+	//The value of the mode is stored in Control_values_Init array
+
+	bool ixx = false;
+	bool ixy = false;
+	bool iyx = false;
+	bool iyy = false;
 
 	string token;
 	is >> token;
@@ -58,55 +62,27 @@ void Cell::init(ifstream& is){
 
 		if(token=="xx"){
 			is >> Control_[0];
-			is >>xx; 
+			is >> Control_values_Init[0]; 
 			ixx = true ;
 		}
 		if(token=="xy") {
 			is >> Control_[1];
-			is >>xy; 
+			is >> Control_values_Init[1]; 
 			ixy = true ;
 		}
 		if(token=="yx") {
 			is >> Control_[2];
-			is >>yx; 
+			is >> Control_values_Init[2]; 
 			iyx = true;
 		}
 		if(token=="yy") {
 			is >> Control_[3];
-			is >>yy; 
+			is >> Control_values_Init[3]; 
 			iyy = true;
 		}
 		if(token=="}") break;
 
 		is >> token ;
-	}
-
-
-
-	//Definir tenseur contraintes ext / hd (qu'on peut trans en L)
-	if(Control_[0] == 'v'){
-		hd_.setxx(xx);
-	}
-	else{
-		stress_ext.setxx(xx);
-	}
-	if(Control_[1] == 'v'){
-		hd_.setxy(xy);
-	}
-	else{
-		stress_ext.setxy(xy);
-	}
-	if(Control_[2] == 'v'){
-		hd_.setyx(yx);
-	}
-	else{
-		stress_ext.setyx(yx);
-	}
-	if(Control_[3] == 'v'){
-		hd_.setyy(yy);
-	}
-	else{
-		stress_ext.setyy(yy);
 	}
 
 	//Valide initialisation
@@ -140,6 +116,7 @@ void Cell::talkinit(Sample& spl){
 		//the mutliplier should be defined somewhere...
 		mh_ = 10. * spl.getMass();
 		initMass_ = true;
+		//APPLY NEW CL!!! car la on a loadé les anciennes et
 	}
 	else{
 
@@ -161,6 +138,31 @@ void Cell::talkinit(Sample& spl){
 			mh_ = 10. * spl.getMass();
 			initMass_ = true;
 		}
+	}
+
+	if(Control_[0] == 'v'){
+		hd_.setxx(Control_values_Init[0]);
+	}
+	else{
+		stress_ext.setxx(Control_values_Init[0]);
+	}
+	if(Control_[1] == 'v'){
+		hd_.setxy(Control_values_Init[1]);
+	}
+	else{
+		stress_ext.setxy(Control_values_Init[1]);
+	}
+	if(Control_[2] == 'v'){
+		hd_.setyx( Control_values_Init[2]);
+	}
+	else{
+		stress_ext.setyx(Control_values_Init[2]);
+	}
+	if(Control_[3] == 'v'){
+		hd_.setyy(Control_values_Init[3]);
+	}
+	else{
+		stress_ext.setyy(Control_values_Init[3]);
 	}
 }
 
