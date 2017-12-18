@@ -84,11 +84,16 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	double yc = 0. ;
 
 	double xcframe = cell_->getxc();
-	double ycframe = cell_->getxc();
+	double ycframe = cell_->getyc();
 //	double lx2 = cell_->getLx() * 0.5;
 //	double ly2 = cell_->getLy() * 0.5;
 	double lx2 = cell_->get_width() * 0.5 ;
 	double ly2 = cell_->get_height() * 0.5 ;
+
+	cout<<"margin = "<<margin<<endl;
+	cout<<"e = "<<e_<<endl;
+	cout<<"h = "<<ly2<<endl;
+	cout<<"w = "<<lx2<<endl;
 
 	ps<<"%!PS-Adobe-3.0 EPSF-3.0"<<endl;
 	//ps<<"%%BoundingBox:"<<" "<<xmin<<" "<<ymin<<" "<<xmax<<" "<<ymax<<endl;

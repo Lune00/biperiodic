@@ -23,7 +23,6 @@ Cell::Cell(){
 	folder_ = string();
 	fcell_ = "cell.txt";
 
-
 	//DEBUG
 	ofstream debug("stressext.txt");
 	debug.close();
@@ -317,7 +316,6 @@ double Cell::getxc() const{
 double Cell::getyc() const{
 	return ((h_.getyx() + h_.getyy()) * 0.5);
 }
-
 
 //Original cell w/h ratio for printing sample
 double Cell::get_width() const{
