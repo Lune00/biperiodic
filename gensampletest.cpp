@@ -12,6 +12,7 @@ class Particule{
 
   private:
     double x_, y_,r_;
+    double ax_, ay_, ar_;
     double rot_, vx_, vy_, vrot_;
     string type_;
     unsigned int group_;
@@ -28,6 +29,9 @@ class Particule{
     double getvrot() const {return vrot_;};
     double getvx()  const {return vx_;};
     double getvy() const {return vy_;};
+    double getax() const {return ax_;};
+    double getay() const {return ay_;};
+    double getarot() const {return ar_;};
     std::string gettype() const {return type_;};
     double getgroup()  const {return group_;};
 };
@@ -44,6 +48,9 @@ Particule::Particule()
   vy_ = 0. ;
   rot_ = 0. ;
   vrot_ = 0. ;
+  ax_ = 0. ;
+  ay_ = 0. ;
+  ar_ = 0. ;
 };
 
 Particule::~Particule() {};
@@ -68,10 +75,10 @@ int main(){
 
   //Echantillon:
 
-  unsigned int nfree = 9 ;
-  unsigned int ncouches = 3 ;
+  unsigned int nfree = 25 ;
+  unsigned int ncouches = 5 ;
   double const r1 = 1. ;
-  double const r2 = r1 ;
+  double const r2 = 2. ;
   double const rmean = 0.5 * ( r1 + r2 ) ;
 
   /* * * * * * * * * *  */
@@ -102,7 +109,7 @@ int main(){
   unsigned int j = 0 ;
   for(std::vector<Particule>::iterator it = sample.begin() ; it!= sample.end(); it++){
 	  double x, y;
-	  double eps = 0. ; // rand(0.,1.) * r1 * 0.5   ;
+	  double eps = rand(0.,1.) * r1 * 0.5   ;
 
 	  if(it == sample.begin() || j == 0) 
 	  { 
@@ -129,7 +136,7 @@ int main(){
   ofstream myFile ("packing0.spl",ios::out);
   int n = 0 ;
   for(std::vector<Particule>::iterator it = sample.begin() ; it!= sample.end(); it++){
-	  myFile<<n<<" "<<it->getr()<<" "<<it->getx()<<" "<<it->gety()<<" "<<it->getvx()<<" "<<it->getvy()<<" "<<it->getrot()<<" "<<it->getvrot()<<endl;
+	  myFile<<n<<" "<<it->getr()<<" "<<it->getx()<<" "<<it->gety()<<" "<<it->getvx()<<" "<<it->getvy()<<" "<<it->getax()<<" "<<it->getay()<<" "<<it->getrot()<<" "<<it->getvrot()<<" "<<it->getarot()<<endl;
 	  n++;
   }
   myFile.close();

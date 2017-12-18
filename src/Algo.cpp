@@ -104,7 +104,7 @@ void Algo::run(){
 	ticw_ = 0 ;
 
 	int tica = 0 ;
-	int nprint = 1000;
+	int nprint = 5000;
 
 	writesetup();
 
@@ -129,10 +129,13 @@ void Algo::run(){
 			tica++;
 		}
 		if( tic_ % nprint == 0) {
+			std::streamsize ss = std::cout.precision();
+			std::cout.precision(3);
 			cout<<"t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
+			std::cout.precision(ss);
 		}
 		//TMP
-		if( tic_ % 500 == 0 ){
+		if( tic_ % 5000 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
 		}
@@ -143,6 +146,7 @@ void Algo::run(){
 		//Need to write a time.txt file which make the correspondance betwwen tics and time
 	}
 	file.close();
+	file2.close();
 }
 
 
@@ -165,7 +169,7 @@ void Algo::writesetup() const{
 
 
 void Algo::write(){
-	cout<<"Write outputs"<<endl;
+	cout<<"Writing outputs..."<<endl;
 	spl_->writeAbsolute(ticw_);
 	Int_->writeContacts(ticw_);
 	cell_->write(ticw_);
@@ -180,37 +184,23 @@ void Algo::verletalgo2(){
 	double dt2_2 = 0.5 * dt_ * dt_ ;
 	double dt_2 = 0.5 * dt_ ;
 
-	vector<Particle>* ps = spl_->getSample();
-
 	// ------------- FIRST STEP VERLET ALGO STARTS HERE
-
-	for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
-		//Positions
-		it->updateR(dt_);
-		it->updateRot(dt_);
-		//First step vitesse: integrate over half step
-		it->updateV(dt_2);
-		it->updateVrot(dt_2);
-		//Set accelerations to 0 for second step:
-		it->resetA();
-	}
+	spl_->firstStepVerlet(dt_);
 
 	//Periodicite en position des particules
 	//Peut etre a bouger dans Sample plutot
 	//Ca me parait plus etre un taff de sample de modifier les positions
+	vector<Particle>* ps = spl_->getSample();
+
+	//TODO: move this function to Sample
 	cell_->PeriodicBoundaries2(ps);
 
-	//h = h + hd * dt_ + hdd * dt2_2 ;
-	//Controle en force ou controle en vitesse
-	//Temporaire:
 	//Integrate cell motion
 	cell_->firstStepVerlet(dt_);
 
 	// ------------- FIRST STEP VERLET ALGO END HERE
 
 	Int_->detectContacts();
-	//Debug: ask if thera are contacts
-	//Int_->askNumberOfContacts();
 
 	//Calcul des forces entre particules a la nouvelle position fin du pas de temps
 	Int_->computeForces(dt_);
@@ -221,26 +211,15 @@ void Algo::verletalgo2(){
 
 	//------------- SECOND STEP VERLET ALGO STARTS HERE
 	//Calcul des vitesses a la fin du pas de temps:
+	spl_->secondStepVerlet(dt_),
 
-	Vecteur vmean;
-	for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
-		it->updateV(dt_2);
-		it->updateVrot(dt_2);
-		vmean = vmean + it->getV();
-	}
-	vmean = vmean / spl_->getsize();
-	//Set mean fluctuating velocities to zero
-	//The mean displacment is carried only by
-	//the cell deformation
-	for(std::vector<Particle>::iterator it = ps->begin(); it != ps->end(); it++){
-		it->removevmean(vmean);
-	}
 	//Apply stress_ext: si controle en force
 	//stress ext est egal a celui impose
 	//Sinon il est egal a -stressint et acc nulle
 	cell_->computeExternalStress(Int_->stress());
 	cell_->updatehdd(Int_->stress());
 	cell_->updatehd(dt_);
+
 	//Cell deformation
 	cell_->CalculStrainTensor();
 }

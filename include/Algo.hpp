@@ -4,6 +4,7 @@
 #include<vector>
 #include<iostream>
 #include<fstream>
+#include<iomanip>
 
 class Cell;
 class Sample;

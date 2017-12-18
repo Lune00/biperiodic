@@ -323,3 +323,47 @@ void Sample::initReducedCoordinates(Cell& cell){
 	}
 }
 
+//First step Verlet algo, integration
+void Sample::firstStepVerlet(const double dt_){
+
+	double dt2_2 = 0.5 * dt_ * dt_ ;
+
+	double dt_2 = 0.5 * dt_ ;
+	for(spit it = spl_.begin(); it != spl_.end(); it++){
+		//Positions
+		it->updateR(dt_);
+		it->updateRot(dt_);
+		//First step vitesse: integrate over half step
+		it->updateV(dt_2);
+		it->updateVrot(dt_2);
+		//Set accelerations to 0 for second step:
+		it->resetA();
+	}
+
+	return;
+}
+
+//Update velocity and vrotation at the end of the time step
+//Removes mean velocity to ensure that <sd>=0.
+//The mean displacement is carried only by the cell (homogenous def)
+void Sample::secondStepVerlet(const double dt_) {
+
+	double dt_2 = 0.5 * dt_ ;
+
+	Vecteur vmean;
+
+	for(spit it =spl_.begin(); it != spl_.end(); it++){
+		it->updateV(dt_2);
+		it->updateVrot(dt_2);
+		vmean = vmean + it->getV();
+	}
+
+	vmean = vmean / (double)getsize();
+	//Set mean fluctuating velocities to zero
+	//The mean displacment is carried only by
+	//the cell deformation
+	for(spit it = spl_.begin(); it != spl_.end(); it++){
+		it->removevmean(vmean);
+	}
+
+}

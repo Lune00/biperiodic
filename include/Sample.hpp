@@ -75,6 +75,9 @@ class Sample{
 		std::vector<Particle>* getSample() { return &spl_;}
 		const std::vector<Particle>& inspectSample() const {return spl_;}
 
+		void firstStepVerlet(const double);
+		void secondStepVerlet(const double);
+
 		Cell * getCell() const { return cell_;}
 
 		//Writing outputs:
