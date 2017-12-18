@@ -59,11 +59,10 @@ class Cell{
 		Cell();
 		//Init User control
 		void init(std::ifstream&);
-		//Init Starting Geometry and mass from sample
-		void initFromSample(Sample&);
-		bool needSample();
-		//A l'avenir constructeur prend en argument un truc qui init/garde en memoire  les DOF controles
-		//Cell(double L,Config& config): L_(L),xc_(L_/2.),yc_(L_/2.){initCell(config);}
+		void talkinit(Sample&);
+		//INPUT/OUTPUTs:
+		void load(const int);
+		void write(const int) const;
 		~Cell(){};
 
 		void computeExternalStress(const Tensor2x2&);
@@ -84,8 +83,9 @@ class Cell{
 
 		double getVolume() const ;
 		double getMasse() const { return mh_;}
-		double getLx() const { return Lx_;}
-		double getLy() const { return Ly_;}
+
+		double get_width() const;
+		double get_height() const;
 
 		double getxc() const ;
 		double getyc() const ;
@@ -96,9 +96,8 @@ class Cell{
 
 		Tensor2x2 getStressExt() const { return stress_ext;}
 
-		//Writins outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
-		void write(const int) const;
+		void writeGeometry(const int) const;
 		void writeStrainTensor(std::ofstream&,double);
 
 		//Debug & track:

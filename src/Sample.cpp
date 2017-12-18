@@ -13,15 +13,14 @@ Sample::Sample(){
 	cell_ = NULL;
 	fsampleIni_ = string();
 	folder_ = string();
-
-	buildcell_ = false;
 	load_sample_cell_ = false;
-
 	//Un interet d'avoir absolu mis a part representation???
 	//Avec reduced et h on peut recreer absolu quand on veut
 	//A voir
 	fsample_ = "reduced.txt";
 	fsampleA_ = "absolute.txt";
+	filetoload_ = 0 ;
+	starting_ = 0 ;
 }
 
 Sample::~Sample(){
@@ -47,12 +46,11 @@ void Sample::init(ifstream& is){
 	while(is){
 		if(token=="build") {
 			is >> fsampleIni_;
-			buildcell_ = true ;
 			load_sample_cell_ = false;
 		}
-		if(token=="reload"){
-			is >> fsampleIni_;
-			buildcell_ = false;
+		if(token=="load"){
+			is >> filetoload_;
+			is >> starting_ ;
 			load_sample_cell_ = true ;
 		}
 		if(token=="rho") {
@@ -69,7 +67,14 @@ void Sample::init(ifstream& is){
 
 void Sample::loadSample(){
 
+	//Build fsampleIni_ from filetoload_
+	//else it is already initialised
+	if(load_sample_cell_) {
+		fsampleIni_ = formatfile( folder_, fsample_, filetoload_ );
+	}
+
 	ifstream is(fsampleIni_.c_str());
+
 	if(!is){
 		cerr<<"Sample::loadSample() : can not open file."<<endl;
 		return;
@@ -103,7 +108,7 @@ void Sample::initfolder(string folder){
 	folder_ = folder ;
 }
 
-//Coordonnees reduites
+//Coordonnees reduites: allows reloading
 void Sample::write(int k) const{
 
 	string filename = formatfile( folder_, fsample_, k );
@@ -114,6 +119,7 @@ void Sample::write(int k) const{
 	}
 }
 
+//Only for analysis: 
 //Coordonnees absolues
 void Sample::writeAbsolute(int k) const{
 	Tensor2x2 h = cell_->geth();
@@ -171,8 +177,8 @@ void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 	file2<<tic<<" ";
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-	if(it->getId()==0)it->write(file,h,hd);
-	if(it->getId()==1)it->write(file2,h,hd);
+		if(it->getId()==0)it->write(file,h,hd);
+		if(it->getId()==1)it->write(file2,h,hd);
 	}
 	//printSample();
 }
@@ -336,9 +342,10 @@ bool Sample::isEmptySampleFile(ifstream& is){
 }
 
 //Shift and reduce
+//Warnging: by default, the new build cell is assumed to be rectangular
 void Sample::initReducedCoordinates(Cell& cell){
-	double Lx = cell.getLx();
-	double Ly = cell.getLy();
+	double Lx = cell.geth().getxx();
+	double Ly = cell.geth().getyy();
 	cout<<"Lx = "<<Lx<<endl;
 	cout<<"Ly = "<<Ly<<endl;
 	for(spit it= spl_.begin(); it != spl_.end(); it++){

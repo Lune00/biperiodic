@@ -36,6 +36,13 @@ class Sample{
 		//Sample total mass
 		double M_;
 
+		//If load or build from init sample
+		bool load_sample_cell_;
+		//File to load if load
+		unsigned int filetoload_;
+		//Int to start writing if load
+		unsigned int starting_;
+
 		//Check:
 		bool sampleIsLoaded_;
 		bool sampleIsFilled_;
@@ -67,6 +74,9 @@ class Sample{
 		double getrho() const { return rho_;}
 
 		unsigned int getsize() const { return spl_.size();}
+		bool loaded() const { return load_sample_cell_;}
+		unsigned int filetoload() const { return filetoload_;}
+		unsigned int startingTic() const { return starting_;}
 
 		//Reflechir a ne pas briser l'encapsulation plus tard...
 		//Ca me plait moyen de donner mon vecteur de particules...

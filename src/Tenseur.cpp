@@ -50,11 +50,16 @@ void Tensor2x2::writeEigenVectors(ofstream& of){
 	of<<"0. 0. "<<u1_.getx()<<" "<<u1_.gety()<<" "<<u2_.getx()<<" "<<u2_.gety()<<endl;
 }
 
-void Tensor2x2::write(ofstream& of){
-	eigenValues();
-	double spherique=l1_+l2_;
-	double deviatorique=l1_-l2_;
-	of<<xx_<<" "<<xy_<<" "<<yx_<<" "<<yy_<<" "<<spherique<<" "<<deviatorique<<" "<<l1_<<" "<<l2_<<endl;
+//All information can be extracted from comp if needed later...
+void Tensor2x2::write(ofstream& of) const{
+	//eigenValues();
+	//double spherique=l1_+l2_;
+	//double deviatorique=l1_-l2_;
+	of<<xx_<<" "<<xy_<<" "<<yx_<<" "<<yy_;
+}
+
+void Tensor2x2::load(ifstream& is){
+	is >> xx_ >> xy_ >> yx_ >> yy_;
 }
 
 void Tensor2x2::set(double xx, double xy, double yx, double yy){

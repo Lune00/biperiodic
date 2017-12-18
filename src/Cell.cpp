@@ -15,6 +15,7 @@ Cell::Cell(){
 	initCG_ = false ;
 	initGeometry_ = false;
 	initMass_ = false;
+	//Multiplier of sample mass
 	mh_ = 1.;
 	mh_auto_ = false;
 	L_auto_ = false;
@@ -49,6 +50,7 @@ void Cell::init(ifstream& is){
 		if(token=="L_auto") {
 			L_auto_ = true ;
 		}
+		//This option should be avoided
 		if(token=="m"){
 			is >> mh_;
 			initMass_ = true;
@@ -124,35 +126,51 @@ void Cell::init(ifstream& is){
 
 }
 
-void Cell::initFromSample(Sample& spl){
-	//Initial Cell Geometry
-	if(L_auto_){
-	Lx_ = spl.getxmax() - spl.getxmin();
-	Ly_ = spl.getymax() - spl.getymin();
-	h_.set(Lx_,0.,0.,Ly_);
-	h0_ = h_ ;
-	xc_ = 0.5 * Lx_;
-	yc_ = 0.5 * Ly_;
-	initGeometry_ = true;
-	}
 
-	if(mh_auto_){
-	//Mass: double sample mass for inertia
-	mh_ = 10. * spl.getMass();
-	initMass_ = true;
+void Cell::talkinit(Sample& spl){
+
+	//Load from file or no?
+	if(spl.loaded()){
+		//Ask which one.
+		unsigned int filetoload = spl.filetoload();
+		//Test if exists inside load
+		load(filetoload);
+		h0_ = h_ ;
+		initGeometry_ = true;
+		//Assign mass
+		//the mutliplier should be defined somewhere...
+		mh_ = 10. * spl.getMass();
+		initMass_ = true;
+	}
+	else{
+
+		//If not, L_auto or not?
+		//Initial Cell Geometry is rectangular
+		//By def hd and stress_ext are set by user in config file
+		if(L_auto_){
+			Lx_ = spl.getxmax() - spl.getxmin();
+			Ly_ = spl.getymax() - spl.getymin();
+			h_.set(Lx_,0.,0.,Ly_);
+			xc_ = 0.5 * Lx_;
+			yc_ = 0.5 * Ly_;
+			h0_ = h_ ;
+			initGeometry_ = true;
+		}
+
+		if(mh_auto_){
+			//Mass: sample mass for inertia
+			mh_ = 10. * spl.getMass();
+			initMass_ = true;
+		}
 	}
 }
 
+//If load called by Sample, load cell geometry and dynamics
+//Load h, hd and hdd
+//check if problems with init, continuity with previous and new CL
 
 bool Cell::initcheck(){
 	return (initCG_ && initGeometry_ && initMass_);
-}
-
-//Renvoie vrai si on a besoin du sample pour initialiser cellule
-
-bool Cell::needSample(){
-	if( L_auto_ || mh_auto_) return true;
-	else return false;
 }
 
 //Le volume est donné par det(h) (deux vecteurs de base de la cellule)
@@ -160,38 +178,54 @@ double Cell::getVolume() const{
 	return h_.getDet();
 }
 
+void Cell::write(const int k) const{
+	string filename = formatfile( folder_, fcell_, k );
+	cout<<"cell output: "<<filename<<endl;
+	ofstream file(filename.c_str());
+	h_.write(file);
+	file<<" ";
+	hd_.write(file);
+	file<<" ";
+	hdd_.write(file);
+	file<<endl;
+	file.close();
+}
+
+void Cell::load(const int k) {
+	string filename = formatfile( folder_, fcell_, k );
+	ifstream is(filename.c_str());
+	if(!is){
+		cerr<<"Cell::load "<<filename<<" fail."<<endl;
+	}
+	else{
+		h_.load(is);
+		hd_.load(is);
+		hdd_.load(is);
+	}
+	is.close();
+}
 
 //Construit la cellule
-void Cell::write(const int k) const{
+//No need for now...
+void Cell::writeGeometry(const int k) const{
+	//string filename = formatfile( folder_, fcell_, k );
+	//ofstream file(filename.c_str());
+	//double ux=h_.getxx();
+	//double uy=h_.getyx();
+	//double vx=h_.getxy();
+	//double vy=h_.getyy();
+	//file<<k<<" "<<xc_- Lx_/2.<<" "<<yc_ - Ly_/2<<" "<<ux<<" "<<uy<<endl;
+	//file<<k<<" "<<xc_- Lx_/2.+vx<<" "<<yc_- Ly_/2.+vy<<" "<<ux<<" "<<uy<<endl;
+	//file<<k<<" "<<xc_- Lx_/2.<<" "<<yc_- Ly_/2.<<" "<<vx<<" "<<vy<<endl;
+	//file<<k<<" "<<xc_- Lx_/2.+ux<<" "<<yc_- Ly_/2.+uy<<" "<<vx<<" "<<vy<<endl;
 
-	string filename = formatfile( folder_, fcell_, k );
-	ofstream file(filename.c_str());
-
-
-	double ux=h_.getxx();
-	double uy=h_.getyx();
-	double vx=h_.getxy();
-	double vy=h_.getyy();
-	file<<k<<" "<<xc_- Lx_/2.<<" "<<yc_ - Ly_/2<<" "<<ux<<" "<<uy<<endl;
-	file<<k<<" "<<xc_- Lx_/2.+vx<<" "<<yc_- Ly_/2.+vy<<" "<<ux<<" "<<uy<<endl;
-	file<<k<<" "<<xc_- Lx_/2.<<" "<<yc_- Ly_/2.<<" "<<vx<<" "<<vy<<endl;
-	file<<k<<" "<<xc_- Lx_/2.+ux<<" "<<yc_- Ly_/2.+uy<<" "<<vx<<" "<<vy<<endl;
-
-	file.close();
-
+	//	file.close();
 }
 
 //On travaille sur les coordonnees reduites
 //Si elles sont plus petites que 0 ou plus grandes que 1 on periodise
 //A bouger dans Sample peut etre
 void Cell::PeriodicBoundaries2(std::vector<Particle>* sp){
-	//Vecteur a1(h_.getxx(),h_.getyx());
-	//Vecteur a2(h_.getxy(),h_.getyy());
-
-	//double Cx = a1.getNorme()  ;
-	//double Cy = a2.getNorme()  ;
-	double Lx2 = getLx() * 0.5 ;
-	double Ly2 = getLy() * 0.5 ;
 
 	for(std::vector<Particle>::iterator it = sp->begin() ; it != sp->end(); it++){
 		double dx = 0.;
@@ -209,11 +243,6 @@ void Cell::PeriodicBoundaries2(std::vector<Particle>* sp){
 		while(it->getx() < 0.){
 			it->addrx(1.);
 		}
-		//if(it->getR().getx() < 0.) dx +=  1.;
-		//if(it->getR().gety() > 1.) dy += -1.;
-		//if(it->getR().gety() < 0.) dy +=  1.;
-		//it->Periodize(dx,dy);
-
 	}
 }
 
@@ -287,6 +316,16 @@ double Cell::getxc() const{
 
 double Cell::getyc() const{
 	return ((h_.getyx() + h_.getyy()) * 0.5);
+}
+
+
+//Original cell w/h ratio for printing sample
+double Cell::get_width() const{
+	return h0_.getxx();
+}
+
+double Cell::get_height() const{
+	return h0_.getyy();
 }
 
 //Integrate h and hd at the begining of the step

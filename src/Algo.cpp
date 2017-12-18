@@ -6,6 +6,17 @@
 
 using namespace std;
 
+Algo::Algo(){
+	dt_ = 1. ;
+	ns_ = 0 ;
+	nrecord_ = 0;
+	nana_ = 0 ;
+	tic_= 0; 
+	t_=0.; 
+	ticw_ = 0; 
+	fsetup_ = "simusetup.txt";
+}
+
 void Algo::init(ifstream& is){
 	string token;
 	is >> token;
@@ -21,12 +32,22 @@ void Algo::init(ifstream& is){
 
 //A adapter comme on souhaite en terme de tests
 bool Algo::initcheck(){
+
 	computedtmax();
 	compute_gnmax_restitution();
+
+	//Set initial values for tic (load vs build case)
+	//If build automatically start at zero
+	initTics();
 	if( t_ > 0. ) return false;
 	if( !checkSimulationParameters() ) return false;
 	if (dt_ < 1. && ns_ != 0 && nrecord_ != 0 ) return true;
 	else return false;
+}
+
+void Algo::initTics(){
+	ticw_ = spl_->startingTic();
+	tica_ = ticw_;
 }
 
 void Algo::plug(Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
@@ -101,9 +122,9 @@ void Algo::run(){
 	//Be precautious, restart clock for a new run:
 	t_ = 0. ;
 	tic_ = 0;
-	ticw_ = 0 ;
 
-	int tica = 0 ;
+	//ticw_ (writing tick cell/sample) and tica_ (analysis) should start at the same initial tic, set in initTics()
+
 	int nprint = 5000;
 
 	writesetup();
@@ -119,14 +140,11 @@ void Algo::run(){
 		//Time step: integration & periodicity
 		verletalgo2();
 
-		if( tic_ % nrecord_ == 0){
-			write();
-			ticw_++;
-		}
+		if( tic_ % nrecord_ == 0) write();
 
 		if( tic_ % nana_ == 0 ) {
-			ana_->analyse(tica,t_);
-			tica++;
+			ana_->analyse(tica_,t_);
+			tica_++;
 		}
 		if( tic_ % nprint == 0) {
 			std::streamsize ss = std::cout.precision();
@@ -170,7 +188,6 @@ void Algo::writesetup() const{
 
 void Algo::write(){
 	cout<<"Writing outputs..."<<endl;
-	//spl_->writeAbsolute(ticw_);
 	spl_->write(ticw_);
 	Int_->writeContacts(ticw_);
 	cell_->write(ticw_);
@@ -214,10 +231,10 @@ void Algo::verletalgo2(){
 	//Calcul des vitesses a la fin du pas de temps:
 	spl_->secondStepVerlet(dt_),
 
-	//Apply stress_ext: si controle en force
-	//stress ext est egal a celui impose
-	//Sinon il est egal a -stressint et acc nulle
-	cell_->computeExternalStress(Int_->stress());
+		//Apply stress_ext: si controle en force
+		//stress ext est egal a celui impose
+		//Sinon il est egal a -stressint et acc nulle
+		cell_->computeExternalStress(Int_->stress());
 	cell_->updatehdd(Int_->stress());
 	cell_->updatehd(dt_);
 

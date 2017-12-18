@@ -31,6 +31,12 @@ Config::~Config(){
 
 int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
 
+	//Writing paths initialisation:
+	spl.initfolder(folder_spl_);
+	cell.initfolder(folder_cell_);
+	Int.initfolder(folder_Interactions_);
+	ana.initfolder(folder_analyse_);
+
 	if(!is){
 		cerr<< "Config::init : cannot open file."<<endl;
 		return 1;
@@ -67,28 +73,26 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 
 	//Check sample parameters:
 	bool checkSample = spl.initcheck();
-	//Initialise Cell with sample:
-	if(checkSample && cell.needSample()) cell.initFromSample(spl);
+	//Talk Cell with sample for how to init:
+	cell.talkinit(spl);
 	//Check cell parameters:
 	bool checkCell = cell.initcheck();
 	//Compute reduced coordinates from cell geometry
-	if(checkCell) spl.initReducedCoordinates(cell);
+	//if build, no if loaded
+	if(checkCell && !spl.loaded()) spl.initReducedCoordinates(cell);
+
 	//Plugs:
 	spl.plugtoCell(cell);
 	//Rescale verlet distances according to user choice
 	Int.plug(spl,cell);
 	algo.plug(cell,spl,Int,ana);
+
 	//Check interactions parameters:
 	bool checkInteractions = Int.initcheck();
 	//Check algo parameters using DEM interactions parameters
 	bool checkAlgo = algo.initcheck();
 
 	ana.plug(spl,cell,Int);
-	//Writing paths initialisation:
-	spl.initfolder(folder_spl_);
-	cell.initfolder(folder_cell_);
-	Int.initfolder(folder_Interactions_);
-	ana.initfolder(folder_analyse_);
 
 	if(!checkSample){
 		cerr<<"Sample::initcheck() problem."<<endl;
@@ -107,14 +111,6 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 		return 1;
 	}
 
-	//Checks for Analyse?
-
-	////Tests:
-	//ofstream s("reduced.txt");
-	//ofstream r("absolute.txt");
-	//sample_->write(s);
-	//sample_->writeAbsolute(r);
-	
 
 	return 0;
 

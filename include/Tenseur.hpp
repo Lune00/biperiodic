@@ -46,7 +46,8 @@ class Tensor2x2{
 
 		void eigenValues();
 		void eigenVectors();
-		void write(std::ofstream&);
+		void write(std::ofstream&) const;
+		void load(std::ifstream&);
 		void writeEigenVectors(std::ofstream&);
 
 		//Il faudrait mettre des const partout enfait...

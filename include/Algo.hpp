@@ -13,12 +13,13 @@ class Analyse;
 
 class Algo{
 	private:
+		int ns_;
 		double dt_;
 		double t_;
 		int tic_;
 		//Numerotation files
 		int ticw_;
-		int ns_;
+		int tica_;
 		//Frequency recording sample+network
 		int nrecord_;
 		//Frequency analyse during simulation
@@ -47,7 +48,7 @@ class Algo{
 		Analyse * ana_;
 
 	public:
-		Algo() { dt_ = 1. ; ns_ = 0 ; nrecord_ = 0; tic_= 0; t_=0.; ticw_ = 0; nana_ = 0 ; fsetup_ = "simusetup.txt";}
+		Algo();
 		~Algo(){};
 		//void verletalgo(Cell&,std::vector<Particle>&);
 		void verletalgo2();
@@ -63,6 +64,7 @@ class Algo{
 		bool checkNormalViscosity() const;
 		//Write simu setup in filesetup_;
 		void writesetup() const;
+		void initTics();
 };
 
 #endif

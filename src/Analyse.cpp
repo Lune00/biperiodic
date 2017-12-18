@@ -69,12 +69,15 @@ void Analyse::printSample(int tic){
 void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 	ofstream ps(frame.c_str());
+	//Is h used??
 	Tensor2x2 h = cell_->geth();
 	//Bounding box based on e_ and original cell geometry:
 	//Warning: the cell can get out of bounds
 
 	double scaledotradius = 0.05 ;
 	double margin = e_ * spl_->getrmax() ;
+
+	//Not yet used
 	double zoom = 1. ;
 
 	double xc = 0.;
@@ -82,8 +85,10 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 	double xcframe = cell_->getxc();
 	double ycframe = cell_->getxc();
-	double lx2 = cell_->getLx() * 0.5;
-	double ly2 = cell_->getLy() * 0.5;
+//	double lx2 = cell_->getLx() * 0.5;
+//	double ly2 = cell_->getLy() * 0.5;
+	double lx2 = cell_->get_width() * 0.5 ;
+	double ly2 = cell_->get_height() * 0.5 ;
 
 	ps<<"%!PS-Adobe-3.0 EPSF-3.0"<<endl;
 	//ps<<"%%BoundingBox:"<<" "<<xmin<<" "<<ymin<<" "<<xmax<<" "<<ymax<<endl;
