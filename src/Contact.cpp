@@ -69,6 +69,7 @@ void Contact::Frame(){
 		dt_ = 0. ;
 	}
 }
+
 //Temporar: debug use
 void Contact::write(ofstream& os) const{
 	os<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<endl;

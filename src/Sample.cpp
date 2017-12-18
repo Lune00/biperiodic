@@ -14,6 +14,9 @@ Sample::Sample(){
 	fsampleIni_ = string();
 	folder_ = string();
 
+	buildcell_ = false;
+	load_sample_cell_ = false;
+
 	//Un interet d'avoir absolu mis a part representation???
 	//Avec reduced et h on peut recreer absolu quand on veut
 	//A voir
@@ -29,12 +32,29 @@ void Sample::plugtoCell(Cell& cell){
 	cell_ = &cell;
 }
 
+
+//Build cell : build a new cell from sample
+//Load sample/cell : load sample in reduced coord + associated cell
+//Load from integer (number of the file) and look into
+//sample/ and cell/ folder. If not found one of two abort.
+//Cell is initialised anyway, and will be reset if needed.
+//ex: build packing0.spl -> init cell from sample (in abs coordinates)
+//    load 10 -> load sample/00010reduced.txt cell/00010cell.txt if found
 void Sample::init(ifstream& is){
 
 	string token;
 	is >> token;
 	while(is){
-		if(token=="includeFile") is >> fsampleIni_;
+		if(token=="build") {
+			is >> fsampleIni_;
+			buildcell_ = true ;
+			load_sample_cell_ = false;
+		}
+		if(token=="reload"){
+			is >> fsampleIni_;
+			buildcell_ = false;
+			load_sample_cell_ = true ;
+		}
 		if(token=="rho") {
 			rhodefined_= true;
 			is >> rho_;
@@ -115,6 +135,9 @@ Vecteur Sample::returnvabs(const Particle& P) const{
 	return (cell_->geth() * P.getV() + cell_->gethd() * P.getR() );
 }
 
+
+//TODO: merge these two functions
+//And add Ec and Ecrot as member variable of the class Sample
 
 //Translational kinetic energy
 //Take reduced velocity to compute true kinetic energy
@@ -358,7 +381,7 @@ void Sample::secondStepVerlet(const double dt_) {
 		vmean = vmean + it->getV();
 	}
 
-	vmean = vmean / (double)getsize();
+	vmean = vmean / (double)spl_.size();
 	//Set mean fluctuating velocities to zero
 	//The mean displacment is carried only by
 	//the cell deformation

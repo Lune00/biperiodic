@@ -35,8 +35,11 @@ void Particle::setInertia(const double m){
 void Particle::write(ofstream& os) const{
 	os<< id_<<" "<<R_<<" ";
 	r_.write(os);
+	os<<" ";
 	v_.write(os);
+	os<<" ";
 	a_.write(os);
+	os<<" ";
 	os << rot_<<" "<<vrot_<<" "<<arot_<<endl;
 }
 

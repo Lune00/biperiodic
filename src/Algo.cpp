@@ -170,7 +170,8 @@ void Algo::writesetup() const{
 
 void Algo::write(){
 	cout<<"Writing outputs..."<<endl;
-	spl_->writeAbsolute(ticw_);
+	//spl_->writeAbsolute(ticw_);
+	spl_->write(ticw_);
 	Int_->writeContacts(ticw_);
 	cell_->write(ticw_);
 	ticw_++;
