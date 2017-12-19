@@ -76,6 +76,7 @@ void Contact::write(ofstream& os) const{
 }
 
 
+//Take into account case of contact with images
 void Contact::updateRelativeVelocity(){
 	//Real velocities
 	Vecteur vj = cell_->gethd() * j_->getR() +cell_->geth() * j_->getV();
@@ -94,8 +95,6 @@ void Contact::updateRelativeVelocity(){
 	return ;
 }
 
-//A checker:
-//Temp form for DEM parameters
 void Contact::computeForce(const double kn, const double kt, const double gn, const double gt, const double mus, const double dt){
 	
 	double fn = - kn * dn_ - gn * v_.getx();
@@ -138,14 +137,10 @@ void Contact::updateAccelerations(){
 
 
 void Contact::print() const{
-
-
 	cerr<<"Contact entre la particule "<<i_->getId()<<" et "<<j_->getId()<<endl;
 	cerr<<"interpenetration = "<<dn_<<endl;
 	cerr<<"fn = "<<f_.getx()<<endl;
 	cerr<<"ft = "<<f_.gety()<<endl;
 	cerr<<"vx particule "<<i_->getId()<<" = "<<i_->getV().getx()<<endl;
 	cerr<<"vx partjcule "<<j_->getId()<<" = "<<j_->getV().getx()<<endl;
-
-
 }

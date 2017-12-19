@@ -28,6 +28,9 @@ class Cell{
 		//Il faut que la partie antisymetrique de Ldot soit nulle, equiv a h(hdot) symetrique impose
 		char Control_[4];
 
+		//Tmp, only for initialisation conveniance...
+		double Control_values_Init[4];
+
 		//Metrics: collective degrees of freedom
 		Tensor2x2 h_;
 		//Garde en memoire la forme originelle cellule pour calcul d'engeniring strain (L(t)-L0/LO))

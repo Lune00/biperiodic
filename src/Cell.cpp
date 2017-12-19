@@ -24,7 +24,7 @@ Cell::Cell(){
 	fcell_ = "cell.txt";
 
 	//DEBUG
-	ofstream debug("stressext.txt");
+	ofstream debug("debugCell.txt");
 	debug.close();
 	ofstream debug2("hd.txt");
 	debug2.close();
@@ -114,7 +114,7 @@ void Cell::talkinit(Sample& spl){
 		initGeometry_ = true;
 		//Assign mass
 		//the mutliplier should be defined somewhere...
-		mh_ = 10. * spl.getMass();
+		mh_ = 2. * spl.getMass();
 		initMass_ = true;
 		//APPLY NEW CL!!! car la on a loadé les anciennes et
 	}
@@ -135,7 +135,7 @@ void Cell::talkinit(Sample& spl){
 
 		if(mh_auto_){
 			//Mass: sample mass for inertia
-			mh_ = 10. * spl.getMass();
+			mh_ = 2. * spl.getMass();
 			initMass_ = true;
 		}
 	}
@@ -396,10 +396,10 @@ void Cell::updatehd(const double dt){
 }
 
 void Cell::debug(const int k)const{
-	ofstream debug("stressext.txt",ios::app);
+	ofstream debug("debugCell.txt",ios::app);
 	ofstream debug2("hd.txt",ios::app);
-	debug<<stress_ext.getxx()<<" "<<stress_ext.getyy()<<endl;
-	debug2<<h_.getxx()<<" "<<hd_.getxx()<<" "<<h_.getyy()<<" "<<hd_.getyy()<<endl;
+	debug<<k<<" "<<hdd_.getxx()<<" "<<hdd_.getxy()<<" "<<hdd_.getyy()<<" "<<stress_ext.getxx()<<" "<<stress_ext.getyy()<<endl;
+	debug2<<k<<" "<<h_.getxx()<<" "<<hd_.getxx()<<" "<<h_.getyy()<<" "<<hd_.getyy()<<endl;
 	debug.close();
 	debug2.close();
 }

@@ -130,8 +130,8 @@ void Algo::run(){
 	writesetup();
 
 	//Tmp for debug:
-	ofstream file("follow0.txt");
-	ofstream file2("follow1.txt");
+	ofstream file("follow1.txt");
+	ofstream file2("follow2.txt");
 
 	while(t_<tfinal){
 		//Update verlet list
@@ -156,6 +156,7 @@ void Algo::run(){
 		if( tic_ % 5000 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
+			spl_->writeDebug(file,file2,tic_);
 		}
 
 		t_+=dt_;
@@ -229,12 +230,12 @@ void Algo::verletalgo2(){
 
 	//------------- SECOND STEP VERLET ALGO STARTS HERE
 	//Calcul des vitesses a la fin du pas de temps:
-	spl_->secondStepVerlet(dt_),
+	spl_->secondStepVerlet(dt_);
 
-		//Apply stress_ext: si controle en force
-		//stress ext est egal a celui impose
-		//Sinon il est egal a -stressint et acc nulle
-		cell_->computeExternalStress(Int_->stress());
+	//Apply stress_ext: si controle en force
+	//stress ext est egal a celui impose
+	//Sinon il est egal a -stressint et acc nulle
+	cell_->computeExternalStress(Int_->stress());
 	cell_->updatehdd(Int_->stress());
 	cell_->updatehd(dt_);
 

@@ -1,0 +1,4109 @@
+DEM arena test.
+Nombre de particules: 4
+Set inertia to particles...done.
+Lx = 4
+Ly = 4
+d verlet (scale)  = 1
+d sverlet (scale)  = 3
+dtmax = 5.60499e-06
+Max normal viscosity gnmax = 11210
+Restitution coefficient e = 0.868762
+Simulation:
+dt = 1e-06
+ns = 6500000
+tfinal = 6.5
+Writing outputs...
+cell output: cell/00000cell.txt
+t = 0 - 0% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.005 - 0.0769% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00001cell.txt
+t = 0.01 - 0.154% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.015 - 0.231% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00002cell.txt
+t = 0.02 - 0.308% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.025 - 0.385% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00003cell.txt
+t = 0.03 - 0.462% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.035 - 0.538% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00004cell.txt
+t = 0.04 - 0.615% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.045 - 0.692% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00005cell.txt
+t = 0.05 - 0.769% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.055 - 0.846% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00006cell.txt
+t = 0.06 - 0.923% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.065 - 1% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00007cell.txt
+t = 0.07 - 1.08% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.075 - 1.15% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00008cell.txt
+t = 0.08 - 1.23% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.085 - 1.31% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00009cell.txt
+t = 0.09 - 1.38% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.095 - 1.46% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00010cell.txt
+t = 0.1 - 1.54% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.105 - 1.62% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00011cell.txt
+t = 0.11 - 1.69% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.115 - 1.77% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00012cell.txt
+t = 0.12 - 1.85% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.125 - 1.92% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00013cell.txt
+t = 0.13 - 2% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.135 - 2.08% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00014cell.txt
+t = 0.14 - 2.15% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.145 - 2.23% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00015cell.txt
+t = 0.15 - 2.31% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.155 - 2.38% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00016cell.txt
+t = 0.16 - 2.46% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.165 - 2.54% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00017cell.txt
+t = 0.17 - 2.62% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.175 - 2.69% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00018cell.txt
+t = 0.18 - 2.77% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.185 - 2.85% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00019cell.txt
+t = 0.19 - 2.92% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.195 - 3% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00020cell.txt
+t = 0.2 - 3.08% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.205 - 3.15% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00021cell.txt
+t = 0.21 - 3.23% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.215 - 3.31% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00022cell.txt
+t = 0.22 - 3.38% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.225 - 3.46% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00023cell.txt
+t = 0.23 - 3.54% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.235 - 3.62% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00024cell.txt
+t = 0.24 - 3.69% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.245 - 3.77% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00025cell.txt
+t = 0.25 - 3.85% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.255 - 3.92% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00026cell.txt
+t = 0.26 - 4% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.265 - 4.08% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00027cell.txt
+t = 0.27 - 4.15% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.275 - 4.23% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00028cell.txt
+t = 0.28 - 4.31% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.285 - 4.38% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00029cell.txt
+t = 0.29 - 4.46% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.295 - 4.54% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00030cell.txt
+t = 0.3 - 4.62% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.305 - 4.69% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00031cell.txt
+t = 0.31 - 4.77% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.315 - 4.85% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00032cell.txt
+t = 0.32 - 4.92% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.325 - 5% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00033cell.txt
+t = 0.33 - 5.08% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.335 - 5.15% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00034cell.txt
+t = 0.34 - 5.23% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.345 - 5.31% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00035cell.txt
+t = 0.35 - 5.38% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.355 - 5.46% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00036cell.txt
+t = 0.36 - 5.54% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.365 - 5.62% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00037cell.txt
+t = 0.37 - 5.69% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.375 - 5.77% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00038cell.txt
+t = 0.38 - 5.85% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.385 - 5.92% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00039cell.txt
+t = 0.39 - 6% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.395 - 6.08% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00040cell.txt
+t = 0.4 - 6.15% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.405 - 6.23% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00041cell.txt
+t = 0.41 - 6.31% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.415 - 6.38% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00042cell.txt
+t = 0.42 - 6.46% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.425 - 6.54% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00043cell.txt
+t = 0.43 - 6.62% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.435 - 6.69% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00044cell.txt
+t = 0.44 - 6.77% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.445 - 6.85% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00045cell.txt
+t = 0.45 - 6.92% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.455 - 7% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00046cell.txt
+t = 0.46 - 7.08% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.465 - 7.15% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00047cell.txt
+t = 0.47 - 7.23% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.475 - 7.31% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00048cell.txt
+t = 0.48 - 7.38% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.485 - 7.46% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00049cell.txt
+t = 0.49 - 7.54% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.495 - 7.62% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00050cell.txt
+t = 0.5 - 7.69% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.505 - 7.77% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00051cell.txt
+t = 0.51 - 7.85% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.515 - 7.92% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00052cell.txt
+t = 0.52 - 8% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.525 - 8.08% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00053cell.txt
+t = 0.53 - 8.15% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.535 - 8.23% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00054cell.txt
+t = 0.54 - 8.31% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.545 - 8.38% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00055cell.txt
+t = 0.55 - 8.46% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.555 - 8.54% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00056cell.txt
+t = 0.56 - 8.62% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.565 - 8.69% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00057cell.txt
+t = 0.57 - 8.77% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.575 - 8.85% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00058cell.txt
+t = 0.58 - 8.92% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.585 - 9% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00059cell.txt
+t = 0.59 - 9.08% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.595 - 9.15% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00060cell.txt
+t = 0.6 - 9.23% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.605 - 9.31% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00061cell.txt
+t = 0.61 - 9.38% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.615 - 9.46% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00062cell.txt
+t = 0.62 - 9.54% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.625 - 9.62% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00063cell.txt
+t = 0.63 - 9.69% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.635 - 9.77% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00064cell.txt
+t = 0.64 - 9.85% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.645 - 9.92% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00065cell.txt
+t = 0.65 - 10% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.655 - 10.1% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00066cell.txt
+t = 0.66 - 10.2% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.665 - 10.2% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00067cell.txt
+t = 0.67 - 10.3% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.675 - 10.4% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00068cell.txt
+t = 0.68 - 10.5% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.685 - 10.5% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00069cell.txt
+t = 0.69 - 10.6% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.695 - 10.7% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00070cell.txt
+t = 0.7 - 10.8% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.705 - 10.8% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00071cell.txt
+t = 0.71 - 10.9% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.715 - 11% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00072cell.txt
+t = 0.72 - 11.1% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.725 - 11.2% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00073cell.txt
+t = 0.73 - 11.2% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.735 - 11.3% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00074cell.txt
+t = 0.74 - 11.4% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.745 - 11.5% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00075cell.txt
+t = 0.75 - 11.5% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.755 - 11.6% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00076cell.txt
+t = 0.76 - 11.7% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.765 - 11.8% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00077cell.txt
+t = 0.77 - 11.8% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.775 - 11.9% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00078cell.txt
+t = 0.78 - 12% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.785 - 12.1% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00079cell.txt
+t = 0.79 - 12.2% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.795 - 12.2% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00080cell.txt
+t = 0.8 - 12.3% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.805 - 12.4% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00081cell.txt
+t = 0.81 - 12.5% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.815 - 12.5% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00082cell.txt
+t = 0.82 - 12.6% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.825 - 12.7% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00083cell.txt
+t = 0.83 - 12.8% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.835 - 12.8% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00084cell.txt
+t = 0.84 - 12.9% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.845 - 13% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00085cell.txt
+t = 0.85 - 13.1% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.855 - 13.2% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00086cell.txt
+t = 0.86 - 13.2% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.865 - 13.3% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00087cell.txt
+t = 0.87 - 13.4% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.875 - 13.5% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00088cell.txt
+t = 0.88 - 13.5% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.885 - 13.6% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00089cell.txt
+t = 0.89 - 13.7% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.895 - 13.8% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00090cell.txt
+t = 0.9 - 13.8% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.905 - 13.9% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00091cell.txt
+t = 0.91 - 14% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.915 - 14.1% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00092cell.txt
+t = 0.92 - 14.2% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.925 - 14.2% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00093cell.txt
+t = 0.93 - 14.3% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.935 - 14.4% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00094cell.txt
+t = 0.94 - 14.5% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.945 - 14.5% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00095cell.txt
+t = 0.95 - 14.6% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.955 - 14.7% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00096cell.txt
+t = 0.96 - 14.8% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.965 - 14.8% simulation
+ncontacts = 0
+Interaction 1/2
+Writing outputs...
+cell output: cell/00097cell.txt
+t = 0.97 - 14.9% simulation
+ncontacts = 0
+Interaction 1/2
+t = 0.975 - 15% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00098cell.txt
+t = 0.98 - 15.1% simulation
+ncontacts = 0
+t = 0.985 - 15.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00099cell.txt
+t = 0.99 - 15.2% simulation
+ncontacts = 0
+t = 0.995 - 15.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00100cell.txt
+t = 1 - 15.4% simulation
+ncontacts = 0
+t = 1.01 - 15.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00101cell.txt
+t = 1.01 - 15.5% simulation
+ncontacts = 0
+t = 1.02 - 15.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00102cell.txt
+t = 1.02 - 15.7% simulation
+ncontacts = 0
+t = 1.03 - 15.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00103cell.txt
+t = 1.03 - 15.8% simulation
+ncontacts = 0
+t = 1.04 - 15.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00104cell.txt
+t = 1.04 - 16% simulation
+ncontacts = 0
+t = 1.05 - 16.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00105cell.txt
+t = 1.05 - 16.2% simulation
+ncontacts = 0
+t = 1.06 - 16.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00106cell.txt
+t = 1.06 - 16.3% simulation
+ncontacts = 0
+t = 1.07 - 16.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00107cell.txt
+t = 1.07 - 16.5% simulation
+ncontacts = 0
+t = 1.08 - 16.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00108cell.txt
+t = 1.08 - 16.6% simulation
+ncontacts = 0
+t = 1.09 - 16.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00109cell.txt
+t = 1.09 - 16.8% simulation
+ncontacts = 0
+t = 1.1 - 16.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00110cell.txt
+t = 1.1 - 16.9% simulation
+ncontacts = 0
+t = 1.1 - 17% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00111cell.txt
+t = 1.11 - 17.1% simulation
+ncontacts = 0
+t = 1.11 - 17.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00112cell.txt
+t = 1.12 - 17.2% simulation
+ncontacts = 0
+t = 1.12 - 17.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00113cell.txt
+t = 1.13 - 17.4% simulation
+ncontacts = 0
+t = 1.13 - 17.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00114cell.txt
+t = 1.14 - 17.5% simulation
+ncontacts = 0
+t = 1.14 - 17.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00115cell.txt
+t = 1.15 - 17.7% simulation
+ncontacts = 0
+t = 1.15 - 17.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00116cell.txt
+t = 1.16 - 17.8% simulation
+ncontacts = 0
+t = 1.16 - 17.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00117cell.txt
+t = 1.17 - 18% simulation
+ncontacts = 0
+t = 1.17 - 18.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00118cell.txt
+t = 1.18 - 18.2% simulation
+ncontacts = 0
+t = 1.18 - 18.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00119cell.txt
+t = 1.19 - 18.3% simulation
+ncontacts = 0
+t = 1.19 - 18.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00120cell.txt
+t = 1.2 - 18.5% simulation
+ncontacts = 0
+t = 1.2 - 18.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00121cell.txt
+t = 1.21 - 18.6% simulation
+ncontacts = 0
+t = 1.21 - 18.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00122cell.txt
+t = 1.22 - 18.8% simulation
+ncontacts = 0
+t = 1.22 - 18.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00123cell.txt
+t = 1.23 - 18.9% simulation
+ncontacts = 0
+t = 1.23 - 19% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00124cell.txt
+t = 1.24 - 19.1% simulation
+ncontacts = 0
+t = 1.24 - 19.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00125cell.txt
+t = 1.25 - 19.2% simulation
+ncontacts = 0
+t = 1.25 - 19.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00126cell.txt
+t = 1.26 - 19.4% simulation
+ncontacts = 0
+t = 1.26 - 19.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00127cell.txt
+t = 1.27 - 19.5% simulation
+ncontacts = 0
+t = 1.27 - 19.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00128cell.txt
+t = 1.28 - 19.7% simulation
+ncontacts = 0
+t = 1.28 - 19.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00129cell.txt
+t = 1.29 - 19.8% simulation
+ncontacts = 0
+t = 1.29 - 19.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00130cell.txt
+t = 1.3 - 20% simulation
+ncontacts = 0
+t = 1.3 - 20.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00131cell.txt
+t = 1.31 - 20.2% simulation
+ncontacts = 0
+t = 1.31 - 20.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00132cell.txt
+t = 1.32 - 20.3% simulation
+ncontacts = 0
+t = 1.32 - 20.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00133cell.txt
+t = 1.33 - 20.5% simulation
+ncontacts = 0
+t = 1.33 - 20.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00134cell.txt
+t = 1.34 - 20.6% simulation
+ncontacts = 0
+t = 1.34 - 20.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00135cell.txt
+t = 1.35 - 20.8% simulation
+ncontacts = 0
+t = 1.35 - 20.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00136cell.txt
+t = 1.36 - 20.9% simulation
+ncontacts = 0
+t = 1.36 - 21% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00137cell.txt
+t = 1.37 - 21.1% simulation
+ncontacts = 0
+t = 1.37 - 21.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00138cell.txt
+t = 1.38 - 21.2% simulation
+ncontacts = 0
+t = 1.38 - 21.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00139cell.txt
+t = 1.39 - 21.4% simulation
+ncontacts = 0
+t = 1.39 - 21.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00140cell.txt
+t = 1.4 - 21.5% simulation
+ncontacts = 0
+t = 1.4 - 21.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00141cell.txt
+t = 1.41 - 21.7% simulation
+ncontacts = 0
+t = 1.41 - 21.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00142cell.txt
+t = 1.42 - 21.8% simulation
+ncontacts = 0
+t = 1.42 - 21.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00143cell.txt
+t = 1.43 - 22% simulation
+ncontacts = 0
+t = 1.43 - 22.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00144cell.txt
+t = 1.44 - 22.2% simulation
+ncontacts = 0
+t = 1.44 - 22.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00145cell.txt
+t = 1.45 - 22.3% simulation
+ncontacts = 0
+t = 1.45 - 22.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00146cell.txt
+t = 1.46 - 22.5% simulation
+ncontacts = 0
+t = 1.46 - 22.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00147cell.txt
+t = 1.47 - 22.6% simulation
+ncontacts = 0
+t = 1.47 - 22.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00148cell.txt
+t = 1.48 - 22.8% simulation
+ncontacts = 0
+t = 1.48 - 22.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00149cell.txt
+t = 1.49 - 22.9% simulation
+ncontacts = 0
+t = 1.49 - 23% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00150cell.txt
+t = 1.5 - 23.1% simulation
+ncontacts = 0
+t = 1.5 - 23.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00151cell.txt
+t = 1.51 - 23.2% simulation
+ncontacts = 0
+t = 1.51 - 23.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00152cell.txt
+t = 1.52 - 23.4% simulation
+ncontacts = 0
+t = 1.52 - 23.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00153cell.txt
+t = 1.53 - 23.5% simulation
+ncontacts = 0
+t = 1.53 - 23.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00154cell.txt
+t = 1.54 - 23.7% simulation
+ncontacts = 0
+t = 1.54 - 23.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00155cell.txt
+t = 1.55 - 23.8% simulation
+ncontacts = 0
+t = 1.55 - 23.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00156cell.txt
+t = 1.56 - 24% simulation
+ncontacts = 0
+t = 1.56 - 24.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00157cell.txt
+t = 1.57 - 24.2% simulation
+ncontacts = 0
+t = 1.57 - 24.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00158cell.txt
+t = 1.58 - 24.3% simulation
+ncontacts = 0
+t = 1.58 - 24.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00159cell.txt
+t = 1.59 - 24.5% simulation
+ncontacts = 0
+t = 1.59 - 24.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00160cell.txt
+t = 1.6 - 24.6% simulation
+ncontacts = 0
+t = 1.6 - 24.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00161cell.txt
+t = 1.61 - 24.8% simulation
+ncontacts = 0
+t = 1.61 - 24.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00162cell.txt
+t = 1.62 - 24.9% simulation
+ncontacts = 0
+t = 1.62 - 25% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00163cell.txt
+t = 1.63 - 25.1% simulation
+ncontacts = 0
+t = 1.63 - 25.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00164cell.txt
+t = 1.64 - 25.2% simulation
+ncontacts = 0
+t = 1.64 - 25.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00165cell.txt
+t = 1.65 - 25.4% simulation
+ncontacts = 0
+t = 1.65 - 25.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00166cell.txt
+t = 1.66 - 25.5% simulation
+ncontacts = 0
+t = 1.66 - 25.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00167cell.txt
+t = 1.67 - 25.7% simulation
+ncontacts = 0
+t = 1.67 - 25.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00168cell.txt
+t = 1.68 - 25.8% simulation
+ncontacts = 0
+t = 1.68 - 25.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00169cell.txt
+t = 1.69 - 26% simulation
+ncontacts = 0
+t = 1.69 - 26.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00170cell.txt
+t = 1.7 - 26.2% simulation
+ncontacts = 0
+t = 1.7 - 26.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00171cell.txt
+t = 1.71 - 26.3% simulation
+ncontacts = 0
+t = 1.71 - 26.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00172cell.txt
+t = 1.72 - 26.5% simulation
+ncontacts = 0
+t = 1.72 - 26.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00173cell.txt
+t = 1.73 - 26.6% simulation
+ncontacts = 0
+t = 1.73 - 26.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00174cell.txt
+t = 1.74 - 26.8% simulation
+ncontacts = 0
+t = 1.74 - 26.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00175cell.txt
+t = 1.75 - 26.9% simulation
+ncontacts = 0
+t = 1.75 - 27% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00176cell.txt
+t = 1.76 - 27.1% simulation
+ncontacts = 0
+t = 1.76 - 27.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00177cell.txt
+t = 1.77 - 27.2% simulation
+ncontacts = 0
+t = 1.77 - 27.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00178cell.txt
+t = 1.78 - 27.4% simulation
+ncontacts = 0
+t = 1.78 - 27.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00179cell.txt
+t = 1.79 - 27.5% simulation
+ncontacts = 0
+t = 1.79 - 27.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00180cell.txt
+t = 1.8 - 27.7% simulation
+ncontacts = 0
+t = 1.8 - 27.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00181cell.txt
+t = 1.81 - 27.8% simulation
+ncontacts = 0
+t = 1.81 - 27.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00182cell.txt
+t = 1.82 - 28% simulation
+ncontacts = 0
+t = 1.82 - 28.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00183cell.txt
+t = 1.83 - 28.2% simulation
+ncontacts = 0
+t = 1.83 - 28.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00184cell.txt
+t = 1.84 - 28.3% simulation
+ncontacts = 0
+t = 1.84 - 28.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00185cell.txt
+t = 1.85 - 28.5% simulation
+ncontacts = 0
+t = 1.85 - 28.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00186cell.txt
+t = 1.86 - 28.6% simulation
+ncontacts = 0
+t = 1.86 - 28.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00187cell.txt
+t = 1.87 - 28.8% simulation
+ncontacts = 0
+t = 1.87 - 28.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00188cell.txt
+t = 1.88 - 28.9% simulation
+ncontacts = 0
+t = 1.88 - 29% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00189cell.txt
+t = 1.89 - 29.1% simulation
+ncontacts = 0
+t = 1.89 - 29.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00190cell.txt
+t = 1.9 - 29.2% simulation
+ncontacts = 0
+t = 1.9 - 29.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00191cell.txt
+t = 1.91 - 29.4% simulation
+ncontacts = 0
+t = 1.91 - 29.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00192cell.txt
+t = 1.92 - 29.5% simulation
+ncontacts = 0
+t = 1.92 - 29.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00193cell.txt
+t = 1.93 - 29.7% simulation
+ncontacts = 0
+t = 1.93 - 29.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00194cell.txt
+t = 1.94 - 29.8% simulation
+ncontacts = 0
+t = 1.94 - 29.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00195cell.txt
+t = 1.95 - 30% simulation
+ncontacts = 0
+t = 1.95 - 30.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00196cell.txt
+t = 1.96 - 30.2% simulation
+ncontacts = 0
+t = 1.96 - 30.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00197cell.txt
+t = 1.97 - 30.3% simulation
+ncontacts = 0
+t = 1.97 - 30.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00198cell.txt
+t = 1.98 - 30.5% simulation
+ncontacts = 0
+t = 1.98 - 30.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00199cell.txt
+t = 1.99 - 30.6% simulation
+ncontacts = 0
+t = 1.99 - 30.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00200cell.txt
+t = 2 - 30.8% simulation
+ncontacts = 0
+t = 2 - 30.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00201cell.txt
+t = 2.01 - 30.9% simulation
+ncontacts = 0
+t = 2.01 - 31% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00202cell.txt
+t = 2.02 - 31.1% simulation
+ncontacts = 0
+t = 2.02 - 31.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00203cell.txt
+t = 2.03 - 31.2% simulation
+ncontacts = 0
+t = 2.03 - 31.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00204cell.txt
+t = 2.04 - 31.4% simulation
+ncontacts = 0
+t = 2.04 - 31.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00205cell.txt
+t = 2.05 - 31.5% simulation
+ncontacts = 0
+t = 2.05 - 31.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00206cell.txt
+t = 2.06 - 31.7% simulation
+ncontacts = 0
+t = 2.06 - 31.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00207cell.txt
+t = 2.07 - 31.8% simulation
+ncontacts = 0
+t = 2.07 - 31.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00208cell.txt
+t = 2.08 - 32% simulation
+ncontacts = 0
+t = 2.08 - 32.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00209cell.txt
+t = 2.09 - 32.2% simulation
+ncontacts = 0
+t = 2.09 - 32.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00210cell.txt
+t = 2.1 - 32.3% simulation
+ncontacts = 0
+t = 2.1 - 32.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00211cell.txt
+t = 2.11 - 32.5% simulation
+ncontacts = 0
+t = 2.11 - 32.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00212cell.txt
+t = 2.12 - 32.6% simulation
+ncontacts = 0
+t = 2.12 - 32.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00213cell.txt
+t = 2.13 - 32.8% simulation
+ncontacts = 0
+t = 2.13 - 32.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00214cell.txt
+t = 2.14 - 32.9% simulation
+ncontacts = 0
+t = 2.14 - 33% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00215cell.txt
+t = 2.15 - 33.1% simulation
+ncontacts = 0
+t = 2.15 - 33.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00216cell.txt
+t = 2.16 - 33.2% simulation
+ncontacts = 0
+t = 2.16 - 33.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00217cell.txt
+t = 2.17 - 33.4% simulation
+ncontacts = 0
+t = 2.17 - 33.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00218cell.txt
+t = 2.18 - 33.5% simulation
+ncontacts = 0
+t = 2.18 - 33.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00219cell.txt
+t = 2.19 - 33.7% simulation
+ncontacts = 0
+t = 2.19 - 33.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00220cell.txt
+t = 2.2 - 33.8% simulation
+ncontacts = 0
+t = 2.2 - 33.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00221cell.txt
+t = 2.21 - 34% simulation
+ncontacts = 0
+t = 2.21 - 34.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00222cell.txt
+t = 2.22 - 34.2% simulation
+ncontacts = 0
+t = 2.22 - 34.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00223cell.txt
+t = 2.23 - 34.3% simulation
+ncontacts = 0
+t = 2.23 - 34.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00224cell.txt
+t = 2.24 - 34.5% simulation
+ncontacts = 0
+t = 2.24 - 34.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00225cell.txt
+t = 2.25 - 34.6% simulation
+ncontacts = 0
+t = 2.25 - 34.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00226cell.txt
+t = 2.26 - 34.8% simulation
+ncontacts = 0
+t = 2.26 - 34.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00227cell.txt
+t = 2.27 - 34.9% simulation
+ncontacts = 0
+t = 2.27 - 35% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00228cell.txt
+t = 2.28 - 35.1% simulation
+ncontacts = 0
+t = 2.28 - 35.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00229cell.txt
+t = 2.29 - 35.2% simulation
+ncontacts = 0
+t = 2.29 - 35.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00230cell.txt
+t = 2.3 - 35.4% simulation
+ncontacts = 0
+t = 2.3 - 35.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00231cell.txt
+t = 2.31 - 35.5% simulation
+ncontacts = 0
+t = 2.31 - 35.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00232cell.txt
+t = 2.32 - 35.7% simulation
+ncontacts = 0
+t = 2.32 - 35.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00233cell.txt
+t = 2.33 - 35.8% simulation
+ncontacts = 0
+t = 2.33 - 35.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00234cell.txt
+t = 2.34 - 36% simulation
+ncontacts = 0
+t = 2.34 - 36.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00235cell.txt
+t = 2.35 - 36.2% simulation
+ncontacts = 0
+t = 2.35 - 36.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00236cell.txt
+t = 2.36 - 36.3% simulation
+ncontacts = 0
+t = 2.36 - 36.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00237cell.txt
+t = 2.37 - 36.5% simulation
+ncontacts = 0
+t = 2.37 - 36.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00238cell.txt
+t = 2.38 - 36.6% simulation
+ncontacts = 0
+t = 2.38 - 36.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00239cell.txt
+t = 2.39 - 36.8% simulation
+ncontacts = 0
+t = 2.39 - 36.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00240cell.txt
+t = 2.4 - 36.9% simulation
+ncontacts = 0
+t = 2.4 - 37% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00241cell.txt
+t = 2.41 - 37.1% simulation
+ncontacts = 0
+t = 2.41 - 37.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00242cell.txt
+t = 2.42 - 37.2% simulation
+ncontacts = 0
+t = 2.42 - 37.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00243cell.txt
+t = 2.43 - 37.4% simulation
+ncontacts = 0
+t = 2.43 - 37.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00244cell.txt
+t = 2.44 - 37.5% simulation
+ncontacts = 0
+t = 2.44 - 37.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00245cell.txt
+t = 2.45 - 37.7% simulation
+ncontacts = 0
+t = 2.45 - 37.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00246cell.txt
+t = 2.46 - 37.8% simulation
+ncontacts = 0
+t = 2.46 - 37.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00247cell.txt
+t = 2.47 - 38% simulation
+ncontacts = 0
+t = 2.47 - 38.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00248cell.txt
+t = 2.48 - 38.2% simulation
+ncontacts = 0
+t = 2.48 - 38.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00249cell.txt
+t = 2.49 - 38.3% simulation
+ncontacts = 0
+t = 2.49 - 38.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00250cell.txt
+t = 2.5 - 38.5% simulation
+ncontacts = 0
+t = 2.5 - 38.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00251cell.txt
+t = 2.51 - 38.6% simulation
+ncontacts = 0
+t = 2.51 - 38.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00252cell.txt
+t = 2.52 - 38.8% simulation
+ncontacts = 0
+t = 2.52 - 38.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00253cell.txt
+t = 2.53 - 38.9% simulation
+ncontacts = 0
+t = 2.54 - 39% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00254cell.txt
+t = 2.54 - 39.1% simulation
+ncontacts = 0
+t = 2.55 - 39.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00255cell.txt
+t = 2.55 - 39.2% simulation
+ncontacts = 0
+t = 2.56 - 39.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00256cell.txt
+t = 2.56 - 39.4% simulation
+ncontacts = 0
+t = 2.57 - 39.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00257cell.txt
+t = 2.57 - 39.5% simulation
+ncontacts = 0
+t = 2.58 - 39.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00258cell.txt
+t = 2.58 - 39.7% simulation
+ncontacts = 0
+t = 2.59 - 39.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00259cell.txt
+t = 2.59 - 39.8% simulation
+ncontacts = 0
+t = 2.6 - 39.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00260cell.txt
+t = 2.6 - 40% simulation
+ncontacts = 0
+t = 2.61 - 40.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00261cell.txt
+t = 2.61 - 40.2% simulation
+ncontacts = 0
+t = 2.62 - 40.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00262cell.txt
+t = 2.62 - 40.3% simulation
+ncontacts = 0
+t = 2.63 - 40.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00263cell.txt
+t = 2.63 - 40.5% simulation
+ncontacts = 0
+t = 2.64 - 40.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00264cell.txt
+t = 2.64 - 40.6% simulation
+ncontacts = 0
+t = 2.65 - 40.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00265cell.txt
+t = 2.65 - 40.8% simulation
+ncontacts = 0
+t = 2.66 - 40.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00266cell.txt
+t = 2.66 - 40.9% simulation
+ncontacts = 0
+t = 2.67 - 41% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00267cell.txt
+t = 2.67 - 41.1% simulation
+ncontacts = 0
+t = 2.68 - 41.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00268cell.txt
+t = 2.68 - 41.2% simulation
+ncontacts = 0
+t = 2.69 - 41.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00269cell.txt
+t = 2.69 - 41.4% simulation
+ncontacts = 0
+t = 2.7 - 41.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00270cell.txt
+t = 2.7 - 41.5% simulation
+ncontacts = 0
+t = 2.71 - 41.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00271cell.txt
+t = 2.71 - 41.7% simulation
+ncontacts = 0
+t = 2.72 - 41.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00272cell.txt
+t = 2.72 - 41.8% simulation
+ncontacts = 0
+t = 2.73 - 41.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00273cell.txt
+t = 2.73 - 42% simulation
+ncontacts = 0
+t = 2.74 - 42.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00274cell.txt
+t = 2.74 - 42.2% simulation
+ncontacts = 0
+t = 2.75 - 42.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00275cell.txt
+t = 2.75 - 42.3% simulation
+ncontacts = 0
+t = 2.76 - 42.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00276cell.txt
+t = 2.76 - 42.5% simulation
+ncontacts = 0
+t = 2.77 - 42.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00277cell.txt
+t = 2.77 - 42.6% simulation
+ncontacts = 0
+t = 2.78 - 42.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00278cell.txt
+t = 2.78 - 42.8% simulation
+ncontacts = 0
+t = 2.79 - 42.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00279cell.txt
+t = 2.79 - 42.9% simulation
+ncontacts = 0
+t = 2.8 - 43% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00280cell.txt
+t = 2.8 - 43.1% simulation
+ncontacts = 0
+t = 2.81 - 43.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00281cell.txt
+t = 2.81 - 43.2% simulation
+ncontacts = 0
+t = 2.82 - 43.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00282cell.txt
+t = 2.82 - 43.4% simulation
+ncontacts = 0
+t = 2.83 - 43.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00283cell.txt
+t = 2.83 - 43.5% simulation
+ncontacts = 0
+t = 2.84 - 43.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00284cell.txt
+t = 2.84 - 43.7% simulation
+ncontacts = 0
+t = 2.85 - 43.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00285cell.txt
+t = 2.85 - 43.8% simulation
+ncontacts = 0
+t = 2.86 - 43.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00286cell.txt
+t = 2.86 - 44% simulation
+ncontacts = 0
+t = 2.87 - 44.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00287cell.txt
+t = 2.87 - 44.2% simulation
+ncontacts = 0
+t = 2.88 - 44.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00288cell.txt
+t = 2.88 - 44.3% simulation
+ncontacts = 0
+t = 2.89 - 44.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00289cell.txt
+t = 2.89 - 44.5% simulation
+ncontacts = 0
+t = 2.9 - 44.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00290cell.txt
+t = 2.9 - 44.6% simulation
+ncontacts = 0
+t = 2.91 - 44.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00291cell.txt
+t = 2.91 - 44.8% simulation
+ncontacts = 0
+t = 2.92 - 44.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00292cell.txt
+t = 2.92 - 44.9% simulation
+ncontacts = 0
+t = 2.93 - 45% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00293cell.txt
+t = 2.93 - 45.1% simulation
+ncontacts = 0
+t = 2.94 - 45.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00294cell.txt
+t = 2.94 - 45.2% simulation
+ncontacts = 0
+t = 2.95 - 45.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00295cell.txt
+t = 2.95 - 45.4% simulation
+ncontacts = 0
+t = 2.96 - 45.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00296cell.txt
+t = 2.96 - 45.5% simulation
+ncontacts = 0
+t = 2.97 - 45.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00297cell.txt
+t = 2.97 - 45.7% simulation
+ncontacts = 0
+t = 2.98 - 45.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00298cell.txt
+t = 2.98 - 45.8% simulation
+ncontacts = 0
+t = 2.99 - 45.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00299cell.txt
+t = 2.99 - 46% simulation
+ncontacts = 0
+t = 3 - 46.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00300cell.txt
+t = 3 - 46.2% simulation
+ncontacts = 0
+t = 3.01 - 46.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00301cell.txt
+t = 3.01 - 46.3% simulation
+ncontacts = 0
+t = 3.02 - 46.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00302cell.txt
+t = 3.02 - 46.5% simulation
+ncontacts = 0
+t = 3.03 - 46.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00303cell.txt
+t = 3.03 - 46.6% simulation
+ncontacts = 0
+t = 3.04 - 46.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00304cell.txt
+t = 3.04 - 46.8% simulation
+ncontacts = 0
+t = 3.05 - 46.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00305cell.txt
+t = 3.05 - 46.9% simulation
+ncontacts = 0
+t = 3.06 - 47% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00306cell.txt
+t = 3.06 - 47.1% simulation
+ncontacts = 0
+t = 3.07 - 47.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00307cell.txt
+t = 3.07 - 47.2% simulation
+ncontacts = 0
+t = 3.08 - 47.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00308cell.txt
+t = 3.08 - 47.4% simulation
+ncontacts = 0
+t = 3.09 - 47.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00309cell.txt
+t = 3.09 - 47.5% simulation
+ncontacts = 0
+t = 3.1 - 47.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00310cell.txt
+t = 3.1 - 47.7% simulation
+ncontacts = 0
+t = 3.11 - 47.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00311cell.txt
+t = 3.11 - 47.8% simulation
+ncontacts = 0
+t = 3.12 - 47.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00312cell.txt
+t = 3.12 - 48% simulation
+ncontacts = 0
+t = 3.13 - 48.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00313cell.txt
+t = 3.13 - 48.2% simulation
+ncontacts = 0
+t = 3.14 - 48.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00314cell.txt
+t = 3.14 - 48.3% simulation
+ncontacts = 0
+t = 3.15 - 48.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00315cell.txt
+t = 3.15 - 48.5% simulation
+ncontacts = 0
+t = 3.16 - 48.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00316cell.txt
+t = 3.16 - 48.6% simulation
+ncontacts = 0
+t = 3.17 - 48.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00317cell.txt
+t = 3.17 - 48.8% simulation
+ncontacts = 0
+t = 3.18 - 48.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00318cell.txt
+t = 3.18 - 48.9% simulation
+ncontacts = 0
+t = 3.19 - 49% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00319cell.txt
+t = 3.19 - 49.1% simulation
+ncontacts = 0
+t = 3.2 - 49.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00320cell.txt
+t = 3.2 - 49.2% simulation
+ncontacts = 0
+t = 3.21 - 49.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00321cell.txt
+t = 3.21 - 49.4% simulation
+ncontacts = 0
+t = 3.22 - 49.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00322cell.txt
+t = 3.22 - 49.5% simulation
+ncontacts = 0
+t = 3.23 - 49.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00323cell.txt
+t = 3.23 - 49.7% simulation
+ncontacts = 0
+t = 3.24 - 49.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00324cell.txt
+t = 3.24 - 49.8% simulation
+ncontacts = 0
+t = 3.25 - 49.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00325cell.txt
+t = 3.25 - 50% simulation
+ncontacts = 0
+t = 3.26 - 50.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00326cell.txt
+t = 3.26 - 50.2% simulation
+ncontacts = 0
+t = 3.27 - 50.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00327cell.txt
+t = 3.27 - 50.3% simulation
+ncontacts = 0
+t = 3.28 - 50.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00328cell.txt
+t = 3.28 - 50.5% simulation
+ncontacts = 0
+t = 3.29 - 50.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00329cell.txt
+t = 3.29 - 50.6% simulation
+ncontacts = 0
+t = 3.3 - 50.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00330cell.txt
+t = 3.3 - 50.8% simulation
+ncontacts = 0
+t = 3.31 - 50.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00331cell.txt
+t = 3.31 - 50.9% simulation
+ncontacts = 0
+t = 3.32 - 51% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00332cell.txt
+t = 3.32 - 51.1% simulation
+ncontacts = 0
+t = 3.33 - 51.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00333cell.txt
+t = 3.33 - 51.2% simulation
+ncontacts = 0
+t = 3.34 - 51.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00334cell.txt
+t = 3.34 - 51.4% simulation
+ncontacts = 0
+t = 3.35 - 51.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00335cell.txt
+t = 3.35 - 51.5% simulation
+ncontacts = 0
+t = 3.36 - 51.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00336cell.txt
+t = 3.36 - 51.7% simulation
+ncontacts = 0
+t = 3.37 - 51.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00337cell.txt
+t = 3.37 - 51.8% simulation
+ncontacts = 0
+t = 3.38 - 51.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00338cell.txt
+t = 3.38 - 52% simulation
+ncontacts = 0
+t = 3.39 - 52.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00339cell.txt
+t = 3.39 - 52.2% simulation
+ncontacts = 0
+t = 3.4 - 52.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00340cell.txt
+t = 3.4 - 52.3% simulation
+ncontacts = 0
+t = 3.41 - 52.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00341cell.txt
+t = 3.41 - 52.5% simulation
+ncontacts = 0
+t = 3.42 - 52.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00342cell.txt
+t = 3.42 - 52.6% simulation
+ncontacts = 0
+t = 3.43 - 52.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00343cell.txt
+t = 3.43 - 52.8% simulation
+ncontacts = 0
+t = 3.44 - 52.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00344cell.txt
+t = 3.44 - 52.9% simulation
+ncontacts = 0
+t = 3.45 - 53% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00345cell.txt
+t = 3.45 - 53.1% simulation
+ncontacts = 0
+t = 3.46 - 53.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00346cell.txt
+t = 3.46 - 53.2% simulation
+ncontacts = 0
+t = 3.47 - 53.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00347cell.txt
+t = 3.47 - 53.4% simulation
+ncontacts = 0
+t = 3.48 - 53.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00348cell.txt
+t = 3.48 - 53.5% simulation
+ncontacts = 0
+t = 3.49 - 53.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00349cell.txt
+t = 3.49 - 53.7% simulation
+ncontacts = 0
+t = 3.5 - 53.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00350cell.txt
+t = 3.5 - 53.8% simulation
+ncontacts = 0
+t = 3.51 - 53.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00351cell.txt
+t = 3.51 - 54% simulation
+ncontacts = 0
+t = 3.52 - 54.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00352cell.txt
+t = 3.52 - 54.2% simulation
+ncontacts = 0
+t = 3.53 - 54.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00353cell.txt
+t = 3.53 - 54.3% simulation
+ncontacts = 0
+t = 3.54 - 54.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00354cell.txt
+t = 3.54 - 54.5% simulation
+ncontacts = 0
+t = 3.55 - 54.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00355cell.txt
+t = 3.55 - 54.6% simulation
+ncontacts = 0
+t = 3.56 - 54.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00356cell.txt
+t = 3.56 - 54.8% simulation
+ncontacts = 0
+t = 3.57 - 54.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00357cell.txt
+t = 3.57 - 54.9% simulation
+ncontacts = 0
+t = 3.58 - 55% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00358cell.txt
+t = 3.58 - 55.1% simulation
+ncontacts = 0
+t = 3.59 - 55.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00359cell.txt
+t = 3.59 - 55.2% simulation
+ncontacts = 0
+t = 3.6 - 55.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00360cell.txt
+t = 3.6 - 55.4% simulation
+ncontacts = 0
+t = 3.61 - 55.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00361cell.txt
+t = 3.61 - 55.5% simulation
+ncontacts = 0
+t = 3.62 - 55.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00362cell.txt
+t = 3.62 - 55.7% simulation
+ncontacts = 0
+t = 3.63 - 55.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00363cell.txt
+t = 3.63 - 55.8% simulation
+ncontacts = 0
+t = 3.64 - 55.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00364cell.txt
+t = 3.64 - 56% simulation
+ncontacts = 0
+t = 3.65 - 56.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00365cell.txt
+t = 3.65 - 56.2% simulation
+ncontacts = 0
+t = 3.66 - 56.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00366cell.txt
+t = 3.66 - 56.3% simulation
+ncontacts = 0
+t = 3.67 - 56.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00367cell.txt
+t = 3.67 - 56.5% simulation
+ncontacts = 0
+t = 3.68 - 56.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00368cell.txt
+t = 3.68 - 56.6% simulation
+ncontacts = 0
+t = 3.69 - 56.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00369cell.txt
+t = 3.69 - 56.8% simulation
+ncontacts = 0
+t = 3.7 - 56.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00370cell.txt
+t = 3.7 - 56.9% simulation
+ncontacts = 0
+t = 3.71 - 57% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00371cell.txt
+t = 3.71 - 57.1% simulation
+ncontacts = 0
+t = 3.72 - 57.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00372cell.txt
+t = 3.72 - 57.2% simulation
+ncontacts = 0
+t = 3.73 - 57.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00373cell.txt
+t = 3.73 - 57.4% simulation
+ncontacts = 0
+t = 3.74 - 57.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00374cell.txt
+t = 3.74 - 57.5% simulation
+ncontacts = 0
+t = 3.75 - 57.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00375cell.txt
+t = 3.75 - 57.7% simulation
+ncontacts = 0
+t = 3.76 - 57.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00376cell.txt
+t = 3.76 - 57.8% simulation
+ncontacts = 0
+t = 3.77 - 57.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00377cell.txt
+t = 3.77 - 58% simulation
+ncontacts = 0
+t = 3.78 - 58.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00378cell.txt
+t = 3.78 - 58.2% simulation
+ncontacts = 0
+t = 3.79 - 58.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00379cell.txt
+t = 3.79 - 58.3% simulation
+ncontacts = 0
+t = 3.8 - 58.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00380cell.txt
+t = 3.8 - 58.5% simulation
+ncontacts = 0
+t = 3.81 - 58.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00381cell.txt
+t = 3.81 - 58.6% simulation
+ncontacts = 0
+t = 3.82 - 58.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00382cell.txt
+t = 3.82 - 58.8% simulation
+ncontacts = 0
+t = 3.83 - 58.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00383cell.txt
+t = 3.83 - 58.9% simulation
+ncontacts = 0
+t = 3.84 - 59% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00384cell.txt
+t = 3.84 - 59.1% simulation
+ncontacts = 0
+t = 3.85 - 59.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00385cell.txt
+t = 3.85 - 59.2% simulation
+ncontacts = 0
+t = 3.86 - 59.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00386cell.txt
+t = 3.86 - 59.4% simulation
+ncontacts = 0
+t = 3.87 - 59.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00387cell.txt
+t = 3.87 - 59.5% simulation
+ncontacts = 0
+t = 3.88 - 59.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00388cell.txt
+t = 3.88 - 59.7% simulation
+ncontacts = 0
+t = 3.89 - 59.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00389cell.txt
+t = 3.89 - 59.8% simulation
+ncontacts = 0
+t = 3.9 - 59.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00390cell.txt
+t = 3.9 - 60% simulation
+ncontacts = 0
+t = 3.91 - 60.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00391cell.txt
+t = 3.91 - 60.2% simulation
+ncontacts = 0
+t = 3.92 - 60.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00392cell.txt
+t = 3.92 - 60.3% simulation
+ncontacts = 0
+t = 3.93 - 60.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00393cell.txt
+t = 3.93 - 60.5% simulation
+ncontacts = 0
+t = 3.94 - 60.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00394cell.txt
+t = 3.94 - 60.6% simulation
+ncontacts = 0
+t = 3.95 - 60.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00395cell.txt
+t = 3.95 - 60.8% simulation
+ncontacts = 0
+t = 3.96 - 60.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00396cell.txt
+t = 3.96 - 60.9% simulation
+ncontacts = 0
+t = 3.97 - 61% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00397cell.txt
+t = 3.97 - 61.1% simulation
+ncontacts = 0
+t = 3.98 - 61.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00398cell.txt
+t = 3.98 - 61.2% simulation
+ncontacts = 0
+t = 3.99 - 61.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00399cell.txt
+t = 3.99 - 61.4% simulation
+ncontacts = 0
+t = 4 - 61.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00400cell.txt
+t = 4 - 61.5% simulation
+ncontacts = 0
+t = 4.01 - 61.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00401cell.txt
+t = 4.01 - 61.7% simulation
+ncontacts = 0
+t = 4.02 - 61.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00402cell.txt
+t = 4.02 - 61.8% simulation
+ncontacts = 0
+t = 4.03 - 61.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00403cell.txt
+t = 4.03 - 62% simulation
+ncontacts = 0
+t = 4.04 - 62.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00404cell.txt
+t = 4.04 - 62.2% simulation
+ncontacts = 0
+t = 4.05 - 62.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00405cell.txt
+t = 4.05 - 62.3% simulation
+ncontacts = 0
+t = 4.06 - 62.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00406cell.txt
+t = 4.06 - 62.5% simulation
+ncontacts = 0
+t = 4.07 - 62.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00407cell.txt
+t = 4.07 - 62.6% simulation
+ncontacts = 0
+t = 4.08 - 62.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00408cell.txt
+t = 4.08 - 62.8% simulation
+ncontacts = 0
+t = 4.09 - 62.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00409cell.txt
+t = 4.09 - 62.9% simulation
+ncontacts = 0
+t = 4.1 - 63% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00410cell.txt
+t = 4.1 - 63.1% simulation
+ncontacts = 0
+t = 4.11 - 63.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00411cell.txt
+t = 4.11 - 63.2% simulation
+ncontacts = 0
+t = 4.12 - 63.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00412cell.txt
+t = 4.12 - 63.4% simulation
+ncontacts = 0
+t = 4.13 - 63.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00413cell.txt
+t = 4.13 - 63.5% simulation
+ncontacts = 0
+t = 4.14 - 63.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00414cell.txt
+t = 4.14 - 63.7% simulation
+ncontacts = 0
+t = 4.15 - 63.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00415cell.txt
+t = 4.15 - 63.8% simulation
+ncontacts = 0
+t = 4.16 - 63.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00416cell.txt
+t = 4.16 - 64% simulation
+ncontacts = 0
+t = 4.17 - 64.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00417cell.txt
+t = 4.17 - 64.2% simulation
+ncontacts = 0
+t = 4.18 - 64.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00418cell.txt
+t = 4.18 - 64.3% simulation
+ncontacts = 0
+t = 4.19 - 64.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00419cell.txt
+t = 4.19 - 64.5% simulation
+ncontacts = 0
+t = 4.2 - 64.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00420cell.txt
+t = 4.2 - 64.6% simulation
+ncontacts = 0
+t = 4.21 - 64.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00421cell.txt
+t = 4.21 - 64.8% simulation
+ncontacts = 0
+t = 4.22 - 64.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00422cell.txt
+t = 4.22 - 64.9% simulation
+ncontacts = 0
+t = 4.23 - 65% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00423cell.txt
+t = 4.23 - 65.1% simulation
+ncontacts = 0
+t = 4.24 - 65.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00424cell.txt
+t = 4.24 - 65.2% simulation
+ncontacts = 0
+t = 4.25 - 65.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00425cell.txt
+t = 4.25 - 65.4% simulation
+ncontacts = 0
+t = 4.26 - 65.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00426cell.txt
+t = 4.26 - 65.5% simulation
+ncontacts = 0
+t = 4.27 - 65.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00427cell.txt
+t = 4.27 - 65.7% simulation
+ncontacts = 0
+t = 4.28 - 65.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00428cell.txt
+t = 4.28 - 65.8% simulation
+ncontacts = 0
+t = 4.29 - 65.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00429cell.txt
+t = 4.29 - 66% simulation
+ncontacts = 0
+t = 4.3 - 66.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00430cell.txt
+t = 4.3 - 66.2% simulation
+ncontacts = 0
+t = 4.31 - 66.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00431cell.txt
+t = 4.31 - 66.3% simulation
+ncontacts = 0
+t = 4.32 - 66.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00432cell.txt
+t = 4.32 - 66.5% simulation
+ncontacts = 0
+t = 4.33 - 66.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00433cell.txt
+t = 4.33 - 66.6% simulation
+ncontacts = 0
+t = 4.34 - 66.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00434cell.txt
+t = 4.34 - 66.8% simulation
+ncontacts = 0
+t = 4.35 - 66.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00435cell.txt
+t = 4.35 - 66.9% simulation
+ncontacts = 0
+t = 4.36 - 67% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00436cell.txt
+t = 4.36 - 67.1% simulation
+ncontacts = 0
+t = 4.37 - 67.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00437cell.txt
+t = 4.37 - 67.2% simulation
+ncontacts = 0
+t = 4.38 - 67.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00438cell.txt
+t = 4.38 - 67.4% simulation
+ncontacts = 0
+t = 4.39 - 67.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00439cell.txt
+t = 4.39 - 67.5% simulation
+ncontacts = 0
+t = 4.4 - 67.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00440cell.txt
+t = 4.4 - 67.7% simulation
+ncontacts = 0
+t = 4.41 - 67.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00441cell.txt
+t = 4.41 - 67.8% simulation
+ncontacts = 0
+t = 4.42 - 67.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00442cell.txt
+t = 4.42 - 68% simulation
+ncontacts = 0
+t = 4.43 - 68.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00443cell.txt
+t = 4.43 - 68.2% simulation
+ncontacts = 0
+t = 4.44 - 68.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00444cell.txt
+t = 4.44 - 68.3% simulation
+ncontacts = 0
+t = 4.45 - 68.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00445cell.txt
+t = 4.45 - 68.5% simulation
+ncontacts = 0
+t = 4.46 - 68.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00446cell.txt
+t = 4.46 - 68.6% simulation
+ncontacts = 0
+t = 4.47 - 68.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00447cell.txt
+t = 4.47 - 68.8% simulation
+ncontacts = 0
+t = 4.48 - 68.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00448cell.txt
+t = 4.48 - 68.9% simulation
+ncontacts = 0
+t = 4.49 - 69% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00449cell.txt
+t = 4.49 - 69.1% simulation
+ncontacts = 0
+t = 4.5 - 69.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00450cell.txt
+t = 4.5 - 69.2% simulation
+ncontacts = 0
+t = 4.51 - 69.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00451cell.txt
+t = 4.51 - 69.4% simulation
+ncontacts = 0
+t = 4.52 - 69.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00452cell.txt
+t = 4.52 - 69.5% simulation
+ncontacts = 0
+t = 4.53 - 69.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00453cell.txt
+t = 4.53 - 69.7% simulation
+ncontacts = 0
+t = 4.54 - 69.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00454cell.txt
+t = 4.54 - 69.8% simulation
+ncontacts = 0
+t = 4.55 - 69.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00455cell.txt
+t = 4.55 - 70% simulation
+ncontacts = 0
+t = 4.56 - 70.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00456cell.txt
+t = 4.56 - 70.2% simulation
+ncontacts = 0
+t = 4.57 - 70.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00457cell.txt
+t = 4.57 - 70.3% simulation
+ncontacts = 0
+t = 4.58 - 70.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00458cell.txt
+t = 4.58 - 70.5% simulation
+ncontacts = 0
+t = 4.59 - 70.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00459cell.txt
+t = 4.59 - 70.6% simulation
+ncontacts = 0
+t = 4.6 - 70.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00460cell.txt
+t = 4.6 - 70.8% simulation
+ncontacts = 0
+t = 4.61 - 70.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00461cell.txt
+t = 4.61 - 70.9% simulation
+ncontacts = 0
+t = 4.62 - 71% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00462cell.txt
+t = 4.62 - 71.1% simulation
+ncontacts = 0
+t = 4.63 - 71.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00463cell.txt
+t = 4.63 - 71.2% simulation
+ncontacts = 0
+t = 4.64 - 71.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00464cell.txt
+t = 4.64 - 71.4% simulation
+ncontacts = 0
+t = 4.65 - 71.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00465cell.txt
+t = 4.65 - 71.5% simulation
+ncontacts = 0
+t = 4.66 - 71.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00466cell.txt
+t = 4.66 - 71.7% simulation
+ncontacts = 0
+t = 4.67 - 71.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00467cell.txt
+t = 4.67 - 71.8% simulation
+ncontacts = 0
+t = 4.68 - 71.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00468cell.txt
+t = 4.68 - 72% simulation
+ncontacts = 0
+t = 4.69 - 72.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00469cell.txt
+t = 4.69 - 72.2% simulation
+ncontacts = 0
+t = 4.7 - 72.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00470cell.txt
+t = 4.7 - 72.3% simulation
+ncontacts = 0
+t = 4.71 - 72.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00471cell.txt
+t = 4.71 - 72.5% simulation
+ncontacts = 0
+t = 4.72 - 72.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00472cell.txt
+t = 4.72 - 72.6% simulation
+ncontacts = 0
+t = 4.73 - 72.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00473cell.txt
+t = 4.73 - 72.8% simulation
+ncontacts = 0
+t = 4.74 - 72.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00474cell.txt
+t = 4.74 - 72.9% simulation
+ncontacts = 0
+t = 4.75 - 73% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00475cell.txt
+t = 4.75 - 73.1% simulation
+ncontacts = 0
+t = 4.76 - 73.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00476cell.txt
+t = 4.76 - 73.2% simulation
+ncontacts = 0
+t = 4.77 - 73.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00477cell.txt
+t = 4.77 - 73.4% simulation
+ncontacts = 0
+t = 4.78 - 73.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00478cell.txt
+t = 4.78 - 73.5% simulation
+ncontacts = 0
+t = 4.79 - 73.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00479cell.txt
+t = 4.79 - 73.7% simulation
+ncontacts = 0
+t = 4.8 - 73.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00480cell.txt
+t = 4.8 - 73.8% simulation
+ncontacts = 0
+t = 4.81 - 73.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00481cell.txt
+t = 4.81 - 74% simulation
+ncontacts = 0
+t = 4.82 - 74.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00482cell.txt
+t = 4.82 - 74.2% simulation
+ncontacts = 0
+t = 4.83 - 74.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00483cell.txt
+t = 4.83 - 74.3% simulation
+ncontacts = 0
+t = 4.84 - 74.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00484cell.txt
+t = 4.84 - 74.5% simulation
+ncontacts = 0
+t = 4.85 - 74.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00485cell.txt
+t = 4.85 - 74.6% simulation
+ncontacts = 0
+t = 4.86 - 74.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00486cell.txt
+t = 4.86 - 74.8% simulation
+ncontacts = 0
+t = 4.87 - 74.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00487cell.txt
+t = 4.87 - 74.9% simulation
+ncontacts = 0
+t = 4.88 - 75% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00488cell.txt
+t = 4.88 - 75.1% simulation
+ncontacts = 0
+t = 4.89 - 75.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00489cell.txt
+t = 4.89 - 75.2% simulation
+ncontacts = 0
+t = 4.9 - 75.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00490cell.txt
+t = 4.9 - 75.4% simulation
+ncontacts = 0
+t = 4.91 - 75.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00491cell.txt
+t = 4.91 - 75.5% simulation
+ncontacts = 0
+t = 4.92 - 75.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00492cell.txt
+t = 4.92 - 75.7% simulation
+ncontacts = 0
+t = 4.93 - 75.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00493cell.txt
+t = 4.93 - 75.8% simulation
+ncontacts = 0
+t = 4.94 - 75.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00494cell.txt
+t = 4.94 - 76% simulation
+ncontacts = 0
+t = 4.95 - 76.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00495cell.txt
+t = 4.95 - 76.2% simulation
+ncontacts = 0
+t = 4.96 - 76.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00496cell.txt
+t = 4.96 - 76.3% simulation
+ncontacts = 0
+t = 4.97 - 76.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00497cell.txt
+t = 4.97 - 76.5% simulation
+ncontacts = 0
+t = 4.98 - 76.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00498cell.txt
+t = 4.98 - 76.6% simulation
+ncontacts = 0
+t = 4.99 - 76.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00499cell.txt
+t = 4.99 - 76.8% simulation
+ncontacts = 0
+t = 5 - 76.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00500cell.txt
+t = 5 - 76.9% simulation
+ncontacts = 0
+t = 5.01 - 77% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00501cell.txt
+t = 5.01 - 77.1% simulation
+ncontacts = 0
+t = 5.02 - 77.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00502cell.txt
+t = 5.02 - 77.2% simulation
+ncontacts = 0
+t = 5.03 - 77.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00503cell.txt
+t = 5.03 - 77.4% simulation
+ncontacts = 0
+t = 5.04 - 77.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00504cell.txt
+t = 5.04 - 77.5% simulation
+ncontacts = 0
+t = 5.05 - 77.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00505cell.txt
+t = 5.05 - 77.7% simulation
+ncontacts = 0
+t = 5.06 - 77.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00506cell.txt
+t = 5.06 - 77.8% simulation
+ncontacts = 0
+t = 5.07 - 77.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00507cell.txt
+t = 5.07 - 78% simulation
+ncontacts = 0
+t = 5.08 - 78.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00508cell.txt
+t = 5.08 - 78.2% simulation
+ncontacts = 0
+t = 5.09 - 78.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00509cell.txt
+t = 5.09 - 78.3% simulation
+ncontacts = 0
+t = 5.1 - 78.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00510cell.txt
+t = 5.1 - 78.5% simulation
+ncontacts = 0
+t = 5.11 - 78.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00511cell.txt
+t = 5.11 - 78.6% simulation
+ncontacts = 0
+t = 5.12 - 78.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00512cell.txt
+t = 5.12 - 78.8% simulation
+ncontacts = 0
+t = 5.13 - 78.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00513cell.txt
+t = 5.13 - 78.9% simulation
+ncontacts = 0
+t = 5.14 - 79% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00514cell.txt
+t = 5.14 - 79.1% simulation
+ncontacts = 0
+t = 5.15 - 79.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00515cell.txt
+t = 5.15 - 79.2% simulation
+ncontacts = 0
+t = 5.16 - 79.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00516cell.txt
+t = 5.16 - 79.4% simulation
+ncontacts = 0
+t = 5.17 - 79.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00517cell.txt
+t = 5.17 - 79.5% simulation
+ncontacts = 0
+t = 5.18 - 79.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00518cell.txt
+t = 5.18 - 79.7% simulation
+ncontacts = 0
+t = 5.19 - 79.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00519cell.txt
+t = 5.19 - 79.8% simulation
+ncontacts = 0
+t = 5.2 - 79.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00520cell.txt
+t = 5.2 - 80% simulation
+ncontacts = 0
+t = 5.21 - 80.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00521cell.txt
+t = 5.21 - 80.2% simulation
+ncontacts = 0
+t = 5.22 - 80.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00522cell.txt
+t = 5.22 - 80.3% simulation
+ncontacts = 0
+t = 5.23 - 80.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00523cell.txt
+t = 5.23 - 80.5% simulation
+ncontacts = 0
+t = 5.24 - 80.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00524cell.txt
+t = 5.24 - 80.6% simulation
+ncontacts = 0
+t = 5.25 - 80.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00525cell.txt
+t = 5.25 - 80.8% simulation
+ncontacts = 0
+t = 5.26 - 80.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00526cell.txt
+t = 5.26 - 80.9% simulation
+ncontacts = 0
+t = 5.27 - 81% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00527cell.txt
+t = 5.27 - 81.1% simulation
+ncontacts = 0
+t = 5.28 - 81.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00528cell.txt
+t = 5.28 - 81.2% simulation
+ncontacts = 0
+t = 5.29 - 81.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00529cell.txt
+t = 5.29 - 81.4% simulation
+ncontacts = 0
+t = 5.3 - 81.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00530cell.txt
+t = 5.3 - 81.5% simulation
+ncontacts = 0
+t = 5.31 - 81.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00531cell.txt
+t = 5.31 - 81.7% simulation
+ncontacts = 0
+t = 5.32 - 81.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00532cell.txt
+t = 5.32 - 81.8% simulation
+ncontacts = 0
+t = 5.33 - 81.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00533cell.txt
+t = 5.33 - 82% simulation
+ncontacts = 0
+t = 5.34 - 82.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00534cell.txt
+t = 5.34 - 82.2% simulation
+ncontacts = 0
+t = 5.35 - 82.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00535cell.txt
+t = 5.35 - 82.3% simulation
+ncontacts = 0
+t = 5.36 - 82.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00536cell.txt
+t = 5.36 - 82.5% simulation
+ncontacts = 0
+t = 5.37 - 82.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00537cell.txt
+t = 5.37 - 82.6% simulation
+ncontacts = 0
+t = 5.38 - 82.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00538cell.txt
+t = 5.38 - 82.8% simulation
+ncontacts = 0
+t = 5.39 - 82.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00539cell.txt
+t = 5.39 - 82.9% simulation
+ncontacts = 0
+t = 5.4 - 83% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00540cell.txt
+t = 5.4 - 83.1% simulation
+ncontacts = 0
+t = 5.41 - 83.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00541cell.txt
+t = 5.41 - 83.2% simulation
+ncontacts = 0
+t = 5.42 - 83.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00542cell.txt
+t = 5.42 - 83.4% simulation
+ncontacts = 0
+t = 5.43 - 83.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00543cell.txt
+t = 5.43 - 83.5% simulation
+ncontacts = 0
+t = 5.44 - 83.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00544cell.txt
+t = 5.44 - 83.7% simulation
+ncontacts = 0
+t = 5.45 - 83.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00545cell.txt
+t = 5.45 - 83.8% simulation
+ncontacts = 0
+t = 5.46 - 83.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00546cell.txt
+t = 5.46 - 84% simulation
+ncontacts = 0
+t = 5.47 - 84.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00547cell.txt
+t = 5.47 - 84.2% simulation
+ncontacts = 0
+t = 5.48 - 84.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00548cell.txt
+t = 5.48 - 84.3% simulation
+ncontacts = 0
+t = 5.49 - 84.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00549cell.txt
+t = 5.49 - 84.5% simulation
+ncontacts = 0
+t = 5.5 - 84.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00550cell.txt
+t = 5.5 - 84.6% simulation
+ncontacts = 0
+t = 5.51 - 84.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00551cell.txt
+t = 5.51 - 84.8% simulation
+ncontacts = 0
+t = 5.52 - 84.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00552cell.txt
+t = 5.52 - 84.9% simulation
+ncontacts = 0
+t = 5.53 - 85% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00553cell.txt
+t = 5.53 - 85.1% simulation
+ncontacts = 0
+t = 5.54 - 85.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00554cell.txt
+t = 5.54 - 85.2% simulation
+ncontacts = 0
+t = 5.55 - 85.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00555cell.txt
+t = 5.55 - 85.4% simulation
+ncontacts = 0
+t = 5.56 - 85.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00556cell.txt
+t = 5.56 - 85.5% simulation
+ncontacts = 0
+t = 5.57 - 85.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00557cell.txt
+t = 5.57 - 85.7% simulation
+ncontacts = 0
+t = 5.58 - 85.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00558cell.txt
+t = 5.58 - 85.8% simulation
+ncontacts = 0
+t = 5.59 - 85.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00559cell.txt
+t = 5.59 - 86% simulation
+ncontacts = 0
+t = 5.6 - 86.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00560cell.txt
+t = 5.6 - 86.2% simulation
+ncontacts = 0
+t = 5.61 - 86.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00561cell.txt
+t = 5.61 - 86.3% simulation
+ncontacts = 0
+t = 5.62 - 86.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00562cell.txt
+t = 5.62 - 86.5% simulation
+ncontacts = 0
+t = 5.63 - 86.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00563cell.txt
+t = 5.63 - 86.6% simulation
+ncontacts = 0
+t = 5.64 - 86.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00564cell.txt
+t = 5.64 - 86.8% simulation
+ncontacts = 0
+t = 5.65 - 86.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00565cell.txt
+t = 5.65 - 86.9% simulation
+ncontacts = 0
+t = 5.66 - 87% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00566cell.txt
+t = 5.66 - 87.1% simulation
+ncontacts = 0
+t = 5.67 - 87.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00567cell.txt
+t = 5.67 - 87.2% simulation
+ncontacts = 0
+t = 5.68 - 87.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00568cell.txt
+t = 5.68 - 87.4% simulation
+ncontacts = 0
+t = 5.69 - 87.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00569cell.txt
+t = 5.69 - 87.5% simulation
+ncontacts = 0
+t = 5.7 - 87.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00570cell.txt
+t = 5.7 - 87.7% simulation
+ncontacts = 0
+t = 5.71 - 87.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00571cell.txt
+t = 5.71 - 87.8% simulation
+ncontacts = 0
+t = 5.72 - 87.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00572cell.txt
+t = 5.72 - 88% simulation
+ncontacts = 0
+t = 5.73 - 88.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00573cell.txt
+t = 5.73 - 88.2% simulation
+ncontacts = 0
+t = 5.74 - 88.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00574cell.txt
+t = 5.74 - 88.3% simulation
+ncontacts = 0
+t = 5.75 - 88.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00575cell.txt
+t = 5.75 - 88.5% simulation
+ncontacts = 0
+t = 5.76 - 88.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00576cell.txt
+t = 5.76 - 88.6% simulation
+ncontacts = 0
+t = 5.77 - 88.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00577cell.txt
+t = 5.77 - 88.8% simulation
+ncontacts = 0
+t = 5.78 - 88.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00578cell.txt
+t = 5.78 - 88.9% simulation
+ncontacts = 0
+t = 5.79 - 89% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00579cell.txt
+t = 5.79 - 89.1% simulation
+ncontacts = 0
+t = 5.8 - 89.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00580cell.txt
+t = 5.8 - 89.2% simulation
+ncontacts = 0
+t = 5.81 - 89.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00581cell.txt
+t = 5.81 - 89.4% simulation
+ncontacts = 0
+t = 5.82 - 89.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00582cell.txt
+t = 5.82 - 89.5% simulation
+ncontacts = 0
+t = 5.83 - 89.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00583cell.txt
+t = 5.83 - 89.7% simulation
+ncontacts = 0
+t = 5.84 - 89.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00584cell.txt
+t = 5.84 - 89.8% simulation
+ncontacts = 0
+t = 5.85 - 89.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00585cell.txt
+t = 5.85 - 90% simulation
+ncontacts = 0
+t = 5.86 - 90.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00586cell.txt
+t = 5.86 - 90.2% simulation
+ncontacts = 0
+t = 5.87 - 90.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00587cell.txt
+t = 5.87 - 90.3% simulation
+ncontacts = 0
+t = 5.88 - 90.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00588cell.txt
+t = 5.88 - 90.5% simulation
+ncontacts = 0
+t = 5.89 - 90.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00589cell.txt
+t = 5.89 - 90.6% simulation
+ncontacts = 0
+t = 5.9 - 90.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00590cell.txt
+t = 5.9 - 90.8% simulation
+ncontacts = 0
+t = 5.91 - 90.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00591cell.txt
+t = 5.91 - 90.9% simulation
+ncontacts = 0
+t = 5.92 - 91% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00592cell.txt
+t = 5.92 - 91.1% simulation
+ncontacts = 0
+t = 5.93 - 91.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00593cell.txt
+t = 5.93 - 91.2% simulation
+ncontacts = 0
+t = 5.94 - 91.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00594cell.txt
+t = 5.94 - 91.4% simulation
+ncontacts = 0
+t = 5.95 - 91.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00595cell.txt
+t = 5.95 - 91.5% simulation
+ncontacts = 0
+t = 5.96 - 91.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00596cell.txt
+t = 5.96 - 91.7% simulation
+ncontacts = 0
+t = 5.97 - 91.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00597cell.txt
+t = 5.97 - 91.8% simulation
+ncontacts = 0
+t = 5.98 - 91.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00598cell.txt
+t = 5.98 - 92% simulation
+ncontacts = 0
+t = 5.99 - 92.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00599cell.txt
+t = 5.99 - 92.2% simulation
+ncontacts = 0
+t = 6 - 92.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00600cell.txt
+t = 6 - 92.3% simulation
+ncontacts = 0
+t = 6.01 - 92.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00601cell.txt
+t = 6.01 - 92.5% simulation
+ncontacts = 0
+t = 6.02 - 92.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00602cell.txt
+t = 6.02 - 92.6% simulation
+ncontacts = 0
+t = 6.03 - 92.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00603cell.txt
+t = 6.03 - 92.8% simulation
+ncontacts = 0
+t = 6.04 - 92.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00604cell.txt
+t = 6.04 - 92.9% simulation
+ncontacts = 0
+t = 6.05 - 93% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00605cell.txt
+t = 6.05 - 93.1% simulation
+ncontacts = 0
+t = 6.06 - 93.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00606cell.txt
+t = 6.06 - 93.2% simulation
+ncontacts = 0
+t = 6.07 - 93.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00607cell.txt
+t = 6.07 - 93.4% simulation
+ncontacts = 0
+t = 6.08 - 93.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00608cell.txt
+t = 6.08 - 93.5% simulation
+ncontacts = 0
+t = 6.09 - 93.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00609cell.txt
+t = 6.09 - 93.7% simulation
+ncontacts = 0
+t = 6.1 - 93.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00610cell.txt
+t = 6.1 - 93.8% simulation
+ncontacts = 0
+t = 6.11 - 93.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00611cell.txt
+t = 6.11 - 94% simulation
+ncontacts = 0
+t = 6.12 - 94.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00612cell.txt
+t = 6.12 - 94.2% simulation
+ncontacts = 0
+t = 6.13 - 94.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00613cell.txt
+t = 6.13 - 94.3% simulation
+ncontacts = 0
+t = 6.14 - 94.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00614cell.txt
+t = 6.14 - 94.5% simulation
+ncontacts = 0
+t = 6.15 - 94.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00615cell.txt
+t = 6.15 - 94.6% simulation
+ncontacts = 0
+t = 6.16 - 94.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00616cell.txt
+t = 6.16 - 94.8% simulation
+ncontacts = 0
+t = 6.17 - 94.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00617cell.txt
+t = 6.17 - 94.9% simulation
+ncontacts = 0
+t = 6.18 - 95% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00618cell.txt
+t = 6.18 - 95.1% simulation
+ncontacts = 0
+t = 6.19 - 95.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00619cell.txt
+t = 6.19 - 95.2% simulation
+ncontacts = 0
+t = 6.2 - 95.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00620cell.txt
+t = 6.2 - 95.4% simulation
+ncontacts = 0
+t = 6.21 - 95.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00621cell.txt
+t = 6.21 - 95.5% simulation
+ncontacts = 0
+t = 6.22 - 95.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00622cell.txt
+t = 6.22 - 95.7% simulation
+ncontacts = 0
+t = 6.23 - 95.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00623cell.txt
+t = 6.23 - 95.8% simulation
+ncontacts = 0
+t = 6.24 - 95.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00624cell.txt
+t = 6.24 - 96% simulation
+ncontacts = 0
+t = 6.25 - 96.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00625cell.txt
+t = 6.25 - 96.2% simulation
+ncontacts = 0
+t = 6.26 - 96.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00626cell.txt
+t = 6.26 - 96.3% simulation
+ncontacts = 0
+t = 6.27 - 96.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00627cell.txt
+t = 6.27 - 96.5% simulation
+ncontacts = 0
+t = 6.28 - 96.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00628cell.txt
+t = 6.28 - 96.6% simulation
+ncontacts = 0
+t = 6.29 - 96.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00629cell.txt
+t = 6.29 - 96.8% simulation
+ncontacts = 0
+t = 6.3 - 96.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00630cell.txt
+t = 6.3 - 96.9% simulation
+ncontacts = 0
+t = 6.31 - 97% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00631cell.txt
+t = 6.31 - 97.1% simulation
+ncontacts = 0
+t = 6.32 - 97.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00632cell.txt
+t = 6.32 - 97.2% simulation
+ncontacts = 0
+t = 6.33 - 97.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00633cell.txt
+t = 6.33 - 97.4% simulation
+ncontacts = 0
+t = 6.34 - 97.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00634cell.txt
+t = 6.34 - 97.5% simulation
+ncontacts = 0
+t = 6.35 - 97.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00635cell.txt
+t = 6.35 - 97.7% simulation
+ncontacts = 0
+t = 6.36 - 97.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00636cell.txt
+t = 6.36 - 97.8% simulation
+ncontacts = 0
+t = 6.37 - 97.9% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00637cell.txt
+t = 6.37 - 98% simulation
+ncontacts = 0
+t = 6.38 - 98.1% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00638cell.txt
+t = 6.38 - 98.2% simulation
+ncontacts = 0
+t = 6.39 - 98.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00639cell.txt
+t = 6.39 - 98.3% simulation
+ncontacts = 0
+t = 6.4 - 98.4% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00640cell.txt
+t = 6.4 - 98.5% simulation
+ncontacts = 0
+t = 6.41 - 98.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00641cell.txt
+t = 6.41 - 98.6% simulation
+ncontacts = 0
+t = 6.42 - 98.7% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00642cell.txt
+t = 6.42 - 98.8% simulation
+ncontacts = 0
+t = 6.43 - 98.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00643cell.txt
+t = 6.43 - 98.9% simulation
+ncontacts = 0
+t = 6.44 - 99% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00644cell.txt
+t = 6.44 - 99.1% simulation
+ncontacts = 0
+t = 6.45 - 99.2% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00645cell.txt
+t = 6.45 - 99.2% simulation
+ncontacts = 0
+t = 6.46 - 99.3% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00646cell.txt
+t = 6.46 - 99.4% simulation
+ncontacts = 0
+t = 6.47 - 99.5% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00647cell.txt
+t = 6.47 - 99.5% simulation
+ncontacts = 0
+t = 6.48 - 99.6% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00648cell.txt
+t = 6.48 - 99.7% simulation
+ncontacts = 0
+t = 6.49 - 99.8% simulation
+ncontacts = 0
+Writing outputs...
+cell output: cell/00649cell.txt
+t = 6.49 - 99.8% simulation
+ncontacts = 0
+t = 6.5 - 99.9% simulation
+ncontacts = 0

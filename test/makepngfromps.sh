@@ -17,7 +17,7 @@ do
 #	filepng="${i}frame.png"
 #	echo "$fileps -> $filepng"
 	ps2pdf -dPDFSETTINGS=/prepress -dEPSCrop $file tmp.pdf
-	gs -sDEVICE=pngalpha -r2500 -o $filepng tmp.pdf
+	gs -sDEVICE=pngalpha -r2000 -o $filepng tmp.pdf
 	mv $filepng framespng
 done
 

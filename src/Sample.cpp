@@ -177,8 +177,8 @@ void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 	file2<<tic<<" ";
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		if(it->getId()==0)it->write(file,h,hd);
-		if(it->getId()==1)it->write(file2,h,hd);
+		if(it->getId()==1)it->write(file,h,hd);
+		if(it->getId()==2)it->write(file2,h,hd);
 	}
 	//printSample();
 }
@@ -385,15 +385,27 @@ void Sample::secondStepVerlet(const double dt_) {
 	for(spit it =spl_.begin(); it != spl_.end(); it++){
 		it->updateV(dt_2);
 		it->updateVrot(dt_2);
-		vmean = vmean + it->getV();
+		//vmean = vmean + it->getV();
 	}
 
-	vmean = vmean / (double)spl_.size();
-	//Set mean fluctuating velocities to zero
-	//The mean displacment is carried only by
-	//the cell deformation
-	for(spit it = spl_.begin(); it != spl_.end(); it++){
-		it->removevmean(vmean);
+	Tensor2x2 hd = cell_->gethd();
+
+
+	//WIP TODO BUG SHEAR
+
+
+	//Remove homogeneous part WIP:
+	for(spit it =spl_.begin(); it != spl_.end(); it++){
+
+//		it->removeHpart(hd);
 	}
+
+	//vmean = vmean / (double)spl_.size();
+	////Set mean fluctuating velocities to zero
+	////The mean displacment is carried only by
+	////the cell deformation
+	//for(spit it = spl_.begin(); it != spl_.end(); it++){
+	//	it->removevmean(vmean);
+	//}
 
 }

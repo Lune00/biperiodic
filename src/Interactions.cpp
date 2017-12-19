@@ -148,6 +148,7 @@ void Interactions::updateverlet(const int tic){
 //au lieu de la recalculer, et dans verlet tester la distance au cut off plus court, optimisation legere...
 void Interactions::updatesvlist(){
 
+	//cout<<"UPDATE VLIST"<<endl;
 	svlist_.clear();
 
 	//If less than two particles, no interaction possible
@@ -156,14 +157,13 @@ void Interactions::updatesvlist(){
 
 	vector<Particle>* ps = spl_->getSample();
 	//Get h:
-	Tensor2x2 h = spl_->getCell()->geth();
+	Tensor2x2 h = cell_->geth();
 
 	//Const iterator? But how, after we need these pointers to modify
 	//Particles properties... 
 	for(std::vector<Particle>::iterator iti = ps->begin(); iti!=ps->end();iti++){
 		for(std::vector<Particle>::iterator itj = iti+1; itj!=ps->end();itj++){
 			if( near( *(iti), *(itj), h , dsv_) ) {
-				//cout<<"Near!"<<endl;
 				particle_pair O__O = { &(*iti), &(*itj) };
 				svlist_.push_back(O__O);
 			}
@@ -173,12 +173,14 @@ void Interactions::updatesvlist(){
 	//cout<<"Super verlet list size: "<<svlist_.size()<<endl;
 }
 
+
 //True if distance between "surface" of particle i and j are lower than d
 bool Interactions::near(const Particle& i, const Particle& j,const Tensor2x2& h,const double d) const{
-
+	
 	double sijx = j.getx() - i.getx();
 	double sijy = j.gety() - i.gety();
 	//Shortest branch through periodicity:
+	//Here need to know if image
 	sijx -= floor(sijx + 0.5);
 	sijy -= floor(sijy + 0.5);
 
@@ -193,9 +195,10 @@ bool Interactions::near(const Particle& i, const Particle& j,const Tensor2x2& h,
 
 void Interactions::updatevlist(){
 
+	//cout<<"UPDATE SVLIST"<<endl;
 	vlist_.clear();
 
-	Tensor2x2 h = spl_->getCell()->geth();
+	Tensor2x2 h = cell_->geth();
 
 	for(vector<particle_pair>::iterator it = svlist_.begin(); it != svlist_.end(); it++){
 		//if near dverlet
@@ -225,6 +228,7 @@ void Interactions::detectContacts(){
 		//TEMPORAIRE!!! TEST SUR LISTEVERLET
 		//clist_.push_back(k);
 
+		//Need to know if in contact with image or not
 		if(it->isActif()){
 			//cout<<"Le contact "<<k<<" est actif."<<endl;
 			clist_.push_back(k);
@@ -326,20 +330,28 @@ void Interactions::computeInternalStress(){
 	stress_ = stress_s + stress_c;
 }
 
+
+
 void Interactions::debug(const int k) const{
 
 	double dnaverage = 0. ;
 	double dnmax = 0. ;
+	cout<<"ncontacts = "<<clist_.size()<<endl;
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
 		dnaverage += fabs(vlist_[*it].getdn());
 		dnmax = max(fabs(vlist_[*it].getdn()),fabs(dnmax));
 	}
-	dnaverage /= (double)clist_.size();
+	if(clist_.size()!=0) dnaverage /= (double)clist_.size();
 	ofstream os("debugInteractions.txt",ios::app);
-	//DEBUG
-	//os<<k<<" "<<stress_s.getxx()<<" "<<stress_s.getyy()<<endl;
 	os<<k<<" "<<dnaverage<<" "<<dnmax<<endl;
-	os.close();
 
+//	for(vector<Contact>::const_iterator it = vlist_.begin(); it != vlist_.end(); it++){
+//		//Contact 1/2
+//		if(it->geti()->getId() == 1 && it->getj()->getId()==2){
+//			cout<<"Interaction 1/2"<<endl;
+//			os<<it->getbranch().getNorme()<<" "<<it->getdn()<<endl;
+//		}
+//
+//	}
 
 }

@@ -85,3 +85,10 @@ void Particle::resetA() {
 	a_.set(0.,0.); 
 	arot_ = 0. ;
 }
+
+void Particle::removeHpart(const Tensor2x2& hd){
+//	v_ = v_ - hd * r_ ;
+//	hd.print();
+//	cout<<"before v_ = "<<v_.getx()<<" "<<v_.gety()<<endl;
+//	cout<<"after v_ = "<<v_.getx()<<" "<<v_.gety()<<endl;
+}
