@@ -180,7 +180,6 @@ bool Interactions::near(const Particle& i, const Particle& j,const Tensor2x2& h,
 	double sijx = j.getx() - i.getx();
 	double sijy = j.gety() - i.gety();
 	//Shortest branch through periodicity:
-	//Here need to know if image
 	sijx -= floor(sijx + 0.5);
 	sijy -= floor(sijy + 0.5);
 

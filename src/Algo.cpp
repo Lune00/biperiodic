@@ -153,7 +153,7 @@ void Algo::run(){
 			std::cout.precision(ss);
 		}
 		//TMP
-		if( tic_ % 5000 == 0 ){
+		if( tic_ % 1000 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
 			spl_->writeDebug(file,file2,tic_);

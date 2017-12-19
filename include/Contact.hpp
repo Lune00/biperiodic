@@ -40,6 +40,12 @@ class Contact{
 		Cell * cell_;
 
 		bool isActif_;
+
+		//Detect images in the contact pairs:
+		bool j_is_image;
+		int ix_;
+		int iy_;
+
 		//Avoid truncature errors
 		//Used by frame for threshold for interpenetration
 		static const double tolerance_;
@@ -64,6 +70,7 @@ class Contact{
 		const Particle* getj() const { return j_;}
 		const Particle* geti() const { return i_;}
 		Vecteur getbranch() const;
+		void detectImage();
 };
 
 
