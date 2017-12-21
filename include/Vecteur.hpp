@@ -14,7 +14,7 @@ class Vecteur{
 		Vecteur(double x, double y): x_(x), y_(y){};
 		~Vecteur(){};
 
-		void print() const{std::cout<<x_<<" "<<y_<<" "<<getNorme()<<std::endl;}
+		void print() const{std::cerr<<x_<<" "<<y_<<" "<<getNorme()<<std::endl;}
 		void add(double dx, double dy) { x_ += dx ; y_ += dy;}
 		void addx(double dx) { x_ += dx;}
 		void addy(double dy) { y_ += dy;}

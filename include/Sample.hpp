@@ -7,7 +7,6 @@
 #include"Particle.hpp"
 #include"globalfunctions.hpp"
 
-
 class Cell;
 
 class Sample{
@@ -78,12 +77,8 @@ class Sample{
 		unsigned int filetoload() const { return filetoload_;}
 		unsigned int startingTic() const { return starting_;}
 
-		//Reflechir a ne pas briser l'encapsulation plus tard...
-		//Ca me plait moyen de donner mon vecteur de particules...
-		//For flexibility ok but breaks encapsulation...
-		//Better idea needed... Someone else will touch sample
-		std::vector<Particle>* getSample() { return &spl_;}
 		const std::vector<Particle>& inspectSample() const {return spl_;}
+		std::vector<Particle>* getSample() {return &spl_;}
 
 		void firstStepVerlet(const double);
 		void secondStepVerlet(const double);

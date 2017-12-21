@@ -38,6 +38,11 @@ void Contact::computeShortestBranch() {
 	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
 	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
 
+	//TMP
+	Vecteur rj = cell_->geth() * j_->getR();
+	Vecteur ri = cell_->geth() * i_->getR();
+	Vecteur rji = rj - ri;
+
 	//Test for indices that minimize the distance
 	//Interaction can only be with original particles (0,0)
 	//or first cell (-1,-1), (1,1) etc...
@@ -57,10 +62,31 @@ void Contact::computeShortestBranch() {
 	//Get matching pairs of indexes
 	indexes_ = pairs[k];
 	//cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes.first<<" "<<indexes.second<<endl;
-	if(i_->getId()==2 && j_->getId()==3) cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes_.first<<" "<<indexes_.second<<endl;
+	//if(i_->getId()==2 && j_->getId()==3) cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes_.first<<" "<<indexes_.second<<endl;
 
 	//Return shortest vector branch:
+	//BUG AU 2e rebond en shear de 3x3. Branch vector trop grande...
 	branch_ = d + a0 * indexes_.first + a1 * indexes_.second ;
+	if(branch_.getNorme() > 3.){
+		cerr<<"Interaction entre "<<i_->getId()<<" et "<<j_->getId()<<endl;
+		cerr<<"direct branch = "<<d.getNorme()<<endl;
+		cerr<<"direct branch(red) = "<<sij.getNorme()<<endl;
+		cerr<<"branch_ = "<<branch_.getNorme()<<endl;
+		cerr<<"a0: ";
+		a0.print();
+		cerr<<"a1: ";
+		a1.print();
+		cerr<<"i = "<<indexes_.first<<endl;
+		cerr<<"j = "<<indexes_.second<<endl;
+		cerr<<"ri:";
+		ri.print();
+		cerr<<"rj:";
+		rj.print();
+		cerr<<"rji:";
+		rji.print();
+		cerr<<"branch_(short):";
+		branch_.print();
+	}
 
 	return;
 }
@@ -69,11 +95,10 @@ void Contact::Frame(){
 
 	computeShortestBranch();
 
-	Vecteur sij = getbranch();
-	double l = sij.getNorme();
+	double l = branch_.getNorme();
 	double invl = 1./l ;
 	//Build local frame:
-	n_ = sij * invl;
+	n_ = branch_ * invl;
 	t_.set( - n_.gety() , n_.getx() );
 
 	Vecteur riAbs = cell_->geth() * i_->getR();
@@ -87,7 +112,6 @@ void Contact::Frame(){
 	//if(dn_ < 0. ){
 	//A test
 	if(fabs(dn_) > tolerance_ && dn_ < 0.){
-		//cout<<dn_<<endl;
 		isActif_ = true;
 	}
 	else {
@@ -116,8 +140,8 @@ void Contact::updateRelativeVelocity(){
 
 	//Add affine term transformation for image/real particle inter
 	//If j is real, ix and iy have been set to zero in previous called function
-	vj.addx( - cell_->gethd().getxx() * indexes_.first - cell_->gethd().getxy() * indexes_.second);
-	vj.addy( - cell_->gethd().getyx() * indexes_.first - cell_->gethd().getyy() * indexes_.second);
+	vj.addx(  cell_->gethd().getxx() * indexes_.first + cell_->gethd().getxy() * indexes_.second);
+	vj.addy(  cell_->gethd().getyx() * indexes_.first + cell_->gethd().getyy() * indexes_.second);
 
 	v_ = vj - vi;
 

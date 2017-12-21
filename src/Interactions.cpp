@@ -148,19 +148,18 @@ void Interactions::updateverlet(const int tic){
 //au lieu de la recalculer, et dans verlet tester la distance au cut off plus court, optimisation legere...
 void Interactions::updatesvlist(){
 
-	cout<<"UPDATE VLIST"<<endl;
+//	cout<<"UPDATE VLIST"<<endl;
 	svlist_.clear();
 
 	//If less than two particles, no interaction possible
 	if(spl_->getsize() < 2 ) return ;
-	
 
-	vector<Particle>* ps = spl_->getSample();
+	//TMP, a terme la vlist sera passée a sample plutot
+	vector<Particle> * ps = spl_->getSample();
 	//Get h:
 	Tensor2x2 h = cell_->geth();
 
 	//Const iterator? But how, after we need these pointers to modify
-	//Particles properties... 
 	for(std::vector<Particle>::iterator iti = ps->begin(); iti!=ps->end();iti++){
 		for(std::vector<Particle>::iterator itj = iti+1; itj!=ps->end();itj++){
 			if( near( *(iti), *(itj), h , dsv_) ) {
@@ -204,8 +203,7 @@ Vecteur Interactions::getShortestBranch(const Particle& i, const Particle& j) co
 	//Get matching pairs of indexes
 	pair<int,int> indexes = pairs[k];
 	//cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes.first<<" "<<indexes.second<<endl;
-	if(i.getId()==2 && j.getId()==3) cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes.first<<" "<<indexes.second<<endl;
-
+	//if(i.getId()==2 && j.getId()==3) cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes.first<<" "<<indexes.second<<endl;
 	//Return shortest vector branch:
 	return (d + a0 * indexes.first + a1 * indexes.second) ; 
 }
@@ -216,52 +214,49 @@ bool Interactions::near(const Particle& i, const Particle& j,const Tensor2x2& h,
 	
 	Vecteur shortest_branch = getShortestBranch(i,j);
 	
-	double sijx = j.getx() - i.getx();
-	double sijy = j.gety() - i.gety();
+//	double sijx = j.getx() - i.getx();
+//	double sijy = j.gety() - i.gety();
+
 	//Shortest branch through periodicity:
-
-
 	//Build shortest branch through periodicity:
-
-	
 	//Le bug c'est que lorsque la cellule se deforme, les particules 2 et 3
 	//sont bien éloignées de plus de la moitié de la taille de la cellule (0.5)
 	//du coup il cherche son image. Alors qu'en fait ils ne sont pas éloignés.
 	//Cette procedure floor(0.5) marche quand la cell se deforme pas
 	//mais la ca marche pas. Il faut penser comment trouver la bonne opération a faire
 	//qui prenne en compte la def de la cellule et donne auto l'image ou non (ix_ iy_ 0 ou 1 ou -1)
-	if(i.getId()==2 && j.getId()==3) {
-		cerr<<"si: ";
-		cerr<<i.getx()<<" "<<i.gety()<<endl;
-		cerr<<"sj: ";
-		cerr<<j.getx()<<" "<<j.gety()<<endl;
-		cerr<<floor(sijx + 0.5)<<" "<<floor(sijy + 0.5 )<<endl;
-	}
-	sijx -= floor(sijx + 0.5);
-	sijy -= floor(sijy + 0.5);
-
-
-	Vecteur sij(sijx,sijy);
-	//Absolute vector branch:
-	sij = h * sij ;
-	Vecteur ri = h * i.getR() ;
-	Vecteur rj = h * j.getR() ;
-	Vecteur rij = ( rj - ri);
-
-
-	if(i.getId()==2 && j.getId()==3) {
-		//the distance computed in the diagnoal seems way to high and wrong!
-		//That's why the contact is even not in the sverlet list
-		cerr<<"ri: ";
-		ri.print();
-		cerr<<"rj : ";
-		rj.print();
-		cerr<<"rij : ";
-		rij.print();
-		cerr<<"shortest : ";
-		shortest_branch.print();
-	}
-
+//	if(i.getId()==2 && j.getId()==3) {
+//		cerr<<"si: ";
+//		cerr<<i.getx()<<" "<<i.gety()<<endl;
+//		cerr<<"sj: ";
+//		cerr<<j.getx()<<" "<<j.gety()<<endl;
+//		cerr<<floor(sijx + 0.5)<<" "<<floor(sijy + 0.5 )<<endl;
+//	}
+//	sijx -= floor(sijx + 0.5);
+//	sijy -= floor(sijy + 0.5);
+//
+//
+//	Vecteur sij(sijx,sijy);
+//	//Absolute vector branch:
+//	sij = h * sij ;
+//	Vecteur ri = h * i.getR() ;
+//	Vecteur rj = h * j.getR() ;
+//	Vecteur rij = ( rj - ri);
+//
+//
+//	if(i.getId()==2 && j.getId()==3) {
+//		//the distance computed in the diagnoal seems way to high and wrong!
+//		//That's why the contact is even not in the sverlet list
+//		cerr<<"ri: ";
+//		ri.print();
+//		cerr<<"rj : ";
+//		rj.print();
+//		cerr<<"rij : ";
+//		rij.print();
+//		cerr<<"shortest : ";
+//		shortest_branch.print();
+//	}
+//
 	//Test distance compared to dsv
 	if( shortest_branch.getNorme() - d < j.getRadius() + i.getRadius() ) return true;
 	else return false;
@@ -270,7 +265,7 @@ bool Interactions::near(const Particle& i, const Particle& j,const Tensor2x2& h,
 
 void Interactions::updatevlist(){
 
-	cout<<"UPDATE SVLIST"<<endl;
+//	cout<<"UPDATE SVLIST"<<endl;
 	vlist_.clear();
 
 	Tensor2x2 h = cell_->geth();
@@ -292,7 +287,7 @@ void Interactions::updatevlist(){
 //Build contact list (activated interactions)
 void Interactions::detectContacts(){
 
-	//cout<<"Contact detection..."<<endl;
+	cerr<<"Contact detection..."<<endl;
 	clist_.clear();
 
 	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
@@ -341,13 +336,14 @@ void Interactions::writeContacts(int k) const {
 	ofstream file(filename.c_str());
 
 	//WIP DEBUG
-	for(vector<Contact>::const_iterator it = vlist_.begin(); it != vlist_.end(); it++){
-		if(it->geti()->getId() == 2 && it->getj()->getId() == 3) cerr<<"Trouve"<<endl;
+//	for(vector<Contact>::const_iterator it = vlist_.begin(); it != vlist_.end(); it++){
+//		it->wr
+//		if(it->geti()->getId() == 2 && it->getj()->getId() == 3) cerr<<"Trouve"<<endl;
+//	}
+	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
+		vlist_[*it].write(file);
+		//vlist_[*it].print();
 	}
-	//for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
-	//	vlist_[*it].write(file);
-	//	//vlist_[*it].print();
-	//}
 }
 
 double Interactions::getElasticEnergy() const {
