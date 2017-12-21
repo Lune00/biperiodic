@@ -17,76 +17,57 @@ Contact::Contact(Particle* i, Particle* j,Cell& cell){
 	cell_ = &cell;
 }
 
-//BEFORE WAS IN FRAME
-//Return the shortest branch between the two particles in contact
+//Compute the shortest branch between the two particles in contact
 //The branch is the absolute distance betwwen center of particles
-//in the LAB frame
-Vecteur Contact::getbranch() const {
+//Takes into account for periodicity no matter the cell shape
+//More general algo to find first image (calculation performed in absolute space instead of reduced space)
+//branch_ is a member of Contact because its value is needed again for computing stress or any  further analysis...
+//Can be optimized (surely but see that later...)
+//Compute also indexes_ (i and j) for knowing which particle image if j is an image in the interaction
+//These indexes are needed to take into account the affine term interaction between particles in contact at the edges of the cell
+void Contact::computeShortestBranch() {
+
+	cerr<<"Called from Frame()"<<endl;
+	//Need the branch vector (in absolute units)
 	double sijx = j_->getx() - i_->getx();
 	double sijy = j_->gety() - i_->gety();
-
-
-	sijx -= floor(sijx + 0.5);
-	sijy -= floor(sijy + 0.5);
-
 	Vecteur sij(sijx,sijy);
-	//Absolute vector branch:
-	sij = cell_->geth() * sij ;
-	return sij;
-}
+	//Branch vector
+	Vecteur d = cell_->geth() * sij;
+	//Cell basis vectors: maybe should be member functions of cell
+	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
+	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
 
-
-//WIPPP
-//Only j can be image, to check
-void Contact::detectImage(){
-
-	//cerr<<" "<<endl;
-	//cerr<<"In interaction "<<i_->getId()<<" "<<j_->getId()<<endl;
-	double sijx = j_->getx() - i_->getx();
-	double sijy = j_->gety() - i_->gety();
-
-	//WIP: indice for the add term for image particle
-	ix_ = floor(sijx + 0.5);
-	iy_ = floor(sijy + 0.5);
-
-	//cerr<<"sijx = "<<sijx<<" sijy = "<<sijy<<endl;
-	//Shortest branch through periodicity:
-	double short_sijx = sijx -floor(sijx + 0.5);
-	double short_sijy = sijy -floor(sijy + 0.5);
-
-	//cerr<<"short_sijx = "<<short_sijx<<" sijy = "<<short_sijy<<endl;
-
-	//cerr<<abs(ix_)<<" "<<abs(iy_)<<endl;
-	Vecteur shortest(short_sijx,short_sijy);
-	Vecteur realbranch(sijx,sijy);
-
-	shortest = cell_->geth() * shortest ;
-	realbranch = cell_->geth() * realbranch ;
-
-	//cerr<<"real branch :";
-	//realbranch.print();
-	//cerr<<"shortest branch : ";
-	//shortest.print();
-	
-	if(realbranch.getNorme() > shortest.getNorme()) {
-
-		//cerr<<"Particle "<<j_->getId()<<" is an image"<<endl;
-		j_is_image = true ;
-
+	//Test for indices that minimize the distance
+	//Interaction can only be with original particles (0,0)
+	//or first cell (-1,-1), (1,1) etc...
+	vector<pair<int,int> > pairs;
+	vector<double> l_dcarre;
+	for (int i = -1 ; i != 2 ; i++){
+		for(int j = -1; j != 2; j++){
+			double dcarre = d * d + d * a0 * 2 * i + a0 * a0 * i * i +  d * a1 * 2 * j + a0 * a1 * 2 * i * j + a1 * a1 * j * j ;
+			l_dcarre.push_back(dcarre);
+			pairs.push_back(std::make_pair(i,j));
+		}
 	}
+	//Find minimum:
+	std::vector<double>::iterator it = std::min_element(l_dcarre.begin(),l_dcarre.end());
+	double dmin = * it ;
+	int k = distance( l_dcarre.begin(), it);
+	//Get matching pairs of indexes
+	indexes_ = pairs[k];
+	//cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes.first<<" "<<indexes.second<<endl;
+	if(i_->getId()==2 && j_->getId()==3) cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes_.first<<" "<<indexes_.second<<endl;
+
+	//Return shortest vector branch:
+	branch_ = d + a0 * indexes_.first + a1 * indexes_.second ;
+
+	return;
 }
 
 void Contact::Frame(){
-	//Norm:
-	//double sijx = j_->getx() - i_->getx();
-	//double sijy = j_->gety() - i_->gety();
-	////Shortest branch through periodicity:
-	//sijx -= floor(sijx + 0.5);
-	//sijy -= floor(sijy + 0.5);
-	//Vecteur sij(sijx,sijy);
-	////Absolute vector branch:
-	//sij = cell_->geth() * sij ;
-	detectImage();
+
+	computeShortestBranch();
 
 	Vecteur sij = getbranch();
 	double l = sij.getNorme();
@@ -117,7 +98,8 @@ void Contact::Frame(){
 
 //Temporar: debug use
 void Contact::write(ofstream& os) const{
-	os<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<endl;
+	//os<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<endl;
+	os<<r_.getx()<<" "<<r_.gety()<<" "<<getbranch().getx()<<" "<<getbranch().gety()<<endl;
 }
 
 
@@ -133,9 +115,9 @@ void Contact::updateRelativeVelocity(){
 	//cerr<<"Relative velo term : "<<ix_<<" "<<iy_<<endl;
 
 	//Add affine term transformation for image/real particle inter
-	//If real, ix and iy have been set to zero in previous called function
-	vj.addx( - cell_->gethd().getxx() * ix_ - cell_->gethd().getxy() * iy_);
-	vj.addy( - cell_->gethd().getyx() * ix_ - cell_->gethd().getyy() * iy_);
+	//If j is real, ix and iy have been set to zero in previous called function
+	vj.addx( - cell_->gethd().getxx() * indexes_.first - cell_->gethd().getxy() * indexes_.second);
+	vj.addy( - cell_->gethd().getyx() * indexes_.first - cell_->gethd().getyy() * indexes_.second);
 
 	v_ = vj - vi;
 

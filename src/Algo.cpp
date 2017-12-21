@@ -133,6 +133,8 @@ void Algo::run(){
 	ofstream file("follow1.txt");
 	ofstream file2("follow2.txt");
 
+	//return ;
+
 	while(t_<tfinal){
 		//Update verlet list
 		Int_->updateverlet(tic_);
@@ -190,6 +192,7 @@ void Algo::writesetup() const{
 void Algo::write(){
 	cout<<"Writing outputs..."<<endl;
 	spl_->write(ticw_);
+	spl_->writeAbsolute(ticw_);
 	Int_->writeContacts(ticw_);
 	cell_->write(ticw_);
 	ticw_++;

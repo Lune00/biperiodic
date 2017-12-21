@@ -4,6 +4,9 @@
 #include<vector>
 #include<iostream>
 #include<string>
+#include<utility>
+#include<algorithm>
+#include<iterator>
 
 #include"Contact.hpp"
 #include"Particle.hpp"
@@ -143,6 +146,8 @@ class Interactions{
 		//DEBUG
 		void debug(const int)const;
 
+		Vecteur getShortestBranch(const Particle&,const Particle&) const;
+
 
 
 };
@@ -150,3 +155,4 @@ class Interactions{
 
 
 #endif
+

@@ -12,7 +12,7 @@ void Particle::load(ifstream& is){
 	v_.load(is);
 	a_.load(is);
 	is >> rot_ >> vrot_ >> arot_;
-	//cout<<"Id = "<<id_<<" vx0="<<v_.getx()<<endl;
+	//cout<<"Id = "<<id_<<endl;
 	//cout<<"vrot_ = "<<vrot_<<" arot_ ="<<arot_<<endl;
 }
 

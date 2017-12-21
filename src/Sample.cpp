@@ -75,6 +75,7 @@ void Sample::loadSample(){
 
 	ifstream is(fsampleIni_.c_str());
 
+	cerr<<"Sample to load : "<<fsampleIni_<<endl;
 	if(!is){
 		cerr<<"Sample::loadSample() : can not open file."<<endl;
 		return;

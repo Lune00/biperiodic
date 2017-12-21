@@ -3,6 +3,9 @@
 
 #include<iostream>
 #include"Vecteur.hpp"
+#include<algorithm>
+#include<utility>
+#include<iterator>
 
 class Particle;
 class Tensor2x2;
@@ -16,6 +19,8 @@ class Contact{
 		Particle * j_;
 		//Contact position
 		Vecteur r_;
+		//Smalest branch vector through periodicity bet i and j
+		Vecteur branch_;
 		//Relative velocity at contact (normal,tangent) in the
 		//contact frame
 		Vecteur v_;
@@ -41,10 +46,9 @@ class Contact{
 
 		bool isActif_;
 
-		//Detect images in the contact pairs:
-		bool j_is_image;
-		int ix_;
-		int iy_;
+		//For a contact between an original and image particle
+		//give indexes i in the x direction, and j in y direction
+		std::pair<int,int> indexes_;
 
 		//Avoid truncature errors
 		//Used by frame for threshold for interpenetration
@@ -69,8 +73,11 @@ class Contact{
 		void print() const;
 		const Particle* getj() const { return j_;}
 		const Particle* geti() const { return i_;}
-		Vecteur getbranch() const;
-		void detectImage();
+		//Redefine here (also defined in Interactions...)
+		//Need to think about that...
+
+		void computeShortestBranch() ;
+		Vecteur getbranch() const { return branch_;}
 };
 
 

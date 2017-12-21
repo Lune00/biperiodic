@@ -68,6 +68,13 @@ class Vecteur{
 			return p;
 		}
 
+		Vecteur operator * (int a) {
+			Vecteur p;
+			p.x_ = a*x_ ;
+			p.y_ = a*y_ ;
+			return p;
+		}
+
 		Vecteur operator / (double a){
 			Vecteur p;
 			p.x_ = x_ / a ;
