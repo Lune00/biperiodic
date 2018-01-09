@@ -114,7 +114,7 @@ void Cell::talkinit(Sample& spl){
 		initGeometry_ = true;
 		//Assign mass
 		//the mutliplier should be defined somewhere...
-		mh_ = 2. * spl.getMass();
+		mh_ = 10. * spl.getMass();
 		initMass_ = true;
 		//APPLY NEW CL!!! car la on a loadé les anciennes et
 	}
@@ -391,7 +391,7 @@ void Cell::updatehdd(const Tensor2x2 stress_int){
 //Second verlet step in velocity
 //On a l'accleration en fin de pas, on peut integrer l'espace en vitesse a la fin du pas
 void Cell::updatehd(const double dt){
-	double dt_2 = dt * 0.5 ;
+	const double dt_2 = dt * 0.5 ;
 	hd_ = hd_ + hdd_ * dt_2;
 }
 

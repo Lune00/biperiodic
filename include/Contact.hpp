@@ -78,6 +78,10 @@ class Contact{
 
 		void computeShortestBranch() ;
 		Vecteur getbranch() const { return branch_;}
+		//TMP
+		double getfn() const { return f_.getx();}
+		double getft() const { return f_.gety();}
+		Vecteur getrv() const { return v_;}
 };
 
 

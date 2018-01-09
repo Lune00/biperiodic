@@ -125,7 +125,7 @@ void Algo::run(){
 
 	//ticw_ (writing tick cell/sample) and tica_ (analysis) should start at the same initial tic, set in initTics()
 
-	int nprint = 5000;
+	int nprint = 150000;
 
 	writesetup();
 
@@ -221,7 +221,6 @@ void Algo::verletalgo2(){
 	cell_->firstStepVerlet(dt_);
 
 	// ------------- FIRST STEP VERLET ALGO END HERE
-
 	Int_->detectContacts();
 
 	//Calcul des forces entre particules a la nouvelle position fin du pas de temps

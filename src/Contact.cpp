@@ -15,6 +15,8 @@ Contact::Contact(Particle* i, Particle* j,Cell& cell){
 	j_ = j ;
 	isActif_ = false;
 	cell_ = &cell;
+	branch_.setx(0.);
+	branch_.sety(0.);
 }
 
 //Compute the shortest branch between the two particles in contact
@@ -27,13 +29,12 @@ Contact::Contact(Particle* i, Particle* j,Cell& cell){
 //These indexes are needed to take into account the affine term interaction between particles in contact at the edges of the cell
 void Contact::computeShortestBranch() {
 
-	cerr<<"Called from Frame()"<<endl;
 	//Need the branch vector (in absolute units)
 	double sijx = j_->getx() - i_->getx();
 	double sijy = j_->gety() - i_->gety();
+
 	Vecteur sij(sijx,sijy);
 	//Branch vector
-	Vecteur d = cell_->geth() * sij;
 	//Cell basis vectors: maybe should be member functions of cell
 	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
 	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
@@ -43,6 +44,8 @@ void Contact::computeShortestBranch() {
 	Vecteur ri = cell_->geth() * i_->getR();
 	Vecteur rji = rj - ri;
 
+	Vecteur d = rji;
+
 	//Test for indices that minimize the distance
 	//Interaction can only be with original particles (0,0)
 	//or first cell (-1,-1), (1,1) etc...
@@ -50,7 +53,8 @@ void Contact::computeShortestBranch() {
 	vector<double> l_dcarre;
 	for (int i = -1 ; i != 2 ; i++){
 		for(int j = -1; j != 2; j++){
-			double dcarre = d * d + d * a0 * 2 * i + a0 * a0 * i * i +  d * a1 * 2 * j + a0 * a1 * 2 * i * j + a1 * a1 * j * j ;
+			Vecteur u = d + a0 * i + a1 * j;
+                        double dcarre = u * u ;
 			l_dcarre.push_back(dcarre);
 			pairs.push_back(std::make_pair(i,j));
 		}
@@ -61,33 +65,9 @@ void Contact::computeShortestBranch() {
 	int k = distance( l_dcarre.begin(), it);
 	//Get matching pairs of indexes
 	indexes_ = pairs[k];
-	//cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes.first<<" "<<indexes.second<<endl;
-	//if(i_->getId()==2 && j_->getId()==3) cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes_.first<<" "<<indexes_.second<<endl;
 
 	//Return shortest vector branch:
-	//BUG AU 2e rebond en shear de 3x3. Branch vector trop grande...
 	branch_ = d + a0 * indexes_.first + a1 * indexes_.second ;
-	if(branch_.getNorme() > 3.){
-		cerr<<"Interaction entre "<<i_->getId()<<" et "<<j_->getId()<<endl;
-		cerr<<"direct branch = "<<d.getNorme()<<endl;
-		cerr<<"direct branch(red) = "<<sij.getNorme()<<endl;
-		cerr<<"branch_ = "<<branch_.getNorme()<<endl;
-		cerr<<"a0: ";
-		a0.print();
-		cerr<<"a1: ";
-		a1.print();
-		cerr<<"i = "<<indexes_.first<<endl;
-		cerr<<"j = "<<indexes_.second<<endl;
-		cerr<<"ri:";
-		ri.print();
-		cerr<<"rj:";
-		rj.print();
-		cerr<<"rji:";
-		rji.print();
-		cerr<<"branch_(short):";
-		branch_.print();
-	}
-
 	return;
 }
 
@@ -111,7 +91,8 @@ void Contact::Frame(){
 	//Si superieur a tolerance, non zero
 	//if(dn_ < 0. ){
 	//A test
-	if(fabs(dn_) > tolerance_ && dn_ < 0.){
+	//if(fabs(dn_) > tolerance_ && dn_ < 0.){
+	if(dn_ < 0.){
 		isActif_ = true;
 	}
 	else {
@@ -133,13 +114,9 @@ void Contact::updateRelativeVelocity(){
 	//Real velocities
 	Vecteur vj = cell_->gethd() * j_->getR() +cell_->geth() * j_->getV();
 	Vecteur vi = cell_->gethd() * i_->getR() +cell_->geth() * i_->getV();
-
-	//WIP
-	//ToTEST
-	//cerr<<"Relative velo term : "<<ix_<<" "<<iy_<<endl;
-
 	//Add affine term transformation for image/real particle inter
 	//If j is real, ix and iy have been set to zero in previous called function
+	
 	vj.addx(  cell_->gethd().getxx() * indexes_.first + cell_->gethd().getxy() * indexes_.second);
 	vj.addy(  cell_->gethd().getyx() * indexes_.first + cell_->gethd().getyy() * indexes_.second);
 
@@ -155,6 +132,7 @@ void Contact::updateRelativeVelocity(){
 	//Rotational contribution added to the relative tangential componant
 	double vtr = -j_->getRadius() * j_->getVrot() -i_->getRadius() * i_->getVrot();
 	v_.addy(vtr); 
+
 	return ;
 }
 
@@ -182,16 +160,48 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	return ;
 }
 
+// I THINK BUG IS HERE (explosion while shearing
+
+
 //Notice that f_.gety() refers here to ft_ (tangential force in contact frame)
 //Acclerations computed in the absolute sense (lab frame)
 void Contact::updateAccelerations(){
 	//Expression force vector in the lab frames:
 	Vecteur fxy = getfxy();
-	//Turns acceleration vector in reduced coordinates:
-	fxy = cell_->geth() * fxy;
+
+	//Il n'y a pas a multiplier par h pour moi , je ne comprends pas pourquoi j'avais mis ca
+	//Turns acceleration vector in reduced coordinates????
+	//fxy = cell_->geth()*fxy;
+
+	//Vector basis
+	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
+	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
+
+	double mi = i_->getMasse();
+	double mj = j_->getMasse();
+
+	Tensor2x2 hinv = cell_->geth().getInverse();
+	Tensor2x2 hd = cell_->gethd() ;
+	Tensor2x2 hdd = cell_->gethdd();
+	Tensor2x2 h = cell_->geth();
+
+	double a0carre = a0.getNorme2();
+	double a1carre = a1.getNorme2();
+
+	double beta = (a0.getx() * fxy.gety() - a0.gety() * fxy.getx() ) / ( a0.getx() * a1.gety() - a1.getx() * a0.gety());
+	double alpha = (a1.getx() * fxy.gety() - a1.gety() * fxy.getx() ) / ( a1.getx() * a0.gety() - a1.gety() * a0.getx());
+
+	Vecteur f(alpha,beta);
+	//cerr<<"fx = "<<fxy.getx()<<" falpha = "<<alpha<<endl;
+	//cerr<<"fy = "<<fxy.gety()<<" fbeta = "<<beta<<endl;
+
+	//Vecteur fi = (-fxy / mi - hd * i_->getV() - hdd * i_->getR()); 
+	//Vecteur fj = (fxy / mj - hd * j_->getV() - hdd * j_->getR()); 
+
 	//Update linear acceleration
-	j_->updateA(fxy);
-	i_->updateA(-fxy);
+	j_->updateA(f);
+	i_->updateA(-f);
+
 	//Update rotational acceleration
 	j_->updateArot(-f_.gety() * j_->getRadius());
 	i_->updateArot(-f_.gety() * i_->getRadius());

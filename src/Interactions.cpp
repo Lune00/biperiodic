@@ -213,6 +213,10 @@ Vecteur Interactions::getShortestBranch(const Particle& i, const Particle& j) co
 bool Interactions::near(const Particle& i, const Particle& j,const Tensor2x2& h,const double d) const{
 	
 	Vecteur shortest_branch = getShortestBranch(i,j);
+	if(i.getId()==1 && j.getId() == 5){
+		cerr<<"Interactions::near shortest branch :";
+		shortest_branch.print();
+	}
 	
 //	double sijx = j.getx() - i.getx();
 //	double sijy = j.gety() - i.gety();
@@ -286,18 +290,12 @@ void Interactions::updatevlist(){
 
 //Build contact list (activated interactions)
 void Interactions::detectContacts(){
-
-	cerr<<"Contact detection..."<<endl;
 	clist_.clear();
-
 	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
 		it->Frame();
 		int k = distance( vlist_.begin(), it);
 
-		//WIP
-		//TEMPORAIRE!!! TEST SUR LISTEVERLET
 		//clist_.push_back(k);
-
 		//Need to know if in contact with image or not
 		if(it->isActif()){
 			//cout<<"Le contact "<<k<<" est actif."<<endl;
@@ -308,8 +306,6 @@ void Interactions::detectContacts(){
 			//cout<<"Le contact "<<k<<" est inactif."<<endl;
 		}
 	}
-
-
 }
 
 void Interactions::computeForces(const double dt){
@@ -398,8 +394,9 @@ void Interactions::computeInternalStress(){
 	stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
 	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
 	//Overload division by double for Tensor2x2
-	//stress_s = stress_s * (1. / cell_->getVolume());
-	//stress_c = stress_c * (1. / cell_->getVolume());
+	//Divide or not by volume here???
+	stress_s = stress_s * (1. / cell_->getVolume());
+	stress_c = stress_c * (1. / cell_->getVolume());
 	
 	//Total stress:
 	stress_ = stress_s + stress_c;
@@ -412,21 +409,24 @@ void Interactions::debug(const int k) const{
 	double dnaverage = 0. ;
 	double dnmax = 0. ;
 	cout<<"ncontacts = "<<clist_.size()<<endl;
+	ofstream os("debugInteractions.txt",ios::app);
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
 		dnaverage += fabs(vlist_[*it].getdn());
 		dnmax = max(fabs(vlist_[*it].getdn()),fabs(dnmax));
+	//	os<<vlist_[*it].getdn()<<" "<<vlist_[*it].geti()->getId()<<" "<<vlist_[*it].getj()->getId()<<" "<<vlist_[*it].getfn()<<" "<<vlist_[*it].getbranch().getNorme()<<endl;
 	}
 	if(clist_.size()!=0) dnaverage /= (double)clist_.size();
-	ofstream os("debugInteractions.txt",ios::app);
-	os<<k<<" "<<dnaverage<<" "<<dnmax<<" "<<stress_.getyy()<<endl;
+//	os<<k<<" "<<dnaverage<<" "<<dnmax<<" "<<stress_s.getyy()<<endl;
 
-//	for(vector<Contact>::const_iterator it = vlist_.begin(); it != vlist_.end(); it++){
+	for(vector<Contact>::const_iterator it = vlist_.begin(); it != vlist_.end(); it++){
 //		//Contact 1/2
-//		if(it->geti()->getId() == 1 && it->getj()->getId()==2){
-//			cout<<"Interaction 1/2"<<endl;
-//			os<<it->getbranch().getNorme()<<" "<<it->getdn()<<endl;
-//		}
-//
-//	}
+		//if(it->geti()->getId() == 1 && it->getj()->getId()==2){
+		if(it->isActif()){
+			cout<<"Interaction 1/2"<<endl;
+			os<<it->getbranch().getNorme()<<" "<<it->getdn()<<" "<<it->getfn()<<" "<<it->getft()<<" "<<it->getfxy().getx()<<" "<<it->getfxy().gety()<<" "<<it->getrv().getNorme()<<endl;
+		}
+		//}
+
+	}
 
 }

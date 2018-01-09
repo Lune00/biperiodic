@@ -92,3 +92,4 @@ void Particle::removeHpart(const Tensor2x2& hd){
 //	cout<<"before v_ = "<<v_.getx()<<" "<<v_.gety()<<endl;
 //	cout<<"after v_ = "<<v_.getx()<<" "<<v_.gety()<<endl;
 }
+

@@ -58,10 +58,12 @@ class Particle{
 		void addrx(double dx) {r_.addx(dx);}
 		void addry(double dy) {r_.addy(dy);}
 
+		//NOT USED YET
 		void removevmean(const Vecteur& vmean) { v_ = v_ - vmean;}
 
 		//Integration methods:
 		void updateA(Vecteur f) { a_ = a_ + f / m_;}
+		//void updateA(Vecteur a) { a_ = a_ + a ;}
 		void updateArot(double Torque) { arot_ = arot_ + Torque/I_;}
 		void updateR(const double dt);
 		void updateV(const double dt);
@@ -84,7 +86,6 @@ class Particle{
 		Vecteur getR() const { return r_;}
 		Vecteur getV() const { return v_;}
 		Vecteur getA() const {return a_;}
-		
 };
 
 
