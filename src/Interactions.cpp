@@ -190,7 +190,9 @@ Vecteur Interactions::getShortestBranch(const Particle& i, const Particle& j) co
 	vector<double> l_dcarre;
 	for (int i = -1 ; i != 2 ; i++){
 		for(int j = -1; j != 2; j++){
-			double dcarre = d * d + d * a0 * 2 * i + a0 * a0 * i * i +  d * a1 * 2 * j + a0 * a1 * 2 * i * j + a1 * a1 * j * j ;
+			Vecteur u = d + a0 * i + a1 * j;
+			//double dcarre = d * d + d * a0 * 2 * i + a0 * a0 * i * i +  d * a1 * 2 * j + a0 * a1 * 2 * i * j + a1 * a1 * j * j ;
+			double dcarre = u * u ;
 			l_dcarre.push_back(dcarre);
 			pairs.push_back(std::make_pair(i,j));
 		}
@@ -345,8 +347,8 @@ void Interactions::debug(const int k) const{
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
 		dnaverage += fabs(vlist_[*it].getdn());
 		dnmax = max(fabs(vlist_[*it].getdn()),fabs(dnmax));
-	//	os<<vlist_[*it].getdn()<<" "<<vlist_[*it].geti()->getId()<<" "<<vlist_[*it].getj()->getId()<<" "<<vlist_[*it].getfn()<<" "<<vlist_[*it].getbranch().getNorme()<<endl;
+		//os<<vlist_[*it].getdn()<<" "<<vlist_[*it].geti()->getId()<<" "<<vlist_[*it].getj()->getId()<<" "<<vlist_[*it].getfn()<<" "<<vlist_[*it].getbranch().getNorme()<<endl;
 	}
 	if(clist_.size()!=0) dnaverage /= (double)clist_.size();
-	os<<k<<" "<<dnaverage<<" "<<dnmax<<" "<<stress_s.getyy()<<endl;
+	os<<k<<" "<<dnaverage<<" "<<dnmax<<" "<<stress_s.getyy()<<" "<<stress_s.getxx()<<endl;
 }
