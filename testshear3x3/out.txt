@@ -1,0 +1,4082 @@
+DEM arena test.
+Nombre de particules: 9
+Set inertia to particles...done.
+Lx = 6
+Ly = 6
+d verlet (scale)  = 5
+d sverlet (scale)  = 5
+dtmax = 5.60499e-06
+Max normal viscosity gnmax = 11210
+Restitution coefficient e = 0.0450175
+Simulation:
+dt = 5.3e-06
+ns = 2000000
+tfinal = 10.6
+Writing outputs...
+cell output: cell/00000cell.txt
+t = 0 - 0% simulation
+ncontacts = 2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 12
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 12
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 12
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 12
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 0.795 - 7.5% simulation
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 1.59 - 15% simulation
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 2.39 - 22.5% simulation
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 0
+ncontacts = 0
+ncontacts = 0
+ncontacts = 0
+ncontacts = 0
+Writing outputs...
+cell output: cell/00001cell.txt
+ncontacts = 0
+ncontacts = 0
+ncontacts = 0
+ncontacts = 0
+ncontacts = 0
+ncontacts = 0
+ncontacts = 0
+ncontacts = 0
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 3.18 - 30% simulation
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 3.98 - 37.5% simulation
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 4.77 - 45% simulation
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Writing outputs...
+cell output: cell/00002cell.txt
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 5.57 - 52.5% simulation
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 6.36 - 60% simulation
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 9
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 11
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 7.15 - 67.5% simulation
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 1
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Writing outputs...
+cell output: cell/00003cell.txt
+t = 7.95 - 75% simulation
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 8.74 - 82.5% simulation
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 9.54 - 90% simulation
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+t = 10.3 - 97.5% simulation
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Writing outputs...
+cell output: cell/00004cell.txt
+ncontacts = 10
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2
+Interaction 1/2

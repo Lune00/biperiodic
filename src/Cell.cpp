@@ -181,7 +181,6 @@ double Cell::getVolume() const{
 
 void Cell::write(const int k) const{
 	string filename = formatfile( folder_, fcell_, k );
-	cout<<"cell output: "<<filename<<endl;
 	ofstream file(filename.c_str());
 	h_.write(file);
 	file<<" ";
@@ -279,13 +278,6 @@ void Cell::writeStrainTensor(ofstream& os, double t){
 //Suppose d'avoir stressInt au temps t
 //Defaut: test a chaque fois ce qui est controle ou non, alors qu'on le sait depuis le début...
 void Cell::computeExternalStress(const Tensor2x2& stress_int){
-
-	//cout<<"Stress ext:"<<endl;
-	//stress_ext.print();
-
-	//cout<<"Stress int:"<<endl;
-	//stress_int.print();
-
 	//Si controle en vitesse alors hdd 0 ds cette direction
 	double xx, xy, yx, yy;
 	//Composante xx:
@@ -376,14 +368,6 @@ void Cell::firstStepVerlet(const double dt) {
 void Cell::updatehdd(const Tensor2x2 stress_int){
 	Tensor2x2 TotalStress = stress_int + stress_ext;
 	Tensor2x2 hinv = h_.getInverse();
-	//cout<<" "<<endl;
-	//cout<<"stress ext:"<<endl;
-	//stress_ext.print();
-	//cout<<"internal stress:"<<endl;
-	//stress_int.print();
-	//cout<<"total stress:"<<endl;
-	//TotalStress.print();
-	//cout<<" "<<endl;
 	double V = getVolume();
 	hdd_ = hinv * (V/mh_) * (TotalStress);
 }
@@ -396,6 +380,7 @@ void Cell::updatehd(const double dt){
 }
 
 void Cell::debug(const int k)const{
+
 	ofstream debug("debugCell.txt",ios::app);
 	ofstream debug2("hd.txt",ios::app);
 	debug<<k<<" "<<hdd_.getxx()<<" "<<hdd_.getxy()<<" "<<hdd_.getyy()<<" "<<stress_ext.getxx()<<" "<<stress_ext.getyy()<<endl;

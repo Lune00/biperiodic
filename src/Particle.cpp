@@ -58,7 +58,6 @@ void Particle::print() const{
 	cerr<<"Particule "<<id_<<endl;
 	cerr<<"positions reduites: "<<r_.getx()<<" "<<r_.gety()<<endl;
 	cerr<<"vitesses reduites: "<<v_.getx()<<" "<<v_.gety()<<endl;
-	cerr<<"accelerations reduites: "<<a_.getx()<<" "<<a_.gety()<<endl;
 	cerr<<"------------------------------------"<<endl;
 }	
 
@@ -87,9 +86,5 @@ void Particle::resetA() {
 }
 
 void Particle::removeHpart(const Tensor2x2& hd){
-//	v_ = v_ - hd * r_ ;
-//	hd.print();
-//	cout<<"before v_ = "<<v_.getx()<<" "<<v_.gety()<<endl;
-//	cout<<"after v_ = "<<v_.getx()<<" "<<v_.gety()<<endl;
 }
 

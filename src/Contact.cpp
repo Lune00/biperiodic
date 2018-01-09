@@ -28,24 +28,15 @@ Contact::Contact(Particle* i, Particle* j,Cell& cell){
 //Compute also indexes_ (i and j) for knowing which particle image if j is an image in the interaction
 //These indexes are needed to take into account the affine term interaction between particles in contact at the edges of the cell
 void Contact::computeShortestBranch() {
-
-	//Need the branch vector (in absolute units)
-	double sijx = j_->getx() - i_->getx();
-	double sijy = j_->gety() - i_->gety();
-
-	Vecteur sij(sijx,sijy);
 	//Branch vector
 	//Cell basis vectors: maybe should be member functions of cell
 	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
 	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
 
-	//TMP
+	//Branch vector in absolute frame:
 	Vecteur rj = cell_->geth() * j_->getR();
 	Vecteur ri = cell_->geth() * i_->getR();
-	Vecteur rji = rj - ri;
-
-	Vecteur d = rji;
-
+	Vecteur d = rj - ri;
 	//Test for indices that minimize the distance
 	//Interaction can only be with original particles (0,0)
 	//or first cell (-1,-1), (1,1) etc...
@@ -65,7 +56,6 @@ void Contact::computeShortestBranch() {
 	int k = distance( l_dcarre.begin(), it);
 	//Get matching pairs of indexes
 	indexes_ = pairs[k];
-
 	//Return shortest vector branch:
 	branch_ = d + a0 * indexes_.first + a1 * indexes_.second ;
 	return;
@@ -103,8 +93,7 @@ void Contact::Frame(){
 
 //Temporar: debug use
 void Contact::write(ofstream& os) const{
-	//os<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<endl;
-	os<<r_.getx()<<" "<<r_.gety()<<" "<<getbranch().getx()<<" "<<getbranch().gety()<<endl;
+	os<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<endl;
 }
 
 
@@ -125,8 +114,6 @@ void Contact::updateRelativeVelocity(){
 	//Components in the contact frame:
 	v_.setx( v_ * n_ );
 	v_.sety( v_ * t_ );
-	//cout<<"Vitesse relative "<<j_->getId()<<" "<<i_->getId()<<endl;
-	//v_.print();
 	rvrot_ = j_->getVrot() - i_->getVrot();
 
 	//Rotational contribution added to the relative tangential componant
@@ -142,26 +129,16 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	if(fn < 0.) fn = 0.;
 
 	double ft = - kt * dt_ - gt * v_.gety();
-	//cout<<"vrel.n = "<<v_.getx()<<" vrel.t = "<<v_.gety()<<endl;
-	//cout<<"gn * v_t = "<< gt * v_.gety()<<endl;
 	const double ftmax = fabs( fn * mus);
 	if(fabs(ft) > ftmax){
 		ft = sign(ft) * ftmax;
 		dt_= ft/kt;
 	}
 	else dt_ += v_.gety() * dt ;
-	//	cout<<"ftmax = "<<mus * fn<<endl;
-	//	cout<<"dt_ = "<<dt_<<endl;
-	//	cout<<"ft = "<<ft<<" "<<"ft/kt="<<ft/kt<<endl;
-	//	cout<<"fn = "<<fn<<endl;
-
 	f_.set(fn,ft);
 
 	return ;
 }
-
-// I THINK BUG IS HERE (explosion while shearing
-
 
 //Notice that f_.gety() refers here to ft_ (tangential force in contact frame)
 //Acclerations computed in the absolute sense (lab frame)
@@ -169,35 +146,15 @@ void Contact::updateAccelerations(){
 	//Expression force vector in the lab frames:
 	Vecteur fxy = getfxy();
 
-	//Il n'y a pas a multiplier par h pour moi , je ne comprends pas pourquoi j'avais mis ca
-	//Turns acceleration vector in reduced coordinates????
-	//fxy = cell_->geth()*fxy;
-
 	//Vector basis
 	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
 	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
 
-	double mi = i_->getMasse();
-	double mj = j_->getMasse();
-
-	Tensor2x2 hinv = cell_->geth().getInverse();
-	Tensor2x2 hd = cell_->gethd() ;
-	Tensor2x2 hdd = cell_->gethdd();
-	Tensor2x2 h = cell_->geth();
-
-	double a0carre = a0.getNorme2();
-	double a1carre = a1.getNorme2();
-
-	double beta = (a0.getx() * fxy.gety() - a0.gety() * fxy.getx() ) / ( a0.getx() * a1.gety() - a1.getx() * a0.gety());
+	//Transform force vector in cell basis vector and rescale (to integrate acceleration in reduced coordinates)
 	double alpha = (a1.getx() * fxy.gety() - a1.gety() * fxy.getx() ) / ( a1.getx() * a0.gety() - a1.gety() * a0.getx());
+	double beta = (a0.getx() * fxy.gety() - a0.gety() * fxy.getx() ) / ( a0.getx() * a1.gety() - a1.getx() * a0.gety());
 
 	Vecteur f(alpha,beta);
-	//cerr<<"fx = "<<fxy.getx()<<" falpha = "<<alpha<<endl;
-	//cerr<<"fy = "<<fxy.gety()<<" fbeta = "<<beta<<endl;
-
-	//Vecteur fi = (-fxy / mi - hd * i_->getV() - hdd * i_->getR()); 
-	//Vecteur fj = (fxy / mj - hd * j_->getV() - hdd * j_->getR()); 
-
 	//Update linear acceleration
 	j_->updateA(f);
 	i_->updateA(-f);

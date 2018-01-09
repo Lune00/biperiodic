@@ -155,7 +155,7 @@ void Algo::run(){
 			std::cout.precision(ss);
 		}
 		//TMP
-		if( tic_ % 5000 == 0 ){
+		if( tic_ % 10000 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
 			spl_->writeDebug(file,file2,tic_);
@@ -231,6 +231,7 @@ void Algo::verletalgo2(){
 	Int_->computeInternalStress();
 
 	//------------- SECOND STEP VERLET ALGO STARTS HERE
+
 	//Calcul des vitesses a la fin du pas de temps:
 	spl_->secondStepVerlet(dt_);
 
@@ -240,7 +241,6 @@ void Algo::verletalgo2(){
 	cell_->computeExternalStress(Int_->stress());
 	cell_->updatehdd(Int_->stress());
 	cell_->updatehd(dt_);
-
 	//Cell deformation
 	cell_->CalculStrainTensor();
 }

@@ -34,7 +34,6 @@ Interactions::~Interactions(){
 
 void Interactions::init(ifstream& is){
 
-
 	string token;
 	is >> token;
 	while(is){
@@ -202,8 +201,6 @@ Vecteur Interactions::getShortestBranch(const Particle& i, const Particle& j) co
 	int k = distance( l_dcarre.begin(), it);
 	//Get matching pairs of indexes
 	pair<int,int> indexes = pairs[k];
-	//cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes.first<<" "<<indexes.second<<endl;
-	//if(i.getId()==2 && j.getId()==3) cerr<<"dmin="<<sqrt(dmin)<<" for "<<indexes.first<<" "<<indexes.second<<endl;
 	//Return shortest vector branch:
 	return (d + a0 * indexes.first + a1 * indexes.second) ; 
 }
@@ -211,65 +208,14 @@ Vecteur Interactions::getShortestBranch(const Particle& i, const Particle& j) co
 
 //True if distance between "surface" of particle i and j are lower than d
 bool Interactions::near(const Particle& i, const Particle& j,const Tensor2x2& h,const double d) const{
-	
 	Vecteur shortest_branch = getShortestBranch(i,j);
-	if(i.getId()==1 && j.getId() == 5){
-		cerr<<"Interactions::near shortest branch :";
-		shortest_branch.print();
-	}
-	
-//	double sijx = j.getx() - i.getx();
-//	double sijy = j.gety() - i.gety();
-
-	//Shortest branch through periodicity:
-	//Build shortest branch through periodicity:
-	//Le bug c'est que lorsque la cellule se deforme, les particules 2 et 3
-	//sont bien éloignées de plus de la moitié de la taille de la cellule (0.5)
-	//du coup il cherche son image. Alors qu'en fait ils ne sont pas éloignés.
-	//Cette procedure floor(0.5) marche quand la cell se deforme pas
-	//mais la ca marche pas. Il faut penser comment trouver la bonne opération a faire
-	//qui prenne en compte la def de la cellule et donne auto l'image ou non (ix_ iy_ 0 ou 1 ou -1)
-//	if(i.getId()==2 && j.getId()==3) {
-//		cerr<<"si: ";
-//		cerr<<i.getx()<<" "<<i.gety()<<endl;
-//		cerr<<"sj: ";
-//		cerr<<j.getx()<<" "<<j.gety()<<endl;
-//		cerr<<floor(sijx + 0.5)<<" "<<floor(sijy + 0.5 )<<endl;
-//	}
-//	sijx -= floor(sijx + 0.5);
-//	sijy -= floor(sijy + 0.5);
-//
-//
-//	Vecteur sij(sijx,sijy);
-//	//Absolute vector branch:
-//	sij = h * sij ;
-//	Vecteur ri = h * i.getR() ;
-//	Vecteur rj = h * j.getR() ;
-//	Vecteur rij = ( rj - ri);
-//
-//
-//	if(i.getId()==2 && j.getId()==3) {
-//		//the distance computed in the diagnoal seems way to high and wrong!
-//		//That's why the contact is even not in the sverlet list
-//		cerr<<"ri: ";
-//		ri.print();
-//		cerr<<"rj : ";
-//		rj.print();
-//		cerr<<"rij : ";
-//		rij.print();
-//		cerr<<"shortest : ";
-//		shortest_branch.print();
-//	}
-//
 	//Test distance compared to dsv
 	if( shortest_branch.getNorme() - d < j.getRadius() + i.getRadius() ) return true;
 	else return false;
-
 }
 
 void Interactions::updatevlist(){
 
-//	cout<<"UPDATE SVLIST"<<endl;
 	vlist_.clear();
 
 	Tensor2x2 h = cell_->geth();
@@ -294,9 +240,6 @@ void Interactions::detectContacts(){
 	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
 		it->Frame();
 		int k = distance( vlist_.begin(), it);
-
-		//clist_.push_back(k);
-		//Need to know if in contact with image or not
 		if(it->isActif()){
 			//cout<<"Le contact "<<k<<" est actif."<<endl;
 			clist_.push_back(k);
@@ -331,14 +274,8 @@ void Interactions::writeContacts(int k) const {
 	string filename = formatfile(folder_, fInteractions_, k);
 	ofstream file(filename.c_str());
 
-	//WIP DEBUG
-//	for(vector<Contact>::const_iterator it = vlist_.begin(); it != vlist_.end(); it++){
-//		it->wr
-//		if(it->geti()->getId() == 2 && it->getj()->getId() == 3) cerr<<"Trouve"<<endl;
-//	}
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
 		vlist_[*it].write(file);
-		//vlist_[*it].print();
 	}
 }
 
@@ -366,9 +303,6 @@ void Interactions::computeInternalStress(){
 	double sxx_c = 0. ;
 	double sxy_c = 0. ;
 	double syy_c = 0. ;
-
-	//Need to recaculculate the branch vector
-	//Maybe store it in the contact
 
 	//Static stress : Loop over contacts:
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){ 
@@ -403,9 +337,7 @@ void Interactions::computeInternalStress(){
 }
 
 
-
 void Interactions::debug(const int k) const{
-
 	double dnaverage = 0. ;
 	double dnmax = 0. ;
 	cout<<"ncontacts = "<<clist_.size()<<endl;
@@ -416,17 +348,5 @@ void Interactions::debug(const int k) const{
 	//	os<<vlist_[*it].getdn()<<" "<<vlist_[*it].geti()->getId()<<" "<<vlist_[*it].getj()->getId()<<" "<<vlist_[*it].getfn()<<" "<<vlist_[*it].getbranch().getNorme()<<endl;
 	}
 	if(clist_.size()!=0) dnaverage /= (double)clist_.size();
-//	os<<k<<" "<<dnaverage<<" "<<dnmax<<" "<<stress_s.getyy()<<endl;
-
-	for(vector<Contact>::const_iterator it = vlist_.begin(); it != vlist_.end(); it++){
-//		//Contact 1/2
-		//if(it->geti()->getId() == 1 && it->getj()->getId()==2){
-		if(it->isActif()){
-			cout<<"Interaction 1/2"<<endl;
-			os<<it->getbranch().getNorme()<<" "<<it->getdn()<<" "<<it->getfn()<<" "<<it->getft()<<" "<<it->getfxy().getx()<<" "<<it->getfxy().gety()<<" "<<it->getrv().getNorme()<<endl;
-		}
-		//}
-
-	}
-
+	os<<k<<" "<<dnaverage<<" "<<dnmax<<" "<<stress_s.getyy()<<endl;
 }
