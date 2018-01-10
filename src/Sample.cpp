@@ -57,6 +57,7 @@ void Sample::init(ifstream& is){
 			rhodefined_= true;
 			is >> rho_;
 		}
+		if(token=="}") break;
 		is >> token ;
 	}
 

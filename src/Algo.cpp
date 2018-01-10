@@ -131,6 +131,8 @@ void Algo::run(){
 
 	//return ;
 
+	ofstream timefile("time.txt");
+
 	while(t_<tfinal){
 		//Update verlet list
 		Int_->updateverlet(tic_);
@@ -138,7 +140,10 @@ void Algo::run(){
 		//Time step: integration & periodicity
 		verletalgo2();
 
-		if( tic_ % nrecord_ == 0) write();
+		if( tic_ % nrecord_ == 0) {
+			write();
+			timefile<<tic_<<" "<<t_<<endl;
+		}
 
 		if( tic_ % nana_ == 0 ) {
 			ana_->analyse(tica_,t_);
@@ -146,7 +151,7 @@ void Algo::run(){
 		}
 		if( tic_ % nprint == 0) {
 			std::streamsize ss = std::cout.precision();
-			std::cout.precision(3);
+			std::cout.precision(4);
 			cout<<"t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
 			std::cout.precision(ss);
 		}
@@ -158,9 +163,9 @@ void Algo::run(){
 
 		t_+=dt_;
 		tic_++;
-		//TODO
-		//Need to write a time.txt file which make the correspondance betwwen tics and time
 	}
+
+	timefile.close();
 }
 
 
@@ -188,7 +193,7 @@ void Algo::writesetup() const{
 void Algo::write(){
 	cout<<"Writing outputs..."<<endl;
 	spl_->write(ticw_);
-	spl_->writeAbsolute(ticw_);
+	//spl_->writeAbsolute(ticw_);
 	Int_->writeContacts(ticw_);
 	cell_->write(ticw_);
 	ticw_++;

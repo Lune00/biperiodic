@@ -18,6 +18,22 @@ Analyse::~Analyse(){}
 //TODO
 void Analyse::init(ifstream& is){
 
+	string token;
+	is >> token;
+	while(is){
+
+
+		if(token=="printSample"){
+
+
+		}
+
+
+		if(token=="}") break;
+
+		is >> token;
+
+	}
 
 }
 
