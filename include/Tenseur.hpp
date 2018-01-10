@@ -69,15 +69,6 @@ class Tensor2x2{
 			return p;
 		}
 
-		//Tensor2x2 operator + (Tensor2x2 a){
-		//	Tensor2x2 p;
-		//	p.xx_ = xx_+a.xx_;
-		//	p.xy_ = xy_+a.xy_;
-		//	p.yx_ = yx_+a.yx_;
-		//	p.yy_ = yy_+a.yy_;
-		//	return p;
-		//}
-
 		Tensor2x2 operator + (Tensor2x2 a) const{
 			Tensor2x2 p;
 			p.xx_ = xx_+a.xx_;

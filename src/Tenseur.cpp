@@ -52,9 +52,6 @@ void Tensor2x2::writeEigenVectors(ofstream& of){
 
 //All information can be extracted from comp if needed later...
 void Tensor2x2::write(ofstream& of) const{
-	//eigenValues();
-	//double spherique=l1_+l2_;
-	//double deviatorique=l1_-l2_;
 	of<<xx_<<" "<<xy_<<" "<<yx_<<" "<<yy_;
 }
 

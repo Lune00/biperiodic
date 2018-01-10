@@ -129,10 +129,6 @@ void Algo::run(){
 
 	writesetup();
 
-	//Tmp for debug:
-	ofstream file("follow1.txt");
-	ofstream file2("follow2.txt");
-
 	//return ;
 
 	while(t_<tfinal){
@@ -158,7 +154,6 @@ void Algo::run(){
 		if( tic_ % 10000 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
-			spl_->writeDebug(file,file2,tic_);
 		}
 
 		t_+=dt_;
@@ -166,8 +161,6 @@ void Algo::run(){
 		//TODO
 		//Need to write a time.txt file which make the correspondance betwwen tics and time
 	}
-	file.close();
-	file2.close();
 }
 
 
@@ -185,6 +178,9 @@ void Algo::writesetup() const{
 	os <<"gnmax "<<gnmax_<<endl;
 	os <<"en "<<e_<<endl;
 	os <<"kn "<<Int_->getkn()<<endl;
+	os <<"h0 ";
+	cell_->geth().write(os);
+	os <<endl;
 	os.close();
 }
 
