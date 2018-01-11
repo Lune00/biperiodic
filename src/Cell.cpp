@@ -29,7 +29,9 @@ Cell::Cell(){
 	ofstream debug2("hd.txt");
 	debug2.close();
 }
-//Initialisation a partir du fichier de configuration
+
+//Initialisation from configuration file
+//Careful while loading if changing Boundary Conditions
 void Cell::init(ifstream& is){
 
 	//Check if every direction is initialised
@@ -46,10 +48,10 @@ void Cell::init(ifstream& is){
 	is >> token;
 
 	while(is){
-		//Manuellement on construit la geometrie de la cellule
+		//Build manually cell geometry (assumed to be rectangular)
 		if(token=="Lx") is >> Lx_;
 		if(token=="Ly") is >> Ly_;
-		//Auto: defini a partir du sample initial
+		//Auto: defined from bounding box around particles
 		if(token=="L_auto") {
 			L_auto_ = true ;
 		}
@@ -60,6 +62,8 @@ void Cell::init(ifstream& is){
 		}
 		if(token=="m_auto") mh_auto_ = true;
 
+		//Boundary conditions:
+		//direction v(speed)/f(stress) value
 		if(token=="xx"){
 			is >> Control_[0];
 			is >> Control_values_Init[0]; 
@@ -85,13 +89,12 @@ void Cell::init(ifstream& is){
 		is >> token ;
 	}
 
-	//Valide initialisation
+	//Valid initialisation
 	if(ixx && ixy && iyx && iyy){
 		initCG_ = true ;
 	}
 
 	if(!L_auto_){
-	//Géometrie rectangle initiale definie manuellement
 	h_.set(Lx_,0.,0.,Ly_);
 	h0_ = h_ ;
 	xc_ = 0.5 * Lx_;
@@ -114,7 +117,7 @@ void Cell::talkinit(Sample& spl){
 		initGeometry_ = true;
 		//Assign mass
 		//the mutliplier should be defined somewhere...
-		mh_ = 10. * spl.getMass();
+		mh_ = 1. * spl.getMass();
 		initMass_ = true;
 		//APPLY NEW CL!!! car la on a loadé les anciennes et
 	}
@@ -135,7 +138,7 @@ void Cell::talkinit(Sample& spl){
 
 		if(mh_auto_){
 			//Mass: sample mass for inertia
-			mh_ = 2. * spl.getMass();
+			mh_ = 1. * spl.getMass();
 			initMass_ = true;
 		}
 	}
@@ -168,13 +171,12 @@ void Cell::talkinit(Sample& spl){
 
 //If load called by Sample, load cell geometry and dynamics
 //Load h, hd and hdd
-//check if problems with init, continuity with previous and new CL
 
 bool Cell::initcheck(){
 	return (initCG_ && initGeometry_ && initMass_);
 }
 
-//Le volume est donné par det(h) (deux vecteurs de base de la cellule)
+//Volume of the cell is given by its determinant 
 double Cell::getVolume() const{
 	return h_.getDet();
 }
@@ -222,6 +224,7 @@ void Cell::writeGeometry(const int k) const{
 	//	file.close();
 }
 
+//Particle periodicity in position
 //On travaille sur les coordonnees reduites
 //Si elles sont plus petites que 0 ou plus grandes que 1 on periodise
 //A bouger dans Sample peut etre
@@ -246,7 +249,8 @@ void Cell::PeriodicBoundaries2(std::vector<Particle>* sp){
 	}
 }
 
-//Ici toujours un probelem pour le calcul
+//Strain tensor of the cell
+//Enginering strain
 void Cell::CalculStrainTensor(){
 
 	double Lx0= h0_.getxx();
@@ -259,18 +263,7 @@ void Cell::CalculStrainTensor(){
 	double sxy = (h_.getxy() - h0_.getxy())/Ly0;
 	double syx = (h_.getyx() - h0_.getyx())/Lx0; 
 
-	//Si train doit etre calcule comme ca:
-	//double syx = sxy ;
-
 	s_.set(sxx,sxy,syx,syy);
-	s_.eigenVectors();
-	//Ecrire tenseur deformartion
-	//s_.write(of2);
-}
-
-void Cell::writeStrainTensor(ofstream& os, double t){
-	os<<t<<" ";
-	s_.write(os);
 	s_.eigenVectors();
 }
 
@@ -373,7 +366,7 @@ void Cell::updatehdd(const Tensor2x2 stress_int){
 }
 
 //Second verlet step in velocity
-//On a l'accleration en fin de pas, on peut integrer l'espace en vitesse a la fin du pas
+//On a l'accleration en fin de pas, on peut integrer en vitesse a la fin du pas
 void Cell::updatehd(const double dt){
 	const double dt_2 = dt * 0.5 ;
 	hd_ = hd_ + hdd_ * dt_2;

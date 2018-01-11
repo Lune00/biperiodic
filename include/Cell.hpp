@@ -8,8 +8,11 @@
 #include<fstream>
 #include<cstdlib>
 
-//Cellule periodique
 class Sample;
+
+
+//Periodic Cell or "space" through which force/displacement are applied
+//to the sample
 
 class Cell{
 
@@ -20,15 +23,12 @@ class Cell{
 		//Coordonnees centre:
 		double xc_;
 		double yc_;
-		//Cell mass:(a ajuster plus tard)
+		//Cell mass:
 		double mh_;
 
-		//Imposed boundary conditions: garde en memoire ce qui est controle et libre
-		//On impose soit une vitesse hdd, soit une contrainte stress_ext
+		//On impose soit une vitesse hd, soit une contrainte stress_ext
 		//Il faut que la partie antisymetrique de Ldot soit nulle, equiv a h(hdot) symetrique impose
 		char Control_[4];
-
-		//Tmp, only for initialisation conveniance...
 		double Control_values_Init[4];
 
 		//Metrics: collective degrees of freedom
@@ -39,12 +39,7 @@ class Cell{
 		Tensor2x2 hdd_;
 		//Strain tensor: cumulative (time measure of the essai)
 		Tensor2x2 s_;
-		//Velocity gradient tensor (a voir plus tard, mais BC plus generale possible)
-		//Tensor2x2 Ld_;
-		//Stress: int et ext
 		Tensor2x2 stress_ext;
-		//Maj par particules
-		//Tensor2x2 stress_int;
 
 		//Defined by initial sample
 		bool L_auto_;
@@ -96,15 +91,14 @@ class Cell{
 		Tensor2x2 geth() const { return h_;}
 		Tensor2x2 gethd() const { return hd_;}
 		Tensor2x2 gethdd() const { return hdd_;}
+		const Tensor2x2& getStrainTensor() const { return s_;}
 
 		Tensor2x2 getStressExt() const { return stress_ext;}
 
 		void initfolder(std::string folder) { folder_ = folder;}
 		void writeGeometry(const int) const;
-		void writeStrainTensor(std::ofstream&,double);
 
 		//Debug & track:
-		void affiche(){std::cout<<xc_<<" "<<yc_<<" "<<getVolume()<<std::endl;}
 		bool initcheck();
 		void debug(const int)const;
 

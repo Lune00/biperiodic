@@ -7,10 +7,18 @@ using namespace std;
 
 //TODO: path to analysis and choices
 Analyse::Analyse(){
-	e_ = 4.1;
-	ofstream energie("analyse/energy.txt");
-	energie.close();
+
+	allFalse();
+	//Thickness of periodic band around sample in printSample
+	e_ = 4.;
 }
+
+void Analyse::allFalse(){
+	printSample_ = false;
+	strain_ = false;
+	stress_ = false;
+}
+
 
 
 Analyse::~Analyse(){}
@@ -22,17 +30,61 @@ void Analyse::init(ifstream& is){
 	is >> token;
 	while(is){
 
-
 		if(token=="printSample"){
-
-
+			printSample_ = true ;
 		}
 
+		if(token=="strain"){
+			strain_ = true ;
+		}
+
+		if(token=="stress"){
+			stress_ = true ;
+		}
+
+		if(token=="energy"){
+			energy_ = true ;
+		}
+		if(token=="compacity"){
+			compacity_ = true;
+		}
 
 		if(token=="}") break;
 
 		is >> token;
 
+	}
+
+	//File managment (empty files used for new analysis)
+	cleanFiles();
+}
+
+
+void Analyse::cleanFiles(){
+	
+	if(energy_){
+		string filename = folder_ + "/energy.txt";
+		ofstream o(filename.c_str());
+		o.close();
+	}
+
+	if(strain_){
+		string filename = folder_ + "/strain.txt";
+		ofstream o(filename.c_str()); 
+		o.close();
+	}
+	if(stress_){
+		string filename = folder_ + "/stress_int.txt";
+		string filename2 = folder_ + "/stress_ext.txt";
+		ofstream o(filename.c_str());
+		o.close();
+		o.open(filename2.c_str());
+		o.close();
+	}
+	if(compacity_){
+		string filename = folder_ + "/compacity.txt";
+		ofstream o(filename.c_str());
+		o.close();
 	}
 
 }
@@ -45,23 +97,74 @@ void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 
 //Call for different analyses asked by the user
 void Analyse::analyse(int tic, double t){
-	printSample(tic);
-	computeEnergy(tic);
+
+	if(printSample_) printSample(tic);
+	if(energy_) computeEnergy(tic);
+	if(strain_) strain(t);
+	if(stress_) stress(t);
+	if(compacity_) compacity(t);
 }
 
+void Analyse::compacity(const double t) const{
 
+	string file = folder_ + "/compacity.txt";
+	ofstream os(file.c_str(),ios::app);
+	double Vp = 0. ;
+	for(vector<Particle>::const_iterator it = spl_->inspectSample().begin(); it != spl_->inspectSample().end(); it++){
+
+		Vp += it->getVolume();
+	}
+	double sf = Vp / cell_->getVolume();
+	os<<t<<" "<<sf<<endl;
+	os.close();
+}
+
+void Analyse::strain(const double t) const{
+	const Tensor2x2 strain = cell_->getStrainTensor();
+	string strain_file = folder_ + "/strain.txt";
+	ofstream os(strain_file.c_str(),ios::app);
+	os<<t<<" ";
+	strain.write(os);
+	os<<endl;
+	os.close();
+}
+
+void Analyse::stress(const double t) const{
+
+	const Tensor2x2 stress_int = Int_->getStressInt();
+	const Tensor2x2 stress_ext = cell_->getStressExt();
+	string stressI_file = folder_ + "/stress_int.txt";
+	string stressE_file = folder_ + "/stress_ext.txt";
+	ofstream os(stressI_file.c_str(),ios::app);
+	ofstream os2(stressE_file.c_str(),ios::app);
+	os<<t<<" ";
+	stress_int.write(os);
+	os<<endl;
+	os2<<t<<" ";
+	stress_ext.write(os2);
+	os2<<endl;
+	os.close();
+	os2.close();
+}
+
+//Add injected energy, friction and dissipation in inelastic collision
 void Analyse::computeEnergy(const int tic) {
-	ofstream os("analyse/energy.txt",ios::app);
+
+	string file_energy = folder_ + "/energy.txt";
+	ofstream os(file_energy.c_str(),ios::app);
+
 	double TKE = spl_->getTKE();
 	double RKE = spl_->getRKE();
 	double Elastic = Int_->getElasticEnergy();
 	double TotalE = TKE + RKE + Elastic;
+
 	os <<tic<<" "<<TKE<<" "<<RKE<<" "<<Elastic<<" "<<TotalE<<endl;
+
 	os.close();
 }
 
-//Print sample coordonées absolues avec une couche d'epaisseur e
-//de particules periodiques
+//Print sample in absolute coordinates, centered on the center of
+//the cell, with a thickness e (in Rmax) of periodic particles around
 void Analyse::printSample(int tic){
 
 	//Epaisseur couche particules en rayon max
@@ -71,16 +174,14 @@ void Analyse::printSample(int tic){
 	string frame = formatfile(localfolder,"frame.ps",tic);
 	//Get vector of image particles within the range e near boundaries
 	std::vector<Particle> images = spl_->getimages(e_);
-//	cout<<"Nombre de particules images:"<<images.size()<<endl;
 	//Write PS file: particles + images
 	writePS(frame,images);
 
 	return ;
 }
 
-//Representation of the samle in absolute coordinates with
+//Representation of the sample in absolute coordinates with
 //images particle, and without ModularTransformation
-//show cell deformation
 //With ModularTransformation (constant box) later... (but to do)
 void Analyse::writePS(const string frame, const vector<Particle>& images){
 
@@ -89,7 +190,6 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	Tensor2x2 h = cell_->geth();
 	//Bounding box based on e_ and original cell geometry:
 	//Warning: the cell can get out of bounds
-
 	double scaledotradius = 0.05 ;
 	double margin = e_ * spl_->getrmax() ;
 
@@ -101,13 +201,10 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 	double xcframe = cell_->getxc();
 	double ycframe = cell_->getyc();
-//	double lx2 = cell_->getLx() * 0.5;
-//	double ly2 = cell_->getLy() * 0.5;
 	double lx2 = cell_->get_width() * 0.5 ;
 	double ly2 = cell_->get_height() * 0.5 ;
 
 	ps<<"%!PS-Adobe-3.0 EPSF-3.0"<<endl;
-	//ps<<"%%BoundingBox:"<<" "<<xmin<<" "<<ymin<<" "<<xmax<<" "<<ymax<<endl;
 	ps<<"%%BoundingBox:"<<" "<<xcframe-lx2-margin<<" "<<ycframe-ly2-margin<<" "<<xcframe + lx2+margin<<" "<<ycframe + ly2+margin<<endl;
 	ps<<"%%Pages:1"<<endl;
 	ps<<"0.1 setlinewidth 0. setgray "<<endl;
@@ -179,7 +276,6 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	ps<<"0.549 0.549 0.549 setrgbcolor"<<endl;
 	ps<<lw<<" setlinewidth "<<endl;
 	ps<<"stroke"<<endl;
-
 
 	return ;
 

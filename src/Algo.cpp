@@ -17,6 +17,8 @@ Algo::Algo(){
 	fsetup_ = "simusetup.txt";
 }
 
+
+//Maybe we can choose between ns and tfinal (to avoid large numbers)
 void Algo::init(ifstream& is){
 	string token;
 	is >> token;
@@ -71,7 +73,6 @@ void Algo::computedtmax(){
 bool Algo::checktimestep()const{
 	cout<<"dtmax = "<<dtmax_<<endl;
 	if(dt_>dtmax_) {
-		//TMP
 		cerr<<"Choose a lower dt."<<endl;
 		return false;
 	}
@@ -90,7 +91,7 @@ void Algo::compute_gnmax_restitution(){
 	e_ = exp(- M_PI * ds/(2.*sqrt(1.-ds*ds)) ) ;
 }
 
-bool Algo:: checkNormalViscosity()const{
+bool Algo::checkNormalViscosity()const{
 	cout<<"Max normal viscosity gnmax = "<<gnmax_<<endl;
 	cout<<"Restitution coefficient e = "<<e_<<endl;
 	if(Int_->getgn()>gnmax_){
@@ -199,9 +200,6 @@ void Algo::write(){
 	ticw_++;
 }
 
-//Pour l'instant on l'implemente de maniere naive
-//et non optimale (ecriture condensee a l'aide tenseurs/vecteurs)
-//On verra apres comment rendre ca plus compacte
 void Algo::verletalgo2(){
 
 	double dt2_2 = 0.5 * dt_ * dt_ ;

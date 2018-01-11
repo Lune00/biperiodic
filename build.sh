@@ -23,5 +23,7 @@ mkdir -p test
 cp -f exec/DEMARENA test/DEMARENA
 cp -f exec/DEMARENA testshear3x3/DEMARENA
 cp -f exec/DEMARENA testcompression/DEMARENA
+cp -f exec/DEMARENA testreal/DEMARENA
+cp -f exec/DEMARENA testfriction/DEMARENA
 
 echo "Compilation terminee."

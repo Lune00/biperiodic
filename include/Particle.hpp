@@ -86,6 +86,8 @@ class Particle{
 		Vecteur getR() const { return r_;}
 		Vecteur getV() const { return v_;}
 		Vecteur getA() const {return a_;}
+
+		double getVolume() const { return M_PI * R_ * R_ ;}
 };
 
 

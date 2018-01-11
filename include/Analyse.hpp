@@ -27,6 +27,13 @@ class Analyse{
 		//sample visualisation
 		double e_;
 
+		//Analyse types:
+		bool printSample_;
+		bool strain_;
+		bool stress_;
+		bool energy_;
+		bool compacity_;
+
 	public:
 		Analyse();
 		~Analyse();
@@ -37,11 +44,22 @@ class Analyse{
 
 		//Main: tic at wich analysis is carried
 		void analyse(int,double);
+		//Init analyse types to false by default
+		void allFalse();
+		//Reset output files
+		void cleanFiles();
 
 		//Analyses:
 		void printSample(int);
 		void writePS(const std::string,const std::vector<Particle>&);
+		//Energy in the system
 		void computeEnergy(const int);
+		//Cell strain tensor
+		void strain(const double) const;
+		//Internal and external stress
+		void stress(const double) const;
+		//Solid fraction
+		void compacity(const double) const;
 
 };
 
