@@ -133,6 +133,7 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	if(fabs(ft) > ftmax){
 		ft = sign(ft) * ftmax;
 		dt_= ft/kt;
+		cerr<<"frottement mobilisé!"<<endl;
 	}
 	else dt_ += v_.gety() * dt ;
 	f_.set(fn,ft);

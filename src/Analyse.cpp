@@ -97,7 +97,6 @@ void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 
 //Call for different analyses asked by the user
 void Analyse::analyse(int tic, double t){
-
 	if(printSample_) printSample(tic);
 	if(energy_) computeEnergy(tic);
 	if(strain_) strain(t);
