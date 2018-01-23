@@ -3,6 +3,7 @@
 
 #include<vector>
 #include<fstream>
+#include"Probe.hpp"
 
 
 class Sample;
@@ -34,6 +35,11 @@ class Analyse{
 		bool energy_;
 		bool compacity_;
 
+
+		//Velocity Profile
+		bool SP_;
+		int nbinsSP_;
+
 	public:
 		Analyse();
 		~Analyse();
@@ -60,6 +66,9 @@ class Analyse{
 		void stress(const double) const;
 		//Solid fraction
 		void compacity(const double) const;
+
+		//Profiles
+		void ProfileVelocity(const double) const;
 
 };
 

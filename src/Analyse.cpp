@@ -17,6 +17,8 @@ void Analyse::allFalse(){
 	printSample_ = false;
 	strain_ = false;
 	stress_ = false;
+	compacity_ = false;
+	SP_ = false;
 }
 
 
@@ -47,6 +49,10 @@ void Analyse::init(ifstream& is){
 		}
 		if(token=="compacity"){
 			compacity_ = true;
+		}
+		if(token=="SP"){
+			SP_ = true;
+			is >> nbinsSP_ ;
 		}
 
 		if(token=="}") break;
@@ -86,6 +92,10 @@ void Analyse::cleanFiles(){
 		ofstream o(filename.c_str());
 		o.close();
 	}
+	if(SP_){
+
+
+	}
 
 }
 
@@ -102,6 +112,27 @@ void Analyse::analyse(int tic, double t){
 	if(strain_) strain(t);
 	if(stress_) stress(t);
 	if(compacity_) compacity(t);
+	if(SP_) ProfileVelocity(t);
+}
+
+void Analyse::ProfileVelocity(const double t)const {
+
+	//On prend les dimensions initiales de la cellule comme reference
+	//Bas de probe doit commencer a zero par definition?
+	double Ly = cell_->geth0().getyy();
+	double x = cell_->getxc() ;
+	double ampProbe = Ly / (double)nbinsSP_;
+	vector<Probe*> lprobe (nbinsSP_);
+
+	//init probes
+//	for( unsigned int i = 0 ; i < nbinsSP_ ; i++){
+//		lprobe[i] = new Probe (x,(double) i * ampProbe,kkhh  );
+//	}
+//
+//	for(vector<Particle>::const_iterator it = spl_->inspectSample().begin(); it != spl_->inspectSample().end(); it++){
+//
+//	}
+
 }
 
 void Analyse::compacity(const double t) const{
@@ -118,12 +149,18 @@ void Analyse::compacity(const double t) const{
 	os.close();
 }
 
+//TMP
+//Add stress_int directement au meme fichier ici
+// 3:($7/$9)
 void Analyse::strain(const double t) const{
+	const Tensor2x2 stress_int = Int_->getStressInt();
 	const Tensor2x2 strain = cell_->getStrainTensor();
 	string strain_file = folder_ + "/strain.txt";
 	ofstream os(strain_file.c_str(),ios::app);
 	os<<t<<" ";
 	strain.write(os);
+	os<<" ";
+	stress_int.write(os);
 	os<<endl;
 	os.close();
 }

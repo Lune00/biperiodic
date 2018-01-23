@@ -88,6 +88,7 @@ class Cell{
 		double getxc() const ;
 		double getyc() const ;
 
+		Tensor2x2 geth0() const { return h0_;}
 		Tensor2x2 geth() const { return h_;}
 		Tensor2x2 gethd() const { return hd_;}
 		Tensor2x2 gethdd() const { return hdd_;}

@@ -85,9 +85,12 @@ void Algo::compute_gnmax_restitution(){
 	double rho = spl_->getrho();
 	double m = rho * M_PI * spl_->getrmin() * spl_->getrmin(); 
 	double kn = Int_->getkn();
-	gnmax_ = 2. * sqrt(kn * m);
+	gnmax_ = 6. * sqrt(kn * m);
 	double ds = gn/gnmax_;
+	//From Radjai Book (not sure)
+	//But that's true we need a limit, maybe just a little above that
 	//Compute resitution coefficient:
+	//Facteur 6 semble etre pas trop mal
 	e_ = exp(- M_PI * ds/(2.*sqrt(1.-ds*ds)) ) ;
 }
 
@@ -157,9 +160,10 @@ void Algo::run(){
 			std::cout.precision(ss);
 		}
 		//TMP
-		if( tic_ % 10000 == 0 ){
-			Int_->debug(tic_);
-			cell_->debug(tic_);
+		if( tic_ % 5000 == 0 ){
+		//	Int_->debug(tic_);
+		//	cell_->debug(tic_);
+			spl_->debug(tic_);
 		}
 
 		t_+=dt_;
@@ -192,7 +196,7 @@ void Algo::writesetup() const{
 
 
 void Algo::write(){
-	cout<<"Writing outputs..."<<endl;
+	//cout<<"Writing outputs..."<<endl;
 	spl_->write(ticw_);
 	//spl_->writeAbsolute(ticw_);
 	Int_->writeContacts(ticw_);
@@ -219,17 +223,16 @@ void Algo::verletalgo2(){
 	//Integrate cell motion
 	cell_->firstStepVerlet(dt_);
 
-	// ------------- FIRST STEP VERLET ALGO END HERE
+	// ------------- FIRST STEP VERLET ENDS HERE
 	Int_->detectContacts();
 
 	//Calcul des forces entre particules a la nouvelle position fin du pas de temps
 	Int_->computeForces(dt_);
 
-	//Calcul du tenseur de contraintes internes: stress_
-	//Somme stress_c et stress_s
+	//Calcul du tenseur de contraintes internes:
 	Int_->computeInternalStress();
 
-	//------------- SECOND STEP VERLET ALGO STARTS HERE
+	//------------- SECOND STEP VERLET STARTS HERE
 
 	//Calcul des vitesses a la fin du pas de temps:
 	spl_->secondStepVerlet(dt_);
@@ -240,6 +243,7 @@ void Algo::verletalgo2(){
 	cell_->computeExternalStress(Int_->stress());
 	cell_->updatehdd(Int_->stress());
 	cell_->updatehd(dt_);
+
 	//Cell deformation
 	cell_->CalculStrainTensor();
 }

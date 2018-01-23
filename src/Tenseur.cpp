@@ -76,7 +76,10 @@ Tensor2x2 Tensor2x2::getInverse() const{
 		return Inverse;
 	}
 	else{
-		Inverse.set(yy_/det,-yx_/det,-xy_/det,xx_/det);
+		//WRONG!!!!!
+		//Inverse.set(yy_/det,-yx_/det,-xy_/det,xx_/det);
+		//TMP
+		Inverse.set(yy_/det,-xy_/det,-yx_/det,xx_/det);
 		return Inverse;
 	}
 }

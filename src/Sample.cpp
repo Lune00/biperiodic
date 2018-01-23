@@ -21,6 +21,8 @@ Sample::Sample(){
 	fsampleA_ = "absolute.txt";
 	filetoload_ = 0 ;
 	starting_ = 0 ;
+	ofstream os("sample-debug.txt");
+	os.close();
 }
 
 Sample::~Sample(){
@@ -151,9 +153,11 @@ Vecteur Sample::returnvabs(const Particle& P) const{
 //Take reduced velocity to compute true kinetic energy
 double Sample::getTKE() const{
 	double Ec = 0.;
+	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hd = cell_->gethd();
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		//Vecteur v = returnvabs(*it);
-		Vecteur v = it->getV();
+		Vecteur v = h *it->getV() + hd * it->getR();
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
 	}
 	return Ec;
@@ -183,6 +187,22 @@ void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 		if(it->getId()==2)it->write(file2,h,hd);
 	}
 	//printSample();
+}
+
+void Sample::debug(int tic){
+	ofstream os("sample-debug.txt",ios::app);
+
+	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hd = cell_->gethd();
+
+	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
+		if(it->getId()==0){
+			Vecteur a = it->getA();
+			Vecteur sd = it->getV();
+			Vecteur v = h * sd + hd * it->getR(); 
+			os<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<endl;
+		}
+	}
 }
 
 void Sample::printSample() const{
@@ -359,8 +379,8 @@ void Sample::initReducedCoordinates(Cell& cell){
 void Sample::firstStepVerlet(const double dt_){
 
 	double dt2_2 = 0.5 * dt_ * dt_ ;
-
 	double dt_2 = 0.5 * dt_ ;
+
 	for(spit it = spl_.begin(); it != spl_.end(); it++){
 		//Positions
 		it->updateR(dt_);

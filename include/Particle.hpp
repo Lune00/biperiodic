@@ -63,6 +63,7 @@ class Particle{
 
 		//Integration methods:
 		void updateA(Vecteur f) { a_ = a_ + f / m_;}
+		void update_a(Vecteur a) { a_ = a_ + a ;}
 		//void updateA(Vecteur a) { a_ = a_ + a ;}
 		void updateArot(double Torque) { arot_ = arot_ + Torque/I_;}
 		void updateR(const double dt);

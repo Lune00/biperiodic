@@ -129,7 +129,9 @@ void Cell::talkinit(Sample& spl){
 		if(L_auto_){
 			Lx_ = spl.getxmax() - spl.getxmin();
 			Ly_ = spl.getymax() - spl.getymin();
-			h_.set(Lx_,0.,0.,Ly_);
+			//TMP
+			h_.set(Lx_,2.5,0.,Ly_);
+			//h_.set(Lx_,0.,0.,Ly_);
 			xc_ = 0.5 * Lx_;
 			yc_ = 0.5 * Ly_;
 			h0_ = h_ ;

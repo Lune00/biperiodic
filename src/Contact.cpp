@@ -100,18 +100,29 @@ void Contact::write(ofstream& os) const{
 //Take into account case of contact with images
 void Contact::updateRelativeVelocity(){
 
-	//Real velocities
-	Vecteur vj = cell_->gethd() * j_->getR() +cell_->geth() * j_->getV();
-	Vecteur vi = cell_->gethd() * i_->getR() +cell_->geth() * i_->getV();
 	//Add affine term transformation for image/real particle inter
 	//If j is real, ix and iy have been set to zero in previous called function
+
+	//Real velocities
+	Vecteur u(indexes_.first,indexes_.second); 
+	Vecteur sj = j_->getR() + u;
+	//Vecteur vj = cell_->gethd() * j_->getR() +cell_->geth() * j_->getV();
+	Vecteur vj = cell_->gethd() * sj + cell_->geth() * j_->getV();
+	Vecteur vi = cell_->gethd() * i_->getR() +cell_->geth() * i_->getV();
 	
-	vj.addx(  cell_->gethd().getxx() * indexes_.first + cell_->gethd().getxy() * indexes_.second);
-	vj.addy(  cell_->gethd().getyx() * indexes_.first + cell_->gethd().getyy() * indexes_.second);
+	//TO THINK TODO
+
+	//Y'a pas une erreur la, on reduit la vitesse de hd_xy en cisaillement, est ce bien le bon terme??
+	//vj.addx(  cell_->gethd().getxx() * indexes_.first + cell_->gethd().getxy() * indexes_.second);
+	//vj.addy(  cell_->gethd().getyx() * indexes_.first + cell_->gethd().getyy() * indexes_.second);
 
 	v_ = vj - vi;
+	//cerr<<"vitess relative = "<<v_.getNorme()<<endl;
+	//cerr<<"interpenetration dn = "<<dn_<<endl;
 
 	//Components in the contact frame:
+
+	//v_n = vx nx + vy ny
 	v_.setx( v_ * n_ );
 	v_.sety( v_ * t_ );
 	rvrot_ = j_->getVrot() - i_->getVrot();
@@ -133,7 +144,6 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	if(fabs(ft) > ftmax){
 		ft = sign(ft) * ftmax;
 		dt_= ft/kt;
-		cerr<<"frottement mobilisé!"<<endl;
 	}
 	else dt_ += v_.gety() * dt ;
 	f_.set(fn,ft);
@@ -143,29 +153,76 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 
 //Notice that f_.gety() refers here to ft_ (tangential force in contact frame)
 //Acclerations computed in the absolute sense (lab frame)
+//void Contact::updateAccelerations(){
+//	//Expression force vector in the lab frames:
+//	Vecteur fxy = getfxy();
+//
+//	//Vector basis
+//	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
+//	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
+//
+//	//Transform force vector in cell basis vector and rescale (to integrate acceleration in reduced coordinates)
+//	//TODO WIP
+//	double alpha = (a1.getx() * fxy.gety() - a1.gety() * fxy.getx() )  / ( a1.getx() * a0.gety() - a1.gety() * a0.getx());
+//	double beta = (a0.getx() * fxy.gety() - a0.gety() * fxy.getx() ) / ( a0.getx() * a1.gety() - a1.getx() * a0.gety());
+//
+//	Vecteur f(alpha,beta);
+//	//Update linear acceleration
+//	j_->updateA(f);
+//	i_->updateA(-f);
+//
+//	//Update rotational acceleration
+//	j_->updateArot(-f_.gety() * j_->getRadius());
+//	i_->updateArot(-f_.gety() * i_->getRadius());
+//	return;
+//}
+
+
 void Contact::updateAccelerations(){
 	//Expression force vector in the lab frames:
 	Vecteur fxy = getfxy();
 
-	//Vector basis
-	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
-	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
+	//
+	//cerr<<" "<<endl;
+	//cerr<<"fxy = "<<fxy.getNorme()<<endl;
+	//cerr<<"f_ = "<<f_.getNorme()<<endl;
+	//cerr<<" "<<endl;
+	const double mi = i_->getMasse();
+	const double mj = j_->getMasse();
 
-	//Transform force vector in cell basis vector and rescale (to integrate acceleration in reduced coordinates)
-	double alpha = (a1.getx() * fxy.gety() - a1.gety() * fxy.getx() ) / ( a1.getx() * a0.gety() - a1.gety() * a0.getx());
-	double beta = (a0.getx() * fxy.gety() - a0.gety() * fxy.getx() ) / ( a0.getx() * a1.gety() - a1.getx() * a0.gety());
+	Tensor2x2 hdd = cell_->gethdd();
+	Tensor2x2 hd = cell_->gethd();
+	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hinv = h.getInverse();
 
-	Vecteur f(alpha,beta);
+	Vecteur ai = -fxy / mi ;
+	Vecteur aj = fxy / mj ;
+	//cerr<<"ai = "<<ai.getNorme()<<endl;
+
+	Vecteur si = i_->getR();
+	Vecteur vi = i_->getV();
+
+	Vecteur sj = j_->getR();
+	Vecteur vj = j_->getV();
+
+	ai = hinv * (ai - hd * vi * 2. - hdd * si);
+	aj = hinv * (aj - hd * vj * 2. - hdd * sj);
+	//cerr<<"(sdd)ai = "<<ai.getNorme()<<endl;
+	//Vecteur vhd = hinv * hd * vi;
+	//Vecteur hdds = hinv * hdd * si;
+	//cerr<<"hd * vi = "<<vhd.getNorme()<<endl;
+	//cerr<<"hdd * si = "<<hdds.getNorme()<<endl;
+	//hdd.print();
+
 	//Update linear acceleration
-	j_->updateA(f);
-	i_->updateA(-f);
+	j_->update_a(aj);
+	i_->update_a(ai);
 
 	//Update rotational acceleration
 	j_->updateArot(-f_.gety() * j_->getRadius());
 	i_->updateArot(-f_.gety() * i_->getRadius());
 	return;
 }
-
 
 void Contact::print() const{
 	cerr<<"Contact entre la particule "<<i_->getId()<<" et "<<j_->getId()<<endl;
