@@ -25,6 +25,7 @@ class Cell{
 		double yc_;
 		//Cell mass:
 		double mh_;
+		double mh_factor_;
 
 		//On impose soit une vitesse hd, soit une contrainte stress_ext
 		//Il faut que la partie antisymetrique de Ldot soit nulle, equiv a h(hdot) symetrique impose

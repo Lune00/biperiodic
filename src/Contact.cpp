@@ -117,11 +117,8 @@ void Contact::updateRelativeVelocity(){
 	//vj.addy(  cell_->gethd().getyx() * indexes_.first + cell_->gethd().getyy() * indexes_.second);
 
 	v_ = vj - vi;
-	//cerr<<"vitess relative = "<<v_.getNorme()<<endl;
-	//cerr<<"interpenetration dn = "<<dn_<<endl;
 
 	//Components in the contact frame:
-
 	//v_n = vx nx + vy ny
 	v_.setx( v_ * n_ );
 	v_.sety( v_ * t_ );
@@ -141,12 +138,18 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 
 	double ft = - kt * dt_ - gt * v_.gety();
 	const double ftmax = fabs( fn * mus);
+
 	if(fabs(ft) > ftmax){
+		cerr<<"contact glissant"<<endl;
 		ft = sign(ft) * ftmax;
 		dt_= ft/kt;
 	}
 	else dt_ += v_.gety() * dt ;
+
+	if(ft<1e-50) ft=0.;
 	f_.set(fn,ft);
+	cerr<<"fn = "<<fn<<" ft = "<<ft<<endl;
+	cerr<<"dt_ = "<<dt_<<endl;
 
 	return ;
 }

@@ -410,17 +410,17 @@ void Sample::secondStepVerlet(const double dt_) {
 		//vmean = vmean + it->getV();
 	}
 
-	Tensor2x2 hd = cell_->gethd();
+	//Tensor2x2 hd = cell_->gethd();
 
 
 	//WIP TODO BUG SHEAR
 
 
 	//Remove homogeneous part WIP:
-	for(spit it =spl_.begin(); it != spl_.end(); it++){
+	//for(spit it =spl_.begin(); it != spl_.end(); it++){
 
-//		it->removeHpart(hd);
-	}
+//	//	it->removeHpart(hd);
+	//}
 
 	//vmean = vmean / (double)spl_.size();
 	////Set mean fluctuating velocities to zero

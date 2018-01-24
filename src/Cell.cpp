@@ -15,8 +15,9 @@ Cell::Cell(){
 	initCG_ = false ;
 	initGeometry_ = false;
 	initMass_ = false;
-	//Multiplier of sample mass
 	mh_ = 1.;
+	//Multiplier of sample mass
+	mh_factor_ = 5. ;
 	mh_auto_ = false;
 	L_auto_ = false;
 
@@ -117,7 +118,7 @@ void Cell::talkinit(Sample& spl){
 		initGeometry_ = true;
 		//Assign mass
 		//the mutliplier should be defined somewhere...
-		mh_ = 1. * spl.getMass();
+		mh_ = mh_factor_ * spl.getMass();
 		initMass_ = true;
 		//APPLY NEW CL!!! car la on a loadé les anciennes et
 	}
@@ -130,7 +131,7 @@ void Cell::talkinit(Sample& spl){
 			Lx_ = spl.getxmax() - spl.getxmin();
 			Ly_ = spl.getymax() - spl.getymin();
 			//TMP
-			h_.set(Lx_,2.5,0.,Ly_);
+			h_.set(Lx_,0.0,0.,Ly_);
 			//h_.set(Lx_,0.,0.,Ly_);
 			xc_ = 0.5 * Lx_;
 			yc_ = 0.5 * Ly_;
@@ -140,7 +141,7 @@ void Cell::talkinit(Sample& spl){
 
 		if(mh_auto_){
 			//Mass: sample mass for inertia
-			mh_ = 1. * spl.getMass();
+			mh_ = mh_factor_ * spl.getMass();
 			initMass_ = true;
 		}
 	}
