@@ -58,6 +58,13 @@ class Interactions{
 		std::vector<particle_pair> svlist_;
 		//Active contact list: id de vlist
 		std::vector<int> clist_;
+		//std::vector<Contact> clist_;
+
+
+		//Store tangential displacement for all possible contacts
+		double * array_dt; 
+		//Number of particles -> size of array_dt
+		int N_;
 
 		//plug:
 		Sample * spl_;
@@ -147,6 +154,11 @@ class Interactions{
 		void debug(const int)const;
 
 		Vecteur getShortestBranch(const Particle&,const Particle&) const;
+
+		void init_array_dt();
+		//Return dt at contact, between particle i and j
+		double get_dt(Contact&) const;
+		void set_dt(Contact&) ;
 
 
 

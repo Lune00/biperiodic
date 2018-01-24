@@ -21,7 +21,9 @@ Sample::Sample(){
 	fsampleA_ = "absolute.txt";
 	filetoload_ = 0 ;
 	starting_ = 0 ;
-	ofstream os("sample-debug.txt");
+	ofstream os("particle1.txt");
+	os.close();
+	os.open("particle2.txt");
 	os.close();
 }
 
@@ -190,19 +192,29 @@ void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
 }
 
 void Sample::debug(int tic){
-	ofstream os("sample-debug.txt",ios::app);
+	ofstream os("particle1.txt",ios::app);
+	ofstream os2("particle2.txt",ios::app);
 
 	Tensor2x2 h = cell_->geth();
 	Tensor2x2 hd = cell_->gethd();
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		if(it->getId()==0){
+		if(it->getId()==1){
 			Vecteur a = it->getA();
 			Vecteur sd = it->getV();
 			Vecteur v = h * sd + hd * it->getR(); 
-			os<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<endl;
+			os<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<endl;
+		}
+		if(it->getId()==2){
+			Vecteur a = it->getA();
+			Vecteur sd = it->getV();
+			Vecteur v = h * sd + hd * it->getR(); 
+			os2<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<endl;
 		}
 	}
+
+	os.close();
+	os2.close();
 }
 
 void Sample::printSample() const{

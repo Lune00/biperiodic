@@ -69,6 +69,7 @@ class Contact{
 		double sign(double x){if(x<0.) return -1.;else return 1.;}
 		Vecteur getfxy() const { return (n_ *f_.getx() + t_ * f_.gety());} 
 		double getdn() const { return dn_;}
+		double getdt() const { return dt_;}
 		//Debug:
 		void print() const;
 		const Particle* getj() const { return j_;}
@@ -82,6 +83,8 @@ class Contact{
 		double getfn() const { return f_.getx();}
 		double getft() const { return f_.gety();}
 		Vecteur getrv() const { return v_;}
+
+		void set_dt(double dt) { dt_ = dt ;}
 };
 
 

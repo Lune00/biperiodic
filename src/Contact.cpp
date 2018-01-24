@@ -140,16 +140,17 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	const double ftmax = fabs( fn * mus);
 
 	if(fabs(ft) > ftmax){
-		cerr<<"contact glissant"<<endl;
+		//Si glissant on fixe dt_, s'il est negatif on le laisse negatif sinon positif
 		ft = sign(ft) * ftmax;
-		dt_= ft/kt;
+		dt_= -ft/kt;
 	}
 	else dt_ += v_.gety() * dt ;
 
-	if(ft<1e-50) ft=0.;
+	//if(dt_ > 0.) dt_ = 0. ;
+	//if(ft<1e-50) ft=0.;
 	f_.set(fn,ft);
-	cerr<<"fn = "<<fn<<" ft = "<<ft<<endl;
-	cerr<<"dt_ = "<<dt_<<endl;
+
+	cerr<<"fn = "<<fn<<" ft = "<<ft<<" dt_ = "<<dt_<<endl;
 
 	return ;
 }
@@ -185,11 +186,6 @@ void Contact::updateAccelerations(){
 	//Expression force vector in the lab frames:
 	Vecteur fxy = getfxy();
 
-	//
-	//cerr<<" "<<endl;
-	//cerr<<"fxy = "<<fxy.getNorme()<<endl;
-	//cerr<<"f_ = "<<f_.getNorme()<<endl;
-	//cerr<<" "<<endl;
 	const double mi = i_->getMasse();
 	const double mj = j_->getMasse();
 
@@ -210,6 +206,7 @@ void Contact::updateAccelerations(){
 
 	ai = hinv * (ai - hd * vi * 2. - hdd * si);
 	aj = hinv * (aj - hd * vj * 2. - hdd * sj);
+
 	//cerr<<"(sdd)ai = "<<ai.getNorme()<<endl;
 	//Vecteur vhd = hinv * hd * vi;
 	//Vecteur hdds = hinv * hdd * si;

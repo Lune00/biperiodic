@@ -29,6 +29,7 @@ Interactions::Interactions(){
 
 Interactions::~Interactions(){
 
+	delete [] array_dt ;
 }
 
 
@@ -119,6 +120,15 @@ void Interactions::plug(Sample& spl,Cell& cell){
 	//Allow accessing h at any time for force computations
 	cell_ = &cell;
 	initScale();
+	//Store tangantial displacement;
+	init_array_dt();
+}
+
+//Should be N * (N - 1) but more complicated no?
+//WARNING: on suppose que l'id des particules va de 0 a N-1
+void Interactions::init_array_dt(){
+	N_ = spl_->getsize();
+	array_dt = new double [ N_ * N_ ] ;
 }
 
 
@@ -219,7 +229,6 @@ bool Interactions::near(const Particle& i, const Particle& j,const Tensor2x2& h,
 void Interactions::updatevlist(){
 
 	vlist_.clear();
-
 	Tensor2x2 h = cell_->geth();
 
 	for(vector<particle_pair>::iterator it = svlist_.begin(); it != svlist_.end(); it++){
@@ -236,29 +245,70 @@ void Interactions::updatevlist(){
 	//cout<<"Verlet list size: "<<vlist_.size()<<endl;
 }
 
+//Original, no memory procedure
+//void Interactions::detectContacts(){
+//	clist_.clear();
+//	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
+//		it->Frame();
+//		int k = distance( vlist_.begin(), it);
+//		if(it->isActif()){
+//			clist_.push_back(k);
+//		}
+//	}
+//}
+
 //Build contact list (activated interactions)
+//On doit renouveler la liste en gardant en memoire les contacts deja actifs (pas suprrimer et refaire comme avant)...
+//Ici on essaye en gardant juste le dt stocker dans un grand tableau
 void Interactions::detectContacts(){
+
 	clist_.clear();
+
 	for(vector<Contact>::iterator it = vlist_.begin(); it != vlist_.end(); it++){
+
 		it->Frame();
 		int k = distance( vlist_.begin(), it);
+
 		if(it->isActif()){
 			//cout<<"Le contact "<<k<<" est actif."<<endl;
+			//On set le dt
+			cerr<<"Contact entre particule "<<it->geti()->getId()<<" et "<<it->getj()->getId()<<" dt = "<<get_dt(*it)<<endl;
+			it->set_dt(get_dt(*it));
 			clist_.push_back(k);
 		}
-		//TEMP
 		else{
-			//cout<<"Le contact "<<k<<" est inactif."<<endl;
+			//On me a zero le dt
+			//Deja fait si le contact n'est pas actif
+			//set_dt(0.,*it);
 		}
 	}
+}
+
+double Interactions::get_dt(Contact& c) const{
+	int i = c.geti()->getId();
+	int j = c.getj()->getId();
+	cerr<<"i = "<<i<<" j="<<j<<endl;
+	return array_dt[ i * N_ + j];
+}
+
+void Interactions::set_dt(Contact& c){
+	int i = c.geti()->getId();
+	int j = c.getj()->getId();
+	array_dt[ i * N_ + j ] = c.getdt() ;
 }
 
 void Interactions::computeForces(const double dt){
 
 	for(vector<int>::iterator it = clist_.begin(); it != clist_.end();it++){
 		vlist_[*it].updateRelativeVelocity();
+
 		vlist_[*it].computeForce(kn_,kt_,gn_,gt_,mus_,dt);
 		vlist_[*it].updateAccelerations();
+		//Update dt table
+		set_dt(vlist_[*it]);
+		ofstream fo("debugInteractions.txt",ios::app);
+		fo<< vlist_[*it].getfn()<<" "<<vlist_[*it].getft()<<" "<<vlist_[*it].getdn()<<" "<<vlist_[*it].getdt()<<" "<<vlist_[*it].getrv().gety()<<endl;
+		fo.close();
 	}
 
 }
@@ -288,7 +338,8 @@ double Interactions::getElasticEnergy() const {
 		double dn = vlist_[*it].getdn();
 		double mj = vlist_[*it].getj()->getMasse();
 		double mi = vlist_[*it].geti()->getMasse();
-		E += 0.5 * (dn) * (dn) * kn_  ;
+		double dt = vlist_[*it].getdt();
+		E += 0.5 * (dn) * (dn) * kn_ + 0.5 * (dt) * (dt) * kt_  ;
 	}
 	return E;
 }
