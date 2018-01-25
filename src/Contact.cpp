@@ -107,21 +107,18 @@ void Contact::updateRelativeVelocity(){
 	Vecteur u(indexes_.first,indexes_.second); 
 	Vecteur sj = j_->getR() + u;
 	//Vecteur vj = cell_->gethd() * j_->getR() +cell_->geth() * j_->getV();
+
+	//A CHECKER
 	Vecteur vj = cell_->gethd() * sj + cell_->geth() * j_->getV();
 	Vecteur vi = cell_->gethd() * i_->getR() +cell_->geth() * i_->getV();
 	
-	//TO THINK TODO
-
-	//Y'a pas une erreur la, on reduit la vitesse de hd_xy en cisaillement, est ce bien le bon terme??
-	//vj.addx(  cell_->gethd().getxx() * indexes_.first + cell_->gethd().getxy() * indexes_.second);
-	//vj.addy(  cell_->gethd().getyx() * indexes_.first + cell_->gethd().getyy() * indexes_.second);
-
 	v_ = vj - vi;
 
 	//Components in the contact frame:
 	//v_n = vx nx + vy ny
 	v_.setx( v_ * n_ );
 	v_.sety( v_ * t_ );
+	//Useless rvrot_?
 	rvrot_ = j_->getVrot() - i_->getVrot();
 
 	//Rotational contribution added to the relative tangential componant
@@ -146,40 +143,11 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	}
 	else dt_ += v_.gety() * dt ;
 
-	//if(dt_ > 0.) dt_ = 0. ;
 	//if(ft<1e-50) ft=0.;
 	f_.set(fn,ft);
 
-	//cerr<<"fn = "<<fn<<" ft = "<<ft<<" dt_ = "<<dt_<<endl;
-
 	return ;
 }
-
-//Notice that f_.gety() refers here to ft_ (tangential force in contact frame)
-//Acclerations computed in the absolute sense (lab frame)
-//void Contact::updateAccelerations(){
-//	//Expression force vector in the lab frames:
-//	Vecteur fxy = getfxy();
-//
-//	//Vector basis
-//	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
-//	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
-//
-//	//Transform force vector in cell basis vector and rescale (to integrate acceleration in reduced coordinates)
-//	//TODO WIP
-//	double alpha = (a1.getx() * fxy.gety() - a1.gety() * fxy.getx() )  / ( a1.getx() * a0.gety() - a1.gety() * a0.getx());
-//	double beta = (a0.getx() * fxy.gety() - a0.gety() * fxy.getx() ) / ( a0.getx() * a1.gety() - a1.getx() * a0.gety());
-//
-//	Vecteur f(alpha,beta);
-//	//Update linear acceleration
-//	j_->updateA(f);
-//	i_->updateA(-f);
-//
-//	//Update rotational acceleration
-//	j_->updateArot(-f_.gety() * j_->getRadius());
-//	i_->updateArot(-f_.gety() * i_->getRadius());
-//	return;
-//}
 
 
 void Contact::updateAccelerations(){
@@ -196,7 +164,6 @@ void Contact::updateAccelerations(){
 
 	Vecteur ai = -fxy / mi ;
 	Vecteur aj = fxy / mj ;
-	//cerr<<"ai = "<<ai.getNorme()<<endl;
 
 	Vecteur si = i_->getR();
 	Vecteur vi = i_->getV();
@@ -206,13 +173,6 @@ void Contact::updateAccelerations(){
 
 	ai = hinv * (ai - hd * vi * 2. - hdd * si);
 	aj = hinv * (aj - hd * vj * 2. - hdd * sj);
-
-	//cerr<<"(sdd)ai = "<<ai.getNorme()<<endl;
-	//Vecteur vhd = hinv * hd * vi;
-	//Vecteur hdds = hinv * hdd * si;
-	//cerr<<"hd * vi = "<<vhd.getNorme()<<endl;
-	//cerr<<"hdd * si = "<<hdds.getNorme()<<endl;
-	//hdd.print();
 
 	//Update linear acceleration
 	j_->update_a(aj);

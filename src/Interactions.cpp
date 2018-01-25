@@ -270,7 +270,6 @@ void Interactions::detectContacts(){
 		int k = distance( vlist_.begin(), it);
 
 		if(it->isActif()){
-			//cout<<"Le contact "<<k<<" est actif."<<endl;
 			//On set le dt
 	//		cerr<<"Contact entre particule "<<it->geti()->getId()<<" et "<<it->getj()->getId()<<" dt = "<<get_dt(*it)<<endl;
 			it->set_dt(get_dt(*it));

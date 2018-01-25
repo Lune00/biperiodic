@@ -129,7 +129,7 @@ void Algo::run(){
 
 	//ticw_ (writing tick cell/sample) and tica_ (analysis) should start at the same initial tic, set in initTics()
 
-	int nprint = 150000;
+	int nprint = ns_ / 100 ;
 
 	writesetup();
 
@@ -159,11 +159,12 @@ void Algo::run(){
 			cout<<"t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
 			std::cout.precision(ss);
 		}
-		//TMP
-		if( tic_ % 10 == 0 ){
+
+		//TMP for debug
+		if( tic_ % 10000 == 0 ){
 		//	Int_->debug(tic_);
 		//	cell_->debug(tic_);
-			spl_->debug(tic_);
+			//spl_->debug(tic_);
 		}
 
 		t_+=dt_;
@@ -198,7 +199,6 @@ void Algo::writesetup() const{
 void Algo::write(){
 	//cout<<"Writing outputs..."<<endl;
 	spl_->write(ticw_);
-	//spl_->writeAbsolute(ticw_);
 	Int_->writeContacts(ticw_);
 	cell_->write(ticw_);
 	ticw_++;
