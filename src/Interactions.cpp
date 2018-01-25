@@ -272,7 +272,7 @@ void Interactions::detectContacts(){
 		if(it->isActif()){
 			//cout<<"Le contact "<<k<<" est actif."<<endl;
 			//On set le dt
-			cerr<<"Contact entre particule "<<it->geti()->getId()<<" et "<<it->getj()->getId()<<" dt = "<<get_dt(*it)<<endl;
+	//		cerr<<"Contact entre particule "<<it->geti()->getId()<<" et "<<it->getj()->getId()<<" dt = "<<get_dt(*it)<<endl;
 			it->set_dt(get_dt(*it));
 			clist_.push_back(k);
 		}
@@ -287,7 +287,6 @@ void Interactions::detectContacts(){
 double Interactions::get_dt(Contact& c) const{
 	int i = c.geti()->getId();
 	int j = c.getj()->getId();
-	cerr<<"i = "<<i<<" j="<<j<<endl;
 	return array_dt[ i * N_ + j];
 }
 
@@ -306,9 +305,9 @@ void Interactions::computeForces(const double dt){
 		vlist_[*it].updateAccelerations();
 		//Update dt table
 		set_dt(vlist_[*it]);
-		ofstream fo("debugInteractions.txt",ios::app);
-		fo<< vlist_[*it].getfn()<<" "<<vlist_[*it].getft()<<" "<<vlist_[*it].getdn()<<" "<<vlist_[*it].getdt()<<" "<<vlist_[*it].getrv().gety()<<endl;
-		fo.close();
+		//ofstream fo("debugInteractions.txt",ios::app);
+		//fo<< vlist_[*it].getfn()<<" "<<vlist_[*it].getft()<<" "<<vlist_[*it].getdn()<<" "<<vlist_[*it].getdt()<<" "<<vlist_[*it].getrv().gety()<<endl;
+		//fo.close();
 	}
 
 }
@@ -339,7 +338,8 @@ double Interactions::getElasticEnergy() const {
 		double mj = vlist_[*it].getj()->getMasse();
 		double mi = vlist_[*it].geti()->getMasse();
 		double dt = vlist_[*it].getdt();
-		E += 0.5 * (dn) * (dn) * kn_ + 0.5 * (dt) * (dt) * kt_  ;
+		E += 0.5 * (dn) * (dn) * kn_ ;
+			//+ 0.5 * (dt) * (dt) * kt_  ;
 	}
 	return E;
 }

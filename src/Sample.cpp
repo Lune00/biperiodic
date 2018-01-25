@@ -408,7 +408,7 @@ void Sample::firstStepVerlet(const double dt_){
 }
 
 //Update velocity and vrotation at the end of the time step
-//Removes mean velocity to ensure that <sd>=0.
+//TODO Removes mean velocity to ensure that <sd>=0.
 //The mean displacement is carried only by the cell (homogenous def)
 void Sample::secondStepVerlet(const double dt_) {
 
@@ -423,17 +423,11 @@ void Sample::secondStepVerlet(const double dt_) {
 	}
 
 	//Tensor2x2 hd = cell_->gethd();
-
-
-	//WIP TODO BUG SHEAR
-
-
 	//Remove homogeneous part WIP:
 	//for(spit it =spl_.begin(); it != spl_.end(); it++){
 
 //	//	it->removeHpart(hd);
 	//}
-
 	//vmean = vmean / (double)spl_.size();
 	////Set mean fluctuating velocities to zero
 	////The mean displacment is carried only by

@@ -150,7 +150,7 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	//if(ft<1e-50) ft=0.;
 	f_.set(fn,ft);
 
-	cerr<<"fn = "<<fn<<" ft = "<<ft<<" dt_ = "<<dt_<<endl;
+	//cerr<<"fn = "<<fn<<" ft = "<<ft<<" dt_ = "<<dt_<<endl;
 
 	return ;
 }
