@@ -32,6 +32,13 @@ class Cell{
 		char Control_[4];
 		double Control_values_Init[4];
 
+		//Impose a sinusoidal force to all particles
+		//amplitude * (2pi *y/Ly * mode_)
+		//along x direction
+		bool imposeForce_;
+		double amplitude_;
+		int mode_;
+
 		//Metrics: collective degrees of freedom
 		Tensor2x2 h_;
 		//Garde en memoire la forme originelle cellule pour calcul d'engeniring strain (L(t)-L0/LO))

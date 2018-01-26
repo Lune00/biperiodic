@@ -20,6 +20,7 @@ Cell::Cell(){
 	mh_factor_ = 5. ;
 	mh_auto_ = false;
 	L_auto_ = false;
+	imposeForce_ = false;
 
 	folder_ = string();
 	fcell_ = "cell.txt";
@@ -85,6 +86,13 @@ void Cell::init(ifstream& is){
 			is >> Control_values_Init[3]; 
 			iyy = true;
 		}
+
+		if(token=="imposeForce"){
+			is >> amplitude_;
+			is >> mode_;
+			imposeForce_ = true ;
+		}
+
 		if(token=="}") break;
 
 		is >> token ;
