@@ -84,6 +84,8 @@ class Interactions{
 		bool initgt_;
 		bool initmus_;
 
+		bool setgnmax_;
+
 		std::string folder_;
 		std::string fInteractions_;
 
@@ -146,6 +148,8 @@ class Interactions{
 		int getnsv() const {return nsv_;}
 		double getkn() const { return kn_;}
 		double getgn() const { return gn_;}
+		void setgn(double gn) { gn_ = gn;}
+		bool setgnmax() const { return setgnmax_;}
 		const Tensor2x2& stress() const { return stress_;}
 		Tensor2x2 getStressInt() const { return stress_;}
 

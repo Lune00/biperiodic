@@ -22,6 +22,7 @@ Interactions::Interactions(){
 	initgn_ = false;
 	initgt_ = false;
 	initmus_ = false;
+	setgnmax_ = false;
 
 	ofstream debug("debugInteractions.txt");
 	debug.close();
@@ -51,6 +52,7 @@ void Interactions::init(ifstream& is){
 		}
 		if(token=="niterv")  is >> nv_;
 		if(token=="nitersv") is >> nsv_;
+
 		if(token=="kn") {
 			is >> kn_;
 			initkn_ = true;
@@ -61,6 +63,10 @@ void Interactions::init(ifstream& is){
 		}
 		if(token=="gn"){
 			is >> gn_;
+			initgn_ = true;
+		}
+		if(token=="gnmax"){
+			setgnmax_ = true;
 			initgn_ = true;
 		}
 		if(token=="gt"){
@@ -133,7 +139,7 @@ void Interactions::init_array_dt(){
 
 
 bool Interactions::checkDEMparameters() const{
-	return (initkt_ && initkt_ && initgn_ && initgt_ && initmus_);
+	return (initkn_ && initkt_ && initgn_ && initgt_ && initmus_);
 }
 
 bool Interactions::initcheck() {

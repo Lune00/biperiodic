@@ -85,8 +85,14 @@ void Algo::compute_gnmax_restitution(){
 	double rho = spl_->getrho();
 	double m = rho * M_PI * spl_->getrmin() * spl_->getrmin(); 
 	double kn = Int_->getkn();
+
 	gnmax_ = 6. * sqrt(kn * m);
 	double ds = gn/gnmax_;
+
+
+	if(Int_->setgnmax()) Int_->setgn(gnmax_*0.99);
+	cerr<<"gn = "<<Int_->getgn()<<endl;
+
 	//From Radjai Book (not sure)
 	//But that's true we need a limit, maybe just a little above that
 	//Compute resitution coefficient:
