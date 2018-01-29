@@ -67,7 +67,7 @@ void Analyse::init(ifstream& is){
 
 
 void Analyse::cleanFiles(){
-	
+
 	if(energy_){
 		string filename = folder_ + "/energy.txt";
 		ofstream o(filename.c_str());
@@ -115,24 +115,45 @@ void Analyse::analyse(int tic, double t){
 	if(SP_) ProfileVelocity(t);
 }
 
+//On utilise les coordonees reduites
+//meme si c'est pas une bonne ref car ca depend de la cellule
+//On suppose que hyy ne change pas beaucoup...
+//Sinon il faut travailler en coordonees absolues et h0(cel ref)
 void Analyse::ProfileVelocity(const double t)const {
 
-	//On prend les dimensions initiales de la cellule comme reference
-	//Bas de probe doit commencer a zero par definition?
-	double Ly = cell_->geth0().getyy();
-	double x = cell_->getxc() ;
+	double Ly = 1.;
 	double ampProbe = Ly / (double)nbinsSP_;
 	vector<Probe*> lprobe (nbinsSP_);
 
 	//init probes
-//	for( unsigned int i = 0 ; i < nbinsSP_ ; i++){
-//		lprobe[i] = new Probe (x,(double) i * ampProbe,kkhh  );
-//	}
-//
-//	for(vector<Particle>::const_iterator it = spl_->inspectSample().begin(); it != spl_->inspectSample().end(); it++){
-//
-//	}
+	for( unsigned int i = 0 ; i < nbinsSP_ ; i++){
+		double yc = 0.5 * ampProbe + i * ampProbe;
+		lprobe[i] = new Probe (yc,ampProbe);
+	}
 
+	for(vector<Particle>::const_iterator it = spl_->inspectSample().begin(); it != spl_->inspectSample().end(); it++){
+
+		unsigned int j = 0 ;
+		while( j < nbinsSP_){
+			if(lprobe[j]->containCenter(*it))
+			{
+
+
+			}
+			if(lprobe[j]->intersection(*it))
+			{
+
+
+			}
+			else{
+				j++;
+			}
+
+
+		}
+	}
+
+	return ;
 }
 
 void Analyse::compacity(const double t) const{

@@ -81,6 +81,7 @@ class Sample{
 		std::vector<Particle>* getSample() {return &spl_;}
 
 		void firstStepVerlet(const double);
+		void addForce(Particle&);
 		void secondStepVerlet(const double);
 
 		Cell * getCell() const { return cell_;}

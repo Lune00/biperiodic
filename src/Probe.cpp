@@ -5,9 +5,12 @@
 
 using namespace std;
 
-bool Probe::containCenter (const Particle * p, const Tensor2x2& h) const{
-	Vecteur r = h * p->getR() ;
-	double dx = fabs(p->getR().getx() - xc_);
-	double dy = fabs(p->getR().gety() - yc_);
-	return ( dx < hl_ && dy < hh_ );
+bool Probe::containCenter (const Particle& p ) const{
+	double dy = fabs(p.getR().gety() - yc_);
+	return ( dy < hh_ );
+}
+
+bool Probe::intersection (const Particle& p) const{
+
+
 }

@@ -394,6 +394,10 @@ void Sample::firstStepVerlet(const double dt_){
 	double dt_2 = 0.5 * dt_ ;
 
 	for(spit it = spl_.begin(); it != spl_.end(); it++){
+
+		//Impose force to particles?
+		//A TEST
+		if(cell_->imposeForce()) addForce(*it);
 		//Positions
 		it->updateR(dt_);
 		it->updateRot(dt_);
@@ -405,6 +409,21 @@ void Sample::firstStepVerlet(const double dt_){
 	}
 
 	return;
+}
+
+//Add a force to each particule in the horizontal direction
+//fx = A * sin (2pi y/Ly * mode)
+void Sample::addForce(Particle& p){
+
+	double A = cell_->getAmplitudeForce();
+	int mode = cell_->getModeForce();
+	//double Ly = cell_->geth().getyy();
+
+	double yLy = p.getR().gety() ;
+	double fx = A * sin ( 2. * M_PI * yLy * (double)mode);
+	Vecteur f(fx,0.);
+	p.updateA(f);
+	//cerr<<"Particule "<<p.getId()<<": "<<f.getx()<<" y/Ly = "<<yLy<<endl;
 }
 
 //Update velocity and vrotation at the end of the time step

@@ -89,7 +89,6 @@ void Algo::compute_gnmax_restitution(){
 	gnmax_ = 6. * sqrt(kn * m);
 	double ds = gn/gnmax_;
 
-
 	if(Int_->setgnmax()) Int_->setgn(gnmax_*0.99);
 	cerr<<"gn = "<<Int_->getgn()<<endl;
 

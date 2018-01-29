@@ -33,8 +33,7 @@ class Cell{
 		double Control_values_Init[4];
 
 		//Impose a sinusoidal force to all particles
-		//amplitude * (2pi *y/Ly * mode_)
-		//along x direction
+		//along x direction Fx = amplitude * (2pi *y/Ly * mode_)
 		bool imposeForce_;
 		double amplitude_;
 		int mode_;
@@ -106,6 +105,11 @@ class Cell{
 
 		void initfolder(std::string folder) { folder_ = folder;}
 		void writeGeometry(const int) const;
+
+		//Accessors for imposedForce to individual particles
+		bool imposeForce() const { return imposeForce_;}
+		double getAmplitudeForce() const { return amplitude_;}
+		int getModeForce() const { return mode_;}
 
 		//Debug & track:
 		bool initcheck();

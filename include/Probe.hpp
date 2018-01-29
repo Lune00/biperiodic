@@ -5,23 +5,29 @@ class Particle;
 class Tensor2x2;
 class Vecteur;
 
-//Rectangular probe
+//Rectangular probe along x direction
+//On pourrait faire une probe qui map bien la cell deformee
+//Chaque probe serait une petite cellule avec un tenseur qui decrit
+//ses dimensions et sa geometrie
+
+//Pour l'instant on reste a un proto de base avec des probes
+//rectangulaires qui slicent l'empilement suivant x (toute la largeur)
+
 class Probe{
 
 	private:
 		//Center coordinates (real)
-		double xc_;
 		double yc_;
-		//Half height, half length
+		//Half height
 		double hh_;
-		double hl_;
 
 	public:
-		Probe(): xc_(0.), yc_(0.), hh_(0.), hl_(0.) {}
-		Probe(double x, double y, double hh, double hl): xc_(x), yc_(y), hh_(hh), hl_(hl) {}
+		Probe(): yc_(0.), hh_(0.){}
+		Probe(double y, double hh): yc_(y), hh_(hh){}
 		~Probe(){};
-		bool containCenter (const Particle*,const Tensor2x2&) const;
-		double area () const { return 4.* hh_ * hl_ ;} ;
+		bool containCenter (const Particle&) const;
+		bool intersection(const Particle&) const;
+		//double area () const { return 4.* hh_ * hl_ ;} ;
 
 };
 
