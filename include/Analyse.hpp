@@ -4,6 +4,7 @@
 #include<vector>
 #include<fstream>
 #include"Probe.hpp"
+#include"globalfunctions.hpp"
 
 
 class Sample;

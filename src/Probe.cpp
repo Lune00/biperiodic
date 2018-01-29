@@ -11,6 +11,5 @@ bool Probe::containCenter (const Particle& p ) const{
 }
 
 bool Probe::intersection (const Particle& p) const{
-
-
+	return false;
 }

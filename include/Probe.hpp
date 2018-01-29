@@ -28,6 +28,7 @@ class Probe{
 		bool containCenter (const Particle&) const;
 		bool intersection(const Particle&) const;
 		//double area () const { return 4.* hh_ * hl_ ;} ;
+		double gety() const { return yc_;}
 
 };
 

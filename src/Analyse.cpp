@@ -94,7 +94,9 @@ void Analyse::cleanFiles(){
 	}
 	if(SP_){
 
-
+		string filename = folder_ + "/SProfile.txt";
+		ofstream o(filename.c_str());
+		o.close();
 	}
 
 }
@@ -124,6 +126,14 @@ void Analyse::ProfileVelocity(const double t)const {
 	double Ly = 1.;
 	double ampProbe = Ly / (double)nbinsSP_;
 	vector<Probe*> lprobe (nbinsSP_);
+	vector<double > Xprofile(nbinsSP_,0.);
+	vector<unsigned int> Nbod(nbinsSP_,0);
+
+
+	Tensor2x2 hd = cell_->gethd();
+	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hinv = h.getInverse();
+
 
 	//init probes
 	for( unsigned int i = 0 ; i < nbinsSP_ ; i++){
@@ -138,6 +148,10 @@ void Analyse::ProfileVelocity(const double t)const {
 			if(lprobe[j]->containCenter(*it))
 			{
 
+				//To do in global function: get v from sd
+				//Vecteur v = 
+				Xprofile[j] += absVelocity(*it,h,hinv,hd).getx();
+				Nbod[j]++;
 
 			}
 			if(lprobe[j]->intersection(*it))
@@ -152,6 +166,18 @@ void Analyse::ProfileVelocity(const double t)const {
 
 		}
 	}
+
+	//Writing & Normalise profile:
+	string file = folder_ + "/SProfile.txt";
+	ofstream os(file.c_str(),ios::app);
+
+	for(unsigned int i = 0; i<nbinsSP_;i++){
+		if(Nbod[i]==0) Nbod[i]=1;
+		Xprofile[i] /= (double)(Nbod[i]);
+		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<endl;
+	}
+
+	os.close();
 
 	return ;
 }

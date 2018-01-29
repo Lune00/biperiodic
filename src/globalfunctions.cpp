@@ -10,4 +10,10 @@ string formatfile(const string folder, const string file, const int k){
 	return ffile;
 }
 
+//A test:
+Vecteur absVelocity(const Particle& p, const Tensor2x2& h, const Tensor2x2& hinv, const Tensor2x2 hd){
+
+	return (h * p.getV() + hd * p.getR());
+
+}
 
