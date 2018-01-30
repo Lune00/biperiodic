@@ -71,7 +71,6 @@ class Particle{
 		void updateVrot(const double dt);
 		void updateRot(const double dt);
 		void resetA(); 
-		void removeHpart(const Tensor2x2&);
 
 		double getx() const { return r_.getx() ; }
 		double gety() const { return r_.gety() ; }

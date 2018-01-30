@@ -33,5 +33,7 @@ cp -f exec/DEMARENA testcompression3/DEMARENA
 cp -f exec/DEMARENA testcompression4/DEMARENA
 cp -f exec/DEMARENA testcompression4_frictionless/DEMARENA
 cp -f exec/DEMARENA testForce/DEMARENA
+cp -f exec/DEMARENA testForce2/DEMARENA
+cp -f exec/DEMARENA testForce2/drive/DEMARENA
 
 echo "Compilation terminee."

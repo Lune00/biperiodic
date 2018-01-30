@@ -94,6 +94,9 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 
 	ana.plug(spl,cell,Int);
 
+	//Interactions talk to sample to know if need to load contact data
+	Int.talkinit();
+
 	if(!checkSample){
 		cerr<<"Sample::initcheck() problem."<<endl;
 		return 1;
@@ -110,7 +113,6 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 		cerr<<"Interactions::initcheck() problem."<<endl;
 		return 1;
 	}
-
 
 	return 0;
 

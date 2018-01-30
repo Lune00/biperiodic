@@ -85,6 +85,3 @@ void Particle::resetA() {
 	arot_ = 0. ;
 }
 
-void Particle::removeHpart(const Tensor2x2& hd){
-}
-

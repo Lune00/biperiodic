@@ -41,6 +41,9 @@ class Analyse{
 		bool SP_;
 		int nbinsSP_;
 
+		//Interpenetration (track)
+		bool interpenetration_;
+
 	public:
 		Analyse();
 		~Analyse();
@@ -70,6 +73,9 @@ class Analyse{
 
 		//Profiles
 		void ProfileVelocity(const double) const;
+
+		//Interpenetration
+		void Interpenetration(const double) const;
 
 };
 

@@ -438,22 +438,14 @@ void Sample::secondStepVerlet(const double dt_) {
 	for(spit it =spl_.begin(); it != spl_.end(); it++){
 		it->updateV(dt_2);
 		it->updateVrot(dt_2);
-		//vmean = vmean + it->getV();
+		vmean = vmean + it->getV();
 	}
 
-	//Tensor2x2 hd = cell_->gethd();
-	//Remove homogeneous part WIP:
-	//for(spit it =spl_.begin(); it != spl_.end(); it++){
+	//TODO: wip
+	vmean = vmean / (double)spl_.size();
 
-//	//	it->removeHpart(hd);
-	//}
-	//vmean = vmean / (double)spl_.size();
-	////Set mean fluctuating velocities to zero
-	////The mean displacment is carried only by
-	////the cell deformation
-	//for(spit it = spl_.begin(); it != spl_.end(); it++){
-	//	it->removevmean(vmean);
-	//}
-
+	for(spit it =spl_.begin(); it != spl_.end(); it++){
+		it->removevmean(vmean);
+	}
 }
 

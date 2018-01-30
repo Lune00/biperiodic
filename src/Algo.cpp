@@ -81,14 +81,14 @@ bool Algo::checktimestep()const{
 
 //Compute gnmax and restitution coeffcient
 void Algo::compute_gnmax_restitution(){
+
 	const double gn = Int_->getgn();
 	double rho = spl_->getrho();
 	double m = rho * M_PI * spl_->getrmin() * spl_->getrmin(); 
+	double mmax = rho * M_PI * spl_->getrmax() * spl_->getrmax(); 
 	double kn = Int_->getkn();
 
-	gnmax_ = 6. * sqrt(kn * m);
-	double ds = gn/gnmax_;
-
+	gnmax_ = 5. * sqrt( 2. * kn * mmax);
 	if(Int_->setgnmax()) Int_->setgn(gnmax_*0.99);
 	cerr<<"gn = "<<Int_->getgn()<<endl;
 
@@ -96,14 +96,16 @@ void Algo::compute_gnmax_restitution(){
 	//But that's true we need a limit, maybe just a little above that
 	//Compute resitution coefficient:
 	//Facteur 6 semble etre pas trop mal
+	double ds = gn/gnmax_;
 	e_ = exp(- M_PI * ds/(2.*sqrt(1.-ds*ds)) ) ;
 }
 
 bool Algo::checkNormalViscosity()const{
-	cout<<"Max normal viscosity gnmax = "<<gnmax_<<endl;
-	cout<<"Restitution coefficient e = "<<e_<<endl;
+
+	cout<<"max normal viscosity gnmax = "<<gnmax_<<endl;
+	cout<<"restitution coefficient e = "<<e_<<endl;
 	if(Int_->getgn()>gnmax_){
-		cerr<<"Keeping all other parameters constants, choose a lower normal viscosity"<<endl;
+		cerr<<"Keeping all other parameters constants, choose a lower normal viscosity."<<endl;
 		return false;
 	}
 	else return true;
@@ -135,6 +137,7 @@ void Algo::run(){
 	//ticw_ (writing tick cell/sample) and tica_ (analysis) should start at the same initial tic, set in initTics()
 
 	int nprint = ns_ / 100 ;
+	if(nprint==0) nprint = 5 ;
 
 	writesetup();
 
@@ -240,6 +243,7 @@ void Algo::verletalgo2(){
 	//------------- SECOND STEP VERLET STARTS HERE
 
 	//Calcul des vitesses a la fin du pas de temps:
+	//ATEST: On retranche la valeur moyenne aux vitesses fluctuantes
 	spl_->secondStepVerlet(dt_);
 
 	//Apply stress_ext: si controle en force

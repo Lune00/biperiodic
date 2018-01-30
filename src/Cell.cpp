@@ -17,7 +17,7 @@ Cell::Cell(){
 	initMass_ = false;
 	mh_ = 1.;
 	//Multiplier of sample mass
-	mh_factor_ = 5. ;
+	mh_factor_ = 2. ;
 	mh_auto_ = false;
 	L_auto_ = false;
 	imposeForce_ = false;

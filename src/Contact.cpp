@@ -91,11 +91,10 @@ void Contact::Frame(){
 	}
 }
 
-//Temporar: debug use
+//Use for reloading dt and analyses force network
 void Contact::write(ofstream& os) const{
-	os<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<endl;
+	os<<i_->getId()<<" "<<j_->getId()<<" "<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<" "<<dt_<<endl;
 }
-
 
 //Take into account case of contact with images
 void Contact::updateRelativeVelocity(){

@@ -54,6 +54,9 @@ void Analyse::init(ifstream& is){
 			SP_ = true;
 			is >> nbinsSP_ ;
 		}
+		if(token=="interp"){
+			interpenetration_ = true;
+		}
 
 		if(token=="}") break;
 
@@ -98,6 +101,11 @@ void Analyse::cleanFiles(){
 		ofstream o(filename.c_str());
 		o.close();
 	}
+	if(interpenetration_){
+		string filename = folder_ + "/interpenetration.txt";
+		ofstream o(filename.c_str());
+		o.close();
+	}
 
 }
 
@@ -107,6 +115,9 @@ void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 	Int_ = &Int;
 }
 
+
+
+
 //Call for different analyses asked by the user
 void Analyse::analyse(int tic, double t){
 	if(printSample_) printSample(tic);
@@ -115,7 +126,19 @@ void Analyse::analyse(int tic, double t){
 	if(stress_) stress(t);
 	if(compacity_) compacity(t);
 	if(SP_) ProfileVelocity(t);
+	if(interpenetration_) Interpenetration(t);
 }
+
+
+void Analyse::Interpenetration(const double t) const{
+	vector<double> av_max = Int_->getAverageMaxPenetration();
+	string file = folder_ + "/interpenetration.txt";
+	ofstream os(file.c_str(),ios::app);
+	os<<t<<" "<<av_max[0]<<" "<<av_max[1]<<endl;
+	os.close();
+}
+
+
 
 //On utilise les coordonees reduites
 //meme si c'est pas une bonne ref car ca depend de la cellule

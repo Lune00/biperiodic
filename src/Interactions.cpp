@@ -117,26 +117,83 @@ void Interactions::initScale(){
 	dv_ *= scale;
 	dsv_ *= scale;
 	initScale_ = true ;
-
 	return ;
 }
 
 void Interactions::plug(Sample& spl,Cell& cell){
+
 	spl_ = & spl;
-	//Allow accessing h at any time for force computations
 	cell_ = &cell;
+	//Verlet and superverlet cutoff distance 
 	initScale();
-	//Store tangantial displacement;
+	//To store tangantial displacement;
 	init_array_dt();
 }
 
 //Should be N * (N - 1) but more complicated no?
 //WARNING: on suppose que l'id des particules va de 0 a N-1
+//BE CAREFUL WHILE BUILDING THE SAMPLE
 void Interactions::init_array_dt(){
+
 	N_ = spl_->getsize();
+
 	array_dt = new double [ N_ * N_ ] ;
+
+	for(unsigned int i = 0 ; i < N_ ; i++){
+		for(unsigned int j = 0 ; j < N_; j++){
+			array_dt[i * N_ + j ] = 0. ;
+		}
+	}
 }
 
+//called in config.cpp after plug. Si array exists already
+//Ask sample if loaded sample or new one (using build)
+//If loaded, then load dt for tangential forces
+void Interactions::talkinit() {
+	if(spl_->loaded()){
+		unsigned int filetoload = spl_->filetoload();
+		load(filetoload);
+	}
+	return ;
+}
+
+
+//Load the dt for the contacts
+void Interactions::load(const int k){
+
+	string filename = formatfile( folder_, fInteractions_, k );
+	ifstream is(filename.c_str());
+	if(!is){
+		cerr<<"Interactions::load "<<filename<<" fail."<<endl;
+		return ;
+	}
+	else if(is.peek() == std::ifstream::traits_type::eof()){
+		cerr<<"Pas de contacts a charger."<<endl;
+		return ;
+	}
+	else{
+		//Build contacts list to fill array_dt:
+		string token;
+		while(is){
+			if(is.eof()) break;
+			fill_array_dt(is);
+		}
+		
+	}
+	is.close();
+}
+
+void Interactions::fill_array_dt(ifstream& is){
+	unsigned int idi = 0 ;
+	unsigned int idj = 0 ;
+	double tr = 0 ;
+	double dt = 0. ;
+	N_ = spl_->getsize();
+	is >>idi >> idj >> tr >> tr >> tr >> tr >> tr >> tr >> dt;
+	cerr<<"load "<<idi<<" "<<idj<<" dt = "<<dt<<endl;
+
+	if( idi != idj ) array_dt[ idi * N_ + idj ] = dt ;
+}
 
 bool Interactions::checkDEMparameters() const{
 	return (initkn_ && initkt_ && initgn_ && initgt_ && initmus_);
@@ -340,8 +397,6 @@ double Interactions::getElasticEnergy() const {
 	double E = 0.;
 	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
 		double dn = vlist_[*it].getdn();
-		double mj = vlist_[*it].getj()->getMasse();
-		double mi = vlist_[*it].geti()->getMasse();
 		double dt = vlist_[*it].getdt();
 		E += 0.5 * (dn) * (dn) * kn_ ;
 			//+ 0.5 * (dt) * (dt) * kt_  ;
@@ -395,6 +450,24 @@ void Interactions::computeInternalStress(){
 }
 
 
+vector<double> Interactions::getAverageMaxPenetration()const{
+
+	double dn_average = 0. ;
+	double dn_max = 0. ;
+	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
+		double dn = vlist_[*it].getdn();
+		dn_average += fabs(dn);
+		dn_max = max(fabs(dn),fabs(dn_max));
+	}
+	if(clist_.size()!=0) dn_average /= (double)clist_.size();
+
+	vector<double> dns;
+	dns.push_back(dn_average);
+	dns.push_back(dn_max);
+	return dns;
+}
+
+
 void Interactions::debug(const int k) const{
 	double dnaverage = 0. ;
 	double dnmax = 0. ;
@@ -408,3 +481,6 @@ void Interactions::debug(const int k) const{
 	if(clist_.size()!=0) dnaverage /= (double)clist_.size();
 	os<<k<<" "<<dnaverage<<" "<<dnmax<<" "<<stress_s.getyy()<<" "<<stress_s.getxx()<<endl;
 }
+
+
+

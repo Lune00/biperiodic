@@ -63,7 +63,7 @@ class Interactions{
 
 		//Store tangential displacement for all possible contacts
 		double * array_dt; 
-		//Number of particles -> size of array_dt
+		//Number of particles -> size of array_dt == size of spl
 		int N_;
 
 		//plug:
@@ -124,6 +124,9 @@ class Interactions{
 		bool initcheck();
 		bool checkDEMparameters()const;
 		void plug(Sample&,Cell&);
+		//Load file
+		void talkinit();
+		void load(const int);
 		//Call updatevlist & updatsvlist
 		void updateverlet(const int);
 		//Build superverlet
@@ -141,6 +144,7 @@ class Interactions{
 		void writeContacts(int) const;
 		//Compute energy stored in contact deflection
 		double getElasticEnergy() const;
+		std::vector<double> getAverageMaxPenetration()const;
 		void askNumberOfContacts() const;
 
 		int getnc() const { return clist_.size();}
@@ -160,6 +164,8 @@ class Interactions{
 		Vecteur getShortestBranch(const Particle&,const Particle&) const;
 
 		void init_array_dt();
+		//Used when reload file for simulation (load prev dt_)
+		void fill_array_dt(std::ifstream&);
 		//Return dt at contact, between particle i and j
 		double get_dt(Contact&) const;
 		void set_dt(Contact&) ;
