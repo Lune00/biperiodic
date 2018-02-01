@@ -177,7 +177,7 @@ void Algo::run(){
 
 		//TMP for debug
 		if( tic_ % 10 == 0 ){
-		//	Int_->debug(tic_);
+			Int_->debug(tic_);
 			cell_->debug(tic_);
 			spl_->debug(tic_);
 		}

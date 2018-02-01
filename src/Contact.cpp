@@ -67,6 +67,7 @@ void Contact::Frame(){
 
 	double l = branch_.getNorme();
 	double invl = 1./l ;
+
 	//Build local frame:
 	n_ = branch_ * invl;
 	t_.set( - n_.gety() , n_.getx() );
@@ -76,12 +77,6 @@ void Contact::Frame(){
 	//Interpenetration:
 	dn_ = l - (i_->getRadius() + j_->getRadius());
 
-	//Erreurs d'arrondis (ordre 10e-16) peuvent apparaitre
-	//Preferer un test de tolerance a inferieur a < 0
-	//Si superieur a tolerance, non zero
-	//if(dn_ < 0. ){
-	//A test
-	//if(fabs(dn_) > tolerance_ && dn_ < 0.){
 	if(dn_ < 0.){
 		isActif_ = true;
 	}
@@ -91,7 +86,7 @@ void Contact::Frame(){
 	}
 }
 
-//Use for reloading dt and analyses force network
+//TODO
 void Contact::write(ofstream& os) const{
 	os<<i_->getId()<<" "<<j_->getId()<<" "<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<" "<<dt_<<endl;
 }
@@ -105,11 +100,9 @@ void Contact::updateRelativeVelocity(){
 	//Real velocities
 	Vecteur u(indexes_.first,indexes_.second); 
 	Vecteur sj = j_->getR() + u;
-	//Vecteur vj = cell_->gethd() * j_->getR() +cell_->geth() * j_->getV();
 
-	//A CHECKER
 	Vecteur vj = cell_->gethd() * sj + cell_->geth() * j_->getV();
-	Vecteur vi = cell_->gethd() * i_->getR() +cell_->geth() * i_->getV();
+	Vecteur vi = cell_->gethd() * i_->getR() + cell_->geth() * i_->getV();
 	
 	v_ = vj - vi;
 
@@ -117,11 +110,14 @@ void Contact::updateRelativeVelocity(){
 	//v_n = vx nx + vy ny
 	v_.setx( v_ * n_ );
 	v_.sety( v_ * t_ );
+
 	//Useless rvrot_?
+
 	rvrot_ = j_->getVrot() - i_->getVrot();
 
 	//Rotational contribution added to the relative tangential componant
 	double vtr = -j_->getRadius() * j_->getVrot() -i_->getRadius() * i_->getVrot();
+
 	v_.addy(vtr); 
 
 	return ;
@@ -139,11 +135,10 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 		//Si glissant on fixe dt_, s'il est negatif on le laisse negatif sinon positif
 		ft = sign(ft) * ftmax;
 		//dt_= -ft/kt;
-		dt_ = - ft/kt;
+		dt_ =  ft/kt;
 	}
 	else dt_ += v_.gety() * dt ;
 
-	//if(ft<1e-50) ft=0.;
 	f_.set(fn,ft);
 
 	return ;

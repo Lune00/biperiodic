@@ -409,12 +409,12 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	ps<<"stroke"<<endl;
 
 
-	//Draw netwokr
+	//Draw network
 	if(forcenetwork){
 
 		int N = Int_->getnc();
+
 		if(N==0) return ;
-		cerr<<" N = "<<N<<endl;
 
 		double Fmean = 0. ;
 		double Fmin = Int_->inspectContact(0)->getfn(); 

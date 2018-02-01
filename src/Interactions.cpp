@@ -413,6 +413,15 @@ vector<double> Interactions::getAverageMaxPenetration()const{
 
 void Interactions::debug(const int k) const{
 
+  ofstream tmp("tmp.txt",ios::app);
+  for(vector<Contact>::const_iterator it = pairs_.begin(); it != pairs_.end(); it++){
+
+    if(it->geti()->getId()==6 && it->getj()->getId()==11){
+      tmp<< it->getfn()<<" "<<it->getft()<<" "<<it->getdn()<<" "<<it->getdt()<<endl;
+    }
+  }
+  tmp.close();
+
 }
 
 void Interactions::print() const {
