@@ -397,12 +397,12 @@ void Interactions::computeForces(const double dt){
 		Vecteur a_red = hinv * (it->getA());
 		(it)->setAcceleration(a_red);
 
-		if(it->getId()==46){
-			ofstream tmp("tmp.txt",ios::app);
-			tmp <<it->getA().getx()<<" "<<it->getA().gety()<<" "<<it->getV().getx()<<" "<<it->getV().gety()<<endl;
-			tmp.close();
+	//	if(it->getId()==42){
+	//		ofstream tmp("tmp.txt",ios::app);
+	//		tmp <<it->getA().getx()<<" "<<it->getA().gety()<<" "<<it->getV().getx()<<" "<<it->getV().gety()<<endl;
+	//		tmp.close();
 
-		}
+	//	}
 
 	}
 }

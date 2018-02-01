@@ -21,9 +21,7 @@ Sample::Sample(){
 	fsampleA_ = "absolute.txt";
 	filetoload_ = 0 ;
 	starting_ = 0 ;
-	ofstream os("particle1.txt");
-	os.close();
-	os.open("particle2.txt");
+	ofstream os("track.txt");
 	os.close();
 }
 
@@ -176,54 +174,25 @@ double Sample::getRKE() const {
 	return Ecrot;
 }
 
-//Tmp function: only for debug
-void Sample::writeDebug(ofstream& file,ofstream& file2, int tic) const{
-
-	Tensor2x2 h = cell_->geth();
-	Tensor2x2 hd = cell_->gethd();
-
-	file<<tic<<" ";
-	file2<<tic<<" ";
-
-	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		if(it->getId()==1)it->write(file,h,hd);
-		if(it->getId()==2)it->write(file2,h,hd);
-	}
-	//printSample();
-}
 
 void Sample::debug(int tic){
-	ofstream os("particle1.txt",ios::app);
-	ofstream os2("particle2.txt",ios::app);
+	ofstream os("track.txt",ios::app);
 
 	Tensor2x2 h = cell_->geth();
 	Tensor2x2 hd = cell_->gethd();
 	Tensor2x2 hdd = cell_->gethdd();
 
-	//for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-	//	if(it->getId()==1){
-	//		Vecteur a = it->getA();
-	//		Vecteur sd = it->getV();
-	//		Vecteur v = h * sd + hd * it->getR(); 
-	//		os<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<endl;
-	//	}
-	//	if(it->getId()==2){
-	//		Vecteur a = it->getA();
-	//		Vecteur sd = it->getV();
-	//		Vecteur v = h * sd + hd * it->getR(); 
-	//		os2<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<endl;
-	//	}
-	//}
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		if(it->getId()==81){
+		if(it->getId()==42){
 			Vecteur sd = it->getV();
 			Vecteur v = h * sd + hd * it->getR(); 
 			Vecteur a = hdd * it->getR() + hd * sd * 2. + h * it->getA();
-			os<<tic<<" "<<it->getId()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<" "<<a.getx()<<" "<<a.gety()<<" "<<it->getA().getx()<<" "<<it->getA().gety()<<endl;
+			Vecteur r = h * it->getR();
+			//os<<tic<<" "<<it->getId()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<" "<<a.getx()<<" "<<a.gety()<<" "<<it->getA().getx()<<" "<<it->getA().gety()<<endl;
+			os<<tic<<" "<<r.getx()<<" "<<r.gety()<<endl;
 		}
 	}
 	os.close();
-	os2.close();
 }
 
 void Sample::printSample() const{

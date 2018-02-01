@@ -171,6 +171,7 @@ class Interactions{
 		void set_dt(Contact&) ;
 
 
+		const Contact& inspectContact(int k) const { return vlist_[k] ; } 
 
 };
 

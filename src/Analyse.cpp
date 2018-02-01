@@ -293,6 +293,7 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 
 	bool label = true ;
+	bool forcenetwork = true ;
 
 	ofstream ps(frame.c_str());
 	//Is h used??
@@ -316,6 +317,7 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 	double scalefont = 0.3 * spl_->getrmax();
 
+	double rmax = spl_->getrmax();
 
 	ps<<"%!PS-Adobe-3.0 EPSF-3.0"<<endl;
 	ps<<"%%BoundingBox:"<<" "<<xcframe-lx2-margin<<" "<<ycframe-ly2-margin<<" "<<xcframe + lx2+margin<<" "<<ycframe + ly2+margin<<endl;
@@ -405,6 +407,56 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	ps<<"0.549 0.549 0.549 setrgbcolor"<<endl;
 	ps<<lw<<" setlinewidth "<<endl;
 	ps<<"stroke"<<endl;
+
+
+	//Draw netwokr
+	if(forcenetwork){
+
+		int N = Int_->getnc();
+		double Fmean = 0. ;
+		double Fmin = Int_->inspectContact(0).getfn(); 
+		double Fmax = Int_->inspectContact(0).getfn(); 
+		for(int i = 0 ; i < N ; i++){
+			Contact c = Int_->inspectContact(i);
+			Fmean += c.getfn() ;
+			Fmax = max(c.getfn(),Fmax);
+			Fmin = min(c.getfn(),Fmin);
+		}
+
+		Fmean /= (double)N;
+		//cerr<<"fmean = "<<Fmean<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
+
+		for(int i = 0 ; i < N ; i++){
+			Contact c = Int_->inspectContact(i);
+			if(!c.isActif()) continue;
+			double fn = c.getfn();
+			double fnres = (fn - Fmin)/(Fmax+Fmin);
+			//double lw = (fn / Fmean) * 0.03 * rmax ; 
+			double lw = 0.2 * rmax ;
+
+			Vecteur ri = h * c.geti()->getR();
+			Vecteur rj = h * c.getj()->getR();
+			if(c.geti()->getId() == 14 && c.getj()->getId() == 28){
+				cerr<<"WTF ===> ! "<<"fn = "<<c.getfn()<<" fnres = "<<fnres<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
+				cerr<<"lw = "<<lw<<" Fmean = "<<Fmean<<endl;
+				if(c.isActif()){
+					cerr<<"NON MAIS ALLO"<<endl;
+					c.print();
+				}
+
+				cerr<<c.getbranch().getx()<<" "<<c.getbranch().gety()<<endl;
+			}
+
+
+			double xi = ri.getx();
+			double yi = ri.gety();
+			double xj = xi + c.getbranch().getx();
+			double yj = yi + c.getbranch().gety();
+			ps<<"/coul_force {1 setlinecap 1 "<<1. - fnres<<" "<<1. -fnres<<" setrgbcolor} def"<<endl;
+			ps<<lw<<" setlinewidth coul_force"<<endl;
+			ps<<xi<<" "<<yi<<" moveto "<<xj<<" "<<yj<<" lineto stroke"<<endl;
+		}
+	}
 
 	return ;
 

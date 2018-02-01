@@ -91,7 +91,6 @@ class Sample{
 		void write(int) const;
 		void writeAbsolute(int) const;
 		//TMP: debug writing
-		void writeDebug(std::ofstream&,std::ofstream&,int) const;
 		void debug(int);
 		void printSample() const;
 		std::vector<Particle> getimages(double e) const;
