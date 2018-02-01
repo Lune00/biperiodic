@@ -155,6 +155,7 @@ void Algo::run(){
 		//Update verlet list
 		Int_->updateverlet(tic_);
 
+		break ;
 		//Time step: integration & periodicity
 		verletalgo2();
 

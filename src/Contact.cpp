@@ -10,9 +10,9 @@ using namespace std;
 //then check if negative or not
 const double Contact::tolerance_ = 1e-20 ;
 
-Contact::Contact(Particle* i, Particle* j,Cell& cell){
-	i_ = i ;
-	j_ = j ;
+Contact::Contact(Particle& i, Particle& j,Cell& cell){
+	i_ = &i ;
+	j_ = &j ;
 	isActif_ = false;
 	cell_ = &cell;
 	branch_.setx(0.);

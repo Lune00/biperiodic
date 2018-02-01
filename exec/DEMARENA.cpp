@@ -43,7 +43,6 @@ int main (int argc,char **argv)
 	int init_status = config.init(is,algo,cell,spl,Int,analyse);
 	if(init_status != 0) return 0;
 
-
 	//Lancement simulation
 	algo.run();
 

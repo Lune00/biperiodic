@@ -81,7 +81,7 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	if(!spl.loaded()) spl.initReducedCoordinates();
 
 	//Interactions talk to sample to know if need to load contact data
-	Int.talkinit();
+	Int.build();
 
 	//Global check:
 

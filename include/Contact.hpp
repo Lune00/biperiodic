@@ -38,7 +38,6 @@ class Contact{
 		double dn_;
 		double dt_;
 
-		//Relative rate of rotation at contact
 		double rvrot_;
 
 		//Pointer on the cell (to access h and hd)
@@ -56,7 +55,7 @@ class Contact{
 
 	public:
 		Contact(){ i_ = NULL; j_ =NULL, cell_=NULL ; isActif_ = false; }
-		Contact(Particle* i, Particle* j, Cell&);
+		Contact(Particle& i, Particle& j, Cell&);
 		~Contact(){};
 
 		bool isActif() const { return isActif_;}
@@ -67,24 +66,21 @@ class Contact{
 		void computeForce(const double,const double,const double,const double, const double, const double);
 		void updateAccelerations();
 		double sign(double x){if(x<0.) return -1.;else return 1.;}
-		Vecteur getfxy() const { return (n_ *f_.getx() + t_ * f_.gety());} 
 		double getdn() const { return dn_;}
 		double getdt() const { return dt_;}
+		Vecteur getfxy() const { return (n_ *f_.getx() + t_ * f_.gety());} 
 		//Debug:
 		void print() const;
 		const Particle* getj() const { return j_;}
 		const Particle* geti() const { return i_;}
-		//Redefine here (also defined in Interactions...)
-		//Need to think about that...
 
 		void computeShortestBranch() ;
 		Vecteur getbranch() const { return branch_;}
+
 		//TMP
 		double getfn() const { return f_.getx();}
 		double getft() const { return f_.gety();}
 		Vecteur getrv() const { return v_;}
-
-		void set_dt(double dt) { dt_ = dt ;}
 };
 
 
