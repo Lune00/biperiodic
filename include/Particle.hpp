@@ -58,11 +58,14 @@ class Particle{
 		void addrx(double dx) {r_.addx(dx);}
 		void addry(double dy) {r_.addy(dy);}
 
+		void setAcceleration(const Vecteur a) { a_ = a ;}
 		//NOT USED YET
 		void removevmean(const Vecteur& vmean) { v_ = v_ - vmean;}
 
 		//Integration methods:
 		void updateA(Vecteur f) { a_ = a_ + f / m_;}
+		//Iterative addition of real acc vectors
+		//Need then to be transform into reduced coordinates
 		void update_a(Vecteur a) { a_ = a_ + a ;}
 		//void updateA(Vecteur a) { a_ = a_ + a ;}
 		void updateArot(double Torque) { arot_ = arot_ + Torque/I_;}

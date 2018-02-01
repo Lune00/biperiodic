@@ -159,7 +159,8 @@ double Sample::getTKE() const{
 	Tensor2x2 hd = cell_->gethd();
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		//Vecteur v = returnvabs(*it);
-		Vecteur v = h *it->getV() + hd * it->getR();
+		//Vecteur v = h *it->getV() + hd * it->getR();
+		Vecteur v =  hd * it->getR();
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
 	}
 	return Ec;
@@ -197,22 +198,30 @@ void Sample::debug(int tic){
 
 	Tensor2x2 h = cell_->geth();
 	Tensor2x2 hd = cell_->gethd();
+	Tensor2x2 hdd = cell_->gethdd();
 
+	//for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
+	//	if(it->getId()==1){
+	//		Vecteur a = it->getA();
+	//		Vecteur sd = it->getV();
+	//		Vecteur v = h * sd + hd * it->getR(); 
+	//		os<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<endl;
+	//	}
+	//	if(it->getId()==2){
+	//		Vecteur a = it->getA();
+	//		Vecteur sd = it->getV();
+	//		Vecteur v = h * sd + hd * it->getR(); 
+	//		os2<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<endl;
+	//	}
+	//}
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		if(it->getId()==1){
-			Vecteur a = it->getA();
+		if(it->getId()==81){
 			Vecteur sd = it->getV();
 			Vecteur v = h * sd + hd * it->getR(); 
-			os<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<endl;
-		}
-		if(it->getId()==2){
-			Vecteur a = it->getA();
-			Vecteur sd = it->getV();
-			Vecteur v = h * sd + hd * it->getR(); 
-			os2<<tic<<" "<<a.getx()<<" "<<a.gety()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<endl;
+			Vecteur a = hdd * it->getR() + hd * sd * 2. + h * it->getA();
+			os<<tic<<" "<<it->getId()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<" "<<a.getx()<<" "<<a.gety()<<" "<<it->getA().getx()<<" "<<it->getA().gety()<<endl;
 		}
 	}
-
 	os.close();
 	os2.close();
 }
@@ -377,11 +386,11 @@ bool Sample::isEmptySampleFile(ifstream& is){
 
 //Shift and reduce
 //Warnging: by default, the new build cell is assumed to be rectangular
-void Sample::initReducedCoordinates(Cell& cell){
-	double Lx = cell.geth().getxx();
-	double Ly = cell.geth().getyy();
-	cout<<"Lx = "<<Lx<<endl;
-	cout<<"Ly = "<<Ly<<endl;
+void Sample::initReducedCoordinates(){
+
+	double Lx = cell_->geth().getxx();
+	double Ly = cell_->geth().getyy();
+
 	for(spit it= spl_.begin(); it != spl_.end(); it++){
 		it->setr( (it->getx()-xmin_)/Lx, (it->gety()-ymin_)/Ly);
 	}
@@ -396,8 +405,9 @@ void Sample::firstStepVerlet(const double dt_){
 	for(spit it = spl_.begin(); it != spl_.end(); it++){
 
 		//Impose force to particles?
-		//A TEST
-		if(cell_->imposeForce()) addForce(*it);
+		//A TEST, ou au moment du calcul des forces et a la fin du pas temps? comme le serait la gravite finalement...
+		//TODO A DEPLACER DANS LA PARTIE OU ON CALCULE LES FORCES DANS INTERACTION.CPP
+	//	if(cell_->imposeForce()) addForce(*it);
 		//Positions
 		it->updateR(dt_);
 		it->updateRot(dt_);
@@ -441,11 +451,11 @@ void Sample::secondStepVerlet(const double dt_) {
 		vmean = vmean + it->getV();
 	}
 
-	//TODO: wip
-	vmean = vmean / (double)spl_.size();
-
-	for(spit it =spl_.begin(); it != spl_.end(); it++){
-		it->removevmean(vmean);
-	}
+		//TODO: wip
+		vmean = vmean / (double)spl_.size();
+	
+		for(spit it =spl_.begin(); it != spl_.end(); it++){
+			it->removevmean(vmean);
+		}
 }
 

@@ -291,6 +291,9 @@ void Analyse::printSample(int tic){
 //With ModularTransformation (constant box) later... (but to do)
 void Analyse::writePS(const string frame, const vector<Particle>& images){
 
+
+	bool label = true ;
+
 	ofstream ps(frame.c_str());
 	//Is h used??
 	Tensor2x2 h = cell_->geth();
@@ -310,6 +313,10 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	double lx2 = cell_->get_width() * 0.5 ;
 	double ly2 = cell_->get_height() * 0.5 ;
 
+
+	double scalefont = 0.3 * spl_->getrmax();
+
+
 	ps<<"%!PS-Adobe-3.0 EPSF-3.0"<<endl;
 	ps<<"%%BoundingBox:"<<" "<<xcframe-lx2-margin<<" "<<ycframe-ly2-margin<<" "<<xcframe + lx2+margin<<" "<<ycframe + ly2+margin<<endl;
 	ps<<"%%Pages:1"<<endl;
@@ -318,6 +325,10 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	ps << "/colordisk {0.3 0.7 1.0} def"<< endl;
 	ps << "/colordot {0. 0. 0.} def" <<endl;
 	ps << "/colorimage {1. 1. 1.} def" <<endl;
+	ps<<"/Times-Roman findfont"<<endl;
+	ps<<scalefont<<" scalefont"<<endl;
+	ps<<"setfont"<<endl;
+
 	//Draw sample
 	for(vector<Particle>::const_iterator it = spl_->inspectSample().begin(); it != spl_->inspectSample().end(); it++){
 
@@ -336,6 +347,18 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 		ps << "newpath "<<endl;
 		ps <<xrcostheta<<" "<<yrcostheta<<" "<<radiusrot<<" colordot setrgbcolor 0.0 setlinewidth 0 360 arc gsave fill grestore"<<endl;
 		ps<<"stroke"<<endl;
+
+
+		//If label (Id particles)
+		if(label){
+			ps<<"newpath"<<endl;
+			ps<<x<<" "<<y<<" moveto"<<endl;
+			ps<<"("<<it->getId()<<") true charpath"<<endl;
+			ps<<"0.5 setlinewidth"<<endl;
+			ps<<"1. 0. 0. setrgbcolor"<<endl;
+			ps<<"fill"<<endl;
+			ps<<"stroke"<<endl;
+		}
 	}
 
 	//Draw image particles

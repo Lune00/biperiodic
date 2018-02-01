@@ -27,10 +27,13 @@ class Cell{
 		double mh_;
 		double mh_factor_;
 
-		//On impose soit une vitesse hd, soit une contrainte stress_ext
-		//Il faut que la partie antisymetrique de Ldot soit nulle, equiv a h(hdot) symetrique impose
 		char Control_[4];
 		double Control_values_Init[4];
+		//Controle values :
+		double loadXX_;
+		double loadXY_;
+		double loadYX_;
+		double loadYY_;
 
 		//Impose a sinusoidal force to all particles
 		//along x direction Fx = amplitude * (2pi *y/Ly * mode_)

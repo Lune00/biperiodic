@@ -138,7 +138,8 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 	if(fabs(ft) > ftmax){
 		//Si glissant on fixe dt_, s'il est negatif on le laisse negatif sinon positif
 		ft = sign(ft) * ftmax;
-		dt_= -ft/kt;
+		//dt_= -ft/kt;
+		dt_ = - ft/kt;
 	}
 	else dt_ += v_.gety() * dt ;
 
@@ -150,6 +151,7 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
 
 
 void Contact::updateAccelerations(){
+
 	//Expression force vector in the lab frames:
 	Vecteur fxy = getfxy();
 
@@ -170,8 +172,14 @@ void Contact::updateAccelerations(){
 	Vecteur sj = j_->getR();
 	Vecteur vj = j_->getV();
 
-	ai = hinv * (ai - hd * vi * 2. - hdd * si);
-	aj = hinv * (aj - hd * vj * 2. - hdd * sj);
+
+	//ai = hinv * (ai - hd * vi * 2. - hdd * si);
+	//aj = hinv * (aj - hd * vj * 2. - hdd * sj);
+
+	//Et s'il fallait transformer que la résultante!!!
+	//C'est une erreur!
+//	ai = hinv * (ai);
+//	aj = hinv * (aj);
 
 	//Update linear acceleration
 	j_->update_a(aj);

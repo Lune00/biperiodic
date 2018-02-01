@@ -82,14 +82,20 @@ bool Algo::checktimestep()const{
 //Compute gnmax and restitution coeffcient
 void Algo::compute_gnmax_restitution(){
 
-	const double gn = Int_->getgn();
 	double rho = spl_->getrho();
 	double m = rho * M_PI * spl_->getrmin() * spl_->getrmin(); 
 	double mmax = rho * M_PI * spl_->getrmax() * spl_->getrmax(); 
 	double kn = Int_->getkn();
 
-	gnmax_ = 5. * sqrt( 2. * kn * mmax);
-	if(Int_->setgnmax()) Int_->setgn(gnmax_*0.99);
+	gnmax_ = 8. * sqrt( 2. * kn * mmax);
+
+	double gn = Int_->getgn();
+
+	if(Int_->setgnmax()){
+		gn = gnmax_ * 0.99 ;
+		Int_->setgn(gn);
+	}
+
 	cerr<<"gn = "<<Int_->getgn()<<endl;
 
 	//From Radjai Book (not sure)
@@ -169,10 +175,10 @@ void Algo::run(){
 		}
 
 		//TMP for debug
-		if( tic_ % 10000 == 0 ){
+		if( tic_ % 10 == 0 ){
 		//	Int_->debug(tic_);
-		//	cell_->debug(tic_);
-			//spl_->debug(tic_);
+			cell_->debug(tic_);
+			spl_->debug(tic_);
 		}
 
 		t_+=dt_;

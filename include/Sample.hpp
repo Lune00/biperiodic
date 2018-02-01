@@ -56,7 +56,7 @@ class Sample{
 
 		void init(std::ifstream&);
 		void loadSample();
-		void initReducedCoordinates(Cell&);
+		void initReducedCoordinates();
 		void plugtoCell(Cell&);
 		void attributeMass();
 		void setminmax();

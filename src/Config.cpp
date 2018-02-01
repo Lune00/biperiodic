@@ -68,34 +68,31 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 		is >> token;
 	}
 
-
-	//Global check:
-
-	//Check sample parameters:
-	bool checkSample = spl.initcheck();
 	//Talk Cell with sample for how to init:
 	cell.talkinit(spl);
-	//Check cell parameters:
-	bool checkCell = cell.initcheck();
-	//Compute reduced coordinates from cell geometry
-	//if build, no if loaded
-	if(checkCell && !spl.loaded()) spl.initReducedCoordinates(cell);
-
 	//Plugs:
 	spl.plugtoCell(cell);
-	//Rescale verlet distances according to user choice
 	Int.plug(spl,cell);
 	algo.plug(cell,spl,Int,ana);
+	ana.plug(spl,cell,Int);
+
+	//Compute reduced coordinates from cell geometry
+	//if build, no if loaded
+	if(!spl.loaded()) spl.initReducedCoordinates();
+
+	//Interactions talk to sample to know if need to load contact data
+	Int.talkinit();
+
+	//Global check:
 
 	//Check interactions parameters:
 	bool checkInteractions = Int.initcheck();
 	//Check algo parameters using DEM interactions parameters
 	bool checkAlgo = algo.initcheck();
-
-	ana.plug(spl,cell,Int);
-
-	//Interactions talk to sample to know if need to load contact data
-	Int.talkinit();
+	//Check cell parameters:
+	bool checkCell = cell.initcheck();
+	//Check sample parameters:
+	bool checkSample = spl.initcheck();
 
 	if(!checkSample){
 		cerr<<"Sample::initcheck() problem."<<endl;

@@ -15,9 +15,9 @@ Cell::Cell(){
 	initCG_ = false ;
 	initGeometry_ = false;
 	initMass_ = false;
-	mh_ = 1.;
+	mh_ = 2.;
 	//Multiplier of sample mass
-	mh_factor_ = 2. ;
+	mh_factor_ = 0.5 ;
 	mh_auto_ = false;
 	L_auto_ = false;
 	imposeForce_ = false;
@@ -26,10 +26,12 @@ Cell::Cell(){
 	fcell_ = "cell.txt";
 
 	//DEBUG
-	ofstream debug("debugCell.txt");
+	ofstream debug("h.txt");
 	debug.close();
-	ofstream debug2("hd.txt");
-	debug2.close();
+	debug.open("hd.txt");
+	debug.close();
+	debug.open("hdd.txt");
+	debug.close();
 }
 
 //Initialisation from configuration file
@@ -68,22 +70,22 @@ void Cell::init(ifstream& is){
 		//direction v(speed)/f(stress) value
 		if(token=="xx"){
 			is >> Control_[0];
-			is >> Control_values_Init[0]; 
+			is >> loadXX_; 
 			ixx = true ;
 		}
 		if(token=="xy") {
 			is >> Control_[1];
-			is >> Control_values_Init[1]; 
+			is >> loadXY_; 
 			ixy = true ;
 		}
 		if(token=="yx") {
 			is >> Control_[2];
-			is >> Control_values_Init[2]; 
+			is >> loadYX_; 
 			iyx = true;
 		}
 		if(token=="yy") {
 			is >> Control_[3];
-			is >> Control_values_Init[3]; 
+			is >> loadYY_; 
 			iyy = true;
 		}
 
@@ -116,22 +118,24 @@ void Cell::init(ifstream& is){
 
 void Cell::talkinit(Sample& spl){
 
-	//Load from file or no?
+	//Load : if true continue a previous simulation from file
+	//if fale start from a new sample (freshly created)
 	if(spl.loaded()){
 		//Ask which one.
 		unsigned int filetoload = spl.filetoload();
 		//Test if exists inside load
+		//Ici on charge h, hd, hdd
 		load(filetoload);
+		//New reference geometry for strain computation
 		h0_ = h_ ;
-		initGeometry_ = true;
 		//Assign mass
 		//the mutliplier should be defined somewhere...
 		mh_ = mh_factor_ * spl.getMass();
+
+		initGeometry_ = true;
 		initMass_ = true;
-		//APPLY NEW CL!!! car la on a loadé les anciennes et
 	}
 	else{
-
 		//If not, L_auto or not?
 		//Initial Cell Geometry is rectangular
 		//By def hd and stress_ext are set by user in config file
@@ -154,29 +158,32 @@ void Cell::talkinit(Sample& spl){
 		}
 	}
 
+	//Les nouvelles CLS seront appliquees au cours du premier
+	//pas de temps, lors de l'appel de firstStepVerlet
+
 	if(Control_[0] == 'v'){
-		hd_.setxx(Control_values_Init[0]);
+		hd_.setxx(loadXX_);
 	}
 	else{
-		stress_ext.setxx(Control_values_Init[0]);
+		stress_ext.setxx(loadXX_);
 	}
 	if(Control_[1] == 'v'){
-		hd_.setxy(Control_values_Init[1]);
+		hd_.setxy(loadXY_);
 	}
 	else{
-		stress_ext.setxy(Control_values_Init[1]);
+		stress_ext.setxy(loadXY_);
 	}
 	if(Control_[2] == 'v'){
-		hd_.setyx( Control_values_Init[2]);
+		hd_.setyx( loadYX_);
 	}
 	else{
-		stress_ext.setyx(Control_values_Init[2]);
+		stress_ext.setyx(loadYX_);
 	}
 	if(Control_[3] == 'v'){
-		hd_.setyy(Control_values_Init[3]);
+		hd_.setyy(loadYY_);
 	}
 	else{
-		stress_ext.setyy(Control_values_Init[3]);
+		stress_ext.setyy(loadYY_);
 	}
 }
 
@@ -278,33 +285,6 @@ void Cell::CalculStrainTensor(){
 	s_.eigenVectors();
 }
 
-//Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration
-//Suppose d'avoir stressInt au temps t
-//Defaut: test a chaque fois ce qui est controle ou non, alors qu'on le sait depuis le début...
-void Cell::computeExternalStress(const Tensor2x2& stress_int){
-	//Si controle en vitesse alors hdd 0 ds cette direction
-	double xx, xy, yx, yy;
-	//Composante xx:
-
-	//Voir s'il vaut mieux forcer a chaque fois
-	//ou si les erreurs de troncature foutent le bordel
-
-	if(Control_[0] == 'v' ) {
-		stress_ext.setxx(-stress_int.getxx());
-	}
-	//Composante xy:
-	if(Control_[1] == 'v' ) {
-		stress_ext.setxy(-stress_int.getxy());
-	}
-	//Composante yx:
-	if(Control_[2] == 'v' ) {
-		stress_ext.setyx(-stress_int.getyx());
-	}
-	//Composante yy:
-	if(Control_[3] == 'v' ) {
-		stress_ext.setyy(-stress_int.getyy());
-	}
-}
 
 
 double Cell::getxc() const{
@@ -330,16 +310,14 @@ void Cell::firstStepVerlet(const double dt) {
 	const double dt_2 = dt * 0.5 ;
 	const double dt2_2 = dt * dt * 0.5 ;
 
-	//WIP WIP WIP
 	if(getControlxx() == 'f' ) {
 		h_.setxx( h_.getxx() + hd_.getxx() * dt + hdd_.getxx() * dt2_2);
 		hd_.setxx( hd_.getxx() + hdd_.getxx() * dt_2);
 	}
 	else{
-		//Vitesse imposee reste la meme (hdd, definit par Ld au debut)
-		//hdd par definition nulle si control en vitesse sur hdd
-		//Normalement hd_ dans cette direction ne doit jamais etre modifie si c bien fait
 		h_.setxx( h_.getxx() + hd_.getxx() * dt) ; 
+		hd_.setxx(loadXX_);
+		hdd_.setxx(0.);
 	}
 
 	if(getControlxy() == 'f' ) {
@@ -348,6 +326,8 @@ void Cell::firstStepVerlet(const double dt) {
 	}
 	else{
 		h_.setxy(h_.getxy() + hd_.getxy() * dt ); 
+		hd_.setxy(loadXY_);
+		hdd_.setxy(0.);
 	}
 
 	if(getControlyx() == 'f' ) {
@@ -356,6 +336,8 @@ void Cell::firstStepVerlet(const double dt) {
 	}
 	else{
 		h_.setyx(h_.getyx() + hd_.getyx() * dt ); 
+		hd_.setyx(loadYX_);
+		hdd_.setyx(0.);
 	}
 
 	if(getControlyy() == 'f' ) {
@@ -364,16 +346,70 @@ void Cell::firstStepVerlet(const double dt) {
 	}
 	else{
 		h_.setyy(h_.getyy() + hd_.getyy() * dt ); 
+		hd_.setyy(loadYY_);
+		hdd_.setyy(0.);
+	}
+}
+
+
+//void Cell::secondStepVerlet(const Tensor2x2& stress_int){
+//
+//
+//
+//
+//
+//}
+
+//Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration
+//Suppose d'avoir stressInt au temps t
+//Defaut: test a chaque fois ce qui est controle ou non, alors qu'on le sait depuis le début...
+void Cell::computeExternalStress(const Tensor2x2& stress_int){
+	//Si controle en vitesse alors hdd 0 ds cette direction
+	double xx, xy, yx, yy;
+	//Composante xx:
+	if(Control_[0] == 'v' ) {
+		stress_ext.setxx(-stress_int.getxx());
+	}
+	//Composante xy:
+	if(Control_[1] == 'v' ) {
+		stress_ext.setxy(-stress_int.getxy());
+	}
+	//Composante yx:
+	if(Control_[2] == 'v' ) {
+		stress_ext.setyx(-stress_int.getyx());
+	}
+	//Composante yy:
+	if(Control_[3] == 'v' ) {
+		stress_ext.setyy(-stress_int.getyy());
 	}
 }
 
 //Compute "acceleration" at the end of the time step
 //using stress_ext and stress_int at the end of the time step
+//If controled in velocity, hdd is zero in that direction
 void Cell::updatehdd(const Tensor2x2 stress_int){
+
 	Tensor2x2 TotalStress = stress_int + stress_ext;
 	Tensor2x2 hinv = h_.getInverse();
 	double V = getVolume();
+
 	hdd_ = hinv * (V/mh_) * (TotalStress);
+
+	if(Control_[0] == 'v' ) {
+		hdd_.setxx(0.);
+	}
+	//Composante xy:
+	if(Control_[1] == 'v' ) {
+		hdd_.setxy(0.);
+	}
+	//Composante yx:
+	if(Control_[2] == 'v' ) {
+		hdd_.setyx(0.);
+	}
+	//Composante yy:
+	if(Control_[3] == 'v' ) {
+		hdd_.setyy(0.);
+	}
 }
 
 //Second verlet step in velocity
@@ -385,11 +421,19 @@ void Cell::updatehd(const double dt){
 
 void Cell::debug(const int k)const{
 
-	ofstream debug("debugCell.txt",ios::app);
-	ofstream debug2("hd.txt",ios::app);
-	debug<<k<<" "<<hdd_.getxx()<<" "<<hdd_.getxy()<<" "<<hdd_.getyy()<<" "<<stress_ext.getxx()<<" "<<stress_ext.getyy()<<endl;
-	debug2<<k<<" "<<h_.getxx()<<" "<<hd_.getxx()<<" "<<h_.getyy()<<" "<<hd_.getyy()<<endl;
+	ofstream debug("h.txt",ios::app);
+	ofstream debug1("hd.txt",ios::app);
+	ofstream debug2("hdd.txt",ios::app);
+
+
+	debug<<k<<" "<<h_.getxx()<<" "<<h_.getxy()<<" "<<h_.getyx()<<" "<<h_.getyy()<<endl;
+
+	debug1<<k<<" "<<hd_.getxx()<<" "<<hd_.getxy()<<" "<<hd_.getyx()<<" "<<hd_.getyy()<<endl;
+
+	debug2<<k<<" "<<hdd_.getxx()<<" "<<hdd_.getxy()<<" "<<hdd_.getyx()<<" "<<hdd_.getyy()<<" "<<stress_ext.getxx()<<" "<<stress_ext.getyy()<<endl;
+
 	debug.close();
+	debug1.close();
 	debug2.close();
 }
 
