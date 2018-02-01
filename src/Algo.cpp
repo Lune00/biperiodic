@@ -155,7 +155,6 @@ void Algo::run(){
 		//Update verlet list
 		Int_->updateverlet(tic_);
 
-		break ;
 		//Time step: integration & periodicity
 		verletalgo2();
 
@@ -172,6 +171,7 @@ void Algo::run(){
 			std::streamsize ss = std::cout.precision();
 			std::cout.precision(4);
 			cout<<"t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
+			Int_->print();
 			std::cout.precision(ss);
 		}
 

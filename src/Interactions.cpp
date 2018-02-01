@@ -157,7 +157,6 @@ void Interactions::build(){
     }
   }
 
-  cerr<<"Nombre d'interactions possibles: "<<pairs_.size()<<endl;
   initScale();
 
   //TODO:Est ce qu'on load? on lit les contacts dans un fichier
@@ -264,8 +263,6 @@ void Interactions::updatevlist(){
       vlist_.push_back(pc);
     }
   }
-
-  cerr<<"Taille de la liste de Verlet: "<<vlist_.size()<<endl;
 }
 
 
@@ -276,19 +273,26 @@ void Interactions::detectContacts(){
   for( vector<Contact*>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
 
     (*it)->Frame();
-
     if( (*it)->isActif() ) {
       Contact * pc = (*it) ;
       clist_.push_back(pc);
     }
   }
-
-  cerr<<"Nombre de contacts : "<< clist_.size()<<endl;
 }
 
-
+//Compute force at each contact and compute procedurally internal stress on the fly
 void Interactions::computeForces(const double dt){
 
+  //Static stress:
+  double sxx_s = 0. ;
+  double sxy_s = 0. ;
+  double syx_s = 0. ;
+  double syy_s = 0. ;
+
+  //Kinetic stress:
+  double sxx_c = 0. ;
+  double sxy_c = 0. ;
+  double syy_c = 0. ;
 
   for(vector<Contact*>::iterator it = clist_.begin() ; it != clist_.end() ; it++){
 
@@ -296,16 +300,21 @@ void Interactions::computeForces(const double dt){
     (*it)->computeForce(kn_,kt_,gn_,gt_,mus_,dt);
     (*it)->updateAccelerations();
 
-  //    //TODO: METTRE CALCUL DU TENSEUR CONTRAINTES STATIQUE ICI
+    Vecteur branch = (*it)->getbranch();
+    Vecteur force  = (*it)->getfxy();
 
+    sxx_s += branch.getx() * force.getx();
+    sxy_s += branch.gety() * force.getx();
+    syx_s += branch.getx() * force.gety();
+    syy_s += branch.gety() * force.gety();
   }
+
 
   // Transform acceleration into reduced coordinates:
   Tensor2x2 hdd = cell_->gethdd();
   Tensor2x2 hd = cell_->gethd();
   Tensor2x2 h = cell_->geth();
   Tensor2x2 hinv = h.getInverse();
-
 
   for(std::vector<Particle>::iterator it = spl_->getSample()->begin();it!=spl_->getSample()->end();it++)
   {
@@ -315,7 +324,20 @@ void Interactions::computeForces(const double dt){
     (it)->setAcceleration(a_red);
 
     //TODO CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
+    //MAIS pour ca on a besoin de la vitesse au debut, au milieu ou a la fin du pas de temps?
+    //On peut prendre celle au milieu, ca ne devrait pas changer grand chose...
+
   }
+
+  //Update:
+  stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
+  stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
+
+  stress_s = stress_s * (1. / cell_->getVolume());
+  stress_c = stress_c * (1. / cell_->getVolume());
+
+  //Total stress:
+  stress_ = stress_s + stress_c;
 
 }
 
@@ -332,44 +354,31 @@ void Interactions::writeContacts(int k) const {
   string filename = formatfile(folder_, fInteractions_, k);
   ofstream file(filename.c_str());
 
-  //  for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
   //TODO
-  // }
 }
 
 double Interactions::getElasticEnergy() const {
 
   double E = 0.;
-  //for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
-  //  //	double dn = vlist_[*it].getdn();
-  //  //	double dt = vlist_[*it].getdt();
-  //  //	E += 0.5 * (dn) * (dn) * kn_ ;
-  //}
-  return E;
+
+  //Tangential elastic component kt*dt*dt?
+  for(vector<Contact*>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
+    double dn = (*it)->getdn();
+    E += 0.5 * (dn) * (dn) * kn_ ;
+  }
+
+    return E;
 }
 
 //TODO : Cette loop pourrait etre margee avec celle du calcul des forces dans computeForces pour gagner en efficacite
 void Interactions::computeInternalStress(){
-  //Static
-  double sxx_s = 0. ;
-  double sxy_s = 0. ;
-  double syx_s = 0. ;
-  double syy_s = 0. ;
+
   //Kinetic:
   double sxx_c = 0. ;
   double sxy_c = 0. ;
   double syy_c = 0. ;
 
-  //Static stress : Loop over contacts:
-  //for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){ 
-  //  //	Vecteur branch = vlist_[*it].getbranch();
-  //  //	Vecteur force = vlist_[*it].getfxy();
-  //  //	sxx_s += branch.getx() * force.getx();
-  //  //	sxy_s += branch.gety() * force.getx();
-  //  //	syx_s += branch.getx() * force.gety();
-  //  //	syy_s += branch.gety() * force.gety();
-  //}
-
+  //TODO: BE MOVED in computeForce
   ////Kinetic stress : Loop over particles:
   ////	for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
   ////	{
@@ -380,17 +389,6 @@ void Interactions::computeInternalStress(){
   ////		sxy_c += m * v.getx() * v.gety();
   ////		syy_c += m * v.gety() * v.gety();
   ////	}
-
-  ////Update:
-  //stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
-  //stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
-  ////Overload division by double for Tensor2x2
-  ////Divide or not by volume here???
-  //stress_s = stress_s * (1. / cell_->getVolume());
-  //stress_c = stress_c * (1. / cell_->getVolume());
-
-  ////Total stress:
-  //stress_ = stress_s + stress_c;
 }
 
 
@@ -415,6 +413,12 @@ vector<double> Interactions::getAverageMaxPenetration()const{
 
 void Interactions::debug(const int k) const{
 
+}
+
+void Interactions::print() const {
+  cout<<"Nombre d'interactions possibles: "<<pairs_.size()<<endl;
+  cout<<"Nombre d'interactions (Verlet): "<<vlist_.size()<<endl;
+  cout<<"Nombre de contacts actifs: "<<clist_.size()<<endl;
 }
 
 

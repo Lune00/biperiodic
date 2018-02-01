@@ -413,40 +413,39 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	if(forcenetwork){
 
 		int N = Int_->getnc();
+		if(N==0) return ;
+		cerr<<" N = "<<N<<endl;
+
 		double Fmean = 0. ;
-		double Fmin = Int_->inspectContact(0).getfn(); 
-		double Fmax = Int_->inspectContact(0).getfn(); 
+		double Fmin = Int_->inspectContact(0)->getfn(); 
+		double Fmax = Int_->inspectContact(0)->getfn(); 
+
 		for(int i = 0 ; i < N ; i++){
-			Contact c = Int_->inspectContact(i);
-			Fmean += c.getfn() ;
-			Fmax = max(c.getfn(),Fmax);
-			Fmin = min(c.getfn(),Fmin);
+			const Contact * c = Int_->inspectContact(i);
+			Fmean += c->getfn() ;
+			Fmax = max(c->getfn(),Fmax);
+			Fmin = min(c->getfn(),Fmin);
 		}
 
 		Fmean /= (double)N;
 		//cerr<<"fmean = "<<Fmean<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
 
 		for(int i = 0 ; i < N ; i++){
-			Contact c = Int_->inspectContact(i);
-			if(c.geti()->getId() == 32 && c.getj()->getId() == 37){
-				//cerr<<"WTF ===> ! "<<"fn = "<<c.getfn()<<" fnres = "<<fnres<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
-				cerr<<"WTF ===> ! "<<"fn = "<<c.getfn()<<endl;
-				cerr<<c.getbranch().getx()<<" "<<c.getbranch().gety()<<endl;
-			}
-			if(!c.isActif()) continue;
-			double fn = c.getfn();
+			const Contact * c = Int_->inspectContact(i);
+			if(!c->isActif()) continue;
+			double fn = c->getfn();
 			double fnres = (fn - Fmin)/(Fmax+Fmin);
 			//double lw = (fn / Fmean) * 0.03 * rmax ; 
 			double lw = 0.2 * rmax ;
 
-			Vecteur ri = h * c.geti()->getR();
-			Vecteur rj = h * c.getj()->getR();
+			Vecteur ri = h * c->geti()->getR();
+			Vecteur rj = h * c->getj()->getR();
 
 
 			double xi = ri.getx();
 			double yi = ri.gety();
-			double xj = xi + c.getbranch().getx();
-			double yj = yi + c.getbranch().gety();
+			double xj = xi + c->getbranch().getx();
+			double yj = yi + c->getbranch().gety();
 			ps<<"/coul_force {1 setlinecap 1 "<<1. - fnres<<" "<<1. -fnres<<" setrgbcolor} def"<<endl;
 			ps<<lw<<" setlinewidth coul_force"<<endl;
 			ps<<xi<<" "<<yi<<" moveto "<<xj<<" "<<yj<<" lineto stroke"<<endl;

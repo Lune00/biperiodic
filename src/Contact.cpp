@@ -158,29 +158,8 @@ void Contact::updateAccelerations(){
 	const double mi = i_->getMasse();
 	const double mj = j_->getMasse();
 
-	//Tensor2x2 hdd = cell_->gethdd();
-	//Tensor2x2 hd = cell_->gethd();
-	//Tensor2x2 h = cell_->geth();
-	//Tensor2x2 hinv = h.getInverse();
-
-	//Vecteur si = i_->getR();
-	//Vecteur vi = i_->getV();
-
-	//Vecteur sj = j_->getR();
-	//Vecteur vj = j_->getV();
-
 	Vecteur ai = -fxy / mi ;
 	Vecteur aj = fxy / mj ;
-
-
-
-	//ai = hinv * (ai - hd * vi * 2. - hdd * si);
-	//aj = hinv * (aj - hd * vj * 2. - hdd * sj);
-
-	//Et s'il fallait transformer que la résultante!!!
-	//C'est une erreur!
-//	ai = hinv * (ai);
-//	aj = hinv * (aj);
 
 	//Update linear acceleration
 	j_->update_a(aj);

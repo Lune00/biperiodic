@@ -127,6 +127,7 @@ class Interactions{
 		std::vector<double> getAverageMaxPenetration()const;
 		void askNumberOfContacts() const;
 
+		int getnpc() const { return pairs_.size();}
 		int getnc() const { return clist_.size();}
 		int getnv() const { return nv_ ;}
 		double getkn() const { return kn_;}
@@ -142,9 +143,11 @@ class Interactions{
 
 		Vecteur getShortestBranch(const Particle*,const Particle*) const;
 
-		const Contact& inspectContact(int k) const { return pairs_[k] ; } 
+		const Contact& inspectInteraction(int k) const { return (pairs_[k]) ; } 
+		const Contact* inspectContact(int k) const { return clist_[k];}
 
 		void read(std::ifstream& is);
+		void print()const;
 };
 
 
