@@ -428,6 +428,11 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 		for(int i = 0 ; i < N ; i++){
 			Contact c = Int_->inspectContact(i);
+			if(c.geti()->getId() == 32 && c.getj()->getId() == 37){
+				//cerr<<"WTF ===> ! "<<"fn = "<<c.getfn()<<" fnres = "<<fnres<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
+				cerr<<"WTF ===> ! "<<"fn = "<<c.getfn()<<endl;
+				cerr<<c.getbranch().getx()<<" "<<c.getbranch().gety()<<endl;
+			}
 			if(!c.isActif()) continue;
 			double fn = c.getfn();
 			double fnres = (fn - Fmin)/(Fmax+Fmin);
@@ -436,16 +441,6 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 			Vecteur ri = h * c.geti()->getR();
 			Vecteur rj = h * c.getj()->getR();
-			if(c.geti()->getId() == 14 && c.getj()->getId() == 28){
-				cerr<<"WTF ===> ! "<<"fn = "<<c.getfn()<<" fnres = "<<fnres<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
-				cerr<<"lw = "<<lw<<" Fmean = "<<Fmean<<endl;
-				if(c.isActif()){
-					cerr<<"NON MAIS ALLO"<<endl;
-					c.print();
-				}
-
-				cerr<<c.getbranch().getx()<<" "<<c.getbranch().gety()<<endl;
-			}
 
 
 			double xi = ri.getx();
