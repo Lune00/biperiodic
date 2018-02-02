@@ -171,13 +171,13 @@ void Algo::run(){
 		if( tic_ % nprint == 0) {
 			std::streamsize ss = std::cout.precision();
 			std::cout.precision(4);
-			cout<<"t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
+			cout<<"step : "<<tic_<<" t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
 			Int_->print();
 			std::cout.precision(ss);
 		}
 
 		//TMP for debug
-		if( tic_ % 1000 == 0 ){
+		if( tic_ % 5000 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
 			spl_->debug(tic_);

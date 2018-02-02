@@ -6,14 +6,23 @@
 using namespace std;
 
 Interactions::Interactions(){
+
 	dv_ = 0. ;
+	dsv_ = 0.;
+
+	nsv_ = 0;
 	nv_ = 0 ;
+
 	scale_=string();
 	folder_ = string();
 	initScale_ = false;
 	fInteractions_ = "inter.txt";
+
 	initdv_ = false;
+	initdsv_ = false;
+
 	checkInteractions_ = false;
+
 	initkn_ = false;
 	initkt_ = false;
 	initgn_ = false;
@@ -43,8 +52,15 @@ void Interactions::init(ifstream& is){
 			is >> dv_;
 			initdv_ = true;
 		}
+		if(token=="dsv"){
+			is >> dsv_;
+			initdsv_ = true;
+		}
 		if(token=="niterv"){
 		  is >> nv_;
+		}
+		if(token=="nitersv"){
+		  is >> nsv_;
 		}
 
 		if(token=="kn") {
@@ -107,6 +123,7 @@ void Interactions::initScale(){
 	}
 
 	dv_ *= scale;
+	dsv_ *= scale;
 	initScale_ = true ;
 
 	return ;
@@ -116,10 +133,11 @@ bool Interactions::initcheck() {
 
   bool initNiter = false;
 
-  if( nv_ != 0 ) initNiter = true; 
+  if( nv_ != 0 && nsv_ != 0 ) initNiter = true; 
 
-  checkInteractions_ = initNiter && initScale_ && initdv_ && checkDEMparameters();
+  checkInteractions_ = initNiter && initScale_ && initdv_ && initdv_ && (dsv_>dv_) && checkDEMparameters();
 
+  cout<<"distance SVerlet  = "<<dsv_<<endl;
   cout<<"distance Verlet  = "<<dv_<<endl;
 
   if(!checkDEMparameters()) cout<<"Interactions::initcheck() : a DEM parameter is not initialised in config file. stop"<<endl;
@@ -203,6 +221,7 @@ bool Interactions::checkDEMparameters() const{
 
 
 void Interactions::updateverlet(const int tic){
+  if( tic % nsv_ == 0 ) updatesvlist();
   if( tic % nv_ == 0 ) updatevlist();
 }
 
@@ -254,15 +273,27 @@ bool Interactions::near(const Particle* i, const Particle* j,const double d) con
   else return false;
 }
 
-void Interactions::updatevlist(){
+void Interactions::updatesvlist(){
 
-  vlist_.clear();
-  Tensor2x2 h = cell_->geth();
+  svlist_.clear();
 
   for(vector<Contact>::iterator it = pairs_.begin() ; it != pairs_.end(); it ++ )
   {
-    if( near( it->geti(), it->getj(), dv_ ) ){
+    if( near( it->geti(), it->getj(), dsv_ ) ){
       Contact * pc  = &(*it) ;
+      svlist_.push_back(pc);
+    }
+  }
+}
+
+void Interactions::updatevlist(){
+
+  vlist_.clear();
+
+  for(vector<Contact*>::iterator it = svlist_.begin() ; it != svlist_.end(); it ++ )
+  {
+    if( near( (*it)->geti(), (*it)->getj(), dv_ ) ){
+      Contact * pc  = (*it) ;
       vlist_.push_back(pc);
     }
   }
@@ -435,6 +466,7 @@ void Interactions::debug(const int k) const{
 
 void Interactions::print() const {
   cout<<"Nombre d'interactions possibles: "<<pairs_.size()<<endl;
+  cout<<"Nombre d'interactions (Super Verlet): "<<svlist_.size()<<endl;
   cout<<"Nombre d'interactions (Verlet): "<<vlist_.size()<<endl;
   cout<<"Nombre de contacts actifs: "<<clist_.size()<<endl;
 }

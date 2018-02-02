@@ -33,8 +33,10 @@ class Interactions{
 
 	  //Juset Verlet pour l'instant
 		double dv_;
+		double dsv_;
 
 		unsigned int nv_;
+		unsigned int nsv_;
 
 		//User defined: Rmin, Rmax
 		std::string scale_;
@@ -42,6 +44,8 @@ class Interactions{
 		//All interactions possible
 		std::vector<Contact> pairs_; 
 
+		//SVerlet list
+		std::vector<Contact*> svlist_;
 		//Verlet list
 		//Points on pairs_
 		std::vector<Contact*> vlist_;
@@ -58,7 +62,10 @@ class Interactions{
 		bool checkInteractions_;
 		//Locals check at initialisation:
 		bool initScale_;
+
+		//Verlet et Sverlet init
 		bool initdv_;
+		bool initdsv_;
 
 		bool initkn_;
 		bool initkt_;
@@ -114,6 +121,7 @@ class Interactions{
 		void updateverlet(const int);
 		//Build verlet
 		void updatevlist();
+		void updatesvlist();
 		//Build contact list
 		void detectContacts();
 		//Compute forces at contacts (end of 1st step verlet algo)
