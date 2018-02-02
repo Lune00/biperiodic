@@ -34,6 +34,7 @@ class Algo{
 		double e_;
 		//Max normal viscosity
 		double gnmax_;
+		double gtmax_;
 		//Max time step
 		double dtmax_;
 
@@ -59,8 +60,11 @@ class Algo{
 		void write();
 		bool checkSimulationParameters();
 		void computedtmax();
-		void compute_gnmax_restitution();
+
+		//Auto compute max viscosities gn and gt
+		void compute_gmax();
 		bool checktimestep()const;
+
 		bool checkNormalViscosity() const;
 		//Write simu setup in filesetup_;
 		void writesetup() const;

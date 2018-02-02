@@ -36,7 +36,7 @@ void Algo::init(ifstream& is){
 bool Algo::initcheck(){
 
 	computedtmax();
-	compute_gnmax_restitution();
+	compute_gmax();
 
 	//Set initial values for tic (load vs build case)
 	//If build automatically start at zero
@@ -79,30 +79,31 @@ bool Algo::checktimestep()const{
 	else return true;
 }
 
-//Compute gnmax and restitution coeffcient
-void Algo::compute_gnmax_restitution(){
+//Compute gnmax, gtmax  and restitution coeffcient
+void Algo::compute_gmax(){
 
 	double rho = spl_->getrho();
 	double m = rho * M_PI * spl_->getrmin() * spl_->getrmin(); 
-	double mmax = rho * M_PI * spl_->getrmax() * spl_->getrmax(); 
 	double kn = Int_->getkn();
+	double kt = Int_->getkt();
 
-	gnmax_ = 2. * sqrt( kn * mmax);
-
-	double gn = Int_->getgn();
+	gnmax_ = 2. * sqrt( kn * m);
+	gtmax_ = 2. * sqrt( kt * m);
 
 	if(Int_->setgnmax()){
-		gn = gnmax_ * 0.95 ;
+		double gn = gnmax_ * 0.98 ;
 		Int_->setgn(gn);
 	}
 
-	cerr<<"gn = "<<Int_->getgn()<<endl;
+	if(Int_->setgtmax()){
+	  double gt = gtmax_ * 0.98 ;
+	  Int_->setgt(gt);
+	}
 
 	//From Radjai Book (not sure)
 	//But that's true we need a limit, maybe just a little above that
 	//Compute resitution coefficient:
-	//Facteur 6 semble etre pas trop mal
-	double ds = gn/gnmax_;
+	double ds = Int_->getgn()/gnmax_;
 	e_ = exp(- M_PI * ds/(2.*sqrt(1.-ds*ds)) ) ;
 }
 

@@ -67,6 +67,7 @@ class Interactions{
 		bool initmus_;
 
 		bool setgnmax_;
+		bool setgtmax_;
 
 		std::string folder_;
 		std::string fInteractions_;
@@ -130,16 +131,23 @@ class Interactions{
 		int getnpc() const { return pairs_.size();}
 		int getnc() const { return clist_.size();}
 		int getnv() const { return nv_ ;}
+
+
 		double getkn() const { return kn_;}
+		double getkt() const { return kt_;}
+		
 		double getgn() const { return gn_;}
+		double getgt() const { return gt_;}
+
 		void setgn(double gn) { gn_ = gn;}
+		void setgt(double gt) { gn_ = gt;}
+
 		bool setgnmax() const { return setgnmax_;}
+		bool setgtmax() const { return setgtmax_;}
+
 		const Tensor2x2& stress() const { return stress_;}
 		Tensor2x2 getStressInt() const { return stress_;}
-
 		bool near(const Particle*,const Particle*,const double) const;
-		//DEBUG
-		void debug(const int)const;
 
 		Vecteur getShortestBranch(const Particle*,const Particle*) const;
 
@@ -148,6 +156,9 @@ class Interactions{
 
 		void read(std::ifstream& is);
 		void print()const;
+
+		//DEBUG
+		void debug(const int)const;
 };
 
 

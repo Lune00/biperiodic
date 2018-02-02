@@ -20,10 +20,9 @@ Interactions::Interactions(){
 	initgt_ = false;
 	initmus_ = false;
 	setgnmax_ = false;
+	setgtmax_ = false;
 
-	ofstream debug("debugInteractions.txt");
-	debug.close();
-	debug.open("tmp.txt");
+	ofstream debug("tmp.txt");
 	debug.close();
 }
 
@@ -67,6 +66,10 @@ void Interactions::init(ifstream& is){
 		if(token=="gt"){
 			is >> gt_;
 			initgt_ = true;
+		}
+		if(token=="gtmax"){
+		  setgtmax_ = true ;
+		  initgt_ = true ;
 		}
 		if(token=="mu"){
 			is >> mus_;

@@ -8,6 +8,7 @@ using namespace std;
 //Tolerance for interpenetration
 //if fabs(dn_) > tolerance_, considered to be non zero
 //then check if negative or not
+//NOT used
 const double Contact::tolerance_ = 1e-20 ;
 
 Contact::Contact(Particle& i, Particle& j,Cell& cell){
@@ -109,8 +110,6 @@ void Contact::updateRelativeVelocity(){
 
   //Components in the contact frame:
   //v_n = vx nx + vy ny
-
-
   Vecteur vtmp = v_ ;
 
   v_.setx( vtmp * n_ );
@@ -132,12 +131,12 @@ void Contact::computeForce(const double kn, const double kt, const double gn, co
   if(fn < 0.) fn = 0.;
 
   double ft = - kt * dt_ - gt * v_.gety();
+
   const double ftmax = fabs( fn * mus);
 
   if(fabs(ft) > ftmax){
     //Si glissant on fixe dt_, s'il est negatif on le laisse negatif sinon positif
     ft = sign(ft) * ftmax;
-    //dt_= -ft/kt;
     dt_ =  ft/kt;
   }
   else dt_ += v_.gety() * dt ;
@@ -166,7 +165,9 @@ void Contact::updateAccelerations(){
   //Update rotational acceleration
   j_->updateArot(-f_.gety() * j_->getRadius());
   i_->updateArot(-f_.gety() * i_->getRadius());
+
   return;
+
 }
 
 void Contact::print() const{
