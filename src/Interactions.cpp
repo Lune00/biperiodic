@@ -230,7 +230,7 @@ Vecteur Interactions::getShortestBranch(const Particle* i, const Particle* j) co
   }
   //Find minimum:
   std::vector<double>::iterator it = std::min_element(l_dcarre.begin(),l_dcarre.end());
-  double dmin = * it ;
+  //double dmin = * it ;
   int k = distance( l_dcarre.begin(), it);
   //Get matching pairs of indexes
   pair<int,int> indexes = pairs[k];
@@ -277,6 +277,9 @@ void Interactions::detectContacts(){
       Contact * pc = (*it) ;
       clist_.push_back(pc);
     }
+    else{
+      (*it)->reset();
+    }
   }
 }
 
@@ -293,6 +296,9 @@ void Interactions::computeForces(const double dt){
   double sxx_c = 0. ;
   double sxy_c = 0. ;
   double syy_c = 0. ;
+
+  //cerr<<"Calcul des forces"<<endl;
+  //cerr<<"Nombre de contacts: "<<clist_.size()<<endl;
 
   for(vector<Contact*>::iterator it = clist_.begin() ; it != clist_.end() ; it++){
 
@@ -416,7 +422,7 @@ void Interactions::debug(const int k) const{
   ofstream tmp("tmp.txt",ios::app);
   for(vector<Contact>::const_iterator it = pairs_.begin(); it != pairs_.end(); it++){
 
-    if(it->geti()->getId()==6 && it->getj()->getId()==11){
+    if(it->geti()->getId()==1 && it->getj()->getId()==2){
       tmp<< it->getfn()<<" "<<it->getft()<<" "<<it->getdn()<<" "<<it->getdt()<<endl;
     }
   }

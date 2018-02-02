@@ -81,6 +81,7 @@ class Contact{
 		double getfn() const { return f_.getx();}
 		double getft() const { return f_.gety();}
 		Vecteur getrv() const { return v_;}
+		void reset() { f_.set(0.,0.); v_.set(0.,0.)  ;}
 };
 
 

@@ -87,12 +87,12 @@ void Algo::compute_gnmax_restitution(){
 	double mmax = rho * M_PI * spl_->getrmax() * spl_->getrmax(); 
 	double kn = Int_->getkn();
 
-	gnmax_ = 8. * sqrt( 2. * kn * mmax);
+	gnmax_ = 2. * sqrt( kn * mmax);
 
 	double gn = Int_->getgn();
 
 	if(Int_->setgnmax()){
-		gn = gnmax_ * 0.99 ;
+		gn = gnmax_ * 0.95 ;
 		Int_->setgn(gn);
 	}
 
@@ -142,7 +142,7 @@ void Algo::run(){
 
 	//ticw_ (writing tick cell/sample) and tica_ (analysis) should start at the same initial tic, set in initTics()
 
-	int nprint = ns_ / 100 ;
+	int nprint = ns_ / 200 ;
 	if(nprint==0) nprint = 5 ;
 
 	writesetup();
@@ -176,7 +176,7 @@ void Algo::run(){
 		}
 
 		//TMP for debug
-		if( tic_ % 10 == 0 ){
+		if( tic_ % 1000 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
 			spl_->debug(tic_);

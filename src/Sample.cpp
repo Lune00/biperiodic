@@ -157,8 +157,8 @@ double Sample::getTKE() const{
 	Tensor2x2 hd = cell_->gethd();
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		//Vecteur v = returnvabs(*it);
-		//Vecteur v = h *it->getV() + hd * it->getR();
-		Vecteur v =  hd * it->getR();
+		Vecteur v = h *it->getV() + hd * it->getR();
+		//Vecteur v =  hd * it->getR();
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
 	}
 	return Ec;
@@ -183,13 +183,13 @@ void Sample::debug(int tic){
 	Tensor2x2 hdd = cell_->gethdd();
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		if(it->getId()==42){
+		if(it->getId()==13){
 			Vecteur sd = it->getV();
 			Vecteur v = h * sd + hd * it->getR(); 
 			Vecteur a = hdd * it->getR() + hd * sd * 2. + h * it->getA();
 			Vecteur r = h * it->getR();
 			//os<<tic<<" "<<it->getId()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<" "<<a.getx()<<" "<<a.gety()<<" "<<it->getA().getx()<<" "<<it->getA().gety()<<endl;
-			os<<tic<<" "<<r.getx()<<" "<<r.gety()<<endl;
+			os<<tic<<" "<<r.getx()<<" "<<r.gety()<<" "<<it->getVrot()<<endl;
 		}
 	}
 	os.close();
