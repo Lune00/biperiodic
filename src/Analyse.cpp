@@ -121,7 +121,7 @@ void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 //Call for different analyses asked by the user
 void Analyse::analyse(int tic, double t){
 	if(printSample_) printSample(tic);
-	if(energy_) computeEnergy(tic);
+	if(energy_) computeEnergy(t);
 	if(strain_) strain(t);
 	if(stress_) stress(t);
 	if(compacity_) compacity(t);
@@ -254,7 +254,7 @@ void Analyse::stress(const double t) const{
 }
 
 //Add injected energy, friction and dissipation in inelastic collision
-void Analyse::computeEnergy(const int tic) {
+void Analyse::computeEnergy(const double t) {
 
 	string file_energy = folder_ + "/energy.txt";
 	ofstream os(file_energy.c_str(),ios::app);
@@ -264,7 +264,7 @@ void Analyse::computeEnergy(const int tic) {
 	double Elastic = Int_->getElasticEnergy();
 	double TotalE = TKE + RKE + Elastic;
 
-	os <<tic<<" "<<TKE<<" "<<RKE<<" "<<Elastic<<" "<<TotalE<<endl;
+	os <<t<<" "<<TKE<<" "<<RKE<<" "<<Elastic<<" "<<TotalE<<endl;
 
 	os.close();
 }

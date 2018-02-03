@@ -63,7 +63,7 @@ class Analyse{
 		void printSample(int);
 		void writePS(const std::string,const std::vector<Particle>&);
 		//Energy in the system
-		void computeEnergy(const int);
+		void computeEnergy(const double);
 		//Cell strain tensor
 		void strain(const double) const;
 		//Internal and external stress
