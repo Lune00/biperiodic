@@ -150,18 +150,6 @@ void Interactions::plug(Sample& spl,Cell& cell){
 	cell_ = &cell;
 }
 
-//called in config.cpp after plug. Si array exists already
-//Ask sample if loaded sample or new one (using build)
-//If loaded, then load dt for tangential forces
-void Interactions::talkinit() {
-  if(spl_->loaded()){
-    unsigned int filetoload = spl_->filetoload();
-    load(filetoload);
-  }
-  return ;
-}
-
-
 //Build pairs_ list et setscale to verlet cutoff. Load existing contact network if a sample is loaded(todo)
 void Interactions::build(){
 
@@ -181,11 +169,15 @@ void Interactions::build(){
   initScale();
 
   //TODO:Est ce qu'on load? on lit les contacts dans un fichier
-  talkinit();
+  if(spl_->loaded()){
+    unsigned int filetoload = spl_->filetoload();
+    load(filetoload);
+    updateclist();
+  }
 
 }
 
-//Load the dt for the contacts
+//Load the network
 void Interactions::load(const int k){
 
   string filename = formatfile( folder_, fInteractions_, k );
@@ -198,27 +190,76 @@ void Interactions::load(const int k){
     cerr<<"Pas de contacts a charger."<<endl;
     return ;
   }
-  else{
-    //Build contacts list to fill array_dt:
-    string token;
-    while(is){
-      if(is.eof()) break;
-      //TODO
-    }
-
-  }
+  else  read(is);
   is.close();
 }
 
+//Read contact network
 void Interactions::read(ifstream& is){
 
+    string token;
+    while(is){
+      if(is.eof()) break;
+
+      //TODO
+      int idi;
+      int idj;
+      double rx;
+      double ry;
+      double nx;
+      double ny;
+      double fn;
+      double ft;
+      double dt;
+
+      is >> idi >> idj >> rx >> ry >> nx >> ny >> fn >> ft>> dt;
+
+      //Update contact idi-idj to load dt
+      Contact * pc = findpairs(idi,idj);
+
+      if(pc==NULL){
+	cerr<<"@impossible to find contact."<<endl;
+	break;
+      }
+
+      else{
+	pc->setdt(dt);
+      }
+    }
+      
+}
+
+Contact * Interactions::findpairs(const int idi, const int idj){
+
+  for(vector<Contact>::iterator it = pairs_.begin(); it != pairs_.end(); it++){
+
+
+    if(it->geti()->getId() == idi && it->getj()->getId() == idj){
+      return &(*it);
+      break;
+    }
+
+  }
+  return NULL;
+
+}
+
+//Write contact network
+void Interactions::writeContacts(int k) const {
+
+  string filename = formatfile(folder_, fInteractions_, k);
+  ofstream file(filename.c_str());
+
+  //TODO
+  for(vector<Contact*>::const_iterator it = clist_.begin(); it != clist_.end();it++){
+    (*it)->write(file);
+  }
+  file.close();
 }
 
 bool Interactions::checkDEMparameters() const{
   return (initkn_ && initkt_ && initgn_ && initgt_ && initmus_);
 }
-
-
 
 void Interactions::updateverlet(const int tic){
   if( tic % nsv_ == 0 ) updatesvlist();
@@ -297,6 +338,13 @@ void Interactions::updatevlist(){
       vlist_.push_back(pc);
     }
   }
+  //for(vector<Contact>::iterator it = pairs_.begin() ; it != pairs_.end(); it ++ )
+  //{
+  //  if( near( (it)->geti(), (it)->getj(), dv_ ) ){
+  //    Contact * pc  = &(*it) ;
+  //    vlist_.push_back(pc);
+  //  }
+  //}
 }
 
 
@@ -315,6 +363,24 @@ void Interactions::detectContacts(){
       (*it)->reset();
     }
   }
+}
+
+//This function is only called to load a previous
+//existing network
+void Interactions::updateclist(){
+
+  clist_.clear();
+
+  for( vector<Contact>::iterator it = pairs_.begin() ; it != pairs_.end(); it++){
+
+    it->Frame();
+
+    if( it->isActif() ) {
+      Contact * pc = &(*it) ;
+      clist_.push_back(pc);
+    }
+  }
+
 }
 
 //Compute force at each contact and compute procedurally internal stress on the fly
@@ -361,7 +427,7 @@ void Interactions::computeForces(const double dt){
 
     Vecteur a_red = hinv * ( it->getA() - hd * (it)->getV() * 2. - hdd * (it)->getR());
     //Vecteur a_red = hinv * (it->getA());
-    (it)->setAcceleration(a_red);
+    it->setAcceleration(a_red);
 
     //TODO CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
     //MAIS pour ca on a besoin de la vitesse au debut, au milieu ou a la fin du pas de temps?
@@ -387,15 +453,6 @@ void Interactions::askNumberOfContacts() const{
 }
 
 
-//Write contact network
-void Interactions::writeContacts(int k) const {
-
-  //if(clist_.size()==0) cerr<<"step "<<k<<" Il n'y a pas de contact"<<endl;
-  string filename = formatfile(folder_, fInteractions_, k);
-  ofstream file(filename.c_str());
-
-  //TODO
-}
 
 double Interactions::getElasticEnergy() const {
 

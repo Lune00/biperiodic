@@ -134,6 +134,8 @@ void Cell::talkinit(Sample& spl){
 
 		initGeometry_ = true;
 		initMass_ = true;
+		cerr<<"hd init xx = "<<hd_.getxx()<<endl;
+		cerr<<"hdd init yy = "<<hdd_.getyy()<<endl;
 	}
 	else{
 		//If not, L_auto or not?

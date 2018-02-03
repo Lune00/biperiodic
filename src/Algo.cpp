@@ -11,6 +11,7 @@ Algo::Algo(){
 	ns_ = 0 ;
 	nrecord_ = 0;
 	nana_ = 0 ;
+	nprint_ = 0 ;
 	tic_= 0; 
 	t_=0.; 
 	ticw_ = 0; 
@@ -27,6 +28,7 @@ void Algo::init(ifstream& is){
 		if(token=="ns") is >> ns_;
 		if(token=="nana") is >> nana_;
 		if(token=="nrecord") is >> nrecord_;
+		if(token=="nprint") is >> nprint_;
 		if(token=="}") break;
 		is >> token;
 	}
@@ -141,10 +143,9 @@ void Algo::run(){
 	t_ = 0. ;
 	tic_ = 0;
 
-	//ticw_ (writing tick cell/sample) and tica_ (analysis) should start at the same initial tic, set in initTics()
+	if(nprint_ == 0 ) nprint_ = 500 ;
 
-	int nprint = ns_ / 200 ;
-	if(nprint==0) nprint = 5 ;
+	//ticw_ (writing tick cell/sample/network) and tica_ (analysis) should start at the same initial tic, set in initTics()
 
 	writesetup();
 
@@ -168,7 +169,7 @@ void Algo::run(){
 			ana_->analyse(tica_,t_);
 			tica_++;
 		}
-		if( tic_ % nprint == 0) {
+		if( tic_ % nprint_ == 0) {
 			std::streamsize ss = std::cout.precision();
 			std::cout.precision(4);
 			cout<<"step : "<<tic_<<" t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
@@ -177,7 +178,7 @@ void Algo::run(){
 		}
 
 		//TMP for debug
-		if( tic_ % 5000 == 0 ){
+		if( tic_ % 1 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
 			spl_->debug(tic_);

@@ -435,12 +435,16 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 			if(!c->isActif()) continue;
 			double fn = c->getfn();
 			double fnres = (fn - Fmin)/(Fmax+Fmin);
-			//double lw = (fn / Fmean) * 0.03 * rmax ; 
-			double lw = 0.2 * rmax ;
+			double lw = (fn / Fmean) * 0.1 * rmax ; 
+			//double lw = 0.2 * rmax ;
 
 			Vecteur ri = h * c->geti()->getR();
 			Vecteur rj = h * c->getj()->getR();
 
+			if(fnres != fnres){
+			  cerr<<"@nan : Fmin = "<<Fmin<<" Fmax = "<<Fmax<<" fn = "<<fn<<endl;
+			  continue;
+			}
 
 			double xi = ri.getx();
 			double yi = ri.gety();

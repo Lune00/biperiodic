@@ -97,7 +97,7 @@ void Sample::loadSample(){
 				Particle P(is);
 				spl_.push_back(P);
 			}
-			//Solution provisoire:
+			//Solution provisoire (!):
 			spl_.pop_back();
 
 			cout<<"Nombre de particules: "<<spl_.size()<<endl;

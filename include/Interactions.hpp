@@ -81,11 +81,6 @@ class Interactions{
 
 		//Parametres DEM:
 
-		//Mettre en place check sur les
-		//bornes acceptables des valeurs des parametres
-		//a comparer avec dt
-		//Etudier un peu ca...
-
 		//Normal and tangential stifness
 		double kn_;
 		double kt_;
@@ -108,20 +103,24 @@ class Interactions{
 	public:
 		Interactions();
 		~Interactions();
+
 		//Initialisations:
 		void init(std::ifstream&);
 		void initScale();
 		bool initcheck();
 		bool checkDEMparameters()const;
 		void plug(Sample&,Cell&);
-		void build();
+
 		//Load file
-		void talkinit();
+		void build();
 		void load(const int);
-		void updateverlet(const int);
-		//Build verlet
+		Contact * findpairs(const int, const int);
+		void updateclist();
+
+		// verlet
 		void updatevlist();
 		void updatesvlist();
+		void updateverlet(const int);
 		//Build contact list
 		void detectContacts();
 		//Compute forces at contacts (end of 1st step verlet algo)
@@ -133,13 +132,13 @@ class Interactions{
 		void writeContacts(int) const;
 		//Compute energy stored in contact deflection
 		double getElasticEnergy() const;
+
 		std::vector<double> getAverageMaxPenetration()const;
 		void askNumberOfContacts() const;
 
 		int getnpc() const { return pairs_.size();}
 		int getnc() const { return clist_.size();}
 		int getnv() const { return nv_ ;}
-
 
 		double getkn() const { return kn_;}
 		double getkt() const { return kt_;}

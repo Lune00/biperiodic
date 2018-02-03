@@ -56,6 +56,7 @@ class Contact{
 	public:
 		Contact(){ i_ = NULL; j_ =NULL, cell_=NULL ; isActif_ = false; }
 		Contact(Particle& i, Particle& j, Cell&);
+		//Contact(std::ifstream&,std::vector<Contact>&);
 		~Contact(){};
 
 		bool isActif() const { return isActif_;}
@@ -81,6 +82,7 @@ class Contact{
 		double getfn() const { return f_.getx();}
 		double getft() const { return f_.gety();}
 		Vecteur getrv() const { return v_;}
+		void setdt(const double dt) { dt_ = dt ;}
 		void reset() { f_.set(0.,0.); v_.set(0.,0.)  ;}
 };
 

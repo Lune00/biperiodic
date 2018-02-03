@@ -24,6 +24,8 @@ class Algo{
 		int nrecord_;
 		//Frequency analyse during simulation
 		int nana_;
+		//Print to standard
+		int nprint_;
 
 		//Computed from Interactions/dt
 		//Global parameters to print:
