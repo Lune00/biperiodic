@@ -132,7 +132,7 @@ bool Algo::checkSimulationParameters(){
 
 void Algo::run(){
 
-	double tfinal = ns_ * dt_ ;
+	double tfinal = (ns_) * dt_ ;
 
 	cout<<"Simulation:"<<endl;
 	cout<<"dt = "<<dt_<<endl;
@@ -153,7 +153,8 @@ void Algo::run(){
 
 	ofstream timefile("time.txt");
 
-	while(t_<tfinal){
+	//while(t_ <= tfinal){
+	while(tic_ <= ns_){
 		//Update verlet list
 		Int_->updateverlet(tic_);
 
