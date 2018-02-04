@@ -84,6 +84,7 @@ void Contact::Frame(){
 	}
 	else {
 		isActif_ = false ;
+		dt_ = 0. ;
 	}
 }
 

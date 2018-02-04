@@ -161,6 +161,7 @@ void Interactions::build(){
     unsigned int filetoload = spl_->filetoload();
     load(filetoload);
   }
+
   initScale();
 }
 
@@ -191,7 +192,9 @@ void Interactions::load(const int k){
     cerr<<"Pas de contacts a charger."<<endl;
     return ;
   }
-  else  read_dt(is);
+  else  {
+    read_dt(is);
+  }
   is.close();
 }
 
@@ -216,6 +219,13 @@ void Interactions::read_dt(ifstream& is){
 
       if( idi != idj ) dts_[ idi * N_ + idj ] = dt ;
     }
+
+	//for(unsigned int i = 0 ; i < N_ ; i++){
+	//	for(unsigned int j = 0 ; j < N_; j++){
+	//		cerr<<i<<" "<<j<<" "<<dts_[i * N_ + j ]<<endl ;
+	//	}
+	//}
+    updateverlet(0);
       
 }
 
@@ -318,6 +328,8 @@ void Interactions::updatevlist(){
   {
     if( near( *(it->i), *(it->j), dv_ ) ){
       Contact c(it->i, it->j,cell_);
+      //Attribue dt
+      c.setdt(get_dt(c));
       vlist_.push_back(c);
     }
   }
@@ -336,15 +348,14 @@ void Interactions::detectContacts(){
     int k = distance (vlist_.begin(), it );
 
     if( it->isActif() ) {
-      it->setdt(get_dt(*it));
       clist_.push_back(k);
     }
     else{
-      reset_dt(*it);
+      //dt_ is set to zero in the contact
+      set_dt(*it);
     }
 
   }
-
   return ;
 
 }
@@ -499,6 +510,7 @@ void Interactions::debug(const int k) const{
       break;
     }
   }
+
   tmp.close();
 
 }

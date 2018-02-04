@@ -21,9 +21,12 @@ Config::Config(){
 	string makefolder_spl = "mkdir -p " + folder_spl_;
 	string makefolder_cell = "mkdir -p " + folder_cell_;
 	string makefolder_Interactions = "mkdir -p " + folder_Interactions_;
+	string makefolder_analyse = "mkdir -p " + folder_analyse_;
+
 	system(makefolder_spl.c_str());
 	system(makefolder_Interactions.c_str());
 	system(makefolder_cell.c_str());
+	system(makefolder_analyse.c_str());
 }
 
 Config::~Config(){
