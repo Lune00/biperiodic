@@ -420,19 +420,26 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 		double Fmin = Int_->inspectContact(0)->getfn(); 
 		double Fmax = Int_->inspectContact(0)->getfn(); 
 
+		//Discart forces fn equal to zero (when fn < 0 )
+		const double epsilon = 1e-20;
+		unsigned int Nactif = 0 ;
+
 		for(int i = 0 ; i < N ; i++){
 			const Contact * c = Int_->inspectContact(i);
+			if(fabs(c->getfn()) < epsilon ) continue;
 			Fmean += c->getfn() ;
 			Fmax = max(c->getfn(),Fmax);
 			Fmin = min(c->getfn(),Fmin);
+			Nactif++;
 		}
 
-		Fmean /= (double)N;
+		if(Nactif == 0 ) return ;
+
+		Fmean /= (double)Nactif;
 		//cerr<<"fmean = "<<Fmean<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
 
 		for(int i = 0 ; i < N ; i++){
 			const Contact * c = Int_->inspectContact(i);
-			if(!c->isActif()) continue;
 			double fn = c->getfn();
 			double fnres = (fn - Fmin)/(Fmax+Fmin);
 			double lw = (fn / Fmean) * 0.1 * rmax ; 
@@ -442,7 +449,9 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 			Vecteur rj = h * c->getj()->getR();
 
 			if(fnres != fnres){
-			  cerr<<"@nan : Fmin = "<<Fmin<<" Fmax = "<<Fmax<<" fn = "<<fn<<endl;
+			  //May happen if fn < 0 and reset to 0.
+			  //With upper precaution should not happen anymore
+			  cerr<<"@nan : fmean = "<<Fmean<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
 			  continue;
 			}
 

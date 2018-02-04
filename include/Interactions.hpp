@@ -38,25 +38,33 @@ class Interactions{
 		unsigned int nv_;
 		unsigned int nsv_;
 
+
+		struct particle_pair{
+		  Particle * i ;
+		  Particle * j ;
+		};
+
 		//User defined: Rmin, Rmax
 		std::string scale_;
 
 		//All interactions possible
-		std::vector<Contact> pairs_; 
+		//std::vector<Contact> pairs_; 
 
 		//SVerlet list
-		std::vector<Contact*> svlist_;
+		std::vector<particle_pair> svlist_;
 		//Verlet list
-		//Points on pairs_
-		std::vector<Contact*> vlist_;
+		std::vector<Contact> vlist_;
 
 		//Active contact list: id de vlist
-		//Points on pairs_
-		std::vector<Contact*> clist_;
+		//Points on vlist_
+		std::vector<int> clist_;
 
 		//plug:
 		Sample * spl_;
 		Cell * cell_;
+
+		double * dts_ ;
+		unsigned int N_ ;
 
 		//Global check at initialisation:
 		bool checkInteractions_;
@@ -136,7 +144,6 @@ class Interactions{
 		std::vector<double> getAverageMaxPenetration()const;
 		void askNumberOfContacts() const;
 
-		int getnpc() const { return pairs_.size();}
 		int getnc() const { return clist_.size();}
 		int getnv() const { return nv_ ;}
 
@@ -154,18 +161,24 @@ class Interactions{
 
 		const Tensor2x2& stress() const { return stress_;}
 		Tensor2x2 getStressInt() const { return stress_;}
-		bool near(const Particle*,const Particle*,const double) const;
+		bool near(const Particle&,const Particle&,const double) const;
 
-		Vecteur getShortestBranch(const Particle*,const Particle*) const;
+		Vecteur getShortestBranch(const Particle&,const Particle&) const;
 
-		const Contact& inspectInteraction(int k) const { return (pairs_[k]) ; } 
-		const Contact* inspectContact(int k) const { return clist_[k];}
+		//const Contact& inspectInteraction(int k) const { return (pairs_[k]) ; } 
+		const Contact* inspectContact(int k) const { return &vlist_[clist_[k]];}
 
 		void read(std::ifstream& is);
 		void print()const;
 
 		//DEBUG
 		void debug(const int)const;
+
+		void init_array_dt();
+		void read_dt(std::ifstream&);
+		double get_dt(Contact&) const;
+		void set_dt(Contact&);
+		void reset_dt(Contact&);
 };
 
 

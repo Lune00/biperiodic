@@ -45,16 +45,18 @@ bool Algo::initcheck(){
 	initTics();
 	if( t_ > 0. ) return false;
 	if( !checkSimulationParameters() ) return false;
-	if (dt_ < 1. && ns_ != 0 && nrecord_ != 0 ) return true;
+	if (ns_ != 0 && nrecord_ != 0 ) return true;
 	else return false;
 }
 
 void Algo::initTics(){
+
 	ticw_ = spl_->startingTic();
 	tica_ = ticw_;
 }
 
 void Algo::plug(Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
+
 	Int_ = &Int;
 	cell_ = &cell;
 	spl_ = &spl;
@@ -63,6 +65,7 @@ void Algo::plug(Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
 
 //Compute dtmax for the simulation (kn,m)
 void Algo::computedtmax(){
+
 	double const epsilon = 0.01;
 	double const rho = spl_->getrho();
 	double const kn = Int_->getkn();
@@ -73,6 +76,7 @@ void Algo::computedtmax(){
 
 //Compare dt to dtmax
 bool Algo::checktimestep()const{
+
 	cout<<"dtmax = "<<dtmax_<<endl;
 	if(dt_>dtmax_) {
 		cerr<<"Choose a lower dt."<<endl;
@@ -98,7 +102,7 @@ void Algo::compute_gmax(){
 	}
 
 	if(Int_->setgtmax()){
-	  double gt = gtmax_ * 0.98 ;
+	  double gt = gtmax_ * 0.5 ;
 	  Int_->setgt(gt);
 	}
 
@@ -121,9 +125,9 @@ bool Algo::checkNormalViscosity()const{
 }
 
 
-//Check, according DEM parameters, if dt is set correctly
-//Tangential viscosity check expression...???
+//Check, according DEM parameters
 bool Algo::checkSimulationParameters(){
+
 	bool is_dt_ok = checktimestep();
 	bool is_gn_ok = checkNormalViscosity();
 	return (is_dt_ok && is_gn_ok);
@@ -155,6 +159,7 @@ void Algo::run(){
 
 	//while(t_ <= tfinal){
 	while(tic_ <= ns_){
+
 		//Update verlet list
 		Int_->updateverlet(tic_);
 
@@ -179,7 +184,7 @@ void Algo::run(){
 		}
 
 		//TMP for debug
-		if( tic_ % 1 == 0 ){
+		if( tic_ % 1000 == 0 ){
 			Int_->debug(tic_);
 			cell_->debug(tic_);
 			spl_->debug(tic_);

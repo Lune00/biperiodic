@@ -11,13 +11,14 @@ using namespace std;
 //NOT used
 const double Contact::tolerance_ = 1e-20 ;
 
-Contact::Contact(Particle& i, Particle& j,Cell& cell){
-	i_ = &i ;
-	j_ = &j ;
+Contact::Contact(Particle* i, Particle* j,Cell* cell){
+	i_ = i ;
+	j_ = j ;
 	isActif_ = false;
-	cell_ = &cell;
+	cell_ = cell;
 	branch_.setx(0.);
 	branch_.sety(0.);
+	dt_ = 0. ;
 }
 
 //Compute the shortest branch between the two particles in contact
@@ -83,8 +84,6 @@ void Contact::Frame(){
 	}
 	else {
 		isActif_ = false ;
-		dt_ = 0. ;
-		dn_ = 0. ;
 	}
 }
 

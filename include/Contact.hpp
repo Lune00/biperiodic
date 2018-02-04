@@ -14,9 +14,10 @@ class Cell;
 class Contact{
 
 	private:
-		//Should be Particle * const i_/j_
+
 		Particle * i_;
 		Particle * j_;
+
 		//Contact position
 		Vecteur r_;
 		//Smalest branch vector through periodicity bet i and j
@@ -55,7 +56,7 @@ class Contact{
 
 	public:
 		Contact(){ i_ = NULL; j_ =NULL, cell_=NULL ; isActif_ = false; }
-		Contact(Particle& i, Particle& j, Cell&);
+		Contact(Particle* i, Particle* j, Cell*);
 		//Contact(std::ifstream&,std::vector<Contact>&);
 		~Contact(){};
 
@@ -70,6 +71,7 @@ class Contact{
 		double getdn() const { return dn_;}
 		double getdt() const { return dt_;}
 		Vecteur getfxy() const { return (n_ *f_.getx() + t_ * f_.gety());} 
+
 		//Debug:
 		void print() const;
 		const Particle* getj() const { return j_;}
@@ -77,13 +79,12 @@ class Contact{
 
 		void computeShortestBranch() ;
 		Vecteur getbranch() const { return branch_;}
-
 		//TMP
 		double getfn() const { return f_.getx();}
 		double getft() const { return f_.gety();}
 		Vecteur getrv() const { return v_;}
 		void setdt(const double dt) { dt_ = dt ;}
-		void reset() { f_.set(0.,0.); v_.set(0.,0.)  ;}
+
 };
 
 

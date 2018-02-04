@@ -37,6 +37,7 @@ Interactions::Interactions(){
 
 Interactions::~Interactions(){
 
+  delete [] dts_ ;
 }
 
 
@@ -153,28 +154,28 @@ void Interactions::plug(Sample& spl,Cell& cell){
 //Build pairs_ list et setscale to verlet cutoff. Load existing contact network if a sample is loaded(todo)
 void Interactions::build(){
 
-  //On cree la liste de toutes les interactions possibles:
-  //pairs_:
-  unsigned int N = spl_->getsize();
-
-  for(std::vector<Particle>::iterator iti = spl_->getSample()->begin();iti!=spl_->getSample()->end();iti++)
-  {
-    for(std::vector<Particle>::iterator itj = iti + 1; itj!=spl_->getSample()->end();itj++)
-    {
-      Contact c(*iti,*itj,*cell_);
-      pairs_.push_back(c);
-    }
-  }
-
-  initScale();
+  init_array_dt();
 
   //TODO:Est ce qu'on load? on lit les contacts dans un fichier
   if(spl_->loaded()){
     unsigned int filetoload = spl_->filetoload();
     load(filetoload);
-    updateclist();
   }
+  initScale();
+}
 
+//On suppose que les Id des particules vont de 0 à N-1
+void Interactions::init_array_dt(){
+
+	N_ = spl_->getsize();
+
+	dts_ = new double [ N_ * N_ ] ;
+
+	for(unsigned int i = 0 ; i < N_ ; i++){
+		for(unsigned int j = 0 ; j < N_; j++){
+			dts_[i * N_ + j ] = 0. ;
+		}
+	}
 }
 
 //Load the network
@@ -190,20 +191,19 @@ void Interactions::load(const int k){
     cerr<<"Pas de contacts a charger."<<endl;
     return ;
   }
-  else  read(is);
+  else  read_dt(is);
   is.close();
 }
 
 //Read contact network
-void Interactions::read(ifstream& is){
+void Interactions::read_dt(ifstream& is){
 
     string token;
     while(is){
       if(is.eof()) break;
 
-      //TODO
-      int idi;
-      int idj;
+      int idi=0;
+      int idj=0;
       double rx;
       double ry;
       double nx;
@@ -214,34 +214,9 @@ void Interactions::read(ifstream& is){
 
       is >> idi >> idj >> rx >> ry >> nx >> ny >> fn >> ft>> dt;
 
-      //Update contact idi-idj to load dt
-      Contact * pc = findpairs(idi,idj);
-
-      if(pc==NULL){
-	cerr<<"@impossible to find contact."<<endl;
-	break;
-      }
-
-      else{
-	pc->setdt(dt);
-      }
+      if( idi != idj ) dts_[ idi * N_ + idj ] = dt ;
     }
       
-}
-
-Contact * Interactions::findpairs(const int idi, const int idj){
-
-  for(vector<Contact>::iterator it = pairs_.begin(); it != pairs_.end(); it++){
-
-
-    if(it->geti()->getId() == idi && it->getj()->getId() == idj){
-      return &(*it);
-      break;
-    }
-
-  }
-  return NULL;
-
 }
 
 //Write contact network
@@ -250,9 +225,9 @@ void Interactions::writeContacts(int k) const {
   string filename = formatfile(folder_, fInteractions_, k);
   ofstream file(filename.c_str());
 
-  //TODO
-  for(vector<Contact*>::const_iterator it = clist_.begin(); it != clist_.end();it++){
-    (*it)->write(file);
+  for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end();it++){
+    int k = *it;
+    vlist_[k].write(file);
   }
   file.close();
 }
@@ -267,13 +242,17 @@ void Interactions::updateverlet(const int tic){
 }
 
 //Return smallest vector branch between particle i and particle j
-Vecteur Interactions::getShortestBranch(const Particle* i, const Particle* j) const{
+Vecteur Interactions::getShortestBranch(const Particle& i, const Particle& j) const{
+
   //Need the branch vector (in absolute units)
-  double sijx = j->getx() - i->getx();
-  double sijy = j->gety() - i->gety();
+  double sijx = j.getx() - i.getx();
+  double sijy = j.gety() - i.gety();
+
   Vecteur sij(sijx,sijy);
+
   //Branch vector
   Vecteur d = cell_->geth() * sij;
+
   //Cell basis vectors
   Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
   Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
@@ -303,13 +282,13 @@ Vecteur Interactions::getShortestBranch(const Particle* i, const Particle* j) co
 
 
 //True if distance between "surface" of particle i and j are lower than d
-bool Interactions::near(const Particle* i, const Particle* j,const double d) const{
+bool Interactions::near(const Particle& i, const Particle& j,const double d) const{
 
   Vecteur shortest_branch = getShortestBranch(i,j);
 
-  //Test distance compared to dsv
+  //Test distance compared to d
 
-  if( shortest_branch.getNorme() - d < j->getRadius() + i->getRadius() ) return true;
+  if( shortest_branch.getNorme() - d < j.getRadius() + i.getRadius() ) return true;
 
   else return false;
 }
@@ -318,33 +297,30 @@ void Interactions::updatesvlist(){
 
   svlist_.clear();
 
-  for(vector<Contact>::iterator it = pairs_.begin() ; it != pairs_.end(); it ++ )
+  for(std::vector<Particle>::iterator iti = spl_->getSample()->begin();iti!=spl_->getSample()->end();iti++)
   {
-    if( near( it->geti(), it->getj(), dsv_ ) ){
-      Contact * pc  = &(*it) ;
-      svlist_.push_back(pc);
+    for(std::vector<Particle>::iterator itj = iti + 1; itj!=spl_->getSample()->end();itj++)
+    {
+      if( near( *iti , *itj , dsv_ ) ){
+	particle_pair i__j = { &(*iti), &(*itj)};
+	svlist_.push_back(i__j);
+      }
     }
   }
+
 }
 
 void Interactions::updatevlist(){
 
   vlist_.clear();
 
-  for(vector<Contact*>::iterator it = svlist_.begin() ; it != svlist_.end(); it ++ )
+  for(vector<particle_pair>::iterator it = svlist_.begin() ; it != svlist_.end(); it ++ )
   {
-    if( near( (*it)->geti(), (*it)->getj(), dv_ ) ){
-      Contact * pc  = (*it) ;
-      vlist_.push_back(pc);
+    if( near( *(it->i), *(it->j), dv_ ) ){
+      Contact c(it->i, it->j,cell_);
+      vlist_.push_back(c);
     }
   }
-  //for(vector<Contact>::iterator it = pairs_.begin() ; it != pairs_.end(); it ++ )
-  //{
-  //  if( near( (it)->geti(), (it)->getj(), dv_ ) ){
-  //    Contact * pc  = &(*it) ;
-  //    vlist_.push_back(pc);
-  //  }
-  //}
 }
 
 
@@ -352,35 +328,43 @@ void Interactions::updatevlist(){
 void Interactions::detectContacts(){
 
   clist_.clear();
-  for( vector<Contact*>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
 
-    (*it)->Frame();
-    if( (*it)->isActif() ) {
-      Contact * pc = (*it) ;
-      clist_.push_back(pc);
-    }
-    else{
-      (*it)->reset();
-    }
-  }
-}
-
-//This function is only called to load a previous
-//existing network
-void Interactions::updateclist(){
-
-  clist_.clear();
-
-  for( vector<Contact>::iterator it = pairs_.begin() ; it != pairs_.end(); it++){
+  for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
 
     it->Frame();
 
+    int k = distance (vlist_.begin(), it );
+
     if( it->isActif() ) {
-      Contact * pc = &(*it) ;
-      clist_.push_back(pc);
+      it->setdt(get_dt(*it));
+      clist_.push_back(k);
     }
+    else{
+      reset_dt(*it);
+    }
+
   }
 
+  return ;
+
+}
+
+double Interactions::get_dt(Contact& c) const{
+	int i = c.geti()->getId();
+	int j = c.getj()->getId();
+	return dts_[ i * N_ + j];
+}
+
+void Interactions::set_dt(Contact& c){
+	int i = c.geti()->getId();
+	int j = c.getj()->getId();
+	dts_[ i * N_ + j ] = c.getdt() ;
+}
+
+void Interactions::reset_dt(Contact& c){
+	int i = c.geti()->getId();
+	int j = c.getj()->getId();
+	dts_[ i * N_ + j ] = 0. ;
 }
 
 //Compute force at each contact and compute procedurally internal stress on the fly
@@ -397,17 +381,16 @@ void Interactions::computeForces(const double dt){
   double sxy_c = 0. ;
   double syy_c = 0. ;
 
-  //cerr<<"Calcul des forces"<<endl;
-  //cerr<<"Nombre de contacts: "<<clist_.size()<<endl;
+  for(vector<int>::iterator it = clist_.begin() ; it != clist_.end() ; it++){
 
-  for(vector<Contact*>::iterator it = clist_.begin() ; it != clist_.end() ; it++){
+    vlist_[*it].updateRelativeVelocity();
+    vlist_[*it].computeForce(kn_,kt_,gn_,gt_,mus_,dt);
+    //Update array table:
+    set_dt(vlist_[*it]);
+    vlist_[*it].updateAccelerations();
 
-    (*it)->updateRelativeVelocity();
-    (*it)->computeForce(kn_,kt_,gn_,gt_,mus_,dt);
-    (*it)->updateAccelerations();
-
-    Vecteur branch = (*it)->getbranch();
-    Vecteur force  = (*it)->getfxy();
+    Vecteur branch = vlist_[*it].getbranch();
+    Vecteur force  = vlist_[*it].getfxy();
 
     sxx_s += branch.getx() * force.getx();
     sxy_s += branch.gety() * force.getx();
@@ -424,14 +407,24 @@ void Interactions::computeForces(const double dt){
 
   for(std::vector<Particle>::iterator it = spl_->getSample()->begin();it!=spl_->getSample()->end();it++)
   {
-
     Vecteur a_red = hinv * ( it->getA() - hd * (it)->getV() * 2. - hdd * (it)->getR());
-    //Vecteur a_red = hinv * (it->getA());
     it->setAcceleration(a_red);
 
     //TODO CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
+
     //MAIS pour ca on a besoin de la vitesse au debut, au milieu ou a la fin du pas de temps?
+
     //On peut prendre celle au milieu, ca ne devrait pas changer grand chose...
+    //Kinetic stress : Loop over particles:
+    //	for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
+    //	{
+    //		//Partie fluctuante : v = h * sdot
+    //		Vecteur v = cell_->geth() * it->getV();
+    //		double m = it->getMasse();
+    //		sxx_c += m * v.getx() * v.getx();
+    //		sxy_c += m * v.getx() * v.gety();
+    //		syy_c += m * v.gety() * v.gety();
+    //	}
 
   }
 
@@ -459,33 +452,17 @@ double Interactions::getElasticEnergy() const {
   double E = 0.;
 
   //Tangential elastic component kt*dt*dt?
-  for(vector<Contact*>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
-    double dn = (*it)->getdn();
+  for(vector<int>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
+    double dn = vlist_[*it].getdn();
     E += 0.5 * (dn) * (dn) * kn_ ;
   }
 
-    return E;
+  return E;
 }
 
 //TODO : Cette loop pourrait etre margee avec celle du calcul des forces dans computeForces pour gagner en efficacite
 void Interactions::computeInternalStress(){
-
-  //Kinetic:
-  double sxx_c = 0. ;
-  double sxy_c = 0. ;
-  double syy_c = 0. ;
-
   //TODO: BE MOVED in computeForce
-  ////Kinetic stress : Loop over particles:
-  ////	for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
-  ////	{
-  ////		//Partie fluctuante : v = h * sdot
-  ////		Vecteur v = cell_->geth() * it->getV();
-  ////		double m = it->getMasse();
-  ////		sxx_c += m * v.getx() * v.getx();
-  ////		sxy_c += m * v.getx() * v.gety();
-  ////		syy_c += m * v.gety() * v.gety();
-  ////	}
 }
 
 
@@ -494,8 +471,8 @@ vector<double> Interactions::getAverageMaxPenetration()const{
   double dn_average = 0. ;
   double dn_max = 0. ;
 
-  for(vector<Contact*>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
-    double dn = (*it)->getdn();
+  for(vector<int>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
+    double dn = vlist_[*it].getdn();
     dn_average += fabs(dn);
     dn_max = max(fabs(dn),fabs(dn_max));
   }
@@ -509,12 +486,17 @@ vector<double> Interactions::getAverageMaxPenetration()const{
 
 
 void Interactions::debug(const int k) const{
-
   ofstream tmp("tmp.txt",ios::app);
-  for(vector<Contact>::const_iterator it = pairs_.begin(); it != pairs_.end(); it++){
 
-    if(it->geti()->getId()==1 && it->getj()->getId()==2){
-      tmp<< it->getfn()<<" "<<it->getft()<<" "<<it->getdn()<<" "<<it->getdt()<<endl;
+  int idi = 20 ;
+  int idj = 24 ;
+  int a = idi * N_ + idj ;
+
+  for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
+    if( vlist_[*it].geti()->getId() == idi && vlist_[*it].getj()->getId() == idj ) {
+      double dt = vlist_[*it].getdt();
+      tmp<<k<<" "<<dts_[a]<<" "<<dt<<" "<<vlist_[*it].getdn()<<endl;
+      break;
     }
   }
   tmp.close();
@@ -522,7 +504,6 @@ void Interactions::debug(const int k) const{
 }
 
 void Interactions::print() const {
-  cout<<"Nombre d'interactions possibles: "<<pairs_.size()<<endl;
   cout<<"Nombre d'interactions (Super Verlet): "<<svlist_.size()<<endl;
   cout<<"Nombre d'interactions (Verlet): "<<vlist_.size()<<endl;
   cout<<"Nombre de contacts actifs: "<<clist_.size()<<endl;
