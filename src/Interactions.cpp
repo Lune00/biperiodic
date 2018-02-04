@@ -225,7 +225,7 @@ void Interactions::read_dt(ifstream& is){
 	//		cerr<<i<<" "<<j<<" "<<dts_[i * N_ + j ]<<endl ;
 	//	}
 	//}
-    updateverlet(0);
+    //updateverlet(0);
       
 }
 
@@ -234,6 +234,7 @@ void Interactions::writeContacts(int k) const {
 
   string filename = formatfile(folder_, fInteractions_, k);
   ofstream file(filename.c_str());
+  file.precision(12);
 
   for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end();it++){
     int k = *it;

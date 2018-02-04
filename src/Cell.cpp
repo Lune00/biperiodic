@@ -204,6 +204,7 @@ double Cell::getVolume() const{
 void Cell::write(const int k) const{
 	string filename = formatfile( folder_, fcell_, k );
 	ofstream file(filename.c_str());
+	file.precision(12);
 	h_.write(file);
 	file<<" ";
 	hd_.write(file);

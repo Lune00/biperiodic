@@ -117,6 +117,7 @@ void Sample::write(int k) const{
 
 	string filename = formatfile( folder_, fsample_, k );
 	ofstream file(filename.c_str());
+	file.precision(12);
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		it->write(file);
