@@ -217,147 +217,149 @@ void Interactions::read_dt(ifstream& is){
 
       is >> idi >> idj >> rx >> ry >> nx >> ny >> fn >> ft>> dt;
 
-      if( idi != idj ) dts_[ idi * N_ + idj ] = dt ;
-    }
+      if( idi != idj){
+      //particle_pair i__j = { spl_->getP(idi), spl_->getP(idj)};
+      dts_[ idi * N_ + idj ] = dt;
+      //svlist_.push_back(i__j);
+      }
 
-	//for(unsigned int i = 0 ; i < N_ ; i++){
-	//	for(unsigned int j = 0 ; j < N_; j++){
-	//		cerr<<i<<" "<<j<<" "<<dts_[i * N_ + j ]<<endl ;
-	//	}
-	//}
-    //updateverlet(0);
-      
+    }
+    cerr<<"svlist size = "<<svlist_.size()<<endl;
+    //updatevlist();
+    //detectContacts();
+    //writeContacts(6);
 }
 
 //Write contact network
 void Interactions::writeContacts(int k) const {
 
-  string filename = formatfile(folder_, fInteractions_, k);
-  ofstream file(filename.c_str());
-  file.precision(12);
+	string filename = formatfile(folder_, fInteractions_, k);
+	ofstream file(filename.c_str());
+	file.precision(12);
 
-  for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end();it++){
-    int k = *it;
-    vlist_[k].write(file);
-  }
-  file.close();
+	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end();it++){
+		int k = *it;
+		vlist_[k].write(file);
+	}
+	file.close();
 }
 
 bool Interactions::checkDEMparameters() const{
-  return (initkn_ && initkt_ && initgn_ && initgt_ && initmus_);
+	return (initkn_ && initkt_ && initgn_ && initgt_ && initmus_);
 }
 
 void Interactions::updateverlet(const int tic){
-  if( tic % nsv_ == 0 ) updatesvlist();
-  if( tic % nv_ == 0 ) updatevlist();
+	if( tic % nsv_ == 0 ) updatesvlist();
+	if( tic % nv_ == 0 ) updatevlist();
 }
 
 //Return smallest vector branch between particle i and particle j
 Vecteur Interactions::getShortestBranch(const Particle& i, const Particle& j) const{
 
-  //Need the branch vector (in absolute units)
-  double sijx = j.getx() - i.getx();
-  double sijy = j.gety() - i.gety();
+	//Need the branch vector (in absolute units)
+	double sijx = j.getx() - i.getx();
+	double sijy = j.gety() - i.gety();
 
-  Vecteur sij(sijx,sijy);
+	Vecteur sij(sijx,sijy);
 
-  //Branch vector
-  Vecteur d = cell_->geth() * sij;
+	//Branch vector
+	Vecteur d = cell_->geth() * sij;
 
-  //Cell basis vectors
-  Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
-  Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
+	//Cell basis vectors
+	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
+	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
 
-  //Test for indices that minimize the distance
-  //Interaction can only be with original particles (0,0)
-  //or first cell (-1,-1), (1,1) etc...
-  vector<pair<int,int> > pairs;
-  vector<double> l_dcarre;
-  for (int i = -1 ; i != 2 ; i++){
-    for(int j = -1; j != 2; j++){
-      Vecteur u = d + a0 * i + a1 * j;
-      double dcarre = u * u ;
-      l_dcarre.push_back(dcarre);
-      pairs.push_back(std::make_pair(i,j));
-    }
-  }
-  //Find minimum:
-  std::vector<double>::iterator it = std::min_element(l_dcarre.begin(),l_dcarre.end());
-  //double dmin = * it ;
-  int k = distance( l_dcarre.begin(), it);
-  //Get matching pairs of indexes
-  pair<int,int> indexes = pairs[k];
-  //Return shortest vector branch:
-  return (d + a0 * indexes.first + a1 * indexes.second) ; 
+	//Test for indices that minimize the distance
+	//Interaction can only be with original particles (0,0)
+	//or first cell (-1,-1), (1,1) etc...
+	vector<pair<int,int> > pairs;
+	vector<double> l_dcarre;
+	for (int i = -1 ; i != 2 ; i++){
+		for(int j = -1; j != 2; j++){
+			Vecteur u = d + a0 * i + a1 * j;
+			double dcarre = u * u ;
+			l_dcarre.push_back(dcarre);
+			pairs.push_back(std::make_pair(i,j));
+		}
+	}
+	//Find minimum:
+	std::vector<double>::iterator it = std::min_element(l_dcarre.begin(),l_dcarre.end());
+	//double dmin = * it ;
+	int k = distance( l_dcarre.begin(), it);
+	//Get matching pairs of indexes
+	pair<int,int> indexes = pairs[k];
+	//Return shortest vector branch:
+	return (d + a0 * indexes.first + a1 * indexes.second) ; 
 }
 
 
 //True if distance between "surface" of particle i and j are lower than d
 bool Interactions::near(const Particle& i, const Particle& j,const double d) const{
 
-  Vecteur shortest_branch = getShortestBranch(i,j);
+	Vecteur shortest_branch = getShortestBranch(i,j);
 
-  //Test distance compared to d
+	//Test distance compared to d
 
-  if( shortest_branch.getNorme() - d < j.getRadius() + i.getRadius() ) return true;
+	if( shortest_branch.getNorme() - d < j.getRadius() + i.getRadius() ) return true;
 
-  else return false;
+	else return false;
 }
 
 void Interactions::updatesvlist(){
 
-  svlist_.clear();
+	svlist_.clear();
 
-  for(std::vector<Particle>::iterator iti = spl_->getSample()->begin();iti!=spl_->getSample()->end();iti++)
-  {
-    for(std::vector<Particle>::iterator itj = iti + 1; itj!=spl_->getSample()->end();itj++)
-    {
-      if( near( *iti , *itj , dsv_ ) ){
-	particle_pair i__j = { &(*iti), &(*itj)};
-	svlist_.push_back(i__j);
-      }
-    }
-  }
+	for(std::vector<Particle>::iterator iti = spl_->getSample()->begin();iti!=spl_->getSample()->end();iti++)
+	{
+		for(std::vector<Particle>::iterator itj = iti + 1; itj!=spl_->getSample()->end();itj++)
+		{
+			if( near( *iti , *itj , dsv_ ) ){
+				particle_pair i__j = { &(*iti), &(*itj)};
+				svlist_.push_back(i__j);
+			}
+		}
+	}
 
 }
 
 void Interactions::updatevlist(){
 
-  vlist_.clear();
+	vlist_.clear();
 
-  for(vector<particle_pair>::iterator it = svlist_.begin() ; it != svlist_.end(); it ++ )
-  {
-    if( near( *(it->i), *(it->j), dv_ ) ){
-      Contact c(it->i, it->j,cell_);
-      //Attribue dt
-      c.setdt(get_dt(c));
-      vlist_.push_back(c);
-    }
-  }
+	for(vector<particle_pair>::iterator it = svlist_.begin() ; it != svlist_.end(); it ++ )
+	{
+		if( near( *(it->i), *(it->j), dv_ ) ){
+			Contact c(it->i, it->j,cell_);
+			//Attribue dt
+			c.setdt(get_dt(c));
+			vlist_.push_back(c);
+		}
+	}
 }
 
 
 //Build contact list (activated interactions)
 void Interactions::detectContacts(){
 
-  clist_.clear();
+	clist_.clear();
 
-  for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
+	for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
 
-    it->Frame();
+		it->Frame();
+		//cerr<<"Frame : "<<it->geti()->getId()<<" "<<it->getj()->getId()<<endl;
 
-    int k = distance (vlist_.begin(), it );
+		int k = distance (vlist_.begin(), it );
 
-    if( it->isActif() ) {
-      clist_.push_back(k);
-    }
-    else{
-      //dt_ is set to zero in the contact
-      set_dt(*it);
-    }
+		if( it->isActif() ) {
+			clist_.push_back(k);
+		}
+		else{
+			//dt_ is set to zero in the contact
+			set_dt(*it);
+		}
 
-  }
-  return ;
+	}
+	return ;
 
 }
 
@@ -382,144 +384,144 @@ void Interactions::reset_dt(Contact& c){
 //Compute force at each contact and compute procedurally internal stress on the fly
 void Interactions::computeForces(const double dt){
 
-  //Static stress:
-  double sxx_s = 0. ;
-  double sxy_s = 0. ;
-  double syx_s = 0. ;
-  double syy_s = 0. ;
+	//Static stress:
+	double sxx_s = 0. ;
+	double sxy_s = 0. ;
+	double syx_s = 0. ;
+	double syy_s = 0. ;
 
-  //Kinetic stress:
-  double sxx_c = 0. ;
-  double sxy_c = 0. ;
-  double syy_c = 0. ;
+	//Kinetic stress:
+	double sxx_c = 0. ;
+	double sxy_c = 0. ;
+	double syy_c = 0. ;
 
-  for(vector<int>::iterator it = clist_.begin() ; it != clist_.end() ; it++){
+	for(vector<int>::iterator it = clist_.begin() ; it != clist_.end() ; it++){
 
-    vlist_[*it].updateRelativeVelocity();
-    vlist_[*it].computeForce(kn_,kt_,gn_,gt_,mus_,dt);
-    //Update array table:
-    set_dt(vlist_[*it]);
-    vlist_[*it].updateAccelerations();
+		vlist_[*it].updateRelativeVelocity();
+		vlist_[*it].computeForce(kn_,kt_,gn_,gt_,mus_,dt);
+		//Update array table:
+		set_dt(vlist_[*it]);
+		vlist_[*it].updateAccelerations();
 
-    Vecteur branch = vlist_[*it].getbranch();
-    Vecteur force  = vlist_[*it].getfxy();
+		Vecteur branch = vlist_[*it].getbranch();
+		Vecteur force  = vlist_[*it].getfxy();
 
-    sxx_s += branch.getx() * force.getx();
-    sxy_s += branch.gety() * force.getx();
-    syx_s += branch.getx() * force.gety();
-    syy_s += branch.gety() * force.gety();
-  }
+		sxx_s += branch.getx() * force.getx();
+		sxy_s += branch.gety() * force.getx();
+		syx_s += branch.getx() * force.gety();
+		syy_s += branch.gety() * force.gety();
+	}
 
 
-  // Transform acceleration into reduced coordinates:
-  Tensor2x2 hdd = cell_->gethdd();
-  Tensor2x2 hd = cell_->gethd();
-  Tensor2x2 h = cell_->geth();
-  Tensor2x2 hinv = h.getInverse();
+	// Transform acceleration into reduced coordinates:
+	Tensor2x2 hdd = cell_->gethdd();
+	Tensor2x2 hd = cell_->gethd();
+	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hinv = h.getInverse();
 
-  for(std::vector<Particle>::iterator it = spl_->getSample()->begin();it!=spl_->getSample()->end();it++)
-  {
-    Vecteur a_red = hinv * ( it->getA() - hd * (it)->getV() * 2. - hdd * (it)->getR());
-    it->setAcceleration(a_red);
+	for(std::vector<Particle>::iterator it = spl_->getSample()->begin();it!=spl_->getSample()->end();it++)
+	{
+		Vecteur a_red = hinv * ( it->getA() - hd * (it)->getV() * 2. - hdd * (it)->getR());
+		it->setAcceleration(a_red);
 
-    //TODO CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
+		//TODO CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
 
-    //MAIS pour ca on a besoin de la vitesse au debut, au milieu ou a la fin du pas de temps?
+		//MAIS pour ca on a besoin de la vitesse au debut, au milieu ou a la fin du pas de temps?
 
-    //On peut prendre celle au milieu, ca ne devrait pas changer grand chose...
-    //Kinetic stress : Loop over particles:
-    //	for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
-    //	{
-    //		//Partie fluctuante : v = h * sdot
-    //		Vecteur v = cell_->geth() * it->getV();
-    //		double m = it->getMasse();
-    //		sxx_c += m * v.getx() * v.getx();
-    //		sxy_c += m * v.getx() * v.gety();
-    //		syy_c += m * v.gety() * v.gety();
-    //	}
+		//On peut prendre celle au milieu, ca ne devrait pas changer grand chose...
+		//Kinetic stress : Loop over particles:
+		//	for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
+		//	{
+		//		//Partie fluctuante : v = h * sdot
+		//		Vecteur v = cell_->geth() * it->getV();
+		//		double m = it->getMasse();
+		//		sxx_c += m * v.getx() * v.getx();
+		//		sxy_c += m * v.getx() * v.gety();
+		//		syy_c += m * v.gety() * v.gety();
+		//	}
 
-  }
+	}
 
-  //Update:
-  stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
-  stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
+	//Update:
+	stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
+	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
 
-  stress_s = stress_s * (1. / cell_->getVolume());
-  stress_c = stress_c * (1. / cell_->getVolume());
+	stress_s = stress_s * (1. / cell_->getVolume());
+	stress_c = stress_c * (1. / cell_->getVolume());
 
-  //Total stress:
-  stress_ = stress_s + stress_c;
+	//Total stress:
+	stress_ = stress_s + stress_c;
 
 }
 
 
 void Interactions::askNumberOfContacts() const{
-  cerr<<"Nombre de contacts: "<<clist_.size()<<endl;
+	cerr<<"Nombre de contacts: "<<clist_.size()<<endl;
 }
 
 
 
 double Interactions::getElasticEnergy() const {
 
-  double E = 0.;
+	double E = 0.;
 
-  //Tangential elastic component kt*dt*dt?
-  for(vector<int>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
-    double dn = vlist_[*it].getdn();
-    E += 0.5 * (dn) * (dn) * kn_ ;
-  }
+	//Tangential elastic component kt*dt*dt?
+	for(vector<int>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
+		double dn = vlist_[*it].getdn();
+		E += 0.5 * (dn) * (dn) * kn_ ;
+	}
 
-  return E;
+	return E;
 }
 
 //TODO : Cette loop pourrait etre margee avec celle du calcul des forces dans computeForces pour gagner en efficacite
 void Interactions::computeInternalStress(){
-  //TODO: BE MOVED in computeForce
+	//TODO: BE MOVED in computeForce
 }
 
 
 vector<double> Interactions::getAverageMaxPenetration()const{
 
-  double dn_average = 0. ;
-  double dn_max = 0. ;
+	double dn_average = 0. ;
+	double dn_max = 0. ;
 
-  for(vector<int>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
-    double dn = vlist_[*it].getdn();
-    dn_average += fabs(dn);
-    dn_max = max(fabs(dn),fabs(dn_max));
-  }
-  if(clist_.size()!=0) dn_average /= (double)clist_.size();
+	for(vector<int>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
+		double dn = vlist_[*it].getdn();
+		dn_average += fabs(dn);
+		dn_max = max(fabs(dn),fabs(dn_max));
+	}
+	if(clist_.size()!=0) dn_average /= (double)clist_.size();
 
-  vector<double> dns;
-  dns.push_back(dn_average);
-  dns.push_back(dn_max);
-  return dns;
+	vector<double> dns;
+	dns.push_back(dn_average);
+	dns.push_back(dn_max);
+	return dns;
 }
 
 
 void Interactions::debug(const int k) const{
-  ofstream tmp("tmp.txt",ios::app);
+	ofstream tmp("tmp.txt",ios::app);
 
-  int idi = 20 ;
-  int idj = 24 ;
-  int a = idi * N_ + idj ;
+	int idi = 20 ;
+	int idj = 24 ;
+	int a = idi * N_ + idj ;
 
-  for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
-    if( vlist_[*it].geti()->getId() == idi && vlist_[*it].getj()->getId() == idj ) {
-      double dt = vlist_[*it].getdt();
-      tmp<<k<<" "<<dts_[a]<<" "<<dt<<" "<<vlist_[*it].getdn()<<endl;
-      break;
-    }
-  }
+	for(vector<int>::const_iterator it = clist_.begin(); it != clist_.end(); it++){
+		if( vlist_[*it].geti()->getId() == idi && vlist_[*it].getj()->getId() == idj ) {
+			double dt = vlist_[*it].getdt();
+			tmp<<k<<" "<<dts_[a]<<" "<<dt<<" "<<vlist_[*it].getdn()<<endl;
+			break;
+		}
+	}
 
-  tmp.close();
+	tmp.close();
 
 }
 
 void Interactions::print() const {
-  cout<<"Nombre d'interactions (Super Verlet): "<<svlist_.size()<<endl;
-  cout<<"Nombre d'interactions (Verlet): "<<vlist_.size()<<endl;
-  cout<<"Nombre de contacts actifs: "<<clist_.size()<<endl;
+	cout<<"Nombre d'interactions (Super Verlet): "<<svlist_.size()<<endl;
+	cout<<"Nombre d'interactions (Verlet): "<<vlist_.size()<<endl;
+	cout<<"Nombre de contacts actifs: "<<clist_.size()<<endl;
 }
 
 

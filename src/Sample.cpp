@@ -429,3 +429,13 @@ void Sample::secondStepVerlet(const double dt_) {
 		}
 }
 
+Particle * Sample::getP(int i){
+
+	for(spit it =spl_.begin(); it != spl_.end(); it++){
+		if(it->getId()==i) {
+			Particle * pp = &(*it) ;
+			return pp;
+		}
+	}
+	return NULL ;
+}

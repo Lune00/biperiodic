@@ -99,6 +99,9 @@ class Sample{
 		Vecteur returnrabs(const Particle&) const;
 		Vecteur returnvabs(const Particle&) const;
 
+		//Used to load network:
+		Particle * getP(int id);
+
 
 };
 

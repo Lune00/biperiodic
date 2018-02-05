@@ -57,6 +57,7 @@ class Contact{
 	public:
 		Contact(){ i_ = NULL; j_ =NULL, cell_=NULL ; isActif_ = false; }
 		Contact(Particle* i, Particle* j, Cell*);
+		Contact(std::ifstream&);
 		//Contact(std::ifstream&,std::vector<Contact>&);
 		~Contact(){};
 

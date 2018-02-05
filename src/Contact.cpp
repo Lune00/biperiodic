@@ -21,6 +21,9 @@ Contact::Contact(Particle* i, Particle* j,Cell* cell){
 	dt_ = 0. ;
 }
 
+Contact::Contact(ifstream& is){
+}
+
 //Compute the shortest branch between the two particles in contact
 //The branch is the absolute distance betwwen center of particles
 //Takes into account for periodicity no matter the cell shape
