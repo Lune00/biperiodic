@@ -292,7 +292,7 @@ void Analyse::printSample(int tic){
 void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 
-	bool label = true ;
+	bool label = false ;
 	bool forcenetwork = true ;
 
 	ofstream ps(frame.c_str());

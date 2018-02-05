@@ -184,10 +184,10 @@ void Algo::run(){
 		}
 
 		//TMP for debug
-		if( tic_ % 1000 == 0 ){
-			Int_->debug(tic_);
+		if( tic_ % 5000 == 0 ){
+			//Int_->debug(tic_);
 			cell_->debug(tic_);
-			spl_->debug(tic_);
+			//spl_->debug(tic_);
 		}
 
 		t_+=dt_;
@@ -220,7 +220,6 @@ void Algo::writesetup() const{
 
 
 void Algo::write(){
-	//cout<<"Writing outputs..."<<endl;
 	spl_->write(ticw_);
 	Int_->writeContacts(ticw_);
 	cell_->write(ticw_);
@@ -258,12 +257,8 @@ void Algo::verletalgo2(){
 	//------------- SECOND STEP VERLET STARTS HERE
 
 	//Calcul des vitesses a la fin du pas de temps:
-	//ATEST: On retranche la valeur moyenne aux vitesses fluctuantes
 	spl_->secondStepVerlet(dt_);
 
-	//Apply stress_ext: si controle en force
-	//stress ext est egal a celui impose
-	//Sinon il est egal a -stressint et acc nulle
 	cell_->computeExternalStress(Int_->stress());
 	cell_->updatehdd(Int_->stress());
 	cell_->updatehd(dt_);

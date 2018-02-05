@@ -81,7 +81,6 @@ class Sample{
 		std::vector<Particle>* getSample() {return &spl_;}
 
 		void firstStepVerlet(const double);
-		void addForce(Particle&);
 		void secondStepVerlet(const double);
 
 		Cell * getCell() const { return cell_;}
@@ -90,9 +89,11 @@ class Sample{
 		void initfolder(std::string folder); 
 		void write(int) const;
 		void writeAbsolute(int) const;
+
 		//TMP: debug writing
 		void debug(int);
 		void printSample() const;
+
 		std::vector<Particle> getimages(double e) const;
 		double getTKE() const;
 		double getRKE() const;
@@ -100,6 +101,7 @@ class Sample{
 		Vecteur returnvabs(const Particle&) const;
 
 		//Used to load network:
+		//Not used
 		Particle * getP(int id);
 
 

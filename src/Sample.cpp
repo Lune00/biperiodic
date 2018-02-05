@@ -374,10 +374,6 @@ void Sample::firstStepVerlet(const double dt_){
 
 	for(spit it = spl_.begin(); it != spl_.end(); it++){
 
-		//Impose force to particles?
-		//A TEST, ou au moment du calcul des forces et a la fin du pas temps? comme le serait la gravite finalement...
-		//TODO A DEPLACER DANS LA PARTIE OU ON CALCULE LES FORCES DANS INTERACTION.CPP
-	//	if(cell_->imposeForce()) addForce(*it);
 		//Positions
 		it->updateR(dt_);
 		it->updateRot(dt_);
@@ -391,23 +387,9 @@ void Sample::firstStepVerlet(const double dt_){
 	return;
 }
 
-//Add a force to each particule in the horizontal direction
-//fx = A * sin (2pi y/Ly * mode)
-void Sample::addForce(Particle& p){
-
-	double A = cell_->getAmplitudeForce();
-	int mode = cell_->getModeForce();
-	//double Ly = cell_->geth().getyy();
-
-	double yLy = p.getR().gety() ;
-	double fx = A * sin ( 2. * M_PI * yLy * (double)mode);
-	Vecteur f(fx,0.);
-	p.updateA(f);
-	//cerr<<"Particule "<<p.getId()<<": "<<f.getx()<<" y/Ly = "<<yLy<<endl;
-}
 
 //Update velocity and vrotation at the end of the time step
-//TODO Removes mean velocity to ensure that <sd>=0.
+//Removes mean velocity to ensure that <sd>=0.
 //The mean displacement is carried only by the cell (homogenous def)
 void Sample::secondStepVerlet(const double dt_) {
 
@@ -421,7 +403,6 @@ void Sample::secondStepVerlet(const double dt_) {
 		vmean = vmean + it->getV();
 	}
 
-		//TODO: wip
 		vmean = vmean / (double)spl_.size();
 	
 		for(spit it =spl_.begin(); it != spl_.end(); it++){
@@ -429,6 +410,7 @@ void Sample::secondStepVerlet(const double dt_) {
 		}
 }
 
+//Not used
 Particle * Sample::getP(int i){
 
 	for(spit it =spl_.begin(); it != spl_.end(); it++){

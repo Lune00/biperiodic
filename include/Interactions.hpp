@@ -122,8 +122,6 @@ class Interactions{
 		//Load file
 		void build();
 		void load(const int);
-		Contact * findpairs(const int, const int);
-		void updateclist();
 
 		// verlet
 		void updatevlist();
@@ -134,6 +132,7 @@ class Interactions{
 		//Compute forces at contacts (end of 1st step verlet algo)
 		void computeForces(const double);
 		void computeInternalStress();
+		void addForce(Particle&);
 
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}

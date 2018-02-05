@@ -15,6 +15,7 @@ Interactions::Interactions(){
 
 	scale_=string();
 	folder_ = string();
+
 	initScale_ = false;
 	fInteractions_ = "inter.txt";
 
@@ -198,7 +199,7 @@ void Interactions::load(const int k){
   is.close();
 }
 
-//Read contact network
+//Read contact network: only need dt
 void Interactions::read_dt(ifstream& is){
 
     string token;
@@ -224,10 +225,6 @@ void Interactions::read_dt(ifstream& is){
       }
 
     }
-    cerr<<"svlist size = "<<svlist_.size()<<endl;
-    //updatevlist();
-    //detectContacts();
-    //writeContacts(6);
 }
 
 //Write contact network
@@ -375,6 +372,7 @@ void Interactions::set_dt(Contact& c){
 	dts_[ i * N_ + j ] = c.getdt() ;
 }
 
+//Not used
 void Interactions::reset_dt(Contact& c){
 	int i = c.geti()->getId();
 	int j = c.getj()->getId();
@@ -401,6 +399,7 @@ void Interactions::computeForces(const double dt){
 		vlist_[*it].computeForce(kn_,kt_,gn_,gt_,mus_,dt);
 		//Update array table:
 		set_dt(vlist_[*it]);
+
 		vlist_[*it].updateAccelerations();
 
 		Vecteur branch = vlist_[*it].getbranch();
@@ -421,8 +420,13 @@ void Interactions::computeForces(const double dt){
 
 	for(std::vector<Particle>::iterator it = spl_->getSample()->begin();it!=spl_->getSample()->end();it++)
 	{
+		//Acceleration from contact force:
 		Vecteur a_red = hinv * ( it->getA() - hd * (it)->getV() * 2. - hdd * (it)->getR());
+
 		it->setAcceleration(a_red);
+
+		//Acceleration from external drive:
+		if(cell_->imposeForce()) addForce(*it);
 
 		//TODO CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
 
@@ -454,6 +458,20 @@ void Interactions::computeForces(const double dt){
 
 }
 
+//Add a force to each particule in the horizontal direction
+//fx = A * sin (2pi y/Ly * mode)
+void Interactions::addForce(Particle& p){
+
+	double A = cell_->getAmplitudeForce();
+	int mode = cell_->getModeForce();
+	//double Ly = cell_->geth().getyy();
+
+	double yLy = p.getR().gety() ;
+	double fx = A * sin ( 2. * M_PI * yLy * (double)mode);
+	Vecteur f(fx,0.);
+	p.updateA(f);
+	//cerr<<"Particule "<<p.getId()<<": "<<f.getx()<<" y/Ly = "<<yLy<<endl;
+}
 
 void Interactions::askNumberOfContacts() const{
 	cerr<<"Nombre de contacts: "<<clist_.size()<<endl;
