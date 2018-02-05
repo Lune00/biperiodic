@@ -115,17 +115,24 @@ void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 	Int_ = &Int;
 }
 
+//Call for different analyses asked by the user during simulation
+//postprocess true for analyse after simulation, false for while simulation
+void Analyse::analyse(int tic, double t, bool postprocess){
 
-
-
-//Call for different analyses asked by the user
-void Analyse::analyse(int tic, double t){
 	if(printSample_) printSample(tic);
+
 	if(energy_) computeEnergy(t);
+
 	if(strain_) strain(t);
-	if(stress_) stress(t);
+
+	if(stress_){
+		if(postprocess) Int_->computeInternalStress();
+		stress(t);
+	}
 	if(compacity_) compacity(t);
+
 	if(SP_) ProfileVelocity(t);
+
 	if(interpenetration_) Interpenetration(t);
 }
 

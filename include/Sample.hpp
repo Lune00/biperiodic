@@ -36,7 +36,7 @@ class Sample{
 		double M_;
 
 		//If load or build from init sample
-		bool load_sample_cell_;
+		bool load_sample_;
 		//File to load if load
 		unsigned int filetoload_;
 		//Int to start writing if load
@@ -74,7 +74,7 @@ class Sample{
 		void setrho(double rho) { rho_ = rho;}
 
 		unsigned int getsize() const { return spl_.size();}
-		bool loaded() const { return load_sample_cell_;}
+		bool loaded() const { return load_sample_;}
 		unsigned int filetoload() const { return filetoload_;}
 		unsigned int startingTic() const { return starting_;}
 
@@ -104,7 +104,7 @@ class Sample{
 		//Used to load network:
 		//Not used
 		Particle * getP(int id);
-		void setfiletoload(const int i) { filetoload_ = i ;}
+		void setfiletoload(const int i) { load_sample_ = true ; filetoload_ = i ;}
 
 
 };

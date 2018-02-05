@@ -31,13 +31,11 @@ class Interactions{
 
 	private:
 
-	  //Juset Verlet pour l'instant
 		double dv_;
 		double dsv_;
 
 		unsigned int nv_;
 		unsigned int nsv_;
-
 
 		struct particle_pair{
 		  Particle * i ;
@@ -46,9 +44,6 @@ class Interactions{
 
 		//User defined: Rmin, Rmax
 		std::string scale_;
-
-		//All interactions possible
-		//std::vector<Contact> pairs_; 
 
 		//SVerlet list
 		std::vector<particle_pair> svlist_;
@@ -63,7 +58,9 @@ class Interactions{
 		Sample * spl_;
 		Cell * cell_;
 
+		//Store tangential deflection during integration
 		double * dts_ ;
+		//Number of particles (size of dts_)
 		unsigned int N_ ;
 
 		//Global check at initialisation:
@@ -84,6 +81,7 @@ class Interactions{
 		bool setgnmax_;
 		bool setgtmax_;
 
+		//Output:
 		std::string folder_;
 		std::string fInteractions_;
 
@@ -101,6 +99,7 @@ class Interactions{
 
 
 		//Interal stress tensor:
+
 		//static part
 		Tensor2x2 stress_s;
 		//Kinetic part
@@ -122,24 +121,35 @@ class Interactions{
 		//Load file
 		void build();
 		void load(const int);
+		void read_dt(std::ifstream&);
 
-		// verlet
+		//Post-processing:
+		void loadnetwork(const int);
+		void read_contact(std::ifstream&);
+
+		//Verlet and SuperVerlet list managment:
 		void updatevlist();
 		void updatesvlist();
 		void updateverlet(const int);
+		bool near(const Particle&,const Particle&,const double) const;
+
 		//Build contact list
 		void detectContacts();
+
 		//Compute forces at contacts (end of 1st step verlet algo)
 		void computeForces(const double);
 		void computeInternalStress();
 		void addForce(Particle&);
+		Vecteur getShortestBranch(const Particle&,const Particle&) const;
 
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
 		void writeContacts(int) const;
+
 		//Compute energy stored in contact deflection
 		double getElasticEnergy() const;
 
+		//Accesors/mutators:
 		std::vector<double> getAverageMaxPenetration()const;
 		void askNumberOfContacts() const;
 
@@ -160,24 +170,23 @@ class Interactions{
 
 		const Tensor2x2& stress() const { return stress_;}
 		Tensor2x2 getStressInt() const { return stress_;}
-		bool near(const Particle&,const Particle&,const double) const;
 
-		Vecteur getShortestBranch(const Particle&,const Particle&) const;
-
-		//const Contact& inspectInteraction(int k) const { return (pairs_[k]) ; } 
 		const Contact* inspectContact(int k) const { return &vlist_[clist_[k]];}
 
 		void read(std::ifstream& is);
 		void print()const;
 
+		//Store/manage tangential contact deflection:
+		void init_array_dt();
+		double get_dt(Contact&) const;
+		void set_dt(Contact&);
+
+		//Not used
+		void reset_dt(Contact&);
+
 		//DEBUG
 		void debug(const int)const;
 
-		void init_array_dt();
-		void read_dt(std::ifstream&);
-		double get_dt(Contact&) const;
-		void set_dt(Contact&);
-		void reset_dt(Contact&);
 };
 
 

@@ -152,12 +152,11 @@ void Interactions::plug(Sample& spl,Cell& cell){
 	cell_ = &cell;
 }
 
-//Build pairs_ list et setscale to verlet cutoff. Load existing contact network if a sample is loaded(todo)
 void Interactions::build(){
 
   init_array_dt();
 
-  //TODO:Est ce qu'on load? on lit les contacts dans un fichier
+  //Est ce qu'on load? on lit les contacts dans un fichier
   if(spl_->loaded()){
     unsigned int filetoload = spl_->filetoload();
     load(filetoload);
@@ -180,7 +179,8 @@ void Interactions::init_array_dt(){
 	}
 }
 
-//Load the network
+//Load the network for continuing simulation
+//Only needs to restore dt (tangential spring)
 void Interactions::load(const int k){
 
   string filename = formatfile( folder_, fInteractions_, k );
@@ -199,7 +199,7 @@ void Interactions::load(const int k){
   is.close();
 }
 
-//Read contact network: only need dt
+//Read contact network for continuing simulation: only need dt
 void Interactions::read_dt(ifstream& is){
 
     string token;
@@ -226,6 +226,7 @@ void Interactions::read_dt(ifstream& is){
 
     }
 }
+
 
 //Write contact network
 void Interactions::writeContacts(int k) const {
@@ -543,4 +544,71 @@ void Interactions::print() const {
 }
 
 
+//Load the network for postprocessing only
+void Interactions::loadnetwork(const int k){
+
+  string filename = formatfile( folder_, fInteractions_, k );
+  ifstream is(filename.c_str());
+  if(!is){
+    cerr<<"Interactions::load "<<filename<<" fail."<<endl;
+    return ;
+  }
+  else if(is.peek() == std::ifstream::traits_type::eof()){
+    cerr<<"There are no contacts to load."<<endl;
+    return ;
+  }
+  else  {
+    read_dt(is);
+  }
+  is.close();
+
+}
+
+
+//Read contact network: build the contact list ONLY for post-processing
+//TODO: write tangential velocity as well (change writing/reading contact)
+//Or easier: replace rx and ry by vn,vt (rx,ry) can be computed form the data available
+void Interactions::read_contact(ifstream& is){
+
+    string token;
+    while(is){
+      if(is.eof()) break;
+
+      int idi=0;
+      int idj=0;
+      double rx;
+      double ry;
+      double nx;
+      double ny;
+      double fn;
+      double ft;
+      double dt;
+
+      is >> idi >> idj >> rx >> ry >> nx >> ny >> fn >> ft>> dt;
+
+      Vecteur v(rx,ry);
+      Vecteur f(fn,ft);
+      Vecteur n(nx,ny);
+
+      //Build verlet list
+      //Si trop long d'appeler Frame() on peut ecrire tout a la place
+      if( idi != idj){
+	      //Set properties of the contact:
+	      Contact c( spl_->getP(idi), spl_->getP(idj),cell_ );
+	      //Set branch, n, t, dn,dt
+	      c.Frame();
+	      c.activate();
+	      c.setrv(v);
+	      c.setf(f);
+	      c.setdt(dt);
+	      vlist_.push_back(c);
+      }
+
+    }
+    //Build clist:
+    for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
+	    int k = distance (vlist_.begin(), it );
+	    clist_.push_back(k);
+    }
+}
 

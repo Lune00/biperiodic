@@ -172,7 +172,7 @@ void Algo::run(){
 		}
 
 		if( tic_ % nana_ == 0 ) {
-			ana_->analyse(tica_,t_);
+			ana_->analyse(tica_,t_,false);
 			tica_++;
 		}
 		if( tic_ % nprint_ == 0) {

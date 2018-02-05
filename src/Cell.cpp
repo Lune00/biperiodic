@@ -226,6 +226,11 @@ void Cell::load(const int k) {
 	is.close();
 }
 
+void Cell::readh0(ifstream& is){
+	h0_.load(is);
+	return;
+}
+
 //Construit la cellule
 //No need for now...
 void Cell::writeGeometry(const int k) const{

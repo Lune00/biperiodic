@@ -14,6 +14,8 @@
 
 using namespace std;
 
+//Procedural code for post-processing data from previous simulation
+
 int main (int argc,char **argv)
 {
 	cout<<"DEM post-processing."<<endl;
@@ -33,6 +35,10 @@ int main (int argc,char **argv)
 
 	//On utilise la liste de verlet pour recreer la liste de contacts actifs
 	Interactions Int;
+
+	spl.plugtoCell(cell);
+	Int.plug(spl,cell);
+	analyse.plug(spl,cell,Int);
 
 	config.initfolders(cell,spl,Int,analyse);
 
@@ -109,7 +115,7 @@ int main (int argc,char **argv)
 		is >> token;
 		while(is){
 			if(token=="density") is >> density;
-			//if(token=="h0") cell.readh0(is);
+			if(token=="h0") cell.readh0(is);
 			is >> token;
 		}
 	}
@@ -124,15 +130,16 @@ int main (int argc,char **argv)
 		//Load sample:
 		spl.setfiletoload(i);
 		spl.setrho(density);
-		spl.attributeMass();
-		spl.setminmax();
+		spl.loadSample();
 
-		//Load network:
+		//Load network into verlet list:
+		Int.loadnetwork(i);
 
 		//Load cell:
 		cell.load(i);
 
 		//Analyse:
+		analyse.analyse(i,t[i],true);
 	}
 
 	return 0;

@@ -53,7 +53,7 @@ class Analyse{
 		void init(std::ifstream&);
 
 		//Main: tic at wich analysis is carried
-		void analyse(int,double);
+		void analyse(int,double,bool);
 		//Init analyse types to false by default
 		void allFalse();
 		//Reset output files

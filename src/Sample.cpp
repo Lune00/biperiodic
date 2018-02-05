@@ -13,7 +13,7 @@ Sample::Sample(){
 	cell_ = NULL;
 	fsampleIni_ = string();
 	folder_ = string();
-	load_sample_cell_ = false;
+	load_sample_ = false;
 	//Un interet d'avoir absolu mis a part representation???
 	//Avec reduced et h on peut recreer absolu quand on veut
 	//A voir
@@ -48,12 +48,12 @@ void Sample::init(ifstream& is){
 	while(is){
 		if(token=="build") {
 			is >> fsampleIni_;
-			load_sample_cell_ = false;
+			load_sample_ = false;
 		}
 		if(token=="load"){
 			is >> filetoload_;
 			is >> starting_ ;
-			load_sample_cell_ = true ;
+			load_sample_ = true ;
 		}
 		if(token=="rho") {
 			rhodefined_= true;
@@ -64,17 +64,16 @@ void Sample::init(ifstream& is){
 	}
 
 	loadSample();
-	attributeMass();
-	setminmax();
 }
 
+//Load sample, set mass to each particle, and compute min/max
 void Sample::loadSample(){
 
 	//Build fsampleIni_ from filetoload_
-	//else it is already initialised
-	if(load_sample_cell_) {
+	if(load_sample_) {
 		fsampleIni_ = formatfile( folder_, fsample_, filetoload_ );
 	}
+	//else it is already initialised
 
 	ifstream is(fsampleIni_.c_str());
 
@@ -105,6 +104,9 @@ void Sample::loadSample(){
 		}
 
 	}
+
+	attributeMass();
+	setminmax();
 }
 
 
