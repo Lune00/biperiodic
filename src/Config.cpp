@@ -117,4 +117,3 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	return 0;
 
 }
-
