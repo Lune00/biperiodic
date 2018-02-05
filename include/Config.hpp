@@ -26,6 +26,7 @@ class Config{
 		//Interface d'initialistion
 		//Return 1 pb, return 0 ok
 		int init(std::ifstream&,Algo&,Cell&,Sample&,Interactions&,Analyse&);
+		void initfolders(Cell&,Sample&,Interactions&,Analyse&);
 
 };
 

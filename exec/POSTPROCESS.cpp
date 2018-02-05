@@ -26,6 +26,7 @@ int main (int argc,char **argv)
 
 	//Config est interface pour init tout
 	//a partir fichier configuration
+	Config config;
 	Analyse analyse;
 	Cell cell;
 	Sample spl;
@@ -33,6 +34,7 @@ int main (int argc,char **argv)
 	//On utilise la liste de verlet pour recreer la liste de contacts actifs
 	Interactions Int;
 
+	config.initfolders(cell,spl,Int,analyse);
 
 	unsigned int nstart=0;
 	unsigned int nend=0;
@@ -60,6 +62,8 @@ int main (int argc,char **argv)
 		is >> token;
 	}
 
+	is.close();
+
 	cerr<<"Résumé:"<<endl;
 	cerr<<"nstart : "<<nstart<<endl;
 	cerr<<"nend : "<<nend<<endl;
@@ -70,6 +74,8 @@ int main (int argc,char **argv)
 	//Build dir:
 	string makefolder_pp = "mkdir -p " + folder_post_process;
 	system(makefolder_pp.c_str());
+
+	//Reset folder for analyse -> distinguish between runanalyse
 	analyse.initfolder(folder_post_process);
 
 	//Load time: correspondance between tics and time (s)
@@ -78,7 +84,7 @@ int main (int argc,char **argv)
 
 	if(!time.is_open()){
 		cerr<<"Impossible to open "<<filetime<<"."<<endl;
-		return 0;
+		return 1;
 	}
 	else{
 		double temp1, temp2 ;
@@ -90,15 +96,43 @@ int main (int argc,char **argv)
 	}
 	cerr<<"Number of total steps : "<<t.size()<<endl;
 
+	//Read simu-setup file for : h0 and rho
+	double density = 0.;
+	
+	is.open("simusetup.txt");
+	if(!is){
+		cerr<<"Impossible to read simusetup.txt"<<endl;
+		return 1;
+	}
+	else{
+		string token;
+		is >> token;
+		while(is){
+			if(token=="density") is >> density;
+			//if(token=="h0") cell.readh0(is);
+			is >> token;
+		}
+	}
+
+	if(density < 1e-20) {
+		cerr<<"Density was not found."<<endl;
+		return 1;
+	}
+
 	for(unsigned int i = nstart ; i != nend ; i+=nperiod){
 
-	//Load sample:
+		//Load sample:
+		spl.setfiletoload(i);
+		spl.setrho(density);
+		spl.attributeMass();
+		spl.setminmax();
 
-	//Load network:
+		//Load network:
 
-	//Load cell:
+		//Load cell:
+		cell.load(i);
 
-	//Analyse:
+		//Analyse:
 	}
 
 	return 0;

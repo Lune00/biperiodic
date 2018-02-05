@@ -50,7 +50,7 @@ bool Algo::initcheck(){
 }
 
 void Algo::initTics(){
-
+	//Calling load in config.cfg determines starting tic
 	ticw_ = spl_->startingTic();
 	tica_ = ticw_;
 }
@@ -200,6 +200,7 @@ void Algo::run(){
 
 //Write setup of the simulation
 //Put here what matters to be remained later after forgeting things...
+//Used for post-processing
 void Algo::writesetup() const{
 
 	ofstream os(fsetup_.c_str());
@@ -211,6 +212,7 @@ void Algo::writesetup() const{
 	os <<"dtmax "<<dtmax_<<endl;
 	os <<"gnmax "<<gnmax_<<endl;
 	os <<"en "<<e_<<endl;
+	os <<"density "<<spl_->getrho()<<endl;
 	os <<"kn "<<Int_->getkn()<<endl;
 	os <<"h0 ";
 	cell_->geth().write(os);

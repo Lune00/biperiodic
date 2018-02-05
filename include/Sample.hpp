@@ -71,6 +71,7 @@ class Sample{
 		double getrmin() const { return rmin_;}
 		double getMass() const { return M_;}
 		double getrho() const { return rho_;}
+		void setrho(double rho) { rho_ = rho;}
 
 		unsigned int getsize() const { return spl_.size();}
 		bool loaded() const { return load_sample_cell_;}
@@ -103,6 +104,7 @@ class Sample{
 		//Used to load network:
 		//Not used
 		Particle * getP(int id);
+		void setfiletoload(const int i) { filetoload_ = i ;}
 
 
 };

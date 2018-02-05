@@ -134,8 +134,6 @@ void Cell::talkinit(Sample& spl){
 
 		initGeometry_ = true;
 		initMass_ = true;
-		cerr<<"hd init xx = "<<hd_.getxx()<<endl;
-		cerr<<"hdd init yy = "<<hdd_.getyy()<<endl;
 	}
 	else{
 		//If not, L_auto or not?
@@ -427,7 +425,6 @@ void Cell::debug(const int k)const{
 	ofstream debug("h.txt",ios::app);
 	ofstream debug1("hd.txt",ios::app);
 	ofstream debug2("hdd.txt",ios::app);
-
 
 	debug<<k<<" "<<h_.getxx()<<" "<<h_.getxy()<<" "<<h_.getyx()<<" "<<h_.getyy()<<endl;
 

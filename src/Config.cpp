@@ -12,12 +12,32 @@ using namespace std;
 Config::Config(){
 
 	//Defaults folder names:
-	folder_spl_ = "sample" ;
-	folder_analyse_ = "analyse";
-	folder_cell_ = "cell" ;
-	folder_Interactions_ = "network";
+	string makemain = "mkdir -p data";
+	system(makemain.c_str());
 
-	//Building folders if they do not exit
+	folder_spl_ = "data/sample" ;
+	folder_analyse_ = "analyse";
+	folder_cell_ = "data/cell" ;
+	folder_Interactions_ = "data/network";
+}
+
+Config::~Config(){
+
+}
+
+
+void Config::initfolders(Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
+
+	//Writing paths initialisation:
+	spl.initfolder(folder_spl_);
+	cell.initfolder(folder_cell_);
+	Int.initfolder(folder_Interactions_);
+	ana.initfolder(folder_analyse_);
+}
+
+int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
+
+	//Building folders if they do not exist
 	string makefolder_spl = "mkdir -p " + folder_spl_;
 	string makefolder_cell = "mkdir -p " + folder_cell_;
 	string makefolder_Interactions = "mkdir -p " + folder_Interactions_;
@@ -27,18 +47,9 @@ Config::Config(){
 	system(makefolder_Interactions.c_str());
 	system(makefolder_cell.c_str());
 	system(makefolder_analyse.c_str());
-}
-
-Config::~Config(){
-}
-
-int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
-
-	//Writing paths initialisation:
-	spl.initfolder(folder_spl_);
-	cell.initfolder(folder_cell_);
-	Int.initfolder(folder_Interactions_);
-	ana.initfolder(folder_analyse_);
+	
+	//Assign a folder to each one
+	initfolders(cell,spl,Int,ana);
 
 	if(!is){
 		cerr<< "Config::init : cannot open file."<<endl;
