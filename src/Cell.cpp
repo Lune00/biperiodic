@@ -202,6 +202,7 @@ double Cell::getVolume() const{
 void Cell::write(const int k) const{
 	string filename = formatfile( folder_, fcell_, k );
 	ofstream file(filename.c_str());
+	file.precision(12);
 	h_.write(file);
 	file<<" ";
 	hd_.write(file);
@@ -223,6 +224,11 @@ void Cell::load(const int k) {
 		hdd_.load(is);
 	}
 	is.close();
+}
+
+void Cell::readh0(ifstream& is){
+	h0_.load(is);
+	return;
 }
 
 //Construit la cellule
@@ -424,7 +430,6 @@ void Cell::debug(const int k)const{
 	ofstream debug("h.txt",ios::app);
 	ofstream debug1("hd.txt",ios::app);
 	ofstream debug2("hdd.txt",ios::app);
-
 
 	debug<<k<<" "<<h_.getxx()<<" "<<h_.getxy()<<" "<<h_.getyx()<<" "<<h_.getyy()<<endl;
 

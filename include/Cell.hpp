@@ -117,6 +117,8 @@ class Cell{
 		//Debug & track:
 		bool initcheck();
 		void debug(const int)const;
+		//Call for post-processing
+		void readh0(std::ifstream&);
 
 };
 

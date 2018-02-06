@@ -11,6 +11,7 @@ Algo::Algo(){
 	ns_ = 0 ;
 	nrecord_ = 0;
 	nana_ = 0 ;
+	nprint_ = 0 ;
 	tic_= 0; 
 	t_=0.; 
 	ticw_ = 0; 
@@ -27,6 +28,7 @@ void Algo::init(ifstream& is){
 		if(token=="ns") is >> ns_;
 		if(token=="nana") is >> nana_;
 		if(token=="nrecord") is >> nrecord_;
+		if(token=="nprint") is >> nprint_;
 		if(token=="}") break;
 		is >> token;
 	}
@@ -36,23 +38,25 @@ void Algo::init(ifstream& is){
 bool Algo::initcheck(){
 
 	computedtmax();
-	compute_gnmax_restitution();
+	compute_gmax();
 
 	//Set initial values for tic (load vs build case)
 	//If build automatically start at zero
 	initTics();
 	if( t_ > 0. ) return false;
 	if( !checkSimulationParameters() ) return false;
-	if (dt_ < 1. && ns_ != 0 && nrecord_ != 0 ) return true;
+	if (ns_ != 0 && nrecord_ != 0 ) return true;
 	else return false;
 }
 
 void Algo::initTics(){
+	//Calling load in config.cfg determines starting tic
 	ticw_ = spl_->startingTic();
 	tica_ = ticw_;
 }
 
 void Algo::plug(Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
+
 	Int_ = &Int;
 	cell_ = &cell;
 	spl_ = &spl;
@@ -61,6 +65,7 @@ void Algo::plug(Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
 
 //Compute dtmax for the simulation (kn,m)
 void Algo::computedtmax(){
+
 	double const epsilon = 0.01;
 	double const rho = spl_->getrho();
 	double const kn = Int_->getkn();
@@ -71,6 +76,7 @@ void Algo::computedtmax(){
 
 //Compare dt to dtmax
 bool Algo::checktimestep()const{
+
 	cout<<"dtmax = "<<dtmax_<<endl;
 	if(dt_>dtmax_) {
 		cerr<<"Choose a lower dt."<<endl;
@@ -79,30 +85,31 @@ bool Algo::checktimestep()const{
 	else return true;
 }
 
-//Compute gnmax and restitution coeffcient
-void Algo::compute_gnmax_restitution(){
+//Compute gnmax, gtmax  and restitution coeffcient
+void Algo::compute_gmax(){
 
 	double rho = spl_->getrho();
 	double m = rho * M_PI * spl_->getrmin() * spl_->getrmin(); 
-	double mmax = rho * M_PI * spl_->getrmax() * spl_->getrmax(); 
 	double kn = Int_->getkn();
+	double kt = Int_->getkt();
 
-	gnmax_ = 8. * sqrt( 2. * kn * mmax);
-
-	double gn = Int_->getgn();
+	gnmax_ = 2. * sqrt( kn * m);
+	gtmax_ = 2. * sqrt( kt * m);
 
 	if(Int_->setgnmax()){
-		gn = gnmax_ * 0.99 ;
+		double gn = gnmax_ * 0.98 ;
 		Int_->setgn(gn);
 	}
 
-	cerr<<"gn = "<<Int_->getgn()<<endl;
+	if(Int_->setgtmax()){
+	  double gt = gtmax_ * 0.5 ;
+	  Int_->setgt(gt);
+	}
 
 	//From Radjai Book (not sure)
 	//But that's true we need a limit, maybe just a little above that
 	//Compute resitution coefficient:
-	//Facteur 6 semble etre pas trop mal
-	double ds = gn/gnmax_;
+	double ds = Int_->getgn()/gnmax_;
 	e_ = exp(- M_PI * ds/(2.*sqrt(1.-ds*ds)) ) ;
 }
 
@@ -118,9 +125,9 @@ bool Algo::checkNormalViscosity()const{
 }
 
 
-//Check, according DEM parameters, if dt is set correctly
-//Tangential viscosity check expression...???
+//Check, according DEM parameters
 bool Algo::checkSimulationParameters(){
+
 	bool is_dt_ok = checktimestep();
 	bool is_gn_ok = checkNormalViscosity();
 	return (is_dt_ok && is_gn_ok);
@@ -129,7 +136,7 @@ bool Algo::checkSimulationParameters(){
 
 void Algo::run(){
 
-	double tfinal = ns_ * dt_ ;
+	double tfinal = (ns_) * dt_ ;
 
 	cout<<"Simulation:"<<endl;
 	cout<<"dt = "<<dt_<<endl;
@@ -140,10 +147,9 @@ void Algo::run(){
 	t_ = 0. ;
 	tic_ = 0;
 
-	//ticw_ (writing tick cell/sample) and tica_ (analysis) should start at the same initial tic, set in initTics()
+	if(nprint_ == 0 ) nprint_ = 500 ;
 
-	int nprint = ns_ / 100 ;
-	if(nprint==0) nprint = 5 ;
+	//ticw_ (writing tick cell/sample/network) and tica_ (analysis) should start at the same initial tic, set in initTics()
 
 	writesetup();
 
@@ -151,7 +157,9 @@ void Algo::run(){
 
 	ofstream timefile("time.txt");
 
-	while(t_<tfinal){
+	//while(t_ <= tfinal){
+	while(tic_ <= ns_){
+
 		//Update verlet list
 		Int_->updateverlet(tic_);
 
@@ -164,21 +172,22 @@ void Algo::run(){
 		}
 
 		if( tic_ % nana_ == 0 ) {
-			ana_->analyse(tica_,t_);
+			ana_->analyse(tica_,t_,false);
 			tica_++;
 		}
-		if( tic_ % nprint == 0) {
+		if( tic_ % nprint_ == 0) {
 			std::streamsize ss = std::cout.precision();
 			std::cout.precision(4);
-			cout<<"t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
+			cout<<"step : "<<tic_<<" t = "<<t_<<" - "<<t_/tfinal*100.<<"\% simulation"<<endl;
+			Int_->print();
 			std::cout.precision(ss);
 		}
 
 		//TMP for debug
-		if( tic_ % 10 == 0 ){
-		//	Int_->debug(tic_);
+		if( tic_ % 5000 == 0 ){
+			//Int_->debug(tic_);
 			cell_->debug(tic_);
-			spl_->debug(tic_);
+			//spl_->debug(tic_);
 		}
 
 		t_+=dt_;
@@ -191,6 +200,7 @@ void Algo::run(){
 
 //Write setup of the simulation
 //Put here what matters to be remained later after forgeting things...
+//Used for post-processing
 void Algo::writesetup() const{
 
 	ofstream os(fsetup_.c_str());
@@ -202,6 +212,7 @@ void Algo::writesetup() const{
 	os <<"dtmax "<<dtmax_<<endl;
 	os <<"gnmax "<<gnmax_<<endl;
 	os <<"en "<<e_<<endl;
+	os <<"density "<<spl_->getrho()<<endl;
 	os <<"kn "<<Int_->getkn()<<endl;
 	os <<"h0 ";
 	cell_->geth().write(os);
@@ -211,7 +222,6 @@ void Algo::writesetup() const{
 
 
 void Algo::write(){
-	//cout<<"Writing outputs..."<<endl;
 	spl_->write(ticw_);
 	Int_->writeContacts(ticw_);
 	cell_->write(ticw_);
@@ -249,12 +259,8 @@ void Algo::verletalgo2(){
 	//------------- SECOND STEP VERLET STARTS HERE
 
 	//Calcul des vitesses a la fin du pas de temps:
-	//ATEST: On retranche la valeur moyenne aux vitesses fluctuantes
 	spl_->secondStepVerlet(dt_);
 
-	//Apply stress_ext: si controle en force
-	//stress ext est egal a celui impose
-	//Sinon il est egal a -stressint et acc nulle
 	cell_->computeExternalStress(Int_->stress());
 	cell_->updatehdd(Int_->stress());
 	cell_->updatehd(dt_);

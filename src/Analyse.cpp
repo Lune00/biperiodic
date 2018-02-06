@@ -19,6 +19,7 @@ void Analyse::allFalse(){
 	stress_ = false;
 	compacity_ = false;
 	SP_ = false;
+	fabric_ = false;
 }
 
 
@@ -56,6 +57,9 @@ void Analyse::init(ifstream& is){
 		}
 		if(token=="interp"){
 			interpenetration_ = true;
+		}
+		if(token=="fabric"){
+			fabric_ = true ;
 		}
 
 		if(token=="}") break;
@@ -106,6 +110,11 @@ void Analyse::cleanFiles(){
 		ofstream o(filename.c_str());
 		o.close();
 	}
+	if(fabric_){
+		string filename = folder_ + "/fabric.txt";
+		ofstream o(filename.c_str());
+		o.close();
+	}
 
 }
 
@@ -115,18 +124,27 @@ void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 	Int_ = &Int;
 }
 
+//Call for different analyses asked by the user during simulation
+//postprocess true for analyse after simulation, false for while simulation
+void Analyse::analyse(int tic, double t, bool postprocess){
 
-
-
-//Call for different analyses asked by the user
-void Analyse::analyse(int tic, double t){
 	if(printSample_) printSample(tic);
-	if(energy_) computeEnergy(tic);
+
+	if(energy_) computeEnergy(t);
+
 	if(strain_) strain(t);
-	if(stress_) stress(t);
+
+	if(stress_){
+		if(postprocess) Int_->computeInternalStress();
+		stress(t);
+	}
 	if(compacity_) compacity(t);
+
 	if(SP_) ProfileVelocity(t);
+
 	if(interpenetration_) Interpenetration(t);
+
+	if(fabric_) fabric(t);
 }
 
 
@@ -149,7 +167,10 @@ void Analyse::ProfileVelocity(const double t)const {
 	double Ly = 1.;
 	double ampProbe = Ly / (double)nbinsSP_;
 	vector<Probe*> lprobe (nbinsSP_);
+
 	vector<double > Xprofile(nbinsSP_,0.);
+	vector<double > XHOMprofile(nbinsSP_,0.);
+	vector<double > Tx(nbinsSP_,0.);
 	vector<unsigned int> Nbod(nbinsSP_,0);
 
 
@@ -171,15 +192,23 @@ void Analyse::ProfileVelocity(const double t)const {
 			if(lprobe[j]->containCenter(*it))
 			{
 
-				//To do in global function: get v from sd
-				//Vecteur v = 
 				Xprofile[j] += absVelocity(*it,h,hinv,hd).getx();
+				//Homogeneous part imposed
+				XHOMprofile[j] += (hd * it->getR()).getx();
+				//Fluctuating velocity
+				Tx[j] += (h * it->getV()).getx();
 				Nbod[j]++;
 
 			}
 			if(lprobe[j]->intersection(*it))
 			{
 
+				Xprofile[j] += absVelocity(*it,h,hinv,hd).getx();
+				//Homogeneous part imposed
+				XHOMprofile[j] += (hd * it->getR()).getx();
+				//Fluctuating velocity
+				Tx[j] += (h * it->getV()).getx();
+				Nbod[j]++;
 
 			}
 			else{
@@ -197,7 +226,9 @@ void Analyse::ProfileVelocity(const double t)const {
 	for(unsigned int i = 0; i<nbinsSP_;i++){
 		if(Nbod[i]==0) Nbod[i]=1;
 		Xprofile[i] /= (double)(Nbod[i]);
-		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<endl;
+		XHOMprofile[i] /= (double)(Nbod[i]);
+		Tx[i] /= (double)(Nbod[i]);
+		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<endl;
 	}
 
 	os.close();
@@ -254,7 +285,7 @@ void Analyse::stress(const double t) const{
 }
 
 //Add injected energy, friction and dissipation in inelastic collision
-void Analyse::computeEnergy(const int tic) {
+void Analyse::computeEnergy(const double t) {
 
 	string file_energy = folder_ + "/energy.txt";
 	ofstream os(file_energy.c_str(),ios::app);
@@ -264,7 +295,7 @@ void Analyse::computeEnergy(const int tic) {
 	double Elastic = Int_->getElasticEnergy();
 	double TotalE = TKE + RKE + Elastic;
 
-	os <<tic<<" "<<TKE<<" "<<RKE<<" "<<Elastic<<" "<<TotalE<<endl;
+	os <<t<<" "<<TKE<<" "<<RKE<<" "<<Elastic<<" "<<TotalE<<endl;
 
 	os.close();
 }
@@ -292,7 +323,7 @@ void Analyse::printSample(int tic){
 void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 
-	bool label = true ;
+	bool label = false ;
 	bool forcenetwork = true ;
 
 	ofstream ps(frame.c_str());
@@ -409,44 +440,56 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 	ps<<"stroke"<<endl;
 
 
-	//Draw netwokr
+	//Draw network
 	if(forcenetwork){
 
 		int N = Int_->getnc();
+
+		if(N==0) return ;
+
 		double Fmean = 0. ;
-		double Fmin = Int_->inspectContact(0).getfn(); 
-		double Fmax = Int_->inspectContact(0).getfn(); 
+		double Fmin = Int_->inspectContact(0)->getfn(); 
+		double Fmax = Int_->inspectContact(0)->getfn(); 
+
+		//Discart forces fn equal to zero (when fn < 0 )
+		const double epsilon = 1e-20;
+		unsigned int Nactif = 0 ;
+
 		for(int i = 0 ; i < N ; i++){
-			Contact c = Int_->inspectContact(i);
-			Fmean += c.getfn() ;
-			Fmax = max(c.getfn(),Fmax);
-			Fmin = min(c.getfn(),Fmin);
+			const Contact * c = Int_->inspectContact(i);
+			if(fabs(c->getfn()) < epsilon ) continue;
+			Fmean += c->getfn() ;
+			Fmax = max(c->getfn(),Fmax);
+			Fmin = min(c->getfn(),Fmin);
+			Nactif++;
 		}
 
-		Fmean /= (double)N;
+		if(Nactif == 0 ) return ;
+
+		Fmean /= (double)Nactif;
 		//cerr<<"fmean = "<<Fmean<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
 
 		for(int i = 0 ; i < N ; i++){
-			Contact c = Int_->inspectContact(i);
-			if(c.geti()->getId() == 32 && c.getj()->getId() == 37){
-				//cerr<<"WTF ===> ! "<<"fn = "<<c.getfn()<<" fnres = "<<fnres<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
-				cerr<<"WTF ===> ! "<<"fn = "<<c.getfn()<<endl;
-				cerr<<c.getbranch().getx()<<" "<<c.getbranch().gety()<<endl;
-			}
-			if(!c.isActif()) continue;
-			double fn = c.getfn();
+			const Contact * c = Int_->inspectContact(i);
+			double fn = c->getfn();
 			double fnres = (fn - Fmin)/(Fmax+Fmin);
-			//double lw = (fn / Fmean) * 0.03 * rmax ; 
-			double lw = 0.2 * rmax ;
+			double lw = (fn / Fmean) * 0.1 * rmax ; 
+			//double lw = 0.2 * rmax ;
 
-			Vecteur ri = h * c.geti()->getR();
-			Vecteur rj = h * c.getj()->getR();
+			Vecteur ri = h * c->geti()->getR();
+			Vecteur rj = h * c->getj()->getR();
 
+			if(fnres != fnres){
+			  //May happen if fn < 0 and reset to 0.
+			  //With upper precaution should not happen anymore
+			  cerr<<"@nan : fmean = "<<Fmean<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
+			  continue;
+			}
 
 			double xi = ri.getx();
 			double yi = ri.gety();
-			double xj = xi + c.getbranch().getx();
-			double yj = yi + c.getbranch().gety();
+			double xj = xi + c->getbranch().getx();
+			double yj = yi + c->getbranch().gety();
 			ps<<"/coul_force {1 setlinecap 1 "<<1. - fnres<<" "<<1. -fnres<<" setrgbcolor} def"<<endl;
 			ps<<lw<<" setlinewidth coul_force"<<endl;
 			ps<<xi<<" "<<yi<<" moveto "<<xj<<" "<<yj<<" lineto stroke"<<endl;
@@ -457,3 +500,43 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 }
 
+//Only fabric tensor for contact orientation for the moment
+void Analyse::fabric(const double t) const{
+
+	int N = Int_->getnc();
+
+	if(N==0) return ;
+
+	Tensor2x2 F ;
+
+	double Fxx = 0. ;
+	double Fxy = 0. ;
+	double Fyy = 0. ;
+
+	for(int i = 0 ; i < N ; i++){
+		const Contact * c = Int_->inspectContact(i);
+		Vecteur n = c->getn();
+		Fxx += n.getx() * n.getx(); 
+		Fxy += n.getx() * n.gety();
+		Fyy += n.gety() * n.gety();
+	}
+
+	Fxx /= (double)N;
+	Fxy /= (double)N;
+	Fyy /= (double)N;
+	F.set(Fxx,Fxy,Fxy,Fyy);
+	F.eigenVectors();
+
+	double ac = 2. *( F.getl1() - F.getl2());
+	double majDir = F.getMajorDirection() * 180. / M_PI;
+
+	string file_fabric = folder_ + "/fabric.txt";
+	ofstream os(file_fabric.c_str(),ios::app);
+	
+	os<<t<<" "<<ac<<" "<<majDir<<endl;
+	os.close();
+
+	return ;
+
+
+}

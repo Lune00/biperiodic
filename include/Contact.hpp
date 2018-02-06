@@ -14,9 +14,10 @@ class Cell;
 class Contact{
 
 	private:
-		//Should be Particle * const i_/j_
+
 		Particle * i_;
 		Particle * j_;
+
 		//Contact position
 		Vecteur r_;
 		//Smalest branch vector through periodicity bet i and j
@@ -38,7 +39,6 @@ class Contact{
 		double dn_;
 		double dt_;
 
-		//Relative rate of rotation at contact
 		double rvrot_;
 
 		//Pointer on the cell (to access h and hd)
@@ -56,7 +56,9 @@ class Contact{
 
 	public:
 		Contact(){ i_ = NULL; j_ =NULL, cell_=NULL ; isActif_ = false; }
-		Contact(Particle* i, Particle* j, Cell&);
+		Contact(Particle* i, Particle* j, Cell*);
+		Contact(std::ifstream&);
+		//Contact(std::ifstream&,std::vector<Contact>&);
 		~Contact(){};
 
 		bool isActif() const { return isActif_;}
@@ -67,24 +69,27 @@ class Contact{
 		void computeForce(const double,const double,const double,const double, const double, const double);
 		void updateAccelerations();
 		double sign(double x){if(x<0.) return -1.;else return 1.;}
-		Vecteur getfxy() const { return (n_ *f_.getx() + t_ * f_.gety());} 
 		double getdn() const { return dn_;}
 		double getdt() const { return dt_;}
+		Vecteur getfxy() const { return (n_ *f_.getx() + t_ * f_.gety());} 
+
 		//Debug:
 		void print() const;
 		const Particle* getj() const { return j_;}
 		const Particle* geti() const { return i_;}
-		//Redefine here (also defined in Interactions...)
-		//Need to think about that...
 
 		void computeShortestBranch() ;
 		Vecteur getbranch() const { return branch_;}
-		//TMP
 		double getfn() const { return f_.getx();}
 		double getft() const { return f_.gety();}
 		Vecteur getrv() const { return v_;}
+		Vecteur getn() const { return n_;}
+		void setdt(const double dt) { dt_ = dt ;}
 
-		void set_dt(double dt) { dt_ = dt ;}
+		//For post-processing:
+		void setrv(const Vecteur rv) { v_ = rv ;}
+		void setf(const Vecteur f) { f_ = f ;}
+
 };
 
 

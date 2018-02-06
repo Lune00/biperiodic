@@ -13,7 +13,7 @@ Sample::Sample(){
 	cell_ = NULL;
 	fsampleIni_ = string();
 	folder_ = string();
-	load_sample_cell_ = false;
+	load_sample_ = false;
 	//Un interet d'avoir absolu mis a part representation???
 	//Avec reduced et h on peut recreer absolu quand on veut
 	//A voir
@@ -48,12 +48,12 @@ void Sample::init(ifstream& is){
 	while(is){
 		if(token=="build") {
 			is >> fsampleIni_;
-			load_sample_cell_ = false;
+			load_sample_ = false;
 		}
 		if(token=="load"){
 			is >> filetoload_;
 			is >> starting_ ;
-			load_sample_cell_ = true ;
+			load_sample_ = true ;
 		}
 		if(token=="rho") {
 			rhodefined_= true;
@@ -64,17 +64,16 @@ void Sample::init(ifstream& is){
 	}
 
 	loadSample();
-	attributeMass();
-	setminmax();
 }
 
+//Load sample, set mass to each particle, and compute min/max
 void Sample::loadSample(){
 
 	//Build fsampleIni_ from filetoload_
-	//else it is already initialised
-	if(load_sample_cell_) {
+	if(load_sample_) {
 		fsampleIni_ = formatfile( folder_, fsample_, filetoload_ );
 	}
+	//else it is already initialised
 
 	ifstream is(fsampleIni_.c_str());
 
@@ -97,7 +96,7 @@ void Sample::loadSample(){
 				Particle P(is);
 				spl_.push_back(P);
 			}
-			//Solution provisoire:
+			//Solution provisoire (!):
 			spl_.pop_back();
 
 			cout<<"Nombre de particules: "<<spl_.size()<<endl;
@@ -105,6 +104,9 @@ void Sample::loadSample(){
 		}
 
 	}
+
+	attributeMass();
+	setminmax();
 }
 
 
@@ -117,6 +119,7 @@ void Sample::write(int k) const{
 
 	string filename = formatfile( folder_, fsample_, k );
 	ofstream file(filename.c_str());
+	file.precision(12);
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		it->write(file);
@@ -157,8 +160,8 @@ double Sample::getTKE() const{
 	Tensor2x2 hd = cell_->gethd();
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		//Vecteur v = returnvabs(*it);
-		//Vecteur v = h *it->getV() + hd * it->getR();
-		Vecteur v =  hd * it->getR();
+		Vecteur v = h *it->getV() + hd * it->getR();
+		//Vecteur v =  hd * it->getR();
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
 	}
 	return Ec;
@@ -183,13 +186,13 @@ void Sample::debug(int tic){
 	Tensor2x2 hdd = cell_->gethdd();
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
-		if(it->getId()==42){
+		if(it->getId()==13){
 			Vecteur sd = it->getV();
 			Vecteur v = h * sd + hd * it->getR(); 
 			Vecteur a = hdd * it->getR() + hd * sd * 2. + h * it->getA();
 			Vecteur r = h * it->getR();
 			//os<<tic<<" "<<it->getId()<<" "<<sd.getx()<<" "<<sd.gety()<<" "<<v.getx()<<" "<<v.gety()<<" "<<it->getVrot()<<" "<<a.getx()<<" "<<a.gety()<<" "<<it->getA().getx()<<" "<<it->getA().gety()<<endl;
-			os<<tic<<" "<<r.getx()<<" "<<r.gety()<<endl;
+			os<<tic<<" "<<r.getx()<<" "<<r.gety()<<" "<<it->getVrot()<<endl;
 		}
 	}
 	os.close();
@@ -338,10 +341,10 @@ void Sample::setminmax(){
 		ymin_ = min(ymin_, it->gety() - it->getRadius());
 		ymax_ = max(ymax_, it->gety() + it->getRadius());
 	}
-	//cout<<"xmin = "<<xmin_<<endl;
-	//cout<<"xmax = "<<xmax_<<endl;
-	//cout<<"ymin = "<<ymin_<<endl;
-	//cout<<"ymax = "<<ymax_<<endl;
+	cout<<"xmin = "<<xmin_<<endl;
+	cout<<"xmax = "<<xmax_<<endl;
+	cout<<"ymin = "<<ymin_<<endl;
+	cout<<"ymax = "<<ymax_<<endl;
 }
 
 bool Sample::initcheck() {
@@ -373,10 +376,6 @@ void Sample::firstStepVerlet(const double dt_){
 
 	for(spit it = spl_.begin(); it != spl_.end(); it++){
 
-		//Impose force to particles?
-		//A TEST, ou au moment du calcul des forces et a la fin du pas temps? comme le serait la gravite finalement...
-		//TODO A DEPLACER DANS LA PARTIE OU ON CALCULE LES FORCES DANS INTERACTION.CPP
-	//	if(cell_->imposeForce()) addForce(*it);
 		//Positions
 		it->updateR(dt_);
 		it->updateRot(dt_);
@@ -390,23 +389,9 @@ void Sample::firstStepVerlet(const double dt_){
 	return;
 }
 
-//Add a force to each particule in the horizontal direction
-//fx = A * sin (2pi y/Ly * mode)
-void Sample::addForce(Particle& p){
-
-	double A = cell_->getAmplitudeForce();
-	int mode = cell_->getModeForce();
-	//double Ly = cell_->geth().getyy();
-
-	double yLy = p.getR().gety() ;
-	double fx = A * sin ( 2. * M_PI * yLy * (double)mode);
-	Vecteur f(fx,0.);
-	p.updateA(f);
-	//cerr<<"Particule "<<p.getId()<<": "<<f.getx()<<" y/Ly = "<<yLy<<endl;
-}
 
 //Update velocity and vrotation at the end of the time step
-//TODO Removes mean velocity to ensure that <sd>=0.
+//Removes mean velocity to ensure that <sd>=0.
 //The mean displacement is carried only by the cell (homogenous def)
 void Sample::secondStepVerlet(const double dt_) {
 
@@ -420,7 +405,6 @@ void Sample::secondStepVerlet(const double dt_) {
 		vmean = vmean + it->getV();
 	}
 
-		//TODO: wip
 		vmean = vmean / (double)spl_.size();
 	
 		for(spit it =spl_.begin(); it != spl_.end(); it++){
@@ -428,3 +412,14 @@ void Sample::secondStepVerlet(const double dt_) {
 		}
 }
 
+//Not used
+Particle * Sample::getP(int i){
+
+	for(spit it =spl_.begin(); it != spl_.end(); it++){
+		if(it->getId()==i) {
+			Particle * pp = &(*it) ;
+			return pp;
+		}
+	}
+	return NULL ;
+}

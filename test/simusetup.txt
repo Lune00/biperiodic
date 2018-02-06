@@ -1,0 +1,10 @@
+#Simulation set-up
+dt 0.0001
+tfinal 0.01
+nrecord 2000
+nana 100
+dtmax 0.000177245
+gnmax 3764.74
+en 1.631e-05
+kn 10000
+h0 16.8241 0 0 19.4771

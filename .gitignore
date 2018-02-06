@@ -21,3 +21,4 @@ test/network/*
 test/analyse/*
 test/framespng
 test/cell/*
+test*/*

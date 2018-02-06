@@ -12,30 +12,44 @@ using namespace std;
 Config::Config(){
 
 	//Defaults folder names:
-	folder_spl_ = "sample" ;
-	folder_analyse_ = "analyse";
-	folder_cell_ = "cell" ;
-	folder_Interactions_ = "network";
+	string makemain = "mkdir -p data";
+	system(makemain.c_str());
 
-	//Building folders if they do not exit
-	string makefolder_spl = "mkdir -p " + folder_spl_;
-	string makefolder_cell = "mkdir -p " + folder_cell_;
-	string makefolder_Interactions = "mkdir -p " + folder_Interactions_;
-	system(makefolder_spl.c_str());
-	system(makefolder_Interactions.c_str());
-	system(makefolder_cell.c_str());
+	folder_spl_ = "data/sample" ;
+	folder_analyse_ = "analyse";
+	folder_cell_ = "data/cell" ;
+	folder_Interactions_ = "data/network";
 }
 
 Config::~Config(){
+
 }
 
-int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
+
+void Config::initfolders(Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
 
 	//Writing paths initialisation:
 	spl.initfolder(folder_spl_);
 	cell.initfolder(folder_cell_);
 	Int.initfolder(folder_Interactions_);
 	ana.initfolder(folder_analyse_);
+}
+
+int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
+
+	//Building folders if they do not exist
+	string makefolder_spl = "mkdir -p " + folder_spl_;
+	string makefolder_cell = "mkdir -p " + folder_cell_;
+	string makefolder_Interactions = "mkdir -p " + folder_Interactions_;
+	string makefolder_analyse = "mkdir -p " + folder_analyse_;
+
+	system(makefolder_spl.c_str());
+	system(makefolder_Interactions.c_str());
+	system(makefolder_cell.c_str());
+	system(makefolder_analyse.c_str());
+	
+	//Assign a folder to each one
+	initfolders(cell,spl,Int,ana);
 
 	if(!is){
 		cerr<< "Config::init : cannot open file."<<endl;
@@ -81,7 +95,7 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	if(!spl.loaded()) spl.initReducedCoordinates();
 
 	//Interactions talk to sample to know if need to load contact data
-	Int.talkinit();
+	Int.build();
 
 	//Global check:
 
@@ -114,4 +128,3 @@ int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions
 	return 0;
 
 }
-

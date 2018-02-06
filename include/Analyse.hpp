@@ -35,6 +35,7 @@ class Analyse{
 		bool stress_;
 		bool energy_;
 		bool compacity_;
+		bool fabric_;
 
 
 		//Velocity Profile
@@ -53,7 +54,7 @@ class Analyse{
 		void init(std::ifstream&);
 
 		//Main: tic at wich analysis is carried
-		void analyse(int,double);
+		void analyse(int,double,bool);
 		//Init analyse types to false by default
 		void allFalse();
 		//Reset output files
@@ -63,7 +64,7 @@ class Analyse{
 		void printSample(int);
 		void writePS(const std::string,const std::vector<Particle>&);
 		//Energy in the system
-		void computeEnergy(const int);
+		void computeEnergy(const double);
 		//Cell strain tensor
 		void strain(const double) const;
 		//Internal and external stress
@@ -76,6 +77,8 @@ class Analyse{
 
 		//Interpenetration
 		void Interpenetration(const double) const;
+		//Fabric
+		void fabric(const double) const;
 
 
 

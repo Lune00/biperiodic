@@ -8,15 +8,20 @@ using namespace std;
 //Tolerance for interpenetration
 //if fabs(dn_) > tolerance_, considered to be non zero
 //then check if negative or not
+//NOT used
 const double Contact::tolerance_ = 1e-20 ;
 
-Contact::Contact(Particle* i, Particle* j,Cell& cell){
+Contact::Contact(Particle* i, Particle* j,Cell* cell){
 	i_ = i ;
 	j_ = j ;
 	isActif_ = false;
-	cell_ = &cell;
+	cell_ = cell;
 	branch_.setx(0.);
 	branch_.sety(0.);
+	dt_ = 0. ;
+}
+
+Contact::Contact(ifstream& is){
 }
 
 //Compute the shortest branch between the two particles in contact
@@ -67,6 +72,7 @@ void Contact::Frame(){
 
 	double l = branch_.getNorme();
 	double invl = 1./l ;
+
 	//Build local frame:
 	n_ = branch_ * invl;
 	t_.set( - n_.gety() , n_.getx() );
@@ -76,12 +82,6 @@ void Contact::Frame(){
 	//Interpenetration:
 	dn_ = l - (i_->getRadius() + j_->getRadius());
 
-	//Erreurs d'arrondis (ordre 10e-16) peuvent apparaitre
-	//Preferer un test de tolerance a inferieur a < 0
-	//Si superieur a tolerance, non zero
-	//if(dn_ < 0. ){
-	//A test
-	//if(fabs(dn_) > tolerance_ && dn_ < 0.){
 	if(dn_ < 0.){
 		isActif_ = true;
 	}
@@ -91,112 +91,105 @@ void Contact::Frame(){
 	}
 }
 
-//Use for reloading dt and analyses force network
+//TODO
 void Contact::write(ofstream& os) const{
-	os<<i_->getId()<<" "<<j_->getId()<<" "<<r_.getx()<<" "<<r_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<" "<<dt_<<endl;
+	os<<i_->getId()<<" "<<j_->getId()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<" "<<dt_<<endl;
 }
 
 //Take into account case of contact with images
 void Contact::updateRelativeVelocity(){
 
-	//Add affine term transformation for image/real particle inter
-	//If j is real, ix and iy have been set to zero in previous called function
+  //Add affine term transformation for image/real particle inter
+  //If j is real, ix and iy have been set to zero in previous called function
 
-	//Real velocities
-	Vecteur u(indexes_.first,indexes_.second); 
-	Vecteur sj = j_->getR() + u;
-	//Vecteur vj = cell_->gethd() * j_->getR() +cell_->geth() * j_->getV();
+  //Real velocities
+  Vecteur u(indexes_.first,indexes_.second); 
+  Vecteur sj = j_->getR() + u;
 
-	//A CHECKER
-	Vecteur vj = cell_->gethd() * sj + cell_->geth() * j_->getV();
-	Vecteur vi = cell_->gethd() * i_->getR() +cell_->geth() * i_->getV();
-	
-	v_ = vj - vi;
+  //cerr<<"lx = "<<cell_->geth().getyy()<<endl;
+  //cerr<<"u : "<<u.getx()<<" "<<u.gety()<<endl;
+  //cerr<<"sj reele :"<< j_->getR().getx()<<" "<<j_->getR().gety()<<endl; 
+  //cerr<<"sj image : "<<sj.getx()<<" "<<sj.gety()<<endl;
+  //cerr<<"rj image "<< (cell_->geth() * sj).getx()<<" "<<(cell_->geth() * sj).gety()<<endl;
+  //cerr<<"Vitesse affine particle i = "<<(cell_->gethd() * i_->getR()).getNorme()<<endl;
+  //cerr<<"Vitesse affine particle j = "<<(cell_->gethd() * j_->getR()).getNorme()<<endl;
+  //cerr<<"Vitesse affine particle image j = "<<(cell_->gethd() * sj).getNorme()<< "vx : "<<(cell_->gethd() * sj).getx()<<endl;
+ // cerr<<"sdix = "<<(cell_->geth() * i_->getV()).getx()<<endl;
+ // cerr<<"sdiy = "<<(cell_->geth() * j_->getV()).getx()<<endl;
 
-	//Components in the contact frame:
-	//v_n = vx nx + vy ny
-	v_.setx( v_ * n_ );
-	v_.sety( v_ * t_ );
-	//Useless rvrot_?
-	rvrot_ = j_->getVrot() - i_->getVrot();
+  Vecteur vj = cell_->gethd() * sj + cell_->geth() * j_->getV();
+  Vecteur vi = cell_->gethd() * i_->getR() + cell_->geth() * i_->getV();
 
-	//Rotational contribution added to the relative tangential componant
-	double vtr = -j_->getRadius() * j_->getVrot() -i_->getRadius() * i_->getVrot();
-	v_.addy(vtr); 
+  v_ = vj - vi;
 
-	return ;
+  //Components in the contact frame:
+  //v_n = vx nx + vy ny
+  Vecteur vtmp = v_ ;
+  //cerr<<"Relative velocity : "<<v_.getx()<<" "<<v_.gety()<<" norme : "<<v_.getNorme()<<endl;
+
+  v_.setx( vtmp * n_ );
+  v_.sety( vtmp * t_ );
+
+  //Useless rvrot_?
+  rvrot_ = j_->getVrot() - i_->getVrot();
+
+  //Rotational contribution added to the relative tangential componant
+  double vtr = -j_->getRadius() * j_->getVrot() -i_->getRadius() * i_->getVrot();
+  v_.addy(vtr); 
+
+  return ;
 }
 
 void Contact::computeForce(const double kn, const double kt, const double gn, const double gt, const double mus, const double dt){
 
-	double fn = - kn * dn_ - gn * v_.getx();
-	if(fn < 0.) fn = 0.;
+  double fn = - kn * dn_ - gn * v_.getx();
+  if(fn < 0.) fn = 0.;
 
-	double ft = - kt * dt_ - gt * v_.gety();
-	const double ftmax = fabs( fn * mus);
+  double ft = - kt * dt_ - gt * v_.gety();
 
-	if(fabs(ft) > ftmax){
-		//Si glissant on fixe dt_, s'il est negatif on le laisse negatif sinon positif
-		ft = sign(ft) * ftmax;
-		//dt_= -ft/kt;
-		dt_ = - ft/kt;
-	}
-	else dt_ += v_.gety() * dt ;
+  const double ftmax = fabs( fn * mus);
 
-	//if(ft<1e-50) ft=0.;
-	f_.set(fn,ft);
+  if(fabs(ft) > ftmax){
+    //Si glissant on fixe dt_, s'il est negatif on le laisse negatif sinon positif
+    ft = sign(ft) * ftmax;
+    dt_ =  ft/kt;
+  }
+  else dt_ += v_.gety() * dt ;
 
-	return ;
+  f_.set(fn,ft);
+
+  return ;
 }
 
 
 void Contact::updateAccelerations(){
 
-	//Expression force vector in the lab frames:
-	Vecteur fxy = getfxy();
+  //Expression force vector in the lab frames:
+  Vecteur fxy = getfxy();
 
-	const double mi = i_->getMasse();
-	const double mj = j_->getMasse();
+  const double mi = i_->getMasse();
+  const double mj = j_->getMasse();
 
-	//Tensor2x2 hdd = cell_->gethdd();
-	//Tensor2x2 hd = cell_->gethd();
-	//Tensor2x2 h = cell_->geth();
-	//Tensor2x2 hinv = h.getInverse();
+  Vecteur ai = -fxy / mi ;
+  Vecteur aj = fxy / mj ;
 
-	//Vecteur si = i_->getR();
-	//Vecteur vi = i_->getV();
+  //Update linear acceleration
+  j_->update_a(aj);
+  i_->update_a(ai);
 
-	//Vecteur sj = j_->getR();
-	//Vecteur vj = j_->getV();
+  //Update rotational acceleration
+  j_->updateArot(-f_.gety() * j_->getRadius());
+  i_->updateArot(-f_.gety() * i_->getRadius());
 
-	Vecteur ai = -fxy / mi ;
-	Vecteur aj = fxy / mj ;
+  return;
 
-
-
-	//ai = hinv * (ai - hd * vi * 2. - hdd * si);
-	//aj = hinv * (aj - hd * vj * 2. - hdd * sj);
-
-	//Et s'il fallait transformer que la résultante!!!
-	//C'est une erreur!
-//	ai = hinv * (ai);
-//	aj = hinv * (aj);
-
-	//Update linear acceleration
-	j_->update_a(aj);
-	i_->update_a(ai);
-
-	//Update rotational acceleration
-	j_->updateArot(-f_.gety() * j_->getRadius());
-	i_->updateArot(-f_.gety() * i_->getRadius());
-	return;
 }
 
 void Contact::print() const{
-	cerr<<"Contact entre la particule "<<i_->getId()<<" et "<<j_->getId()<<endl;
-	cerr<<"interpenetration = "<<dn_<<endl;
-	cerr<<"fn = "<<f_.getx()<<endl;
-	cerr<<"ft = "<<f_.gety()<<endl;
-	cerr<<"vx particule "<<i_->getId()<<" = "<<i_->getV().getx()<<endl;
-	cerr<<"vx partjcule "<<j_->getId()<<" = "<<j_->getV().getx()<<endl;
+  cerr<<"Contact entre la particule "<<i_->getId()<<" et "<<j_->getId()<<endl;
+  cerr<<"interpenetration = "<<dn_<<endl;
+  cerr<<"fn = "<<f_.getx()<<endl;
+  cerr<<"ft = "<<f_.gety()<<endl;
+  cerr<<"vx particule "<<i_->getId()<<" = "<<i_->getV().getx()<<endl;
+  cerr<<"vx partjcule "<<j_->getId()<<" = "<<j_->getV().getx()<<endl;
 }

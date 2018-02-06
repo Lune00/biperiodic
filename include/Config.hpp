@@ -20,13 +20,14 @@ class Config{
 		std::string folder_cell_;
 		std::string folder_Interactions_;
 		std::string folder_analyse_;
-
 	public:
 		Config();
 		~Config();
 		//Interface d'initialistion
 		//Return 1 pb, return 0 ok
 		int init(std::ifstream&,Algo&,Cell&,Sample&,Interactions&,Analyse&);
+		void initfolders(Cell&,Sample&,Interactions&,Analyse&);
+
 };
 
 #endif

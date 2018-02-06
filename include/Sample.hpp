@@ -36,7 +36,7 @@ class Sample{
 		double M_;
 
 		//If load or build from init sample
-		bool load_sample_cell_;
+		bool load_sample_;
 		//File to load if load
 		unsigned int filetoload_;
 		//Int to start writing if load
@@ -71,17 +71,19 @@ class Sample{
 		double getrmin() const { return rmin_;}
 		double getMass() const { return M_;}
 		double getrho() const { return rho_;}
+		void setrho(double rho) { rho_ = rho;}
 
 		unsigned int getsize() const { return spl_.size();}
-		bool loaded() const { return load_sample_cell_;}
+		bool loaded() const { return load_sample_;}
 		unsigned int filetoload() const { return filetoload_;}
 		unsigned int startingTic() const { return starting_;}
 
 		const std::vector<Particle>& inspectSample() const {return spl_;}
+		//Only used to apply periodicity (used by cell)
+		//Should be moved to sample
 		std::vector<Particle>* getSample() {return &spl_;}
 
 		void firstStepVerlet(const double);
-		void addForce(Particle&);
 		void secondStepVerlet(const double);
 
 		Cell * getCell() const { return cell_;}
@@ -90,14 +92,21 @@ class Sample{
 		void initfolder(std::string folder); 
 		void write(int) const;
 		void writeAbsolute(int) const;
+
 		//TMP: debug writing
 		void debug(int);
 		void printSample() const;
+
 		std::vector<Particle> getimages(double e) const;
 		double getTKE() const;
 		double getRKE() const;
 		Vecteur returnrabs(const Particle&) const;
 		Vecteur returnvabs(const Particle&) const;
+
+		//Used to load network:
+		//Not used
+		Particle * getP(int id);
+		void setfiletoload(const int i) { load_sample_ = true ; filetoload_ = i ;}
 
 
 };
