@@ -208,15 +208,15 @@ void Interactions::read_dt(ifstream& is){
 
       int idi=0;
       int idj=0;
-      double rx;
-      double ry;
+      double vn;
+      double vt;
       double nx;
       double ny;
       double fn;
       double ft;
       double dt;
 
-      is >> idi >> idj >> rx >> ry >> nx >> ny >> fn >> ft>> dt;
+      is >> idi >> idj >> vn >> vt >> nx >> ny >> fn >> ft>> dt;
 
       if( idi != idj){
       //particle_pair i__j = { spl_->getP(idi), spl_->getP(idj)};
@@ -566,8 +566,6 @@ void Interactions::loadnetwork(const int k){
 
 
 //Read contact network: build the contact list ONLY for post-processing
-//TODO: write tangential velocity as well (change writing/reading contact)
-//Or easier: replace rx and ry by vn,vt (rx,ry) can be computed form the data available
 void Interactions::read_contact(ifstream& is){
 
     string token;
@@ -576,17 +574,17 @@ void Interactions::read_contact(ifstream& is){
 
       int idi=0;
       int idj=0;
-      double rx;
-      double ry;
+      double vn;
+      double vt;
       double nx;
       double ny;
       double fn;
       double ft;
       double dt;
 
-      is >> idi >> idj >> rx >> ry >> nx >> ny >> fn >> ft>> dt;
+      is >> idi >> idj >> vn >> vt >> nx >> ny >> fn >> ft>> dt;
 
-      Vecteur v(rx,ry);
+      Vecteur v(vn,vt);
       Vecteur f(fn,ft);
       Vecteur n(nx,ny);
 
