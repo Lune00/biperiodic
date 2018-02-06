@@ -79,6 +79,8 @@ class Sample{
 		unsigned int startingTic() const { return starting_;}
 
 		const std::vector<Particle>& inspectSample() const {return spl_;}
+		//Only used to apply periodicity (used by cell)
+		//Should be moved to sample
 		std::vector<Particle>* getSample() {return &spl_;}
 
 		void firstStepVerlet(const double);

@@ -35,6 +35,7 @@ class Analyse{
 		bool stress_;
 		bool energy_;
 		bool compacity_;
+		bool fabric_;
 
 
 		//Velocity Profile
@@ -76,6 +77,8 @@ class Analyse{
 
 		//Interpenetration
 		void Interpenetration(const double) const;
+		//Fabric
+		void fabric(const double) const;
 
 
 

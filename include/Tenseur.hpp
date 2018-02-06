@@ -37,6 +37,10 @@ class Tensor2x2{
 		double getyx() const { return yx_;} 
 		double getyy() const { return yy_;} 
 
+		double getl1() const { return l1_;}
+		double getl2() const { return l2_;}
+		double getMajorDirection() const;
+
 		double getDet() const{ return (xx_*yy_ - xy_*yx_) ;}
 
 		void setxx(double xx) { xx_ = xx;}

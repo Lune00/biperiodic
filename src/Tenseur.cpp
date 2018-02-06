@@ -13,6 +13,11 @@ void Tensor2x2::eigenValues(){
 	l1_=tmp;
 }
 
+//Suppose eigenVectors have been called before
+double Tensor2x2::getMajorDirection() const{
+	return (  u1_.gety() < 0. ? 2.*M_PI-acos(u1_.getx()): acos(u1_.getx()));
+}
+
 void Tensor2x2::eigenVectors(){
 
 	eigenValues();
@@ -76,9 +81,6 @@ Tensor2x2 Tensor2x2::getInverse() const{
 		return Inverse;
 	}
 	else{
-		//WRONG!!!!!
-		//Inverse.set(yy_/det,-yx_/det,-xy_/det,xx_/det);
-		//TMP
 		Inverse.set(yy_/det,-xy_/det,-yx_/det,xx_/det);
 		return Inverse;
 	}

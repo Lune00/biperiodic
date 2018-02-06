@@ -83,6 +83,7 @@ class Contact{
 		double getfn() const { return f_.getx();}
 		double getft() const { return f_.gety();}
 		Vecteur getrv() const { return v_;}
+		Vecteur getn() const { return n_;}
 		void setdt(const double dt) { dt_ = dt ;}
 
 		//For post-processing:

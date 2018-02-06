@@ -19,6 +19,7 @@ void Analyse::allFalse(){
 	stress_ = false;
 	compacity_ = false;
 	SP_ = false;
+	fabric_ = false;
 }
 
 
@@ -56,6 +57,9 @@ void Analyse::init(ifstream& is){
 		}
 		if(token=="interp"){
 			interpenetration_ = true;
+		}
+		if(token=="fabric"){
+			fabric_ = true ;
 		}
 
 		if(token=="}") break;
@@ -106,6 +110,11 @@ void Analyse::cleanFiles(){
 		ofstream o(filename.c_str());
 		o.close();
 	}
+	if(fabric_){
+		string filename = folder_ + "/fabric.txt";
+		ofstream o(filename.c_str());
+		o.close();
+	}
 
 }
 
@@ -134,6 +143,8 @@ void Analyse::analyse(int tic, double t, bool postprocess){
 	if(SP_) ProfileVelocity(t);
 
 	if(interpenetration_) Interpenetration(t);
+
+	if(fabric_) fabric(t);
 }
 
 
@@ -489,3 +500,43 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 }
 
+//Only fabric tensor for contact orientation for the moment
+void Analyse::fabric(const double t) const{
+
+	int N = Int_->getnc();
+
+	if(N==0) return ;
+
+	Tensor2x2 F ;
+
+	double Fxx = 0. ;
+	double Fxy = 0. ;
+	double Fyy = 0. ;
+
+	for(int i = 0 ; i < N ; i++){
+		const Contact * c = Int_->inspectContact(i);
+		Vecteur n = c->getn();
+		Fxx += n.getx() * n.getx(); 
+		Fxy += n.getx() * n.gety();
+		Fyy += n.gety() * n.gety();
+	}
+
+	Fxx /= (double)N;
+	Fxy /= (double)N;
+	Fyy /= (double)N;
+	F.set(Fxx,Fxy,Fxy,Fyy);
+	F.eigenVectors();
+
+	double ac = 2. *( F.getl1() - F.getl2());
+	double majDir = F.getMajorDirection() * 180. / M_PI;
+
+	string file_fabric = folder_ + "/fabric.txt";
+	ofstream os(file_fabric.c_str(),ios::app);
+	
+	os<<t<<" "<<ac<<" "<<majDir<<endl;
+	os.close();
+
+	return ;
+
+
+}
