@@ -412,6 +412,7 @@ void Interactions::computeForces(const double dt){
 		syy_s += branch.gety() * force.gety();
 	}
 
+	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
 
 	// Transform acceleration into reduced coordinates:
 	Tensor2x2 hdd = cell_->gethdd();
@@ -429,20 +430,19 @@ void Interactions::computeForces(const double dt){
 		//Acceleration from external drive:
 		if(cell_->imposeForce()) addForce(*it);
 
-		//TODO CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
-
+		//CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
 		//MAIS pour ca on a besoin de la vitesse au debut, au milieu ou a la fin du pas de temps?
-
 		//On peut prendre celle au milieu, ca ne devrait pas changer grand chose...
 		//Kinetic stress : Loop over particles:
-		//	for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
-		//	{
-		//		//Partie fluctuante : v = h * sdot
-		//		Vecteur v = cell_->geth() * it->getV();
-		//		double m = it->getMasse();
-		//		sxx_c += m * v.getx() * v.getx();
-		//		sxy_c += m * v.getx() * v.gety();
-		//		syy_c += m * v.gety() * v.gety();
+
+		//for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
+		//{
+		//Partie fluctuante : v = h * sdot
+		Vecteur v = cell_->geth() * it->getV();
+		double m = it->getMasse();
+		sxx_c += m * v.getx() * v.getx();
+		sxy_c += m * v.getx() * v.gety();
+		syy_c += m * v.gety() * v.gety();
 		//	}
 
 	}
@@ -450,6 +450,8 @@ void Interactions::computeForces(const double dt){
 	//Update:
 	stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
 	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
+
+	//cerr<<"sxx_s = "<<sxx_s<<" sxx_c = "<<sxx_c<<endl;
 
 	stress_s = stress_s * (1. / cell_->getVolume());
 	stress_c = stress_c * (1. / cell_->getVolume());
@@ -470,6 +472,9 @@ void Interactions::addForce(Particle& p){
 	double yLy = p.getR().gety() ;
 	double fx = A * sin ( 2. * M_PI * yLy * (double)mode);
 	Vecteur f(fx,0.);
+	//Warning: j'impose une acceleration direct en coord reduites
+	//Peut etre imposer plutot en coord absolu et transformer
+	//pour avoir une meilleur idee de l'echelle de force a mettre
 	p.updateA(f);
 	//cerr<<"Particule "<<p.getId()<<": "<<f.getx()<<" y/Ly = "<<yLy<<endl;
 }
@@ -493,9 +498,9 @@ double Interactions::getElasticEnergy() const {
 	return E;
 }
 
-//TODO : Cette loop pourrait etre margee avec celle du calcul des forces dans computeForces pour gagner en efficacite
+//Only call for post-processing
 void Interactions::computeInternalStress(){
-	//TODO: BE MOVED in computeForce
+
 }
 
 
@@ -547,20 +552,20 @@ void Interactions::print() const {
 //Load the network for postprocessing only
 void Interactions::loadnetwork(const int k){
 
-  string filename = formatfile( folder_, fInteractions_, k );
-  ifstream is(filename.c_str());
-  if(!is){
-    cerr<<"Interactions::load "<<filename<<" fail."<<endl;
-    return ;
-  }
-  else if(is.peek() == std::ifstream::traits_type::eof()){
-    cerr<<"There are no contacts to load."<<endl;
-    return ;
-  }
-  else  {
-    read_dt(is);
-  }
-  is.close();
+	string filename = formatfile( folder_, fInteractions_, k );
+	ifstream is(filename.c_str());
+	if(!is){
+		cerr<<"Interactions::load "<<filename<<" fail."<<endl;
+		return ;
+	}
+	else if(is.peek() == std::ifstream::traits_type::eof()){
+		cerr<<"There are no contacts to load."<<endl;
+		return ;
+	}
+	else  {
+		read_dt(is);
+	}
+	is.close();
 
 }
 
@@ -568,45 +573,45 @@ void Interactions::loadnetwork(const int k){
 //Read contact network: build the contact list ONLY for post-processing
 void Interactions::read_contact(ifstream& is){
 
-    string token;
-    while(is){
-      if(is.eof()) break;
+	string token;
+	while(is){
+		if(is.eof()) break;
 
-      int idi=0;
-      int idj=0;
-      double vn;
-      double vt;
-      double nx;
-      double ny;
-      double fn;
-      double ft;
-      double dt;
+		int idi=0;
+		int idj=0;
+		double vn;
+		double vt;
+		double nx;
+		double ny;
+		double fn;
+		double ft;
+		double dt;
 
-      is >> idi >> idj >> vn >> vt >> nx >> ny >> fn >> ft>> dt;
+		is >> idi >> idj >> vn >> vt >> nx >> ny >> fn >> ft>> dt;
 
-      Vecteur v(vn,vt);
-      Vecteur f(fn,ft);
-      Vecteur n(nx,ny);
+		Vecteur v(vn,vt);
+		Vecteur f(fn,ft);
+		Vecteur n(nx,ny);
 
-      //Build verlet list
-      //Si trop long d'appeler Frame() on peut ecrire tout a la place
-      if( idi != idj){
-	      //Set properties of the contact:
-	      Contact c( spl_->getP(idi), spl_->getP(idj),cell_ );
-	      //Set branch, n, t, dn,dt
-	      c.Frame();
-	      c.activate();
-	      c.setrv(v);
-	      c.setf(f);
-	      c.setdt(dt);
-	      vlist_.push_back(c);
-      }
+		//Build verlet list
+		//Si trop long d'appeler Frame() on peut ecrire tout a la place
+		if( idi != idj){
+			//Set properties of the contact:
+			Contact c( spl_->getP(idi), spl_->getP(idj),cell_ );
+			//Set branch, n, t, dn,dt
+			c.Frame();
+			c.activate();
+			c.setrv(v);
+			c.setf(f);
+			c.setdt(dt);
+			vlist_.push_back(c);
+		}
 
-    }
-    //Build clist:
-    for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
-	    int k = distance (vlist_.begin(), it );
-	    clist_.push_back(k);
-    }
+	}
+	//Build clist:
+	for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
+		int k = distance (vlist_.begin(), it );
+		clist_.push_back(k);
+	}
 }
 

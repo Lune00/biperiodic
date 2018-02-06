@@ -280,13 +280,19 @@ void Analyse::strain(const double t) const{
 void Analyse::stress(const double t) const{
 
 	const Tensor2x2 stress_int = Int_->getStressInt();
+	//const Tensor2x2 stress_int_s = Int_->getStressS();
+	const Tensor2x2 stress_int_c = Int_->getStressK();
 	const Tensor2x2 stress_ext = cell_->getStressExt();
+
 	string stressI_file = folder_ + "/stress_int.txt";
 	string stressE_file = folder_ + "/stress_ext.txt";
+
 	ofstream os(stressI_file.c_str(),ios::app);
 	ofstream os2(stressE_file.c_str(),ios::app);
 	os<<t<<" ";
 	stress_int.write(os);
+	os<<t<<" ";
+	stress_int_c.write(os);
 	os<<endl;
 	os2<<t<<" ";
 	stress_ext.write(os2);

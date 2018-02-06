@@ -170,6 +170,8 @@ class Interactions{
 
 		const Tensor2x2& stress() const { return stress_;}
 		Tensor2x2 getStressInt() const { return stress_;}
+		Tensor2x2 getStressK() const { return stress_c;}
+		Tensor2x2 getStressS() const { return stress_s;}
 
 		const Contact* inspectContact(int k) const { return &vlist_[clist_[k]];}
 
