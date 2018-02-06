@@ -20,6 +20,7 @@ void Analyse::allFalse(){
 	compacity_ = false;
 	SP_ = false;
 	fabric_ = false;
+	coordination_ = false;
 }
 
 
@@ -60,6 +61,9 @@ void Analyse::init(ifstream& is){
 		}
 		if(token=="fabric"){
 			fabric_ = true ;
+		}
+		if(token=="Z"){
+			coordination_ = true ;
 		}
 
 		if(token=="}") break;
@@ -115,6 +119,11 @@ void Analyse::cleanFiles(){
 		ofstream o(filename.c_str());
 		o.close();
 	}
+	if(coordination_){
+		string filename = folder_ + "/Z.txt";
+		ofstream o(filename.c_str());
+		o.close();
+	}
 
 }
 
@@ -145,6 +154,8 @@ void Analyse::analyse(int tic, double t, bool postprocess){
 	if(interpenetration_) Interpenetration(t);
 
 	if(fabric_) fabric(t);
+
+	if(coordination_) Z(t);
 }
 
 
@@ -539,4 +550,16 @@ void Analyse::fabric(const double t) const{
 	return ;
 
 
+}
+
+//Need to remove ratlers
+void Analyse::Z(const double t) const{
+
+	double Z = 2. * (double) Int_->getnc() / (double) spl_->getsize();
+	string file = folder_ + "/Z.txt";
+	ofstream os(file.c_str());
+	os<<t<<" "<<Z<<endl;
+	os.close();
+
+	return ;
 }

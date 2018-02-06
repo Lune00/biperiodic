@@ -45,6 +45,9 @@ class Analyse{
 		//Interpenetration (track)
 		bool interpenetration_;
 
+		//Cooridnation
+		bool coordination_;
+
 	public:
 		Analyse();
 		~Analyse();
@@ -79,6 +82,7 @@ class Analyse{
 		void Interpenetration(const double) const;
 		//Fabric
 		void fabric(const double) const;
+		void Z(const double) const;
 
 
 
