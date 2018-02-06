@@ -156,7 +156,10 @@ void Analyse::ProfileVelocity(const double t)const {
 	double Ly = 1.;
 	double ampProbe = Ly / (double)nbinsSP_;
 	vector<Probe*> lprobe (nbinsSP_);
+
 	vector<double > Xprofile(nbinsSP_,0.);
+	vector<double > XHOMprofile(nbinsSP_,0.);
+	vector<double > Tx(nbinsSP_,0.);
 	vector<unsigned int> Nbod(nbinsSP_,0);
 
 
@@ -178,15 +181,23 @@ void Analyse::ProfileVelocity(const double t)const {
 			if(lprobe[j]->containCenter(*it))
 			{
 
-				//To do in global function: get v from sd
-				//Vecteur v = 
 				Xprofile[j] += absVelocity(*it,h,hinv,hd).getx();
+				//Homogeneous part imposed
+				XHOMprofile[j] += (hd * it->getR()).getx();
+				//Fluctuating velocity
+				Tx[j] += (h * it->getV()).getx();
 				Nbod[j]++;
 
 			}
 			if(lprobe[j]->intersection(*it))
 			{
 
+				Xprofile[j] += absVelocity(*it,h,hinv,hd).getx();
+				//Homogeneous part imposed
+				XHOMprofile[j] += (hd * it->getR()).getx();
+				//Fluctuating velocity
+				Tx[j] += (h * it->getV()).getx();
+				Nbod[j]++;
 
 			}
 			else{
@@ -204,7 +215,9 @@ void Analyse::ProfileVelocity(const double t)const {
 	for(unsigned int i = 0; i<nbinsSP_;i++){
 		if(Nbod[i]==0) Nbod[i]=1;
 		Xprofile[i] /= (double)(Nbod[i]);
-		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<endl;
+		XHOMprofile[i] /= (double)(Nbod[i]);
+		Tx[i] /= (double)(Nbod[i]);
+		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<endl;
 	}
 
 	os.close();

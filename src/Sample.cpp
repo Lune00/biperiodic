@@ -341,10 +341,10 @@ void Sample::setminmax(){
 		ymin_ = min(ymin_, it->gety() - it->getRadius());
 		ymax_ = max(ymax_, it->gety() + it->getRadius());
 	}
-	//cout<<"xmin = "<<xmin_<<endl;
-	//cout<<"xmax = "<<xmax_<<endl;
-	//cout<<"ymin = "<<ymin_<<endl;
-	//cout<<"ymax = "<<ymax_<<endl;
+	cout<<"xmin = "<<xmin_<<endl;
+	cout<<"xmax = "<<xmax_<<endl;
+	cout<<"ymin = "<<ymin_<<endl;
+	cout<<"ymax = "<<ymax_<<endl;
 }
 
 bool Sample::initcheck() {

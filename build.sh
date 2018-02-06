@@ -21,5 +21,10 @@ cd ..
 mkdir -p test
 #cp exec/BPDEM2D test/BPDM2D
 cp -f exec/DEMARENA test/DEMARENA
+cp -f exec/DEMARENA testrelative/DEMARENA
+
+#Move executable to public path
+cp exec/DEMARENA ~/bin/
+cp exec/POSTPROCESS ~/bin/
 
 echo "Compilation terminee."

@@ -106,6 +106,17 @@ void Contact::updateRelativeVelocity(){
   Vecteur u(indexes_.first,indexes_.second); 
   Vecteur sj = j_->getR() + u;
 
+  //cerr<<"lx = "<<cell_->geth().getyy()<<endl;
+  //cerr<<"u : "<<u.getx()<<" "<<u.gety()<<endl;
+  //cerr<<"sj reele :"<< j_->getR().getx()<<" "<<j_->getR().gety()<<endl; 
+  //cerr<<"sj image : "<<sj.getx()<<" "<<sj.gety()<<endl;
+  //cerr<<"rj image "<< (cell_->geth() * sj).getx()<<" "<<(cell_->geth() * sj).gety()<<endl;
+  //cerr<<"Vitesse affine particle i = "<<(cell_->gethd() * i_->getR()).getNorme()<<endl;
+  //cerr<<"Vitesse affine particle j = "<<(cell_->gethd() * j_->getR()).getNorme()<<endl;
+  //cerr<<"Vitesse affine particle image j = "<<(cell_->gethd() * sj).getNorme()<< "vx : "<<(cell_->gethd() * sj).getx()<<endl;
+ // cerr<<"sdix = "<<(cell_->geth() * i_->getV()).getx()<<endl;
+ // cerr<<"sdiy = "<<(cell_->geth() * j_->getV()).getx()<<endl;
+
   Vecteur vj = cell_->gethd() * sj + cell_->geth() * j_->getV();
   Vecteur vi = cell_->gethd() * i_->getR() + cell_->geth() * i_->getV();
 
@@ -114,6 +125,7 @@ void Contact::updateRelativeVelocity(){
   //Components in the contact frame:
   //v_n = vx nx + vy ny
   Vecteur vtmp = v_ ;
+  //cerr<<"Relative velocity : "<<v_.getx()<<" "<<v_.gety()<<" norme : "<<v_.getNorme()<<endl;
 
   v_.setx( vtmp * n_ );
   v_.sety( vtmp * t_ );
