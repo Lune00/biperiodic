@@ -184,7 +184,7 @@ void Algo::run(){
 		}
 
 		//TMP for debug
-		if( tic_ % 5000 == 0 ){
+		if( tic_ % 8000 == 0 ){
 			//Int_->debug(tic_);
 			cell_->debug(tic_);
 			//spl_->debug(tic_);
@@ -212,8 +212,13 @@ void Algo::writesetup() const{
 	os <<"dtmax "<<dtmax_<<endl;
 	os <<"gnmax "<<gnmax_<<endl;
 	os <<"en "<<e_<<endl;
+	os <<"#Parameters:"<<endl;
 	os <<"density "<<spl_->getrho()<<endl;
 	os <<"kn "<<Int_->getkn()<<endl;
+	os <<"kt "<<Int_->getkt()<<endl;
+	os <<"gn "<<Int_->getgn()<<endl;
+	os <<"gt "<<Int_->getgt()<<endl;
+	os <<"mu "<<Int_->getmu()<<endl;
 	os <<"h0 ";
 	cell_->geth().write(os);
 	os <<endl;
@@ -254,7 +259,8 @@ void Algo::verletalgo2(){
 	Int_->computeForces(dt_);
 
 	//Calcul du tenseur de contraintes internes:
-	Int_->computeInternalStress();
+	//Has been moved to computeForces(dt)
+	//Int_->computeInternalStress();
 
 	//------------- SECOND STEP VERLET STARTS HERE
 

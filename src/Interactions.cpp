@@ -99,6 +99,14 @@ void Interactions::init(ifstream& is){
 	}
 }
 
+//For post-processing only:
+void Interactions::setparameters(double kn,double kt,double gn,double gt, double mu){
+	kn_ = kn ;
+	kt_ = kt ;
+	gn_ = gn ;
+	gt_ = gt ;
+	mus_ = mu ;
+}
 
 void Interactions::initScale(){
 
@@ -412,7 +420,6 @@ void Interactions::computeForces(const double dt){
 		syy_s += branch.gety() * force.gety();
 	}
 
-	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
 
 	// Transform acceleration into reduced coordinates:
 	Tensor2x2 hdd = cell_->gethdd();
@@ -491,6 +498,7 @@ double Interactions::getElasticEnergy() const {
 
 	//Tangential elastic component kt*dt*dt?
 	for(vector<int>::const_iterator it = clist_.begin() ; it != clist_.end() ; it++){
+
 		double dn = vlist_[*it].getdn();
 		E += 0.5 * (dn) * (dn) * kn_ ;
 	}
@@ -501,6 +509,48 @@ double Interactions::getElasticEnergy() const {
 //Only call for post-processing
 void Interactions::computeInternalStress(){
 
+	//Static stress:
+	double sxx_s = 0. ;
+	double sxy_s = 0. ;
+	double syx_s = 0. ;
+	double syy_s = 0. ;
+
+	//Kinetic stress:
+	double sxx_c = 0. ;
+	double sxy_c = 0. ;
+	double syy_c = 0. ;
+
+	for(vector<int>::iterator it = clist_.begin() ; it != clist_.end() ; it++){
+		Vecteur branch = vlist_[*it].getbranch();
+		Vecteur force  = vlist_[*it].getfxy();
+
+		sxx_s += branch.getx() * force.getx();
+		sxy_s += branch.gety() * force.getx();
+		syx_s += branch.getx() * force.gety();
+		syy_s += branch.gety() * force.gety();
+	}
+
+	for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
+	{
+		//Partie fluctuante : v = h * sdot
+		Vecteur v = cell_->geth() * it->getV();
+		double m = it->getMasse();
+		sxx_c += m * v.getx() * v.getx();
+		sxy_c += m * v.getx() * v.gety();
+		syy_c += m * v.gety() * v.gety();
+	}
+
+
+	//Update:
+	stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
+	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
+
+
+	stress_s = stress_s * (1. / cell_->getVolume());
+	stress_c = stress_c * (1. / cell_->getVolume());
+
+	//Total stress:
+	stress_ = stress_s + stress_c;
 }
 
 
@@ -552,6 +602,10 @@ void Interactions::print() const {
 //Load the network for postprocessing only
 void Interactions::loadnetwork(const int k){
 
+
+	vlist_.clear();
+	clist_.clear();
+
 	string filename = formatfile( folder_, fInteractions_, k );
 	ifstream is(filename.c_str());
 	if(!is){
@@ -563,10 +617,9 @@ void Interactions::loadnetwork(const int k){
 		return ;
 	}
 	else  {
-		read_dt(is);
+		read_contact(is);
 	}
 	is.close();
-
 }
 
 
@@ -600,7 +653,6 @@ void Interactions::read_contact(ifstream& is){
 			Contact c( spl_->getP(idi), spl_->getP(idj),cell_ );
 			//Set branch, n, t, dn,dt
 			c.Frame();
-			c.activate();
 			c.setrv(v);
 			c.setf(f);
 			c.setdt(dt);
@@ -612,6 +664,9 @@ void Interactions::read_contact(ifstream& is){
 	for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
 		int k = distance (vlist_.begin(), it );
 		clist_.push_back(k);
+		//cerr<<vlist_[k].getfn()<<" "<<vlist_[k].getdn()<<endl;
 	}
+
+	cerr<<"Nombre de contacts : "<<clist_.size()<<endl;
 }
 

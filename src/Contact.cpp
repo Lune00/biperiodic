@@ -91,7 +91,6 @@ void Contact::Frame(){
 	}
 }
 
-//TODO
 void Contact::write(ofstream& os) const{
 	os<<i_->getId()<<" "<<j_->getId()<<" "<<v_.getx()<<" "<<v_.gety()<<" "<<n_.getx()<<" "<<n_.gety()<<" "<<f_.getx()<<" "<<f_.gety()<<" "<<dt_<<endl;
 }

@@ -137,6 +137,8 @@ void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 //postprocess true for analyse after simulation, false for while simulation
 void Analyse::analyse(int tic, double t, bool postprocess){
 
+	cerr<<"analyse "<<tic<<" "<<t<<endl;
+
 	if(printSample_) printSample(tic);
 
 	if(energy_) computeEnergy(t);

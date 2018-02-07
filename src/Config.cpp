@@ -35,6 +35,12 @@ void Config::initfolders(Cell& cell, Sample& spl, Interactions& Int, Analyse& an
 	ana.initfolder(folder_analyse_);
 }
 
+void Config::initfolders(Cell& cell, Sample& spl, Interactions& Int){
+	spl.initfolder(folder_spl_);
+	cell.initfolder(folder_cell_);
+	Int.initfolder(folder_Interactions_);
+}
+
 int Config::init(ifstream& is, Algo& algo, Cell& cell, Sample& spl, Interactions& Int, Analyse& ana){
 
 	//Building folders if they do not exist

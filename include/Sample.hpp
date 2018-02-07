@@ -71,7 +71,6 @@ class Sample{
 		double getrmin() const { return rmin_;}
 		double getMass() const { return M_;}
 		double getrho() const { return rho_;}
-		void setrho(double rho) { rho_ = rho;}
 
 		unsigned int getsize() const { return spl_.size();}
 		bool loaded() const { return load_sample_;}
@@ -103,9 +102,11 @@ class Sample{
 		Vecteur returnrabs(const Particle&) const;
 		Vecteur returnvabs(const Particle&) const;
 
+		//Post processing:
 		//Used to load network:
 		//Not used
 		Particle * getP(int id);
+		void setrho(double rho) { rhodefined_ = true ; rho_ = rho;}
 		void setfiletoload(const int i) { load_sample_ = true ; filetoload_ = i ;}
 
 

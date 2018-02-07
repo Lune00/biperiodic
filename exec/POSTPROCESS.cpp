@@ -40,7 +40,6 @@ int main (int argc,char **argv)
 	Int.plug(spl,cell);
 	analyse.plug(spl,cell,Int);
 
-	config.initfolders(cell,spl,Int,analyse);
 
 	unsigned int nstart=0;
 	unsigned int nend=0;
@@ -63,7 +62,10 @@ int main (int argc,char **argv)
 		if(token=="nend") is >> nend;
 		if(token=="period") is >> nperiod;
 		if(token=="time") is >> filetime;
-		if(token=="dir") is >> folder_post_process;
+		if(token=="dir") {
+			is >> folder_post_process;
+			analyse.initfolder(folder_post_process);
+		}
 		if(token=="Analyse{") analyse.init(is);
 		is >> token;
 	}
@@ -81,8 +83,7 @@ int main (int argc,char **argv)
 	string makefolder_pp = "mkdir -p " + folder_post_process;
 	system(makefolder_pp.c_str());
 
-	//Reset folder for analyse -> distinguish between runanalyse
-	analyse.initfolder(folder_post_process);
+	config.initfolders(cell,spl,Int);
 
 	//Load time: correspondance between tics and time (s)
 	vector<double> t;
@@ -102,8 +103,15 @@ int main (int argc,char **argv)
 	}
 	cerr<<"Number of total steps : "<<t.size()<<endl;
 
-	//Read simu-setup file for : h0 and rho
+	//Read simu-setup file for simu - parameters:
+	//TMP
+
 	double density = 0.;
+	double kn = 0. ;
+	double kt = 0. ;
+	double gn = 0. ;
+	double gt = 0. ;
+	double mu = 0. ;
 	
 	is.open("simusetup.txt");
 	if(!is){
@@ -115,6 +123,11 @@ int main (int argc,char **argv)
 		is >> token;
 		while(is){
 			if(token=="density") is >> density;
+			if(token=="kn") is >> kn;
+			if(token=="kt") is >> kt;
+			if(token=="gn") is >> gn;
+			if(token=="gt") is >> gt;
+			if(token=="mu") is >> mu;
 			if(token=="h0") cell.readh0(is);
 			is >> token;
 		}
@@ -125,18 +138,19 @@ int main (int argc,char **argv)
 		return 1;
 	}
 
+	Int.setparameters(kn,kt,gn,gt,mu);
+	spl.setrho(density);
+
 	for(unsigned int i = nstart ; i != nend ; i+=nperiod){
 
-		//Load sample:
+		//Load sample: ok
 		spl.setfiletoload(i);
-		spl.setrho(density);
 		spl.loadSample();
 
-		//Load network into verlet list:
-		Int.loadnetwork(i);
-
-		//Load cell:
+		//Load cell: ok
 		cell.load(i);
+		//Load network into verlet list: pas ok
+		Int.loadnetwork(i);
 
 		//Analyse:
 		analyse.analyse(i,t[i],true);

@@ -161,6 +161,7 @@ class Interactions{
 		
 		double getgn() const { return gn_;}
 		double getgt() const { return gt_;}
+		double getmu() const { return mus_;}
 
 		void setgn(double gn) { gn_ = gn;}
 		void setgt(double gt) { gn_ = gt;}
@@ -188,6 +189,9 @@ class Interactions{
 
 		//DEBUG
 		void debug(const int)const;
+
+		//Post-processing
+		void setparameters(double kn,double kt,double gn,double gt,double mu);
 
 };
 

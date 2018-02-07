@@ -69,6 +69,8 @@ void Sample::init(ifstream& is){
 //Load sample, set mass to each particle, and compute min/max
 void Sample::loadSample(){
 
+	spl_.clear();
+
 	//Build fsampleIni_ from filetoload_
 	if(load_sample_) {
 		fsampleIni_ = formatfile( folder_, fsample_, filetoload_ );
@@ -153,11 +155,12 @@ Vecteur Sample::returnvabs(const Particle& P) const{
 //And add Ec and Ecrot as member variable of the class Sample
 
 //Translational kinetic energy
-//Take reduced velocity to compute true kinetic energy
 double Sample::getTKE() const{
+
 	double Ec = 0.;
 	Tensor2x2 h = cell_->geth();
 	Tensor2x2 hd = cell_->gethd();
+
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		//Vecteur v = returnvabs(*it);
 		Vecteur v = h *it->getV() + hd * it->getR();
@@ -341,10 +344,10 @@ void Sample::setminmax(){
 		ymin_ = min(ymin_, it->gety() - it->getRadius());
 		ymax_ = max(ymax_, it->gety() + it->getRadius());
 	}
-	cout<<"xmin = "<<xmin_<<endl;
-	cout<<"xmax = "<<xmax_<<endl;
-	cout<<"ymin = "<<ymin_<<endl;
-	cout<<"ymax = "<<ymax_<<endl;
+	//cout<<"xmin = "<<xmin_<<endl;
+	//cout<<"xmax = "<<xmax_<<endl;
+	//cout<<"ymin = "<<ymin_<<endl;
+	//cout<<"ymax = "<<ymax_<<endl;
 }
 
 bool Sample::initcheck() {
