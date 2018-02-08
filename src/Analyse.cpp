@@ -108,7 +108,17 @@ void Analyse::cleanFiles(){
 		string filename = folder_ + "/SProfile.txt";
 		ofstream o(filename.c_str());
 		o.close();
+		string mkdir = "mkdir -p "+folder_ + "/SPbins";
+		system(mkdir.c_str());
+		char spbins[50];
+		for ( int i=0;i<nbinsSP_;++i)
+		{
+			sprintf(spbins,"%s/SPbins/s_%04d.his",folder_.c_str(),i);
+			ofstream sb(spbins, ios::out);
+			sb.close();
+		}
 	}
+
 	if(interpenetration_){
 		string filename = folder_ + "/interpenetration.txt";
 		ofstream o(filename.c_str());
@@ -137,13 +147,14 @@ void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
 //postprocess true for analyse after simulation, false for while simulation
 void Analyse::analyse(int tic, double t, bool postprocess){
 
-	cerr<<"analyse "<<tic<<" "<<t<<endl;
-
 	if(printSample_) printSample(tic);
 
 	if(energy_) computeEnergy(t);
 
-	if(strain_) strain(t);
+	if(strain_){
+		if(postprocess) cell_->CalculStrainTensor();
+		strain(t);
+	}
 
 	if(stress_){
 		if(postprocess) Int_->computeInternalStress();
@@ -242,6 +253,16 @@ void Analyse::ProfileVelocity(const double t)const {
 		XHOMprofile[i] /= (double)(Nbod[i]);
 		Tx[i] /= (double)(Nbod[i]);
 		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<endl;
+	}
+
+	//Bins:
+	char spbins[50];
+	for ( int i=0;i<nbinsSP_;++i)
+	{
+		sprintf(spbins,"%s/SPbins/s_%04d.his",folder_.c_str(),i);
+		ofstream sb(spbins, ios::app);
+		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<endl;
+		sb.close();
 	}
 
 	os.close();
@@ -499,10 +520,10 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 			Vecteur rj = h * c->getj()->getR();
 
 			if(fnres != fnres){
-			  //May happen if fn < 0 and reset to 0.
-			  //With upper precaution should not happen anymore
-			  cerr<<"@nan : fmean = "<<Fmean<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
-			  continue;
+				//May happen if fn < 0 and reset to 0.
+				//With upper precaution should not happen anymore
+				cerr<<"@nan : fmean = "<<Fmean<<" fmin = "<<Fmin<<" fmax = "<<Fmax<<endl;
+				continue;
 			}
 
 			double xi = ri.getx();
@@ -551,7 +572,7 @@ void Analyse::fabric(const double t) const{
 
 	string file_fabric = folder_ + "/fabric.txt";
 	ofstream os(file_fabric.c_str(),ios::app);
-	
+
 	os<<t<<" "<<ac<<" "<<majDir<<endl;
 	os.close();
 
@@ -565,9 +586,34 @@ void Analyse::Z(const double t) const{
 
 	double Z = 2. * (double) Int_->getnc() / (double) spl_->getsize();
 	string file = folder_ + "/Z.txt";
-	ofstream os(file.c_str());
+	ofstream os(file.c_str(),ios::app);
 	os<<t<<" "<<Z<<endl;
 	os.close();
+
+	unsigned int Np = spl_->getsize();
+	unsigned int Ncf0 = 0 ; //Contact with nul force
+	unsigned int Ncf = 0 ; //Contact with force no nul
+	vector<unsigned int> NCPP(Nb,0); 
+
+	for(int i = 0 ; i < N ; i++){
+		const Contact * c = Int_->inspectContact(i);
+		unsigned int idi = c->geti()->getId();
+		unsigned int idj = c->getj()->getId();
+		if(fabs(c->getfn()) < 1e-20){
+			Ncf0++;
+		}
+		else{
+			Ncf++;
+			NCPP[idi]++;
+			NCPP[idj]++;
+		}
+	}
+
+	if(Ncf == 0 ) return ;
+
+	for(int i = 0 ; i < NCPP.size() ; i++){
+		if(NCPP[i]==0){
+		
 
 	return ;
 }

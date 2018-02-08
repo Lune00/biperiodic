@@ -442,23 +442,18 @@ void Interactions::computeForces(const double dt){
 		//On peut prendre celle au milieu, ca ne devrait pas changer grand chose...
 		//Kinetic stress : Loop over particles:
 
-		//for(std::vector<Particle>::const_iterator it = spl_->inspectSample().begin();it!=spl_->inspectSample().end();it++)
-		//{
 		//Partie fluctuante : v = h * sdot
 		Vecteur v = cell_->geth() * it->getV();
 		double m = it->getMasse();
 		sxx_c += m * v.getx() * v.getx();
 		sxy_c += m * v.getx() * v.gety();
 		syy_c += m * v.gety() * v.gety();
-		//	}
 
 	}
 
 	//Update:
 	stress_s.set(sxx_s,sxy_s,syx_s,syy_s);
 	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
-
-	//cerr<<"sxx_s = "<<sxx_s<<" sxx_c = "<<sxx_c<<endl;
 
 	stress_s = stress_s * (1. / cell_->getVolume());
 	stress_c = stress_c * (1. / cell_->getVolume());
