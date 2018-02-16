@@ -15,9 +15,9 @@ Cell::Cell(){
 	initCG_ = false ;
 	initGeometry_ = false;
 	initMass_ = false;
-	mh_ = 2.;
+	mh_ = 1.;
 	//Multiplier of sample mass
-	mh_factor_ = 0.5 ;
+	mh_factor_ = 1. ;
 	mh_auto_ = false;
 	L_auto_ = false;
 	imposeForce_ = false;
@@ -65,6 +65,7 @@ void Cell::init(ifstream& is){
 			initMass_ = true;
 		}
 		if(token=="m_auto") mh_auto_ = true;
+		if(token=="mh_factor") is >> mh_factor_;
 
 		//Boundary conditions:
 		//direction v(speed)/f(stress) value

@@ -93,8 +93,11 @@ void Algo::compute_gmax(){
 	double kn = Int_->getkn();
 	double kt = Int_->getkt();
 
-	gnmax_ = 2. * sqrt( kn * m);
-	gtmax_ = 2. * sqrt( kt * m);
+	//TMP
+	gnmax_ = 5. * sqrt( 2. * kn * m);
+	gtmax_ = 5. * sqrt( 2. * kt * m);
+
+	//Should be sqrt(2knm)?
 
 	if(Int_->setgnmax()){
 		double gn = gnmax_ * 0.98 ;
@@ -219,6 +222,7 @@ void Algo::writesetup() const{
 	os <<"gn "<<Int_->getgn()<<endl;
 	os <<"gt "<<Int_->getgt()<<endl;
 	os <<"mu "<<Int_->getmu()<<endl;
+	os <<"mh "<<cell_->getMasse()<<endl;
 	os <<"h0 ";
 	cell_->geth().write(os);
 	os <<endl;

@@ -5,7 +5,8 @@ CC = g++
 INC_PATH = ../include
 LIB_PATH = ../lib
 
-CFLAGS = -w -Wall -I$(INC_PATH)
+#CFLAGS = -w -Wall -O2 -pg -I$(INC_PATH)
+CFLAGS = -w -Wall -O2 -I$(INC_PATH)
 
 OBJSDEM = $(DEM).o $(LIB_PATH)/*.o
 OBJSPOSTP = $(POSTP).o $(LIB_PATH)/*.o

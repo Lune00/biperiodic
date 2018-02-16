@@ -429,25 +429,40 @@ void Interactions::computeForces(const double dt){
 
 	for(std::vector<Particle>::iterator it = spl_->getSample()->begin();it!=spl_->getSample()->end();it++)
 	{
+		//Impose a real force
+		if(cell_->imposeForce()){
+			addForce(*it);
+		}
 		//Acceleration from contact force:
+		//TMP
 		Vecteur a_red = hinv * ( it->getA() - hd * (it)->getV() * 2. - hdd * (it)->getR());
+		//Vecteur a_red = hinv * (it->getA());
+
+		//Compare the different terms
+		//Vecteur avin = hinv * (it->getA());
+		//Vecteur ahd = hinv *( hd * it->getV()) * 2. ;
+		//Vecteur ahdd = hinv*(hdd*it->getR());
+
+		//cerr<<avin.getNorme()<<" "<<ahd.getNorme()<<" "<<ahdd.getNorme()<<endl;
 
 		it->setAcceleration(a_red);
 
-		//Acceleration from external drive:
-		if(cell_->imposeForce()) addForce(*it);
+		////Acceleration from external drive:
+		//if(cell_->imposeForce()) addForce(*it);
 
 		//CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
 		//MAIS pour ca on a besoin de la vitesse au debut, au milieu ou a la fin du pas de temps?
 		//On peut prendre celle au milieu, ca ne devrait pas changer grand chose...
 		//Kinetic stress : Loop over particles:
 
+		//TMP: A AJOUTER
+
 		//Partie fluctuante : v = h * sdot
-		Vecteur v = cell_->geth() * it->getV();
-		double m = it->getMasse();
-		sxx_c += m * v.getx() * v.getx();
-		sxy_c += m * v.getx() * v.gety();
-		syy_c += m * v.gety() * v.gety();
+		//Vecteur v = cell_->geth() * it->getV();
+		//double m = it->getMasse();
+		//sxx_c += m * v.getx() * v.getx();
+		//sxy_c += m * v.getx() * v.gety();
+		//syy_c += m * v.gety() * v.gety();
 
 	}
 
@@ -456,7 +471,7 @@ void Interactions::computeForces(const double dt){
 	stress_c.set(sxx_c,sxy_c,sxy_c,syy_c);
 
 	stress_s = stress_s * (1. / cell_->getVolume());
-	stress_c = stress_c * (1. / cell_->getVolume());
+	//stress_c = stress_c * (1. / cell_->getVolume());
 
 	//Total stress:
 	stress_ = stress_s + stress_c;

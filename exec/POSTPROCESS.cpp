@@ -143,6 +143,7 @@ int main (int argc,char **argv)
 
 	for(unsigned int i = nstart ; i != nend ; i+=nperiod){
 
+		int k = i-nstart ;
 		//Load sample: ok
 		spl.setfiletoload(i);
 		spl.loadSample();
@@ -153,7 +154,10 @@ int main (int argc,char **argv)
 		Int.loadnetwork(i);
 
 		//Analyse:
-		analyse.analyse(i,t[i],true);
+		cerr<<i<<" "<<t[k]<<" "<<t.size()<<" "<<k<<endl;
+		analyse.analyse(i,t[k],true);
+		k++;
+
 	}
 
 	return 0;

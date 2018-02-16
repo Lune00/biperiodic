@@ -31,6 +31,7 @@ class Analyse{
 
 		//Analyse types:
 		bool printSample_;
+		bool printh_;
 		bool strain_;
 		bool stress_;
 		bool energy_;
@@ -83,6 +84,7 @@ class Analyse{
 		//Fabric
 		void fabric(const double) const;
 		void Z(const double) const;
+		void printh(const double) const;
 
 
 

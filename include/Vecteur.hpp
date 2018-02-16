@@ -70,8 +70,8 @@ class Vecteur{
 
 		Vecteur operator * (int a) {
 			Vecteur p;
-			p.x_ = a*x_ ;
-			p.y_ = a*y_ ;
+			p.x_ = (double)a * x_ ;
+			p.y_ = (double)a * y_ ;
 			return p;
 		}
 

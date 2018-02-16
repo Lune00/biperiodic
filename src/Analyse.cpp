@@ -15,6 +15,7 @@ Analyse::Analyse(){
 
 void Analyse::allFalse(){
 	printSample_ = false;
+	printh_ = false;
 	strain_ = false;
 	stress_ = false;
 	compacity_ = false;
@@ -64,6 +65,9 @@ void Analyse::init(ifstream& is){
 		}
 		if(token=="Z"){
 			coordination_ = true ;
+		}
+		if(token=="printh"){
+			printh_  = true ;
 		}
 
 		if(token=="}") break;
@@ -135,6 +139,13 @@ void Analyse::cleanFiles(){
 		o.close();
 	}
 
+	if(printh_){
+		string filename = folder_ + "/h.txt";
+		ofstream o(filename.c_str());
+		o.close();
+	}
+
+
 }
 
 void Analyse::plug(Sample& spl, Cell& cell,Interactions& Int){
@@ -169,6 +180,8 @@ void Analyse::analyse(int tic, double t, bool postprocess){
 	if(fabric_) fabric(t);
 
 	if(coordination_) Z(t);
+
+	if(printh_) printh(t);
 }
 
 
@@ -260,8 +273,8 @@ void Analyse::ProfileVelocity(const double t)const {
 	for ( int i=0;i<nbinsSP_;++i)
 	{
 		sprintf(spbins,"%s/SPbins/s_%04d.his",folder_.c_str(),i);
-		ofstream sb(spbins, ios::app);
-		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<endl;
+		ofstream sb(spbins,ios::app);
+		sb<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<endl;
 		sb.close();
 	}
 
@@ -591,9 +604,10 @@ void Analyse::Z(const double t) const{
 	os.close();
 
 	unsigned int Np = spl_->getsize();
+	int N = Int_->getnc();
 	unsigned int Ncf0 = 0 ; //Contact with nul force
 	unsigned int Ncf = 0 ; //Contact with force no nul
-	vector<unsigned int> NCPP(Nb,0); 
+	vector<unsigned int> NCPP(Np,0); 
 
 	for(int i = 0 ; i < N ; i++){
 		const Contact * c = Int_->inspectContact(i);
@@ -609,11 +623,33 @@ void Analyse::Z(const double t) const{
 		}
 	}
 
+	//WIP
 	if(Ncf == 0 ) return ;
 
 	for(int i = 0 ; i < NCPP.size() ; i++){
 		if(NCPP[i]==0){
+		}
+	}
 		
 
 	return ;
+}
+
+void Analyse::printh(const double t)const{
+
+
+	Tensor2x2 hdd = cell_->gethdd();
+	Tensor2x2 hd = cell_->gethd();
+
+	string file = folder_ + "/h.txt";
+	ofstream os(file.c_str(),ios::app);
+
+	os <<t<<" ";
+	hdd.write(os);
+	os<<" ";
+	hd.write(os);
+	os<<endl;
+
+	os.close();
+
 }
