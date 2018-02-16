@@ -67,7 +67,8 @@ class Particle{
 		//Iterative addition of real acc vectors
 		//Need then to be transform into reduced coordinates
 		void update_a(Vecteur a) { a_ = a_ + a ;}
-		void updateArot(double Torque) { arot_ = arot_ + Torque/I_;}
+		//void updateArot(double Torque) { arot_ = arot_ + Torque/I_;}
+		void updateArot(double ft) { arot_ = arot_ + (ft*R_)/I_;}
 		void updateR(const double dt);
 		void updateV(const double dt);
 		void updateVrot(const double dt);

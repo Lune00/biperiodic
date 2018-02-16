@@ -351,6 +351,12 @@ void Interactions::detectContacts(){
 
 	for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
 
+		//On pourrait demander si deja actif
+		//Si oui, on ne recalcule pas la branche
+		//la plus courte mais juste la branche en
+		//connaissant les indices
+
+		//Bref on surcalcule pour les contacts periodiques
 		it->Frame();
 		//cerr<<"Frame : "<<it->geti()->getId()<<" "<<it->getj()->getId()<<endl;
 
@@ -446,9 +452,6 @@ void Interactions::computeForces(const double dt){
 		//cerr<<avin.getNorme()<<" "<<ahd.getNorme()<<" "<<ahdd.getNorme()<<endl;
 
 		it->setAcceleration(a_red);
-
-		////Acceleration from external drive:
-		//if(cell_->imposeForce()) addForce(*it);
 
 		//CALCUL DU TENSEUR CONTRAINTES CINEMATIQUES
 		//MAIS pour ca on a besoin de la vitesse au debut, au milieu ou a la fin du pas de temps?

@@ -398,9 +398,9 @@ void Cell::updatehdd(const Tensor2x2 stress_int){
 
 	Tensor2x2 TotalStress = stress_int + stress_ext;
 	Tensor2x2 hinv = h_.getInverse();
-	double V = getVolume();
+	double Vmh = getVolume()/mh_;
 
-	hdd_ = hinv * (V/mh_) * (TotalStress);
+	hdd_ = hinv * (TotalStress) * Vmh;
 
 	if(Control_[0] == 'v' ) {
 		hdd_.setxx(0.);
