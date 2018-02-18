@@ -55,6 +55,7 @@ class Algo{
 		~Algo(){};
 		//void verletalgo(Cell&,std::vector<Particle>&);
 		void verletalgo2();
+		void damping(const double);
 		void init(std::ifstream&);
 		bool initcheck();
 		void run();

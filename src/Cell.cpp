@@ -256,8 +256,6 @@ void Cell::writeGeometry(const int k) const{
 void Cell::PeriodicBoundaries2(std::vector<Particle>* sp){
 
 	for(std::vector<Particle>::iterator it = sp->begin() ; it != sp->end(); it++){
-		double dx = 0.;
-		double dy = 0.;
 
 		while(it->getx() > 1.){
 			it->addrx(-1.);
@@ -423,7 +421,7 @@ void Cell::updatehdd(const Tensor2x2 stress_int){
 //On a l'accleration en fin de pas, on peut integrer en vitesse a la fin du pas
 void Cell::updatehd(const double dt){
 	const double dt_2 = dt * 0.5 ;
-	hd_ = hd_ + hdd_ * dt_2;
+	hd_ += hdd_ * dt_2;
 }
 
 void Cell::debug(const int k)const{
@@ -443,3 +441,25 @@ void Cell::debug(const int k)const{
 	debug2.close();
 }
 
+void Cell::damp(const double e){
+
+
+	if(getControlxx() == 'f' ) {
+
+	  if(hdd_.getxx() * hd_.getxx() >= 0.0){
+	    hdd_.setxx(hdd_.getxx() * ( 1. - e));
+	  }
+	  else  hdd_.setxx(hdd_.getxx() * ( 1. + e));
+
+	}
+
+	if(getControlyy() == 'f' ) {
+
+	  if(hdd_.getyy() * hd_.getyy() >= 0.0){
+	    hdd_.setyy(hdd_.getyy() * ( 1. - e));
+	  }
+	  else  hdd_.setyy(hdd_.getyy() * ( 1. + e));
+
+	}
+
+}

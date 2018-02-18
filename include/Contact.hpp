@@ -71,7 +71,7 @@ class Contact{
 		double sign(double x){if(x<0.) return -1.;else return 1.;}
 		double getdn() const { return dn_;}
 		double getdt() const { return dt_;}
-		Vecteur getfxy() const { return (n_ *f_.getx() + t_ * f_.gety());} 
+		Vecteur getfxy() const { return (n_ * f_.getx() +  t_ * f_.gety());} 
 
 		//Debug:
 		void print() const;

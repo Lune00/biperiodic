@@ -54,49 +54,29 @@ class Tensor2x2{
 		void load(std::ifstream&);
 		void writeEigenVectors(std::ofstream&);
 
-		//Il faudrait mettre des const partout enfait...
-		Tensor2x2 operator * (Tensor2x2 a){
-			Tensor2x2 p;
-			p.xx_ = xx_*a.xx_ + xy_*a.yx_;
-			p.xy_ = xx_*a.xy_ + xy_*a.yy_;
-			p.yx_ = yx_*a.xx_ + yy_*a.yx_;
-			p.yy_ = yx_*a.xy_ + yy_*a.yy_;
-			return p;
+		friend Tensor2x2 operator * (const Tensor2x2& a, const Tensor2x2& b){
+
+		  return Tensor2x2(a.getxx() * b.getxx() +a.getxy()*b.getxy(), a.getxx() * b.getxy() + a.getxy()*b.getyy(), a.getyx()*b.getxx() + a.getyy() * b.getyx(), a.getyx()*b.getxy() + a.getyy()*b.getyy());
 		}
 
-		Tensor2x2 operator * (double a){
-			Tensor2x2 p;
-			p.xx_ = xx_*a;
-			p.xy_ = xy_*a;
-			p.yx_ = yx_*a;
-			p.yy_ = yy_*a;
-			return p;
+		friend Tensor2x2 operator * (const Tensor2x2& a, const double k){
+		  return Tensor2x2(a.getxx() * k, a.getxy()* k , a.getyx() * k , a.getyy() * k);
 		}
 
-		Tensor2x2 operator + (Tensor2x2 a) const{
-			Tensor2x2 p;
-			p.xx_ = xx_+a.xx_;
-			p.xy_ = xy_+a.xy_;
-			p.yx_ = yx_+a.yx_;
-			p.yy_ = yy_+a.yy_;
-			return p;
+		friend Tensor2x2 operator + (const Tensor2x2& a, const Tensor2x2& b){
+		  return Tensor2x2(a.getxx() + b.getxx(), a.getxy()+b.getxy(), a.getyx() + b.getyx() , a.getyy() + b.getyy());
 		}
 
-
-		Vecteur operator * (Vecteur a){
-			Vecteur p;
-			double x = xx_*a.getx()+ xy_*a.gety();
-			double y = yx_*a.getx() + yy_*a.gety();
-			p.set(x,y);
-			return p;
+		friend Vecteur operator * (const Tensor2x2& t, const Vecteur& v){
+		  return Vecteur(t.getxx() * v.getx() + t.getxy()*v.gety(), t.getyx() * v.getx() + t.getyy() * v.gety());
 		}
 
-		Vecteur operator * (Vecteur a) const{
-			Vecteur p;
-			double x = xx_*a.getx()+ xy_*a.gety();
-			double y = yx_*a.getx() + yy_*a.gety();
-			p.set(x,y);
-			return p;
+		Tensor2x2& operator += (const Tensor2x2& a){
+		  xx_ += a.getxx();
+		  xy_ += a.getxy();
+		  yx_ += a.getyx();
+		  yy_ += a.getyy();
+		  return *this;
 		}
 
 };

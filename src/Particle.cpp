@@ -62,22 +62,22 @@ void Particle::print() const{
 }	
 
 void Particle::updateR(const double dt){
-	r_ = r_ + v_ * dt + a_ * dt * dt * 0.5 ;
+	r_ += v_ * dt + a_ * dt * dt * 0.5 ;
 }
 
 //Verlet algo: half each time
 void Particle::updateV(const double dt_2){
-	v_ = v_ + a_ * dt_2 ;
+	v_ += a_ * dt_2 ;
 	return;
 }
 
 void Particle::updateRot(const double dt){
-	rot_ = rot_ + vrot_ * dt + arot_ * dt * dt * 0.5;
+	rot_ += vrot_ * dt + arot_ * dt * dt * 0.5;
 	return;
 }
 
 void Particle::updateVrot(const double dt_2){
-	vrot_ = vrot_ + arot_ * dt_2 ;
+	vrot_ += arot_ * dt_2 ;
 }
 
 void Particle::resetA() {

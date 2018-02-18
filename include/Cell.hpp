@@ -99,7 +99,7 @@ class Cell{
 		double getyc() const ;
 
 		Tensor2x2 geth0() const { return h0_;}
-		Tensor2x2 geth() const { return h_;}
+		const Tensor2x2& geth() const { return h_;}
 		Tensor2x2 gethd() const { return hd_;}
 		Tensor2x2 gethdd() const { return hdd_;}
 		const Tensor2x2& getStrainTensor() const { return s_;}
@@ -119,6 +119,7 @@ class Cell{
 		void debug(const int)const;
 		//Call for post-processing
 		void readh0(std::ifstream&);
+		void damp(const double e);
 
 };
 

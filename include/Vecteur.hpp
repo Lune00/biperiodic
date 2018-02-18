@@ -35,57 +35,98 @@ class Vecteur{
 		void write(std::ofstream& os) const;
 
 		//Surcharge operator:
+
 		//Scalar product:
-		double operator * (Vecteur a){
-			return (x_*a.x_ + y_*a.y_);
+		//double operator * (Vecteur a){
+		//	return (x_*a.x_ + y_*a.y_);
+		//}
+
+		friend double operator * (const Vecteur& a, const Vecteur& b){
+		  return (a.getx() * b.getx() + a.gety() * b.gety());
 		}
 
-		Vecteur operator + (Vecteur a){
-			Vecteur p;
-			p.x_ = x_ + a.x_;
-			p.y_ = y_ + a.y_;
-			return p;
+		//Vecteur operator + (Vecteur a){
+		//	Vecteur p;
+		//	p.x_ = x_ + a.x_;
+		//	p.y_ = y_ + a.y_;
+		//	return p;
+		//}
+
+		friend Vecteur operator + (const Vecteur& a, const Vecteur& b)
+		{
+		  return Vecteur(a.x_ + b.x_, a.y_ + b.y_ );
+		}
+		friend Vecteur operator - (const Vecteur& a, const Vecteur& b)
+		{
+		  return Vecteur(a.x_ - b.x_, a.y_ - b.y_ );
 		}
 
-		Vecteur operator - (Vecteur a){
-			Vecteur p;
-			p.x_ = x_ - a.x_;
-			p.y_ = y_ - a.y_;
-			return p;
+		//Vecteur operator - (Vecteur a){
+		//	Vecteur p;
+		//	p.x_ = x_ - a.x_;
+		//	p.y_ = y_ - a.y_;
+		//	return p;
+		//}
+
+		//Vecteur operator * (double a){
+		//	Vecteur p;
+		//	p.x_ = a*x_ ;
+		//	p.y_ = a*y_ ;
+		//	return p;
+		//}
+
+		//Vecteur operator * (double a) const{
+		//	Vecteur p;
+		//	p.x_ = a*x_ ;
+		//	p.y_ = a*y_ ;
+		//	return p;
+		//}
+
+		friend Vecteur operator * (const Vecteur& a, const double k)
+		{
+		  return Vecteur(a.getx()*k, a.gety()*k );
 		}
 
-		Vecteur operator * (double a){
-			Vecteur p;
-			p.x_ = a*x_ ;
-			p.y_ = a*y_ ;
-			return p;
+		friend Vecteur operator / (const Vecteur& a, const double k)
+		{
+		  double invk = 1. / k ;
+		  return Vecteur(a.getx()*invk, a.gety()*invk );
 		}
 
-		Vecteur operator * (double a) const{
-			Vecteur p;
-			p.x_ = a*x_ ;
-			p.y_ = a*y_ ;
-			return p;
+		friend Vecteur operator * (const Vecteur& a, const int k)
+		{
+		  return Vecteur(a.getx()*(double)k, a.gety()*(double)k );
 		}
 
-		Vecteur operator * (int a) {
-			Vecteur p;
-			p.x_ = (double)a * x_ ;
-			p.y_ = (double)a * y_ ;
-			return p;
-		}
+		//Vecteur operator * (int a) {
+		//	Vecteur p;
+		//	p.x_ = (double)a * x_ ;
+		//	p.y_ = (double)a * y_ ;
+		//	return p;
+		//}
 
-		Vecteur operator / (double a){
-			Vecteur p;
-			p.x_ = x_ / a ;
-			p.y_ = y_ / a ;
-			return p;
-		}
+		//Vecteur operator / (double a){
+		//	Vecteur p;
+		//	p.x_ = x_ / a ;
+		//	p.y_ = y_ / a ;
+		//	return p;
+		//}
+
 		Vecteur operator - () {
 			Vecteur p;
 			p.x_ = - x_;
 			p.y_ = - y_;
 			return p;
+		}
+		Vecteur& operator += (const Vecteur& a){
+		  x_ += a.x_;
+		  y_ += a.y_;
+		  return *this;
+		}
+		Vecteur& operator *= (const double e){
+		  x_ *= e;
+		  y_ *= e;
+		  return *this;
 		}
 };
 

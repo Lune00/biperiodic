@@ -16,23 +16,24 @@ using namespace std;
 
 int main (int argc,char **argv)
 {
-	//Config est interface pour init tout
-	//a partir fichier configuration
-	Config config;
-	Analyse analyse;
-	Algo algo;
-	Cell cell;
-	Sample spl;
-	Interactions Int;
 
-	//Initialisation simulation
-	ifstream is(argv[1]);
-	int init_status = config.init(is,algo,cell,spl,Int,analyse);
-	if(init_status != 0) return 0;
+  //Config est interface pour init tout
+  //a partir fichier configuration
+  Config config;
+  Analyse analyse;
+  Algo algo;
+  Cell cell;
+  Sample spl;
+  Interactions Int;
 
-	//Lancement simulation
-	algo.run();
+  //Initialisation simulation
+  ifstream is(argv[1]);
+  int init_status = config.init(is,algo,cell,spl,Int,analyse);
+  if(init_status != 0) return 0;
 
-	return 0;
+  //Lancement simulation
+  algo.run();
+
+  return 0;
 
 }

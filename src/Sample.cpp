@@ -398,31 +398,53 @@ void Sample::firstStepVerlet(const double dt_){
 //The mean displacement is carried only by the cell (homogenous def)
 void Sample::secondStepVerlet(const double dt_) {
 
-	double dt_2 = 0.5 * dt_ ;
+  double dt_2 = 0.5 * dt_ ;
 
-	Vecteur vmean;
+  Vecteur vmean;
 
-	for(spit it =spl_.begin(); it != spl_.end(); it++){
-		it->updateV(dt_2);
-		it->updateVrot(dt_2);
-		vmean = vmean + it->getV();
-	}
+  for(spit it =spl_.begin(); it != spl_.end(); it++){
+    it->updateV(dt_2);
+    it->updateVrot(dt_2);
+    vmean = vmean + it->getV();
+  }
 
-		vmean = vmean / (double)spl_.size();
-	
-		for(spit it =spl_.begin(); it != spl_.end(); it++){
-			it->removevmean(vmean);
-		}
+  vmean = vmean / (double)spl_.size();
+
+  for(spit it =spl_.begin(); it != spl_.end(); it++){
+    it->removevmean(vmean);
+  }
 }
 
 //Not used
 Particle * Sample::getP(int i){
 
-	for(spit it =spl_.begin(); it != spl_.end(); it++){
-		if(it->getId()==i) {
-			Particle * pp = &(*it) ;
-			return pp;
-		}
-	}
-	return NULL ;
+  for(spit it =spl_.begin(); it != spl_.end(); it++){
+    if(it->getId()==i) {
+      Particle * pp = &(*it) ;
+      return pp;
+    }
+  }
+  return NULL ;
+}
+
+void Sample::damp(const double e){
+
+  for(spit it =spl_.begin(); it != spl_.end(); it++){
+
+    if( it->getA().getx() * it->getV().getx() >=0 ){
+      it->dampax(1.-e);
+    }
+    else it->dampax(1.+e);
+
+    if( it->getA().gety() * it->getV().gety() >=0 ){
+      it->dampay(1.-e);
+    }
+    else it->dampay(1.+e);
+
+    if( it->getArot() * it->getVrot() >=0 ){
+      it->damparot(1.-e);
+    }
+    else it->damparot(1.+e);
+
+  }
 }

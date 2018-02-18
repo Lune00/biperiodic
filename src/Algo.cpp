@@ -160,6 +160,9 @@ void Algo::run(){
 
 	ofstream timefile("time.txt");
 
+	//TMP : damping coefficient
+	const double e = 0.8 ;
+
 	//while(t_ <= tfinal){
 	while(tic_ <= ns_){
 
@@ -168,6 +171,8 @@ void Algo::run(){
 
 		//Time step: integration & periodicity
 		verletalgo2();
+
+		damping(e);
 
 		if( tic_ % nrecord_ == 0) {
 			write();
@@ -279,4 +284,11 @@ void Algo::verletalgo2(){
 	cell_->CalculStrainTensor();
 }
 
+void Algo::damping(const double e) {
+
+  //Damp particle acceleration
+  spl_->damp(e);
+  //Damp cell acceleration
+  cell_->damp(e);
+}
 

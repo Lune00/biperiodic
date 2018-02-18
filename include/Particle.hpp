@@ -91,6 +91,10 @@ class Particle{
 		Vecteur getA() const {return a_;}
 
 		double getVolume() const { return M_PI * R_ * R_ ;}
+
+		void dampax(const double e) { a_.setx(a_.getx() * e) ;}
+		void dampay(const double e) { a_.sety(a_.gety() * e) ;}
+		void damparot(const double e) {arot_ *= e;}
 };
 
 

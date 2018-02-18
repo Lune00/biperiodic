@@ -109,6 +109,7 @@ class Sample{
 		void setrho(double rho) { rhodefined_ = true ; rho_ = rho;}
 		void setfiletoload(const int i) { load_sample_ = true ; filetoload_ = i ;}
 
+		void damp(const double);
 
 };
 
