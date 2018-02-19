@@ -500,16 +500,7 @@ void Interactions::computeForces(const double dt){
 			addForce(*it);
 		}
 		//Acceleration from contact force:
-		//TMP
 		Vecteur a_red = hinv * ( it->getA() - hd * (it)->getV() * 2. - hdd * (it)->getR());
-		//Vecteur a_red = hinv * (it->getA());
-
-		//Compare the different terms
-		//Vecteur avin = hinv * (it->getA());
-		//Vecteur ahd = hinv *( hd * it->getV()) * 2. ;
-		//Vecteur ahdd = hinv*(hdd*it->getR());
-
-		//cerr<<avin.getNorme()<<" "<<ahd.getNorme()<<" "<<ahdd.getNorme()<<endl;
 
 		it->setAcceleration(a_red);
 

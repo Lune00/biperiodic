@@ -16,6 +16,8 @@ class Algo{
 		int ns_;
 		double dt_;
 		double t_;
+		double tf_;
+		bool init_t_;
 		int tic_;
 		//Numerotation files
 		int ticw_;

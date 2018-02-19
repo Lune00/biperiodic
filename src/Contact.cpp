@@ -35,13 +35,6 @@ Contact::Contact(Particle* i, Particle* j,Cell* cell,pair<int,int> indexes){
 Contact::Contact(ifstream& is){
 }
 
-//Compute the shortest branch between the two particles in contact
-//The branch is the absolute distance betwwen center of particles
-//Takes into account for periodicity no matter the cell shape
-//More general algo to find first image (calculation performed in absolute space instead of reduced space)
-//branch_ is a member of Contact because its value is needed again for computing stress or any  further analysis...
-//Can be optimized (surely but see that later...)
-//Compute also indexes_ (i and j) for knowing which particle image if j is an image in the interaction
 //These indexes are needed to take into account the affine term interaction between particles in contact at the edges of the cell
 void Contact::computeShortestBranch() {
 	//Branch vector
@@ -88,7 +81,6 @@ void Contact::computeBranch(){
 	Vecteur ri = cell_->geth() * i_->getR();
 	Vecteur d = rj - ri;
 	branch_ = d + a0 * indexes_.first + a1 * indexes_.second ;
-
 }
 
 void Contact::Frame(){
@@ -147,14 +139,14 @@ void Contact::updateRelativeVelocity(){
 	Vecteur vj = hd * sj + h * j_->getV();
 	Vecteur vi = hd * i_->getR() + h * i_->getV();
 
-	Vecteur vtmp = vj - vi;
+	Vecteur vxy = vj - vi;
 
 	//Components in the contact frame:
 	//v_n = vx nx + vy ny
 	//cerr<<"Relative velocity : "<<v_.getx()<<" "<<v_.gety()<<" norme : "<<v_.getNorme()<<endl;
 
-	v_.setx( vtmp * n_ );
-	v_.sety( vtmp * t_ );
+	v_.setx( vxy * n_ );
+	v_.sety( vxy * t_ );
 
 	//Useless rvrot_?
 	//rvrot_ = j_->getVrot() - i_->getVrot();

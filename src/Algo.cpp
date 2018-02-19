@@ -18,6 +18,8 @@ Algo::Algo(){
 	fsetup_ = "simusetup.txt";
 	damping_ = false;
 	dampCoeff_ = 0. ;
+	tf_ = 0. ;
+	init_t_ = false;
 }
 
 
@@ -28,6 +30,11 @@ void Algo::init(ifstream& is){
 	while(is){
 		if(token=="dt") is >> dt_;
 		if(token=="ns") is >> ns_;
+		if(token=="tf") {
+			is >> tf_;
+			init_t_ = true ;
+			ns_ = round(tf_/dt_);
+		}
 		if(token=="nana") is >> nana_;
 		if(token=="nrecord") is >> nrecord_;
 		if(token=="nprint") is >> nprint_;
