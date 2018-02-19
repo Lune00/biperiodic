@@ -57,6 +57,7 @@ class Contact{
 	public:
 		Contact(){ i_ = NULL; j_ =NULL, cell_=NULL ; isActif_ = false; }
 		Contact(Particle* i, Particle* j, Cell*);
+		Contact(Particle* i, Particle* j, Cell*,std::pair<int,int>);
 		Contact(std::ifstream&);
 		//Contact(std::ifstream&,std::vector<Contact>&);
 		~Contact(){};
@@ -79,6 +80,7 @@ class Contact{
 		const Particle* geti() const { return i_;}
 
 		void computeShortestBranch() ;
+		void computeBranch();
 		Vecteur getbranch() const { return branch_;}
 		double getfn() const { return f_.getx();}
 		double getft() const { return f_.gety();}

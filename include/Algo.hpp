@@ -40,6 +40,10 @@ class Algo{
 		//Max time step
 		double dtmax_;
 
+		//Global damping
+		bool damping_;
+		//between 0 an 1
+		double dampCoeff_;
 
 		//File where initial setup is written:
 		std::string fsetup_;

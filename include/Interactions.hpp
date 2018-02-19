@@ -133,6 +133,7 @@ class Interactions{
 		void updateverlet(const int);
 		bool near(const Particle&,const Particle&,const double) const;
 
+
 		//Build contact list
 		void detectContacts();
 

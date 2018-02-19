@@ -59,11 +59,6 @@ void Cell::init(ifstream& is){
 		if(token=="L_auto") {
 			L_auto_ = true ;
 		}
-		//This option should be avoided
-		if(token=="m"){
-			is >> mh_;
-			initMass_ = true;
-		}
 		if(token=="m_auto") mh_auto_ = true;
 		if(token=="mh_factor") is >> mh_factor_;
 
@@ -191,9 +186,6 @@ void Cell::talkinit(Sample& spl){
 		stress_ext.setyy(loadYY_);
 	}
 }
-
-//If load called by Sample, load cell geometry and dynamics
-//Load h, hd and hdd
 
 bool Cell::initcheck(){
 	return (initCG_ && initGeometry_ && initMass_);
@@ -360,21 +352,11 @@ void Cell::firstStepVerlet(const double dt) {
 	}
 }
 
-
-//void Cell::secondStepVerlet(const Tensor2x2& stress_int){
-//
-//
-//
-//
-//
-//}
-
 //Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration
 //Suppose d'avoir stressInt au temps t
 //Defaut: test a chaque fois ce qui est controle ou non, alors qu'on le sait depuis le début...
 void Cell::computeExternalStress(const Tensor2x2& stress_int){
 	//Si controle en vitesse alors hdd 0 ds cette direction
-	double xx, xy, yx, yy;
 	//Composante xx:
 	if(Control_[0] == 'v' ) {
 		stress_ext.setxx(-stress_int.getxx());

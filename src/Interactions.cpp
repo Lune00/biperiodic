@@ -271,6 +271,7 @@ Vecteur Interactions::getShortestBranch(const Particle& i, const Particle& j) co
 	//Branch vector
 	Vecteur d = cell_->geth() * sij;
 
+
 	//Cell basis vectors
 	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
 	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
@@ -328,21 +329,80 @@ void Interactions::updatesvlist(){
 
 }
 
+//void Interactions::updatevlist(){
+//
+//	vlist_.clear();
+//
+//	for(vector<particle_pair>::iterator it = svlist_.begin() ; it != svlist_.end(); it ++ )
+//	{
+//		if( near( *(it->i), *(it->j), dv_ ) ){
+//			//La on pourrait stocker les indexes
+//			//dans le contact et les utiliser
+//			//dans le detecContact en recalculant
+//			//que la valeur de la branche
+//			Contact c(it->i, it->j,cell_);
+//			//Attribue dt
+//			c.setdt(get_dt(c));
+//			vlist_.push_back(c);
+//		}
+//	}
+//}
+
+//WIP
 void Interactions::updatevlist(){
 
 	vlist_.clear();
 
+	Tensor2x2 h = cell_->geth();
+	//Cell basis vectors
+	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
+	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
+
 	for(vector<particle_pair>::iterator it = svlist_.begin() ; it != svlist_.end(); it ++ )
 	{
-		if( near( *(it->i), *(it->j), dv_ ) ){
-			Contact c(it->i, it->j,cell_);
+		//Need the branch vector (in absolute units)
+
+		double sijx = it->j->getx() - it->i->getx() ;
+		double sijy = it->j->gety() - it->i->gety() ;
+
+		Vecteur sij(sijx,sijy);
+		//Branch vector
+		Vecteur d = h * sij;
+
+		//Test for indices that minimize the distance
+		//Interaction can only be with original particles (0,0)
+		//or first cell (-1,-1), (1,1) etc...
+		vector<pair<int,int> > pairs;
+		vector<double> l_dcarre;
+		for (int i = -1 ; i != 2 ; i++){
+			for(int j = -1; j != 2; j++){
+				Vecteur u = d + a0 * i + a1 * j;
+				double dcarre = u * u ;
+				l_dcarre.push_back(dcarre);
+				pairs.push_back(std::make_pair(i,j));
+			}
+		}
+		//Find minimum:
+		std::vector<double>::iterator itp = std::min_element(l_dcarre.begin(),l_dcarre.end());
+		int k = distance( l_dcarre.begin(), itp);
+		//Get matching pairs of indexes
+		pair<int,int> indexes = pairs[k];
+		//Return shortest vector branch:
+
+	        Vecteur dshort = d + a0 * indexes.first + a1 * indexes.second ; 
+
+		if( dshort.getNorme() - dv_ < it->i->getRadius() + it->j->getRadius() ){
+			//La on pourrait stocker les indexes
+			//dans le contact et les utiliser
+			//dans le detecContact en recalculant
+			//que la valeur de la branche
+			Contact c(it->i, it->j,cell_,indexes);
 			//Attribue dt
 			c.setdt(get_dt(c));
 			vlist_.push_back(c);
 		}
 	}
 }
-
 
 //Build contact list (activated interactions)
 void Interactions::detectContacts(){

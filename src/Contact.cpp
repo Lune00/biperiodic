@@ -21,6 +21,17 @@ Contact::Contact(Particle* i, Particle* j,Cell* cell){
 	dt_ = 0. ;
 }
 
+Contact::Contact(Particle* i, Particle* j,Cell* cell,pair<int,int> indexes){
+	i_ = i ;
+	j_ = j ;
+	isActif_ = false;
+	cell_ = cell;
+	branch_.setx(0.);
+	branch_.sety(0.);
+	dt_ = 0. ;
+	indexes_ = indexes;
+}
+
 Contact::Contact(ifstream& is){
 }
 
@@ -66,9 +77,24 @@ void Contact::computeShortestBranch() {
 	return;
 }
 
+//On suppose que les indexes ne changent pas
+//entre 2 renouvellements de la liste de verlet
+void Contact::computeBranch(){
+
+	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
+	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
+	//Branch vector in absolute frame:
+	Vecteur rj = cell_->geth() * j_->getR();
+	Vecteur ri = cell_->geth() * i_->getR();
+	Vecteur d = rj - ri;
+	branch_ = d + a0 * indexes_.first + a1 * indexes_.second ;
+
+}
+
 void Contact::Frame(){
 
-	computeShortestBranch();
+	//computeShortestBranch();
+	computeBranch();
 
 	double l = branch_.getNorme();
 	double invl = 1./l ;

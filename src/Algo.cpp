@@ -16,6 +16,8 @@ Algo::Algo(){
 	t_=0.; 
 	ticw_ = 0; 
 	fsetup_ = "simusetup.txt";
+	damping_ = false;
+	dampCoeff_ = 0. ;
 }
 
 
@@ -29,6 +31,10 @@ void Algo::init(ifstream& is){
 		if(token=="nana") is >> nana_;
 		if(token=="nrecord") is >> nrecord_;
 		if(token=="nprint") is >> nprint_;
+		if(token=="damping"){
+			is >> dampCoeff_;
+			damping_ = true ;
+		}
 		if(token=="}") break;
 		is >> token;
 	}
@@ -94,13 +100,13 @@ void Algo::compute_gmax(){
 	double kt = Int_->getkt();
 
 	//TMP
-	gnmax_ = 5. * sqrt( 2. * kn * m);
-	gtmax_ = 5. * sqrt( 2. * kt * m);
+	gnmax_ = sqrt( 2. * kn * m);
+	gtmax_ = sqrt( 2. * kt * m);
 
 	//Should be sqrt(2knm)?
 
 	if(Int_->setgnmax()){
-		double gn = gnmax_ * 0.98 ;
+		double gn = gnmax_ * 0.95 ;
 		Int_->setgn(gn);
 	}
 
@@ -160,9 +166,6 @@ void Algo::run(){
 
 	ofstream timefile("time.txt");
 
-	//TMP : damping coefficient
-	const double e = 0.8 ;
-
 	//while(t_ <= tfinal){
 	while(tic_ <= ns_){
 
@@ -172,7 +175,7 @@ void Algo::run(){
 		//Time step: integration & periodicity
 		verletalgo2();
 
-		//damping(e);
+		if(damping_) damping(dampCoeff_);
 
 		if( tic_ % nrecord_ == 0) {
 			write();
@@ -285,7 +288,6 @@ void Algo::verletalgo2(){
 }
 
 void Algo::damping(const double e) {
-
   //Damp particle acceleration
   spl_->damp(e);
   //Damp cell acceleration
