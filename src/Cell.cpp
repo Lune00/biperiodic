@@ -121,6 +121,11 @@ void Cell::talkinit(Sample& spl){
 
 	//Load : if true continue a previous simulation from file
 	//if fale start from a new sample (freshly created)
+
+	//Mmax
+	double rmax = spl.getrmax();
+	double Mmax = M_PI * rmax * rmax * spl.getrho(); 
+
 	if(spl.loaded()){
 		//Ask which one.
 		unsigned int filetoload = spl.filetoload();
@@ -130,8 +135,7 @@ void Cell::talkinit(Sample& spl){
 		//New reference geometry for strain computation
 		h0_ = h_ ;
 		//Assign mass
-		//the mutliplier should be defined somewhere...
-		mh_ = mh_factor_ * spl.getMass();
+		mh_ = mh_factor_ * Mmax;
 
 		initGeometry_ = true;
 		initMass_ = true;
@@ -154,7 +158,7 @@ void Cell::talkinit(Sample& spl){
 
 		if(mh_auto_){
 			//Mass: sample mass for inertia
-			mh_ = mh_factor_ * spl.getMass();
+			mh_ = mh_factor_ * Mmax;
 			initMass_ = true;
 		}
 	}
@@ -446,19 +450,19 @@ void Cell::damp(const double e){
 
 	if(getControlxx() == 'f' ) {
 
-	  if(hdd_.getxx() * hd_.getxx() >= 0.0){
-	    hdd_.setxx(hdd_.getxx() * ( 1. - e));
-	  }
-	  else  hdd_.setxx(hdd_.getxx() * ( 1. + e));
+		if(hdd_.getxx() * hd_.getxx() >= 0.0){
+			hdd_.setxx(hdd_.getxx() * ( 1. - e));
+		}
+		else  hdd_.setxx(hdd_.getxx() * ( 1. + e));
 
 	}
 
 	if(getControlyy() == 'f' ) {
 
-	  if(hdd_.getyy() * hd_.getyy() >= 0.0){
-	    hdd_.setyy(hdd_.getyy() * ( 1. - e));
-	  }
-	  else  hdd_.setyy(hdd_.getyy() * ( 1. + e));
+		if(hdd_.getyy() * hd_.getyy() >= 0.0){
+			hdd_.setyy(hdd_.getyy() * ( 1. - e));
+		}
+		else  hdd_.setyy(hdd_.getyy() * ( 1. + e));
 
 	}
 

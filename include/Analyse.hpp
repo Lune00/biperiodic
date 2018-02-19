@@ -43,6 +43,10 @@ class Analyse{
 		bool SP_;
 		int nbinsSP_;
 
+		//Stress Profile
+		bool stressP_;
+		int nbins_stress_;
+
 		//Interpenetration (track)
 		bool interpenetration_;
 
@@ -78,6 +82,7 @@ class Analyse{
 
 		//Profiles
 		void ProfileVelocity(const double) const;
+		void ProfileStress(const double) const;
 
 		//Interpenetration
 		void Interpenetration(const double) const;

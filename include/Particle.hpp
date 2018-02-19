@@ -59,16 +59,13 @@ class Particle{
 		void addry(double dy) {r_.addy(dy);}
 
 		void setAcceleration(const Vecteur a) { a_ = a ;}
-		//NOT USED YET
-		void removevmean(const Vecteur& vmean) { v_ = v_ - vmean;}
+		void removevmean(const Vecteur& vmean) { v_ -= vmean;}
 
 		//Integration methods:
-		void updateA(Vecteur f) { a_ = a_ + f / m_;}
+		void updateA(Vecteur f) { a_ += f / m_;}
 		//Iterative addition of real acc vectors
-		//Need then to be transform into reduced coordinates
-		void update_a(Vecteur a) { a_ = a_ + a ;}
-		//void updateArot(double Torque) { arot_ = arot_ + Torque/I_;}
-		void updateArot(double ft) { arot_ = arot_ + (ft*R_)/I_;}
+		void update_a(Vecteur a) { a_ += a ;}
+		void updateArot(double ft) { arot_ += (ft*R_)/I_;}
 		void updateR(const double dt);
 		void updateV(const double dt);
 		void updateVrot(const double dt);
@@ -86,9 +83,14 @@ class Particle{
 		double getVrot() const { return vrot_;}
 		int getId() const { return id_;}
 
-		Vecteur getR() const { return r_;}
-		Vecteur getV() const { return v_;}
-		Vecteur getA() const {return a_;}
+		//TMP
+		//Vecteur getR() const { return r_;}
+		//Vecteur getV() const { return v_;}
+		//Vecteur getA() const {return a_;}
+
+		const Vecteur& getR() const { return r_;}
+		const Vecteur& getV() const { return v_;}
+		const Vecteur& getA() const {return a_;}
 
 		double getVolume() const { return M_PI * R_ * R_ ;}
 

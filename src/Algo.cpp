@@ -172,7 +172,7 @@ void Algo::run(){
 		//Time step: integration & periodicity
 		verletalgo2();
 
-		damping(e);
+		//damping(e);
 
 		if( tic_ % nrecord_ == 0) {
 			write();

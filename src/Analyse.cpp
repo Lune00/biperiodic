@@ -22,6 +22,9 @@ void Analyse::allFalse(){
 	SP_ = false;
 	fabric_ = false;
 	coordination_ = false;
+	nbinsSP_ = 1 ;
+	nbins_stress_ = 1;
+	stressP_ = false;
 }
 
 
@@ -56,6 +59,10 @@ void Analyse::init(ifstream& is){
 		if(token=="SP"){
 			SP_ = true;
 			is >> nbinsSP_ ;
+		}
+		if(token=="stressP"){
+			stressP_ = true;
+			is >> nbins_stress_ ;
 		}
 		if(token=="interp"){
 			interpenetration_ = true;
@@ -123,6 +130,13 @@ void Analyse::cleanFiles(){
 		}
 	}
 
+	if(stressP_){
+		string filename = folder_ + "/StressProfile.txt";
+		ofstream o(filename.c_str());
+		o.close();
+	}
+
+
 	if(interpenetration_){
 		string filename = folder_ + "/interpenetration.txt";
 		ofstream o(filename.c_str());
@@ -182,6 +196,8 @@ void Analyse::analyse(int tic, double t, bool postprocess){
 	if(coordination_) Z(t);
 
 	if(printh_) printh(t);
+
+	if(stressP_) ProfileStress(t);
 }
 
 
@@ -194,6 +210,73 @@ void Analyse::Interpenetration(const double t) const{
 }
 
 
+void Analyse::ProfileStress(const double t) const{
+
+	double Ly = 1.;
+	double ampProbe = Ly / (double)nbins_stress_;
+	vector<Probe*> lprobe (nbins_stress_);
+
+	vector<Tensor2x2> Stress(nbins_stress_);
+	vector<unsigned int> Nbod(nbins_stress_,0);
+
+	Tensor2x2 hd = cell_->gethd();
+	Tensor2x2 h = cell_->geth();
+	Tensor2x2 hinv = h.getInverse();
+
+	//To rescale
+	double lx = h.getxx();
+	double ly = h.getyy();
+
+	//init probes
+	for( unsigned int i = 0 ; i < nbins_stress_ ; i++){
+		double yc = 0.5 * ampProbe + i * ampProbe;
+		lprobe[i] = new Probe (yc,ampProbe);
+	}
+
+
+	int N = Int_->getnc();
+	//Iterate through contacts:
+	for(int i = 0 ; i < N ; i++){
+		const Contact * c = Int_->inspectContact(i);
+		//Si l'une des deux particules est dedans
+		unsigned int j = 0 ;
+		while( j < nbins_stress_){
+			if(lprobe[j]->containCenter(*(c->geti())) || lprobe[j]->containCenter(*(c->getj())))
+			{
+				Vecteur fxy = c->getfxy();
+				Vecteur l = c->getbranch();
+				Tensor2x2 sl(fxy.getx()*l.getx(),fxy.getx()*l.gety(),fxy.gety()*l.getx(),fxy.gety()*l.gety());
+				Stress[j] += sl ;
+
+			}
+			if(lprobe[j]->intersection(*(c->geti())) || lprobe[j]->intersection(*(c->getj())))
+			{
+
+
+			}
+			else{
+				j++;
+			}
+
+
+		}
+	}
+
+	//Writing & Normalise profile:
+	string file = folder_ + "/StressProfile.txt";
+	ofstream os(file.c_str(),ios::app);
+	for( unsigned int i = 0 ; i < nbins_stress_ ; i++){
+
+		double invS = 1./(lprobe[i]->area(lx)*ly);
+		Stress[i] = Stress[i] * invS ;
+		os <<t<<" "<<lprobe[i]->gety()<<" ";
+		Stress[i].write(os);
+		os<<endl;
+	}
+
+
+	return ;
+}
 
 //On utilise les coordonees reduites
 //meme si c'est pas une bonne ref car ca depend de la cellule
@@ -228,7 +311,6 @@ void Analyse::ProfileVelocity(const double t)const {
 		while( j < nbinsSP_){
 			if(lprobe[j]->containCenter(*it))
 			{
-
 				Xprofile[j] += absVelocity(*it,h,hinv,hd).getx();
 				//Homogeneous part imposed
 				XHOMprofile[j] += (hd * it->getR()).getx();
@@ -630,7 +712,7 @@ void Analyse::Z(const double t) const{
 		if(NCPP[i]==0){
 		}
 	}
-		
+
 
 	return ;
 }

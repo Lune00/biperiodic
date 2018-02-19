@@ -10,6 +10,7 @@ bool Probe::containCenter (const Particle& p ) const{
 	return ( dy < hh_ );
 }
 
+//Todo
 bool Probe::intersection (const Particle& p) const{
 	return false;
 }

@@ -98,20 +98,6 @@ class Vecteur{
 		  return Vecteur(a.getx()*(double)k, a.gety()*(double)k );
 		}
 
-		//Vecteur operator * (int a) {
-		//	Vecteur p;
-		//	p.x_ = (double)a * x_ ;
-		//	p.y_ = (double)a * y_ ;
-		//	return p;
-		//}
-
-		//Vecteur operator / (double a){
-		//	Vecteur p;
-		//	p.x_ = x_ / a ;
-		//	p.y_ = y_ / a ;
-		//	return p;
-		//}
-
 		Vecteur operator - () {
 			Vecteur p;
 			p.x_ = - x_;
@@ -121,6 +107,11 @@ class Vecteur{
 		Vecteur& operator += (const Vecteur& a){
 		  x_ += a.x_;
 		  y_ += a.y_;
+		  return *this;
+		}
+		Vecteur& operator -= (const Vecteur& a){
+		  x_ -= a.x_;
+		  y_ -= a.y_;
 		  return *this;
 		}
 		Vecteur& operator *= (const double e){
