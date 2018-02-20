@@ -131,8 +131,6 @@ class Interactions{
 		void updatevlist();
 		void updatesvlist();
 		void updateverlet(const int);
-		bool near(const Particle&,const Particle&,const double) const;
-
 
 		//Build contact list
 		void detectContacts();
@@ -141,7 +139,6 @@ class Interactions{
 		void computeForces(const double);
 		void computeInternalStress();
 		void addForce(Particle&);
-		Vecteur getShortestBranch(const Particle&,const Particle&) const;
 
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
@@ -169,6 +166,7 @@ class Interactions{
 
 		bool setgnmax() const { return setgnmax_;}
 		bool setgtmax() const { return setgtmax_;}
+		double sign(double x){if(x<0.) return -1.;else return 1.;}
 
 		const Tensor2x2& stress() const { return stress_;}
 		Tensor2x2 getStressInt() const { return stress_;}

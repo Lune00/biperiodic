@@ -38,7 +38,7 @@ Interactions::Interactions(){
 
 Interactions::~Interactions(){
 
-  delete [] dts_ ;
+	delete [] dts_ ;
 }
 
 
@@ -59,10 +59,10 @@ void Interactions::init(ifstream& is){
 			initdsv_ = true;
 		}
 		if(token=="niterv"){
-		  is >> nv_;
+			is >> nv_;
 		}
 		if(token=="nitersv"){
-		  is >> nsv_;
+			is >> nsv_;
 		}
 
 		if(token=="kn") {
@@ -86,8 +86,8 @@ void Interactions::init(ifstream& is){
 			initgt_ = true;
 		}
 		if(token=="gtmax"){
-		  setgtmax_ = true ;
-		  initgt_ = true ;
+			setgtmax_ = true ;
+			initgt_ = true ;
 		}
 		if(token=="mu"){
 			is >> mus_;
@@ -141,18 +141,18 @@ void Interactions::initScale(){
 
 bool Interactions::initcheck() {
 
-  bool initNiter = false;
+	bool initNiter = false;
 
-  if( nv_ != 0 && nsv_ != 0 ) initNiter = true; 
+	if( nv_ != 0 && nsv_ != 0 ) initNiter = true; 
 
-  checkInteractions_ = initNiter && initScale_ && initdv_ && initdv_ && (dsv_>dv_) && checkDEMparameters();
+	checkInteractions_ = initNiter && initScale_ && initdv_ && initdv_ && (dsv_>dv_) && checkDEMparameters();
 
-  cout<<"distance SVerlet  = "<<dsv_<<endl;
-  cout<<"distance Verlet  = "<<dv_<<endl;
+	cout<<"distance SVerlet  = "<<dsv_<<endl;
+	cout<<"distance Verlet  = "<<dv_<<endl;
 
-  if(!checkDEMparameters()) cout<<"Interactions::initcheck() : a DEM parameter is not initialised in config file. stop"<<endl;
+	if(!checkDEMparameters()) cout<<"Interactions::initcheck() : a DEM parameter is not initialised in config file. stop"<<endl;
 
-  return (checkInteractions_);
+	return (checkInteractions_);
 }
 
 void Interactions::plug(Sample& spl,Cell& cell){
@@ -162,15 +162,15 @@ void Interactions::plug(Sample& spl,Cell& cell){
 
 void Interactions::build(){
 
-  init_array_dt();
+	init_array_dt();
 
-  //Est ce qu'on load? on lit les contacts dans un fichier
-  if(spl_->loaded()){
-    unsigned int filetoload = spl_->filetoload();
-    load(filetoload);
-  }
+	//Est ce qu'on load? on lit les contacts dans un fichier
+	if(spl_->loaded()){
+		unsigned int filetoload = spl_->filetoload();
+		load(filetoload);
+	}
 
-  initScale();
+	initScale();
 }
 
 //On suppose que les Id des particules vont de 0 à N-1
@@ -191,48 +191,46 @@ void Interactions::init_array_dt(){
 //Only needs to restore dt (tangential spring)
 void Interactions::load(const int k){
 
-  string filename = formatfile( folder_, fInteractions_, k );
-  ifstream is(filename.c_str());
-  if(!is){
-    cerr<<"Interactions::load "<<filename<<" fail."<<endl;
-    return ;
-  }
-  else if(is.peek() == std::ifstream::traits_type::eof()){
-    cerr<<"Pas de contacts a charger."<<endl;
-    return ;
-  }
-  else  {
-    read_dt(is);
-  }
-  is.close();
+	string filename = formatfile( folder_, fInteractions_, k );
+	ifstream is(filename.c_str());
+	if(!is){
+		cerr<<"Interactions::load "<<filename<<" fail."<<endl;
+		return ;
+	}
+	else if(is.peek() == std::ifstream::traits_type::eof()){
+		cerr<<"Pas de contacts a charger."<<endl;
+		return ;
+	}
+	else  {
+		read_dt(is);
+	}
+	is.close();
 }
 
 //Read contact network for continuing simulation: only need dt
 void Interactions::read_dt(ifstream& is){
 
-    string token;
-    while(is){
-      if(is.eof()) break;
+	string token;
+	while(is){
+		if(is.eof()) break;
 
-      int idi=0;
-      int idj=0;
-      double vn;
-      double vt;
-      double nx;
-      double ny;
-      double fn;
-      double ft;
-      double dt;
+		int idi=0;
+		int idj=0;
+		double vn;
+		double vt;
+		double nx;
+		double ny;
+		double fn;
+		double ft;
+		double dt;
 
-      is >> idi >> idj >> vn >> vt >> nx >> ny >> fn >> ft>> dt;
+		is >> idi >> idj >> vn >> vt >> nx >> ny >> fn >> ft>> dt;
 
-      if( idi != idj){
-      //particle_pair i__j = { spl_->getP(idi), spl_->getP(idj)};
-      dts_[ idi * N_ + idj ] = dt;
-      //svlist_.push_back(i__j);
-      }
+		if( idi != idj){
+			dts_[ idi * N_ + idj ] = dt;
+		}
 
-    }
+	}
 }
 
 
@@ -259,68 +257,29 @@ void Interactions::updateverlet(const int tic){
 	if( tic % nv_ == 0 ) updatevlist();
 }
 
-//Return smallest vector branch between particle i and particle j
-Vecteur Interactions::getShortestBranch(const Particle& i, const Particle& j) const{
-
-	//Need the branch vector (in absolute units)
-	double sijx = j.getx() - i.getx();
-	double sijy = j.gety() - i.gety();
-
-	Vecteur sij(sijx,sijy);
-
-	//Branch vector
-	Vecteur d = cell_->geth() * sij;
-
-
-	//Cell basis vectors
-	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
-	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
-
-	//Test for indices that minimize the distance
-	//Interaction can only be with original particles (0,0)
-	//or first cell (-1,-1), (1,1) etc...
-	vector<pair<int,int> > pairs;
-	vector<double> l_dcarre;
-	for (int i = -1 ; i != 2 ; i++){
-		for(int j = -1; j != 2; j++){
-			Vecteur u = d + a0 * i + a1 * j;
-			double dcarre = u * u ;
-			l_dcarre.push_back(dcarre);
-			pairs.push_back(std::make_pair(i,j));
-		}
-	}
-	//Find minimum:
-	std::vector<double>::iterator it = std::min_element(l_dcarre.begin(),l_dcarre.end());
-	//double dmin = * it ;
-	int k = distance( l_dcarre.begin(), it);
-	//Get matching pairs of indexes
-	pair<int,int> indexes = pairs[k];
-	//Return shortest vector branch:
-	return (d + a0 * indexes.first + a1 * indexes.second) ; 
-}
-
-
-//True if distance between "surface" of particle i and j are lower than d
-bool Interactions::near(const Particle& i, const Particle& j,const double d) const{
-
-	Vecteur shortest_branch = getShortestBranch(i,j);
-
-	//Test distance compared to d
-
-	if( shortest_branch.getNorme() - d < j.getRadius() + i.getRadius() ) return true;
-
-	else return false;
-}
-
 void Interactions::updatesvlist(){
 
 	svlist_.clear();
+	Tensor2x2 h = cell_->geth();
 
 	for(std::vector<Particle>::iterator iti = spl_->getSample()->begin();iti!=spl_->getSample()->end();iti++)
 	{
+		double six = iti->getx();
+		double siy = iti->gety();
+		double ri = iti->getRadius();
+
 		for(std::vector<Particle>::iterator itj = iti + 1; itj!=spl_->getSample()->end();itj++)
 		{
-			if( near( *iti , *itj , dsv_ ) ){
+			double sijx =itj->getx() - six;
+			double sijy =itj->gety() - siy;
+
+			sijx -= floor(sijx + 0.5);
+			sijy -= floor(sijy + 0.5);
+
+			Vecteur sij(sijx,sijy);
+			Vecteur d = h * sij;
+
+			if( d.getNorme() - dsv_ < ri + itj->getRadius() ){
 				particle_pair i__j = { &(*iti), &(*itj)};
 				svlist_.push_back(i__j);
 			}
@@ -329,73 +288,27 @@ void Interactions::updatesvlist(){
 
 }
 
-//void Interactions::updatevlist(){
-//
-//	vlist_.clear();
-//
-//	for(vector<particle_pair>::iterator it = svlist_.begin() ; it != svlist_.end(); it ++ )
-//	{
-//		if( near( *(it->i), *(it->j), dv_ ) ){
-//			//La on pourrait stocker les indexes
-//			//dans le contact et les utiliser
-//			//dans le detecContact en recalculant
-//			//que la valeur de la branche
-//			Contact c(it->i, it->j,cell_);
-//			//Attribue dt
-//			c.setdt(get_dt(c));
-//			vlist_.push_back(c);
-//		}
-//	}
-//}
-
-//WIP
 void Interactions::updatevlist(){
 
 	vlist_.clear();
 
 	Tensor2x2 h = cell_->geth();
-	//Cell basis vectors
-	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
-	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
 
 	for(vector<particle_pair>::iterator it = svlist_.begin() ; it != svlist_.end(); it ++ )
 	{
-		//Need the branch vector (in absolute units)
-
 		double sijx = it->j->getx() - it->i->getx() ;
 		double sijy = it->j->gety() - it->i->gety() ;
 
+		pair<int,int> indexes;
+		indexes.first = -(int)floor(sijx + 0.5) ;
+		indexes.second = -(int)floor(sijy + 0.5) ;
+		sijx += indexes.first;
+		sijy += indexes.second;
+
 		Vecteur sij(sijx,sijy);
-		//Branch vector
 		Vecteur d = h * sij;
 
-		//Test for indices that minimize the distance
-		//Interaction can only be with original particles (0,0)
-		//or first cell (-1,-1), (1,1) etc...
-		vector<pair<int,int> > pairs;
-		vector<double> l_dcarre;
-		for (int i = -1 ; i != 2 ; i++){
-			for(int j = -1; j != 2; j++){
-				Vecteur u = d + a0 * i + a1 * j;
-				double dcarre = u * u ;
-				l_dcarre.push_back(dcarre);
-				pairs.push_back(std::make_pair(i,j));
-			}
-		}
-		//Find minimum:
-		std::vector<double>::iterator itp = std::min_element(l_dcarre.begin(),l_dcarre.end());
-		int k = distance( l_dcarre.begin(), itp);
-		//Get matching pairs of indexes
-		pair<int,int> indexes = pairs[k];
-		//Return shortest vector branch:
-
-	        Vecteur dshort = d + a0 * indexes.first + a1 * indexes.second ; 
-
-		if( dshort.getNorme() - dv_ < it->i->getRadius() + it->j->getRadius() ){
-			//La on pourrait stocker les indexes
-			//dans le contact et les utiliser
-			//dans le detecContact en recalculant
-			//que la valeur de la branche
+		if( d.getNorme() - dv_ < it->i->getRadius() + it->j->getRadius() ){
 			Contact c(it->i, it->j,cell_,indexes);
 			//Attribue dt
 			c.setdt(get_dt(c));
@@ -411,14 +324,7 @@ void Interactions::detectContacts(){
 
 	for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
 
-		//On pourrait demander si deja actif
-		//Si oui, on ne recalcule pas la branche
-		//la plus courte mais juste la branche en
-		//connaissant les indices
-
-		//Bref on surcalcule pour les contacts periodiques
 		it->Frame();
-		//cerr<<"Frame : "<<it->geti()->getId()<<" "<<it->getj()->getId()<<endl;
 
 		int k = distance (vlist_.begin(), it );
 
@@ -429,7 +335,6 @@ void Interactions::detectContacts(){
 			//dt_ is set to zero in the contact
 			set_dt(*it);
 		}
-
 	}
 	return ;
 
@@ -445,13 +350,6 @@ void Interactions::set_dt(Contact& c){
 	int i = c.geti()->getId();
 	int j = c.getj()->getId();
 	dts_[ i * N_ + j ] = c.getdt() ;
-}
-
-//Not used
-void Interactions::reset_dt(Contact& c){
-	int i = c.geti()->getId();
-	int j = c.getj()->getId();
-	dts_[ i * N_ + j ] = 0. ;
 }
 
 //Compute force at each contact and compute procedurally internal stress on the fly
@@ -716,6 +614,7 @@ void Interactions::read_contact(ifstream& is){
 			//Set properties of the contact:
 			Contact c( spl_->getP(idi), spl_->getP(idj),cell_ );
 			//Set branch, n, t, dn,dt
+			c.computeShortestBranch();
 			c.Frame();
 			c.setrv(v);
 			c.setf(f);

@@ -35,57 +35,32 @@ Contact::Contact(Particle* i, Particle* j,Cell* cell,pair<int,int> indexes){
 Contact::Contact(ifstream& is){
 }
 
-//These indexes are needed to take into account the affine term interaction between particles in contact at the edges of the cell
-void Contact::computeShortestBranch() {
-	//Branch vector
-	//Cell basis vectors: maybe should be member functions of cell
-	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
-	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
-
-	//Branch vector in absolute frame:
-	Vecteur rj = cell_->geth() * j_->getR();
-	Vecteur ri = cell_->geth() * i_->getR();
-	Vecteur d = rj - ri;
-	//Test for indices that minimize the distance
-	//Interaction can only be with original particles (0,0)
-	//or first cell (-1,-1), (1,1) etc...
-	vector<pair<int,int> > pairs;
-	vector<double> l_dcarre;
-	for (int i = -1 ; i != 2 ; i++){
-		for(int j = -1; j != 2; j++){
-			Vecteur u = d + a0 * i + a1 * j;
-                        double dcarre = u * u ;
-			l_dcarre.push_back(dcarre);
-			pairs.push_back(std::make_pair(i,j));
-		}
-	}
-	//Find minimum:
-	std::vector<double>::iterator it = std::min_element(l_dcarre.begin(),l_dcarre.end());
-	double dmin = * it ;
-	int k = distance( l_dcarre.begin(), it);
-	//Get matching pairs of indexes
-	indexes_ = pairs[k];
-	//Return shortest vector branch:
-	branch_ = d + a0 * indexes_.first + a1 * indexes_.second ;
-	return;
-}
-
 //On suppose que les indexes ne changent pas
 //entre 2 renouvellements de la liste de verlet
+//on ne change pas d'image
 void Contact::computeBranch(){
+	Vecteur u(indexes_.first,indexes_.second); 
+	branch_ = cell_->geth() * ( j_->getR() + u  - i_->getR()); 
+}
 
-	Vecteur a0(cell_->geth().getxx(), cell_->geth().getyx());
-	Vecteur a1(cell_->geth().getxy(), cell_->geth().getyy());
-	//Branch vector in absolute frame:
-	Vecteur rj = cell_->geth() * j_->getR();
-	Vecteur ri = cell_->geth() * i_->getR();
-	Vecteur d = rj - ri;
-	branch_ = d + a0 * indexes_.first + a1 * indexes_.second ;
+//On recalcule les indexes ici
+void Contact::computeShortestBranch(){
+
+	double sijx = j_->getx() - i_->getx() ;
+	double sijy = j_->gety() - i_->gety() ;
+
+	indexes_.first = -(int)floor(sijx + 0.5) ;
+	indexes_.second = -(int)floor(sijy + 0.5) ;
+
+	sijx += indexes_.first;
+	sijy += indexes_.second;
+
+	Vecteur sij(sijx,sijy);
+	Vecteur branch_ = cell_->geth() * sij;
 }
 
 void Contact::Frame(){
 
-	//computeShortestBranch();
 	computeBranch();
 
 	double l = branch_.getNorme();
@@ -116,7 +91,7 @@ void Contact::write(ofstream& os) const{
 //Take into account case of contact with images
 void Contact::updateRelativeVelocity(){
 
-  //Add affine term transformation for image/real particle inter
+	//Add affine term transformation for image/real particle inter
 
 	Tensor2x2 h = cell_->geth();
 	Tensor2x2 hd = cell_->gethd();
@@ -125,17 +100,6 @@ void Contact::updateRelativeVelocity(){
 	Vecteur u(indexes_.first,indexes_.second); 
 	Vecteur sj = j_->getR() + u;
 
-	//cerr<<"lx = "<<cell_->geth().getyy()<<endl;
-	//cerr<<"u : "<<u.getx()<<" "<<u.gety()<<endl;
-	//cerr<<"sj reele :"<< j_->getR().getx()<<" "<<j_->getR().gety()<<endl; 
-	//cerr<<"sj image : "<<sj.getx()<<" "<<sj.gety()<<endl;
-	//cerr<<"rj image "<< (cell_->geth() * sj).getx()<<" "<<(cell_->geth() * sj).gety()<<endl;
-	//cerr<<"Vitesse affine particle i = "<<(cell_->gethd() * i_->getR()).getNorme()<<endl;
-	//cerr<<"Vitesse affine particle j = "<<(cell_->gethd() * j_->getR()).getNorme()<<endl;
-	//cerr<<"Vitesse affine particle image j = "<<(cell_->gethd() * sj).getNorme()<< "vx : "<<(cell_->gethd() * sj).getx()<<endl;
-	// cerr<<"sdix = "<<(cell_->geth() * i_->getV()).getx()<<endl;
-	// cerr<<"sdiy = "<<(cell_->geth() * j_->getV()).getx()<<endl;
-
 	Vecteur vj = hd * sj + h * j_->getV();
 	Vecteur vi = hd * i_->getR() + h * i_->getV();
 
@@ -143,13 +107,9 @@ void Contact::updateRelativeVelocity(){
 
 	//Components in the contact frame:
 	//v_n = vx nx + vy ny
-	//cerr<<"Relative velocity : "<<v_.getx()<<" "<<v_.gety()<<" norme : "<<v_.getNorme()<<endl;
 
 	v_.setx( vxy * n_ );
 	v_.sety( vxy * t_ );
-
-	//Useless rvrot_?
-	//rvrot_ = j_->getVrot() - i_->getVrot();
 
 	//Rotational contribution added to the relative tangential componant
 	double vtr = -j_->getRadius() * j_->getVrot() -i_->getRadius() * i_->getVrot();
