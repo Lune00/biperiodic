@@ -141,7 +141,7 @@ int main (int argc,char **argv)
 	Int.setparameters(kn,kt,gn,gt,mu);
 	spl.setrho(density);
 
-	for(unsigned int i = nstart ; i != nend ; i+=nperiod){
+	for(unsigned int i = nstart ; i <= nend ; i+=nperiod){
 
 		int k = i-nstart ;
 		//Load sample: ok
