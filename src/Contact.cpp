@@ -56,7 +56,7 @@ void Contact::computeShortestBranch(){
 	sijy += indexes_.second;
 
 	Vecteur sij(sijx,sijy);
-	Vecteur branch_ = cell_->geth() * sij;
+	branch_ = cell_->geth() * sij;
 }
 
 void Contact::Frame(){
