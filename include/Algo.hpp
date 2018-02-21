@@ -78,6 +78,7 @@ class Algo{
 		//Write simu setup in filesetup_;
 		void writesetup() const;
 		void initTics();
+		void imposeForceStatus()const;
 };
 
 #endif

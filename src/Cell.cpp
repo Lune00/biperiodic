@@ -18,9 +18,9 @@ Cell::Cell(){
 	mh_ = 1.;
 	//Multiplier of sample mass
 	mh_factor_ = 1. ;
-	mh_auto_ = false;
 	L_auto_ = false;
 	imposeForce_ = false;
+	tstop_=0.;
 
 	folder_ = string();
 	fcell_ = "cell.txt";
@@ -59,7 +59,6 @@ void Cell::init(ifstream& is){
 		if(token=="L_auto") {
 			L_auto_ = true ;
 		}
-		if(token=="m_auto") mh_auto_ = true;
 		if(token=="mh_factor") is >> mh_factor_;
 
 		//Boundary conditions:
@@ -89,6 +88,9 @@ void Cell::init(ifstream& is){
 			is >> amplitude_;
 			is >> mode_;
 			imposeForce_ = true ;
+		}
+		if(token=="stopForce"){
+			is >> tstop_;
 		}
 
 		if(token=="}") break;
@@ -151,11 +153,9 @@ void Cell::talkinit(Sample& spl){
 			initGeometry_ = true;
 		}
 
-		if(mh_auto_){
-			//Mass: sample mass for inertia
-			mh_ = mh_factor_ * Mmax;
-			initMass_ = true;
-		}
+		//Mass: sample mass for inertia
+		mh_ = mh_factor_ * Mmax;
+		initMass_ = true;
 	}
 
 	//Les nouvelles CLS seront appliquees au cours du premier
@@ -352,9 +352,6 @@ void Cell::firstStepVerlet(const double dt) {
 	}
 }
 
-//Ici on applique les BC definis par User: controle force/vitesse qui ensuite se repercute dans schema integration
-//Suppose d'avoir stressInt au temps t
-//Defaut: test a chaque fois ce qui est controle ou non, alors qu'on le sait depuis le début...
 void Cell::computeExternalStress(const Tensor2x2& stress_int){
 	//Si controle en vitesse alors hdd 0 ds cette direction
 	//Composante xx:

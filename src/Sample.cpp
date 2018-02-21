@@ -163,7 +163,7 @@ double Sample::getTKE() const{
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		//Vecteur v = returnvabs(*it);
-		Vecteur v = h *it->getV() + hd * it->getR();
+		Vecteur v = h * it->getV() + hd * it->getR();
 		//Vecteur v =  hd * it->getR();
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
 	}

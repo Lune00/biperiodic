@@ -40,6 +40,7 @@ class Cell{
 		bool imposeForce_;
 		double amplitude_;
 		int mode_;
+		double tstop_;
 
 		//Metrics: collective degrees of freedom
 		Tensor2x2 h_;
@@ -53,7 +54,6 @@ class Cell{
 
 		//Defined by initial sample
 		bool L_auto_;
-		bool mh_auto_;
 
 		//Check:
 		bool initCG_;
@@ -111,6 +111,7 @@ class Cell{
 
 		//Accessors for imposedForce to individual particles
 		bool imposeForce() const { return imposeForce_;}
+		void desactivateForce() { imposeForce_ = false;}
 		double getAmplitudeForce() const { return amplitude_;}
 		int getModeForce() const { return mode_;}
 
@@ -120,6 +121,7 @@ class Cell{
 		//Call for post-processing
 		void readh0(std::ifstream&);
 		void damp(const double e);
+		double get_tstop() const { return tstop_;}
 
 };
 

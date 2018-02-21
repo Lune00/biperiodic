@@ -107,7 +107,7 @@ void Algo::compute_gmax(){
 	double kt = Int_->getkt();
 
 	//TMP
-	gnmax_ = sqrt( 2. * kn * m);
+	gnmax_ =  sqrt( 2. * kn * m);
 	gtmax_ = sqrt( 2. * kt * m);
 
 	//Should be sqrt(2knm)?
@@ -176,6 +176,7 @@ void Algo::run(){
 	//while(t_ <= tfinal){
 	while(tic_ <= ns_){
 
+		imposeForceStatus();
 		//Update verlet list
 		Int_->updateverlet(tic_);
 
@@ -301,3 +302,9 @@ void Algo::damping(const double e) {
   cell_->damp(e);
 }
 
+void Algo::imposeForceStatus()const{
+
+	if(t_ > cell_->get_tstop()) cell_->desactivateForce();
+	return ;
+
+}

@@ -399,6 +399,7 @@ void Interactions::computeForces(const double dt){
 		}
 		//Acceleration from contact force:
 		Vecteur a_red = hinv * ( it->getA() - hd * (it)->getV() * 2. - hdd * (it)->getR());
+		//Vecteur a_red = hinv * ( it->getA()) ; // - hd * (it)->getV() * 2. - hdd * (it)->getR());
 
 		it->setAcceleration(a_red);
 

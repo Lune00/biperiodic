@@ -16,7 +16,7 @@ mkdir -p  data_ini/sample
 mkdir -p data_ini/cell
 mkdir -p  data_ini/network
 
-cp $fileS data_ini/sample/0000reduced.txt
-cp $fileC data_ini/cell/0000cell.txt
-cp $fileN data_ini/network/0000inter.txt
+cp $fileS data_ini/sample/00000reduced.txt
+cp $fileC data_ini/cell/00000cell.txt
+cp $fileN data_ini/network/00000inter.txt
 
