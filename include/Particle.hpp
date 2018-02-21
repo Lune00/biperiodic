@@ -62,9 +62,10 @@ class Particle{
 		void removevmean(const Vecteur& vmean) { v_ -= vmean;}
 
 		//Integration methods:
-		void updateA(Vecteur f) { a_ += f / m_;}
+		void add_force(Vecteur f) { a_ += f / m_;}
 		//Iterative addition of real acc vectors
-		void update_a(Vecteur a) { a_ += a ;}
+		void add_acc(Vecteur a) { a_ += a ;}
+
 		void updateArot(double ft) { arot_ += (ft*R_)/I_;}
 		void updateR(const double dt);
 		void updateV(const double dt);

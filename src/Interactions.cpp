@@ -436,23 +436,16 @@ void Interactions::addForce(Particle& p){
 
 	double A = cell_->getAmplitudeForce();
 	int mode = cell_->getModeForce();
-	//double Ly = cell_->geth().getyy();
 
 	double yLy = p.getR().gety() ;
 	double fx = A * sin ( 2. * M_PI * yLy * (double)mode);
 	Vecteur f(fx,0.);
-	//Warning: j'impose une acceleration direct en coord reduites
-	//Peut etre imposer plutot en coord absolu et transformer
-	//pour avoir une meilleur idee de l'echelle de force a mettre
-	p.updateA(f);
-	//cerr<<"Particule "<<p.getId()<<": "<<f.getx()<<" y/Ly = "<<yLy<<endl;
+	p.add_force(f);
 }
 
 void Interactions::askNumberOfContacts() const{
 	cerr<<"Nombre de contacts: "<<clist_.size()<<endl;
 }
-
-
 
 double Interactions::getElasticEnergy() const {
 
@@ -627,7 +620,6 @@ void Interactions::read_contact(ifstream& is){
 	for( vector<Contact>::iterator it = vlist_.begin() ; it != vlist_.end(); it++){
 		int k = distance (vlist_.begin(), it );
 		clist_.push_back(k);
-		//cerr<<vlist_[k].getfn()<<" "<<vlist_[k].getdn()<<endl;
 	}
 
 	cerr<<"Nombre de contacts : "<<clist_.size()<<endl;

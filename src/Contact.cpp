@@ -44,6 +44,7 @@ void Contact::computeBranch(){
 }
 
 //On recalcule les indexes ici
+//Call for postprocessing
 void Contact::computeShortestBranch(){
 
 	double sijx = j_->getx() - i_->getx() ;
@@ -152,8 +153,8 @@ void Contact::updateAccelerations(){
 	Vecteur aj = fxy / mj ;
 
 	//Update linear acceleration
-	j_->update_a(aj);
-	i_->update_a(ai);
+	j_->add_acc(aj);
+	i_->add_acc(ai);
 
 	const double ft = - f_.gety();
 	//Update rotational acceleration
