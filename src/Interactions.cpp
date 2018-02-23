@@ -353,7 +353,7 @@ void Interactions::set_dt(Contact& c){
 }
 
 //Compute force at each contact and compute procedurally internal stress on the fly
-void Interactions::computeForces(const double dt){
+void Interactions::computeForces(const double dt,const double t){
 
 	//Static stress:
 	double sxx_s = 0. ;
@@ -378,6 +378,7 @@ void Interactions::computeForces(const double dt){
 		Vecteur branch = vlist_[*it].getbranch();
 		Vecteur force  = vlist_[*it].getfxy();
 
+
 		sxx_s += branch.getx() * force.getx();
 		sxy_s += branch.gety() * force.getx();
 		syx_s += branch.getx() * force.gety();
@@ -395,11 +396,17 @@ void Interactions::computeForces(const double dt){
 	{
 		//Impose a real force
 		if(cell_->imposeForce()){
-			addForce(*it);
+			addForce(*it,t);
 		}
 		//Acceleration from contact force:
 		Vecteur a_red = hinv * ( it->getA() - hd * (it)->getV() * 2. - hdd * (it)->getR());
-		//Vecteur a_red = hinv * ( it->getA()) ; // - hd * (it)->getV() * 2. - hdd * (it)->getR());
+		////Vecteur a_red = hinv * ( it->getA()) ; // - hd * (it)->getV() * 2. - hdd * (it)->getR());
+		//double a = (cell_->getStressExt()+stress_s).getyy()*cell_->geth().getxx()/cell_->getMasse();
+		//double b = (hdd * (it)->getR()).gety();
+		//double c = b/a;
+		//ofstream os("terms.txt",ios::app);
+		//os<<it->getA().getNorme()<<" "<<a<<" "<<b<<" "<<c<<endl;
+		//os.close();
 
 		it->setAcceleration(a_red);
 
@@ -433,13 +440,15 @@ void Interactions::computeForces(const double dt){
 
 //Add a force to each particule in the horizontal direction
 //fx = A * sin (2pi y/Ly * mode)
-void Interactions::addForce(Particle& p){
+void Interactions::addForce(Particle& p,const double t){
 
 	double A = cell_->getAmplitudeForce();
 	int mode = cell_->getModeForce();
+	double tf = 5. ;
 
 	double yLy = p.getR().gety() ;
-	double fx = A * sin ( 2. * M_PI * yLy * (double)mode);
+	double fx = sin ( 2. * M_PI * yLy * (double)mode);
+	fx *= A*exp(-t/tf)+A;
 	Vecteur f(fx,0.);
 	p.add_force(f);
 }

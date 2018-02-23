@@ -276,7 +276,7 @@ void Algo::verletalgo2(){
 	Int_->detectContacts();
 
 	//Calcul des forces entre particules a la nouvelle position fin du pas de temps
-	Int_->computeForces(dt_);
+	Int_->computeForces(dt_,t_);
 
 	//Calcul du tenseur de contraintes internes:
 	//Has been moved to computeForces(dt)

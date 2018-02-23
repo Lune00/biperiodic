@@ -136,9 +136,9 @@ class Interactions{
 		void detectContacts();
 
 		//Compute forces at contacts (end of 1st step verlet algo)
-		void computeForces(const double);
+		void computeForces(const double,const double);
 		void computeInternalStress();
-		void addForce(Particle&);
+		void addForce(Particle&,const double);
 
 		//Writing outputs:
 		void initfolder(std::string folder) { folder_ = folder;}
