@@ -20,7 +20,12 @@ Cell::Cell(){
 	mh_factor_ = 1. ;
 	L_auto_ = false;
 	imposeForce_ = false;
+	stopForce_ = false;
 	tstop_=0.;
+	exy_stop_ = 0. ;
+	stop_Shear_ = false;
+	reverse_Shear_ = false;
+	amp_shear_ = 0. ;
 
 	folder_ = string();
 	fcell_ = "cell.txt";
@@ -56,13 +61,12 @@ void Cell::init(ifstream& is){
 		if(token=="Lx") is >> Lx_;
 		if(token=="Ly") is >> Ly_;
 		//Auto: defined from bounding box around particles
-		if(token=="L_auto") {
-			L_auto_ = true ;
-		}
+		if(token=="L_auto") L_auto_ = true ;
 		if(token=="mh_factor") is >> mh_factor_;
 
 		//Boundary conditions:
 		//direction v(speed)/f(stress) value
+		//By default:
 		if(token=="xx"){
 			is >> Control_[0];
 			is >> loadXX_; 
@@ -89,9 +93,34 @@ void Cell::init(ifstream& is){
 			is >> mode_;
 			imposeForce_ = true ;
 		}
+
+		//Driving variation
 		if(token=="stopForce"){
+			stopForce_ = true ;
 			is >> tstop_;
 		}
+		if(token=="stopShear"){
+			stop_Shear_ = true ;
+			is >> exy_stop_;
+		}
+		if(token=="reverseShear"){
+			reverse_Shear_ = true ;
+			is >> amp_shear_;
+		}
+
+		//user : isocompression P
+		if(token=="isocompression"){
+			Control_[0] = 'f';
+			Control_[3] = 'f';
+			Control_[1] = 'v';
+			Control_[2] = 'v';
+			is >> loadXX_;
+			loadYY_ = loadXX_;
+			loadXY_ = 0. ;
+			loadYX_ = 0. ;
+		}
+		//user: shear P dotgamma
+		//user: forceDriven F mode P
 
 		if(token=="}") break;
 
@@ -445,4 +474,13 @@ void Cell::damp(const double e){
 
 	}
 
+}
+
+void Cell::reverseShear(){
+	if( s_.getxy() > amp_shear_){
+		loadXY_ = -fabs(loadXY_);
+	}
+	if( s_.getxy() < -amp_shear_){
+		loadXY_ = fabs(loadXY_);
+	}
 }

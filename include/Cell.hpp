@@ -29,6 +29,7 @@ class Cell{
 
 		char Control_[4];
 		double Control_values_Init[4];
+
 		//Controle values :
 		double loadXX_;
 		double loadXY_;
@@ -38,9 +39,15 @@ class Cell{
 		//Impose a sinusoidal force to all particles
 		//along x direction Fx = amplitude * (2pi *y/Ly * mode_)
 		bool imposeForce_;
+		bool stopForce_;
 		double amplitude_;
 		int mode_;
 		double tstop_;
+
+		bool stop_Shear_;
+		double exy_stop_;
+		bool reverse_Shear_;
+		double amp_shear_;
 
 		//Metrics: collective degrees of freedom
 		Tensor2x2 h_;
@@ -109,19 +116,31 @@ class Cell{
 		void initfolder(std::string folder) { folder_ = folder;}
 		void writeGeometry(const int) const;
 
+		//Driving force:
 		//Accessors for imposedForce to individual particles
 		bool imposeForce() const { return imposeForce_;}
 		void desactivateForce() { imposeForce_ = false;}
 		double getAmplitudeForce() const { return amplitude_;}
 		int getModeForce() const { return mode_;}
+		//Stop driving force
+		double get_tstop() const { return tstop_;}
+		bool stopForce() const { return stopForce_;}
 
 		//Debug & track:
 		bool initcheck();
 		void debug(const int)const;
+
 		//Call for post-processing
 		void readh0(std::ifstream&);
 		void damp(const double e);
-		double get_tstop() const { return tstop_;}
+
+
+		//Stop/reverse shear
+		bool stopShear() const { return (stop_Shear_ && s_.getxy() > exy_stop_);}
+		bool isReverseShear() const { return reverse_Shear_ ;}
+		void reverseShear();
+		double get_tshear_stop() const { return exy_stop_;}
+		void stopxy() { loadXY_ = 0. ;}
 
 };
 

@@ -106,6 +106,8 @@ void Contact::updateRelativeVelocity(){
 
 	Vecteur vxy = vj - vi;
 
+	//cerr<<"vx rel = "<<vxy.getx()<<endl;
+
 	//Components in the contact frame:
 	//v_n = vx nx + vy ny
 

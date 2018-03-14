@@ -291,6 +291,7 @@ void Analyse::ProfileVelocity(const double t)const {
 	vector<double > Xprofile(nbinsSP_,0.);
 	vector<double > XHOMprofile(nbinsSP_,0.);
 	vector<double > Tx(nbinsSP_,0.);
+	vector<double > Yprofile(nbinsSP_,0.);
 	vector<unsigned int> Nbod(nbinsSP_,0);
 
 
@@ -309,9 +310,11 @@ void Analyse::ProfileVelocity(const double t)const {
 
 		unsigned int j = 0 ;
 		while( j < nbinsSP_){
+
 			if(lprobe[j]->containCenter(*it))
 			{
 				Xprofile[j] += absVelocity(*it,h,hinv,hd).getx();
+				Yprofile[j] += absVelocity(*it,h,hinv,hd).gety();
 				//Homogeneous part imposed
 				XHOMprofile[j] += (hd * it->getR()).getx();
 				//Fluctuating velocity
@@ -328,6 +331,7 @@ void Analyse::ProfileVelocity(const double t)const {
 				//Fluctuating velocity
 				Tx[j] += (h * it->getV()).getx();
 				Nbod[j]++;
+				Yprofile[j] += absVelocity(*it,h,hinv,hd).gety();
 
 			}
 			else{
@@ -345,9 +349,10 @@ void Analyse::ProfileVelocity(const double t)const {
 	for(unsigned int i = 0; i<nbinsSP_;i++){
 		if(Nbod[i]==0) Nbod[i]=1;
 		Xprofile[i] /= (double)(Nbod[i]);
+		Yprofile[i] /= (double)(Nbod[i]);
 		XHOMprofile[i] /= (double)(Nbod[i]);
 		Tx[i] /= (double)(Nbod[i]);
-		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<endl;
+		os<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<" "<<Yprofile[i]<<endl;
 	}
 
 	//Bins:
@@ -356,7 +361,7 @@ void Analyse::ProfileVelocity(const double t)const {
 	{
 		sprintf(spbins,"%s/SPbins/s_%04d.his",folder_.c_str(),i);
 		ofstream sb(spbins,ios::app);
-		sb<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<endl;
+		sb<<t<<" "<< lprobe[i]->gety()<<" "<<Xprofile[i]<<" "<<XHOMprofile[i]<<" "<<Tx[i]<<" "<<Yprofile[i]<<endl;
 		sb.close();
 	}
 
@@ -459,7 +464,8 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 
 
 	bool label = false ;
-	bool forcenetwork = true ;
+	bool forcenetwork = false ;
+	bool vitesse = false ;
 
 	ofstream ps(frame.c_str());
 	//Is h used??
@@ -509,8 +515,29 @@ void Analyse::writePS(const string frame, const vector<Particle>& images){
 		double yrcostheta = y + r * sin(theta) * 0.8 ;
 		double radiusrot = r * scaledotradius;
 
-		ps <<" newpath "<<endl ;
-		ps <<x<<" "<<y<<" "<<r<<" colordisk setrgbcolor 0.0 setlinewidth 0 360 arc gsave fill grestore "<<endl; 
+		//ps <<" newpath "<<endl ;
+
+		//If vitesse, particles are colored according a gradient
+		if(vitesse) {
+			Vecteur V = h * it->getV() + cell_->gethd() * it->getR();
+			double v = V.getx();
+			double vmax = 1. ;
+			double vmin = -1. ;
+			//v = (v-vmin)/(vmax-vmin);
+			//ps<<"/coul_disk {1 "<<v<<" 0} def"<<endl;
+			//if < 0 blue if > 0 rouge
+			if(v<0.)  ps<<"/coul_disk {0 0 1} def"<<endl;
+			else  ps<<"/coul_disk {1 0 0} def"<<endl;
+			ps <<" newpath "<<endl ;
+			ps <<x<<" "<<y<<" "<<r<<" coul_disk setrgbcolor 0.0 setlinewidth 0 360 arc gsave fill grestore "<<endl; 
+		}
+
+		else{
+			ps <<" newpath "<<endl ;
+			ps <<x<<" "<<y<<" "<<r<<" colordisk setrgbcolor 0.0 setlinewidth 0 360 arc gsave fill grestore "<<endl; 
+		}
+
+		//Rotation:
 		ps <<"stroke"<<endl;
 		ps << "newpath "<<endl;
 		ps <<xrcostheta<<" "<<yrcostheta<<" "<<radiusrot<<" colordot setrgbcolor 0.0 setlinewidth 0 360 arc gsave fill grestore"<<endl;

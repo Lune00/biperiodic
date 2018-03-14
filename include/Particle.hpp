@@ -59,6 +59,7 @@ class Particle{
 		void addry(double dy) {r_.addy(dy);}
 
 		void setAcceleration(const Vecteur a) { a_ = a ;}
+		void setVelocity(const Vecteur v ) { v_ = v ;}
 		void removevmean(const Vecteur& vmean) { v_ -= vmean;}
 
 		//Integration methods:

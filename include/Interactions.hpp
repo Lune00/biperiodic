@@ -162,7 +162,7 @@ class Interactions{
 		double getmu() const { return mus_;}
 
 		void setgn(double gn) { gn_ = gn;}
-		void setgt(double gt) { gn_ = gt;}
+		void setgt(double gt) { gt_ = gt;}
 
 		bool setgnmax() const { return setgnmax_;}
 		bool setgtmax() const { return setgtmax_;}

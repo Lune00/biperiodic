@@ -107,19 +107,22 @@ void Algo::compute_gmax(){
 	double kt = Int_->getkt();
 
 	//TMP
-	gnmax_ =  sqrt( 2. * kn * m);
-	gtmax_ = sqrt( 2. * kt * m);
+	gnmax_ = 2. * sqrt(  kn * m);
+
+	gtmax_ = 2. * sqrt(  kt * m);
 
 	//Should be sqrt(2knm)?
 
 	if(Int_->setgnmax()){
-		double gn = gnmax_ * 0.95 ;
+		double gn = gnmax_ * 1. ;
 		Int_->setgn(gn);
+		cerr<<"here "<<gn<<endl;
 	}
 
 	if(Int_->setgtmax()){
-	  double gt = gtmax_ * 0.5 ;
+	  double gt = gnmax_ / 4. ;
 	  Int_->setgt(gt);
+	  cerr<<"here "<<gt<<endl;
 	}
 
 	//From Radjai Book (not sure)
@@ -176,11 +179,12 @@ void Algo::run(){
 	//while(t_ <= tfinal){
 	while(tic_ <= ns_){
 
-		imposeForceStatus();
+		updateDriving();
+
 		//Update verlet list
 		Int_->updateverlet(tic_);
 
-		//Time step: integration & periodicity
+		//integration & periodicity
 		verletalgo2();
 
 		if(damping_) damping(dampCoeff_);
@@ -203,7 +207,7 @@ void Algo::run(){
 		}
 
 		//TMP for debug
-		if( tic_ % 8000 == 0 ){
+		if( tic_ % 10000 == 0 ){
 			//Int_->debug(tic_);
 			cell_->debug(tic_);
 			//spl_->debug(tic_);
@@ -302,9 +306,39 @@ void Algo::damping(const double e) {
   cell_->damp(e);
 }
 
-void Algo::imposeForceStatus()const{
 
-	if(t_ > cell_->get_tstop()) cell_->desactivateForce();
-	return ;
-
+//Here are managed the perturbations during the test:
+// activation/desactivation of force
+// impose velocities to particles
+// reverse / stop shear
+//Comment uneccesary ligns to avoid extra uneccesary tests
+void Algo::updateDriving(){
+	//imposeForceStatus();
+	//shearStatus();
+	if(spl_->imposeIV(tic_)) spl_->setInitialVelocities();
 }
+
+
+//Check if the force will be stoped
+//If it will be stoped check time to stop / time
+void Algo::imposeForceStatus()const{
+	if(cell_->stopForce()){
+		if(t_ > cell_->get_tstop()) cell_->desactivateForce();
+		return ;
+	}
+	else return;
+}
+
+//Stop/reverse shearing
+void Algo::shearStatus() const{
+	if(cell_->stopShear()){
+		cell_->stopxy();
+		return;
+	}
+	if(cell_->isReverseShear()){
+		cell_->reverseShear();
+		return;
+	}
+	else return;
+}
+

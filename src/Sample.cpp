@@ -23,6 +23,8 @@ Sample::Sample(){
 	starting_ = 0 ;
 	ofstream os("track.txt");
 	os.close();
+	imposeIV_ = false;
+	nimposeIV_ = 0 ;
 }
 
 Sample::~Sample(){
@@ -58,6 +60,15 @@ void Sample::init(ifstream& is){
 		if(token=="rho") {
 			rhodefined_= true;
 			is >> rho_;
+		}
+		//Impose initial velocity at step nimposeIV_
+		//with an amplitude v0_
+		//details of the velocity imposed
+		//are found in the function setInitialVelocities()
+		if(token=="imposeIV"){
+			imposeIV_ = true;
+			is >> nimposeIV_;
+			is >> v0_;
 		}
 		if(token=="}") break;
 		is >> token ;
@@ -163,7 +174,7 @@ double Sample::getTKE() const{
 
 	for(std::vector<Particle>::const_iterator it = spl_.begin(); it!= spl_.end(); it++){
 		//Vecteur v = returnvabs(*it);
-		Vecteur v = h * it->getV() + hd * it->getR();
+		Vecteur v = h * it->getV() ; // + hd * it->getR();
 		//Vecteur v =  hd * it->getR();
 		Ec += 0.5 * it->getMasse() * v.getNorme2();
 	}
@@ -429,22 +440,42 @@ Particle * Sample::getP(int i){
 
 void Sample::damp(const double e){
 
-  for(spit it =spl_.begin(); it != spl_.end(); it++){
+	for(spit it =spl_.begin(); it != spl_.end(); it++){
 
-    if( it->getA().getx() * it->getV().getx() >=0 ){
-      it->dampax(1.-e);
-    }
-    else it->dampax(1.+e);
+		if( it->getA().getx() * it->getV().getx() >=0 ){
+			it->dampax(1.-e);
+		}
+		else it->dampax(1.+e);
 
-    if( it->getA().gety() * it->getV().gety() >=0 ){
-      it->dampay(1.-e);
-    }
-    else it->dampay(1.+e);
+		if( it->getA().gety() * it->getV().gety() >=0 ){
+			it->dampay(1.-e);
+		}
+		else it->dampay(1.+e);
 
-    if( it->getArot() * it->getVrot() >=0 ){
-      it->damparot(1.-e);
-    }
-    else it->damparot(1.+e);
+		if( it->getArot() * it->getVrot() >=0 ){
+			it->damparot(1.-e);
+		}
+		else it->damparot(1.+e);
 
-  }
+	}
+}
+
+bool Sample::imposeIV(const int tic) const{
+	if( (nimposeIV_ == tic) && imposeIV_) return true;
+	else return false;
+}
+
+//Set initial velocities
+void Sample::setInitialVelocities(){
+	
+	Vecteur v;
+	Tensor2x2 hinv = cell_->geth().getInverse();
+	for(spit it =spl_.begin(); it != spl_.end(); it++){
+		double y = it->gety();
+		double vy = v0_ * sin(2. * M_PI * y);
+		v.set(0.,vy);
+		v = hinv * v ;
+		it->setVelocity(v);
+	}
+	imposeIV_ = false;
 }

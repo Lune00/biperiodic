@@ -78,7 +78,15 @@ class Algo{
 		//Write simu setup in filesetup_;
 		void writesetup() const;
 		void initTics();
+
+		//Call any fonctions modifying driving/Boundary cond
+		//to change at the run time
+		void updateDriving();
 		void imposeForceStatus()const;
+
+
+		//Manage stop/reverse shearing
+		void shearStatus()const;
 };
 
 #endif

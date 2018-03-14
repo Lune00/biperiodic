@@ -48,6 +48,11 @@ class Sample{
 		//Assure utilisateur defini rho
 		bool rhodefined_;
 
+		//Impose initial velocities
+		bool imposeIV_;
+		int nimposeIV_;
+		double v0_;
+
 		Cell* cell_;
 
 	public:
@@ -110,6 +115,8 @@ class Sample{
 		void setfiletoload(const int i) { load_sample_ = true ; filetoload_ = i ;}
 
 		void damp(const double);
+		void setInitialVelocities();
+		bool imposeIV(const int) const;
 
 };
 
