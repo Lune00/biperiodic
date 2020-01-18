@@ -1,2 +1,2 @@
-# biperiodic
-schema d integration biperiodic plus eventuellement dynamique moleculaire
+# DEM 2D Biperiodic
+Code de simulation d'écoulement granulaire: schéma d'intégration biperiodic, dynamique moleculaire
